@@ -2647,9 +2647,30 @@ async function generatePortrait(btn) {
   }
 }
 
-// Init: show empty state with slow gear
+// ── Cookie helpers ────────────────────────────────────────────────────────
+function setCookie(name, value, days) {
+  const expires = new Date(Date.now() + days * 864e5).toUTCString();
+  document.cookie = `${name}=${encodeURIComponent(value)};expires=${expires};path=/;SameSite=Strict`;
+}
+
+function getCookie(name) {
+  const match = document.cookie.split('; ').find(r => r.startsWith(name + '='));
+  return match ? decodeURIComponent(match.split('=')[1]) : '';
+}
+
+// Init
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('empty-state')?.style && (document.getElementById('output-area').style.minHeight = '200px');
+
+  // Restore saved keys
+  const antKey = getCookie('gof_anthropic_key');
+  if (antKey) document.getElementById('api-key').value = antKey;
+  const imgKey = getCookie('gof_stability_key');
+  if (imgKey) document.getElementById('img-api-key').value = imgKey;
+
+  // Persist keys as they change
+  document.getElementById('api-key').addEventListener('input', e => setCookie('gof_anthropic_key', e.target.value, 365));
+  document.getElementById('img-api-key').addEventListener('input', e => setCookie('gof_stability_key', e.target.value, 365));
 });
 </script>
 </body>
