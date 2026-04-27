@@ -1,0 +1,306 @@
+// generator/cast-builder.js
+// Assembles the supporting cast for a protagonist.
+//
+// Changes from v1:
+//   - Parents and siblings share the protagonist's last name
+//     (with optional divergence for divorced/remarried parents)
+//   - NPC first names are drawn from ethnicity-matched pools
+//   - Friends and foils get culturally neutral names (they come from anywhere)
+//   - Dynamics and traits lean toward playable, occasionally funny,
+//     rather than uniformly heavy
+//
+// No browser APIs. No Node-specific APIs. Pure JS.
+
+import { uniformPick, uniformPickN, randomInt } from './selector.js';
+import { PARENT_STATUSES, SIBLING_DYNAMICS }    from './genres/modern/family-structures.js';
+import { poolFor, pickFirstName }               from './skeleton-builder.js';
+
+// ── NEUTRAL NAME POOL (friends, foils — could be anyone) ──────────────────
+// Deliberately mixed — friends aren't necessarily the same ethnicity
+const NEUTRAL_FIRST_MASC = ['Marcus','Ray','Eli','Nate','Omar','Silas','Calvin','Andre','Luca','Hassan','Ricky','Brendan','Patrick','Curtis','Terrence','Sam','Jordan','Alex','Tyler','Jesse'];
+const NEUTRAL_FIRST_FEM  = ['Diana','Cassie','Renee','Angie','Becca','Simone','Tamara','Rosa','Leila','Claudia','Priya','Nadia','Ashley','Morgan','Keisha','Lauren','Amber','Shannon','Tanya','Jade'];
+const NEUTRAL_LAST       = ['Vega','Tran','Kelly','Osei','Park','Walsh','Grant','Patel','Cruz','Flynn','Moss','Shaw','Reed','Kim','Boyd','Hayes','Leon','Moran','Russo','Diaz'];
+
+function neutralName() {
+  const first = Math.random() < 0.5 ? uniformPick(NEUTRAL_FIRST_MASC) : uniformPick(NEUTRAL_FIRST_FEM);
+  return `${first} ${uniformPick(NEUTRAL_LAST)}`;
+}
+
+// ── NPC TRAIT POOLS ───────────────────────────────────────────────────────
+// Mix of light, dark, and comedic traits — weighted so not every NPC
+// is "quietly broken" or "bitter". Playable characters need people
+// worth talking to.
+
+const TRAITS_POSITIVE = [
+  'fiercely loyal',         'surprisingly funny',       'the most reliable person alive',
+  'embarrassingly earnest', 'annoyingly optimistic',    'good in a crisis',
+  'generous to a fault',    'shamelessly enthusiastic', 'the one who always has snacks',
+  'makes everyone feel seen','weirdly calm under pressure','knows everyone in town',
+  'gives excellent unsolicited advice','never holds a grudge','always picks up the phone',
+];
+const TRAITS_MIXED = [
+  'charming and unreliable', 'protective',         'impulsive',
+  'pragmatic',               'idealistic',         'hard to read',
+  'stubborn',                'quietly ambitious',  'unpredictable',
+  'hot-tempered but quick to apologise',            'means well, executes poorly',
+  'emotionally unavailable except at 2am',          'the world\'s worst liar',
+  'extremely competent at exactly one thing',       'allergic to asking for help',
+];
+const TRAITS_DARK = [
+  'emotionally closed',     'deeply anxious',      'cynical',
+  'bitter',                 'secretive',           'manipulative',
+  'living in the past',     'burned out',          'quietly broken',
+  'running from something', 'one bad decision from disaster',
+];
+
+const NPC_TRAITS = [...TRAITS_POSITIVE, ...TRAITS_MIXED, ...TRAITS_DARK];
+
+// ── FRIEND DYNAMICS ───────────────────────────────────────────────────────
+// Roughly half warm, half complicated — but all feel like real friendships
+
+const FRIEND_DYNAMICS = [
+  'The person {n} calls when things go sideways — and they always pick up',
+  'Has covered for {n} before. Will probably have to again.',
+  'Believes in {n} more than {n} believes in themselves',
+  'The only person who can make {n} laugh when things are genuinely terrible',
+  'Has their own chaos, but shows up for {n} anyway',
+  'Knows every embarrassing story and has never weaponised one',
+  'Drifted for a while; they\'re close again now, pretending the gap never happened',
+  'Technically {n}\'s oldest friend — the history is more complicated than the friendship',
+  'Would absolutely help {n} move a body. No questions. Light snacks provided.',
+  'The voice in {n}\'s head that says "are you sure about this?" — usually right',
+  'Has opinions about all of {n}\'s decisions and shares them regardless',
+  'Knows {n} better than anyone and has decided to stay anyway',
+];
+
+// ── FOIL ROLES ────────────────────────────────────────────────────────────
+const FOIL_ROLES = [
+  {
+    role: 'rival',
+    dynamics: [
+      'Wants what {n} has — and is closer to getting it than {n} realises',
+      'Grew up alongside {n}; the competition never officially ended',
+      'Respects {n} just enough to make the rivalry feel personal',
+      'Would help {n} in a genuine crisis, but only to stay one step ahead',
+      'The only person who can beat {n} — which {n} finds both infuriating and motivating',
+    ],
+  },
+  {
+    role: 'antagonist',
+    dynamics: [
+      'Has a reason to want things to go badly for {n} — and the patience to wait',
+      'Operates in the same world as {n}, just on the other side of a line',
+      'Knows something about {n} that {n} wishes they didn\'t',
+      'Isn\'t villainous — just pursuing something that puts them directly in {n}\'s way',
+      'Honestly believes they\'re the reasonable one in this situation',
+    ],
+  },
+  {
+    role: 'love interest',
+    dynamics: [
+      'Has known {n} long enough to see past the performance — still here',
+      'Wants more from {n} than {n} knows how to give right now',
+      'The timing has never been right. Might never be. They\'re both ignoring this.',
+      'Is making {n} question things they thought were settled',
+      'Finds {n}\'s specific brand of disaster oddly endearing',
+    ],
+  },
+  {
+    role: 'estranged former ally',
+    dynamics: [
+      'Used to be the person {n} trusted most. Something happened. Neither talks about it.',
+      'Resurfaces at exactly the wrong moment, as they always do',
+      'Could be an asset or a liability — {n} genuinely doesn\'t know which',
+      'The unfinished business between them has developed serious interest',
+    ],
+  },
+];
+
+// ── SIBLING DYNAMICS ──────────────────────────────────────────────────────
+const SIBLING_MAP = {
+  protective_older:   n => `Stepped up for ${n} when no one else did — a habit they haven't broken`,
+  rivalry:            n => `The competition with ${n} started in childhood and technically never stopped`,
+  estranged:          n => `${n} and them haven't spoken in years. The reason is known. Unremarked upon.`,
+  close_ally:         n => `The one person ${n} tells everything to, including the parts they shouldn't`,
+  troubled:           n => `${n} is the "stable" one in this equation, which is its own kind of funny`,
+  golden_child:       n => `The family benchmark — ${n} has spent years being measured against them without consent`,
+  lost_touch:         n => `They were close once. Drifted. ${n} still occasionally drafts messages and doesn't send them`,
+  deceased:           n => `Gone — and ${n} still sometimes forgets, for a moment, before remembering again`,
+  younger_dependent:  n => `Looks to ${n} for stability ${n} is largely improvising`,
+  reconnecting:       n => `Back in ${n}'s life after years away, both pretending it wasn't that long`,
+};
+
+// ── PARENT DYNAMICS ───────────────────────────────────────────────────────
+const PARENT_DYNAMICS_ALIVE = [
+  '{n} calls more often than they admit and less often than they mean to',
+  'Has opinions about every choice {n} has made since roughly age seven',
+  'Proud of {n} in ways they mostly express sideways, at inconvenient moments',
+  'The relationship has improved significantly since {n} moved out',
+  'Still sends clippings — actual clippings — of things they think {n} should know',
+  'Knows something is wrong with {n} right now and is waiting to be asked',
+  '{n} inherited exactly the traits they were hoping to avoid',
+];
+const PARENT_DYNAMIC_DECEASED = n =>
+  `${n} still catches themselves thinking "I should call" before remembering`;
+
+// ── FAMILY NAME LOGIC ─────────────────────────────────────────────────────
+// Parents:  same last name as protagonist by default
+//   Exception: divorced parents — one may have a different last name
+//   Exception: absent/unknown parent — gets a different last name (unknown origin)
+// Siblings: always same last name as protagonist
+
+function familyLastName(protagonistLast, forceNew = false, ethnicityBroad = 'default') {
+  if (!forceNew) return protagonistLast;
+  // Generate a different last name from the same ethnicity pool
+  const pool = poolFor(ethnicityBroad).last;
+  const options = pool.filter(n => n !== protagonistLast);
+  return uniformPick(options.length ? options : pool);
+}
+
+// ── PARENT BUILDER ────────────────────────────────────────────────────────
+
+function buildParent(role, structure, protName, protLast, ethnicityBroad) {
+  const pool = PARENT_STATUSES;
+  let status;
+  const id = structure.id;
+
+  if (id === 'two_parent_one_deceased') {
+    status = role === 'deceased'
+      ? uniformPick(pool.filter(s => s.id.startsWith('deceased')))
+      : uniformPick(pool.filter(s => !s.id.startsWith('deceased') && s.id !== 'absent_unknown' && s.id !== 'incarcerated'));
+  } else if (id === 'two_parent_one_absent') {
+    status = role === 'absent'
+      ? uniformPick(pool.filter(s => s.id === 'absent_unknown' || s.id === 'estranged'))
+      : uniformPick(pool.filter(s => !s.id.startsWith('deceased') && s.id !== 'absent_unknown'));
+  } else if (['foster_care','orphaned_early','raised_by_grandparents','raised_by_older_sibling'].includes(id)) {
+    status = uniformPick(pool.filter(s => s.id.startsWith('deceased') || s.id === 'absent_unknown' || s.id === 'estranged'));
+  } else {
+    status = uniformPick(pool);
+  }
+
+  const isDeceased  = status.id.startsWith('deceased');
+  const isAbsent    = status.id === 'absent_unknown';
+  const isDivorced  = id === 'two_parent_divorced' || id === 'two_parent_blended';
+  const isMother    = role === 'mother';
+  const nameGender  = isMother ? 'fem' : 'masc';
+
+  // Divorced mothers may have reverted to maiden name; absent parents have different surname
+  const useDifferentLast = isAbsent || (isDivorced && isMother && Math.random() < 0.5);
+  const last = familyLastName(protLast, useDifferentLast, ethnicityBroad);
+
+  const namePool  = poolFor(ethnicityBroad);
+  const firstName = pickFirstName(nameGender === 'fem' ? 'woman' : 'man', namePool);
+
+  const dynamic = isDeceased
+    ? PARENT_DYNAMIC_DECEASED(protName)
+    : fillD(uniformPick(PARENT_DYNAMICS_ALIVE), protName);
+
+  return {
+    name:    `${firstName} ${last}`,
+    role:    isMother ? 'mother' : 'father',
+    status:  status.label,
+    traits:  pickTraits(2),
+    dynamic,
+  };
+}
+
+// ── SIBLING BUILDER ───────────────────────────────────────────────────────
+
+function buildSibling(protName, protLast, ethnicityBroad) {
+  const dyn         = uniformPick(SIBLING_DYNAMICS);
+  const genderId    = Math.random() < 0.5 ? 'man' : 'woman';
+  const namePool    = poolFor(ethnicityBroad);
+  const firstName   = pickFirstName(genderId, namePool);
+  const isOlder     = ['protective_older','golden_child'].includes(dyn.id);
+  const isYounger   = dyn.id === 'younger_dependent';
+  const role        = isOlder ? 'older sibling' : isYounger ? 'younger sibling' : 'sibling';
+
+  return {
+    name:    `${firstName} ${protLast}`,   // always shares family surname
+    role,
+    status:  dyn.id === 'deceased' ? 'deceased' : dyn.label,
+    traits:  pickTraits(2),
+    dynamic: (SIBLING_MAP[dyn.id] ?? (n => `Part of ${n}'s story in ways that are hard to untangle`))(protName),
+  };
+}
+
+// ── FRIEND BUILDER ────────────────────────────────────────────────────────
+
+function buildFriend(protName) {
+  return {
+    name:    neutralName(),
+    role:    'best friend',
+    status:  'present and close',
+    traits:  pickTraits(3),
+    dynamic: fillD(uniformPick(FRIEND_DYNAMICS), protName),
+  };
+}
+
+// ── FOIL BUILDER ──────────────────────────────────────────────────────────
+
+function buildFoil(protName) {
+  const foilType = uniformPick(FOIL_ROLES);
+  return {
+    name:    neutralName(),
+    role:    foilType.role,
+    status:  'present',
+    traits:  pickTraits(2),
+    dynamic: fillD(uniformPick(foilType.dynamics), protName),
+  };
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────────
+
+function fillD(t, n) { return t.replace(/\{n\}/g, n); }
+function pickTraits(n) { return uniformPickN(NPC_TRAITS, n); }
+
+// ── MAIN CAST BUILDER ─────────────────────────────────────────────────────
+
+/**
+ * Builds the full supporting cast for a protagonist.
+ *
+ * @param {string} protagonistName   Full name e.g. "Maya Reyes"
+ * @param {string} protagonistLast   Last name only e.g. "Reyes" — shared with family
+ * @param {string} ethnicityBroad    e.g. "Latino" — used for family first name pools
+ * @param {object} familyStructure   Resolved FAMILY_STRUCTURES entry
+ * @returns {import('./types.js').NPCSkeleton[]}
+ */
+export function buildCast(protagonistName, protagonistLast, ethnicityBroad, familyStructure) {
+  const cast = [];
+  const MAX  = 7;
+
+  // ── PARENTS ──────────────────────────────────────────────────────────
+  const pc = familyStructure.parentCount ?? 0;
+
+  if (pc === 2) {
+    const isOneDeceased = familyStructure.id === 'two_parent_one_deceased';
+    const isOneAbsent   = familyStructure.id === 'two_parent_one_absent';
+    const mRole = isOneDeceased ? (Math.random()<0.5?'deceased':'surviving')
+                : isOneAbsent   ? (Math.random()<0.5?'absent':'present') : 'present';
+    const fRole = isOneDeceased ? (mRole==='deceased'?'surviving':'deceased')
+                : isOneAbsent   ? (mRole==='absent'?'present':'absent') : 'present';
+    cast.push(buildParent('mother', {...familyStructure, _r:mRole}, protagonistName, protagonistLast, ethnicityBroad));
+    cast.push(buildParent('father', {...familyStructure, _r:fRole}, protagonistName, protagonistLast, ethnicityBroad));
+  } else if (pc === 1) {
+    const g = familyStructure.parentGender ?? (Math.random()<0.5?'mother':'father');
+    cast.push(buildParent(g, familyStructure, protagonistName, protagonistLast, ethnicityBroad));
+  }
+
+  // ── SIBLINGS ──────────────────────────────────────────────────────────
+  const [minS, maxS] = familyStructure.siblingCount ?? [0, 0];
+  const sibSlots = Math.min(randomInt(minS, maxS), 2, MAX - cast.length - 2);
+  for (let i = 0; i < sibSlots; i++) {
+    cast.push(buildSibling(protagonistName, protagonistLast, ethnicityBroad));
+  }
+
+  // ── BEST FRIENDS ──────────────────────────────────────────────────────
+  const friendSlots = Math.min(randomInt(1, 2), MAX - cast.length - 1);
+  for (let i = 0; i < friendSlots; i++) {
+    cast.push(buildFriend(protagonistName));
+  }
+
+  // ── DRAMATIC FOIL ─────────────────────────────────────────────────────
+  if (cast.length < MAX) cast.push(buildFoil(protagonistName));
+
+  return cast;
+}

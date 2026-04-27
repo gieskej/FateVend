@@ -1,0 +1,2485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gears of Fate — RPG Character Generator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+/* ── DESIGN TOKENS ─────────────────────────────────────────────────── */
+:root {
+  --brass:        #b87333;
+  --brass-light:  #d4956a;
+  --brass-dark:   #7a4a1e;
+  --copper:       #cb6d51;
+  --copper-light: #e8956d;
+  --gold:         #c9a84c;
+  --gold-light:   #e8c97a;
+  --parchment:    #f5ead6;
+  --parchment-dark: #e8d5b5;
+  --parchment-deep: #d4b896;
+  --ink:          #2a1f14;
+  --ink-light:    #4a3728;
+  --ink-faint:    #7a6555;
+  --steel:        #4a5568;
+  --rust:         #8b3a2a;
+  --verdigris:    #4a7c6f;
+  --shadow:       rgba(0,0,0,0.4);
+  --glow-brass:   rgba(184,115,51,0.3);
+
+  --font-display: 'Cinzel', serif;
+  --font-body:    'Crimson Pro', serif;
+
+  --radius:    4px;
+  --radius-lg: 8px;
+}
+
+/* ── RESET & BASE ──────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--ink);
+  background-color: #1a1208;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── BACKGROUND TEXTURE ────────────────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(184,115,51,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 60% at 80% 80%, rgba(74,60,40,0.3) 0%, transparent 60%),
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 2px,
+      rgba(184,115,51,0.015) 2px,
+      rgba(184,115,51,0.015) 4px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── LAYOUT ────────────────────────────────────────────────────────── */
+.page-wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 6rem;
+}
+
+/* ── HEADER ────────────────────────────────────────────────────────── */
+.site-header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  position: relative;
+}
+
+.site-header::before,
+.site-header::after {
+  content: '⚙';
+  font-size: 1.4rem;
+  color: var(--brass);
+  opacity: 0.5;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.site-header::before { left: 0; }
+.site-header::after  { right: 0; }
+
+.site-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  text-shadow: 0 0 30px var(--glow-brass), 0 2px 4px rgba(0,0,0,0.6);
+  line-height: 1.1;
+}
+
+.site-subtitle {
+  font-family: var(--font-body);
+  font-style: italic;
+  color: var(--brass-light);
+  font-size: 1rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-top: 0.4rem;
+  opacity: 0.8;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  color: var(--brass-dark);
+  font-size: 0.9rem;
+}
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--brass-dark), transparent);
+}
+
+/* ── API KEY INPUT ─────────────────────────────────────────────────── */
+.api-section {
+  background: rgba(26,18,8,0.7);
+  border: 1px solid var(--brass-dark);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.api-section label {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: var(--brass-light);
+  white-space: nowrap;
+}
+
+.api-input {
+  flex: 1;
+  min-width: 200px;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid var(--brass-dark);
+  border-radius: var(--radius);
+  color: var(--parchment);
+  font-family: monospace;
+  font-size: 0.85rem;
+  padding: 0.5rem 0.75rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.api-input:focus { border-color: var(--brass); }
+.api-input::placeholder { color: var(--ink-faint); opacity: 0.6; }
+
+/* ── GENERATE BUTTON ───────────────────────────────────────────────── */
+.generate-wrap {
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+.btn-generate {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: linear-gradient(135deg, var(--brass-dark) 0%, var(--brass) 50%, var(--gold) 100%);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.9rem 2.5rem;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 4px 20px rgba(184,115,51,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.btn-generate::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+.btn-generate:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(184,115,51,0.5), inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.btn-generate:active:not(:disabled) { transform: translateY(0); }
+.btn-generate:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.gear-icon {
+  display: inline-block;
+  font-size: 1.1rem;
+  transition: transform 0.3s;
+}
+.btn-generate.spinning .gear-icon {
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── STATUS BAR ────────────────────────────────────────────────────── */
+.status-bar {
+  text-align: center;
+  font-style: italic;
+  color: var(--brass-light);
+  font-size: 0.95rem;
+  min-height: 1.5rem;
+  margin-bottom: 0.5rem;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.status-bar.visible { opacity: 1; }
+
+/* ── PHASE PIPELINE ────────────────────────────────────────────────── */
+.phase-pipeline {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  margin: 1rem 0 2rem;
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+}
+
+.phase-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.5rem 0.75rem;
+  color: var(--ink-faint);
+  position: relative;
+  transition: color 0.3s;
+}
+.phase-step + .phase-step::before {
+  content: '──';
+  position: absolute;
+  left: -0.5rem;
+  top: 0.85rem;
+  color: var(--brass-dark);
+  font-size: 0.7rem;
+}
+.phase-step.active  { color: var(--gold); }
+.phase-step.done    { color: var(--brass-light); }
+
+.phase-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--brass-dark);
+  transition: background 0.3s, box-shadow 0.3s;
+}
+.phase-step.active .phase-dot {
+  background: var(--gold);
+  box-shadow: 0 0 8px var(--gold);
+  animation: pulse-dot 1s ease-in-out infinite;
+}
+.phase-step.done .phase-dot { background: var(--brass); }
+
+@keyframes pulse-dot {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.4); }
+}
+
+/* ── CARD BASE ─────────────────────────────────────────────────────── */
+.card {
+  background: linear-gradient(160deg, var(--parchment) 0%, var(--parchment-dark) 100%);
+  border: 1px solid var(--parchment-deep);
+  border-radius: var(--radius-lg);
+  box-shadow:
+    0 4px 24px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.4);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.card.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card-header {
+  background: linear-gradient(90deg, var(--brass-dark), var(--brass), var(--brass-dark));
+  padding: 0.6rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.card-title {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--parchment);
+  text-transform: uppercase;
+}
+.card-body { padding: 1.25rem 1.5rem; }
+
+/* ── STAT BLOCK ────────────────────────────────────────────────────── */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.stat-cell {
+  background: rgba(42,31,20,0.08);
+  border: 1px solid var(--parchment-deep);
+  border-radius: var(--radius);
+  padding: 0.75rem 0.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+.stat-cell:hover {
+  background: rgba(42,31,20,0.14);
+  border-color: var(--brass);
+  transform: translateY(-1px);
+}
+.stat-cell:hover .stat-reroll-hint { opacity: 1; }
+
+.stat-name {
+  font-family: var(--font-display);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 0.2rem;
+}
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--brass-dark);
+  line-height: 1;
+  display: block;
+  transition: color 0.3s;
+}
+.stat-cell.rolling .stat-value {
+  animation: roll-flicker 0.6s ease-out;
+}
+@keyframes roll-flicker {
+  0%   { opacity: 0.3; transform: scale(0.8); }
+  50%  { opacity: 1;   transform: scale(1.1); color: var(--gold); }
+  100% { opacity: 1;   transform: scale(1);   }
+}
+
+.stat-bar {
+  height: 3px;
+  background: var(--parchment-deep);
+  border-radius: 2px;
+  margin-top: 0.4rem;
+  overflow: hidden;
+}
+.stat-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--brass-dark), var(--gold));
+  border-radius: 2px;
+  transition: width 0.6s cubic-bezier(0.34,1.56,0.64,1);
+  width: 0;
+}
+
+.stat-reroll-hint {
+  position: absolute;
+  bottom: 3px;
+  right: 5px;
+  font-size: 0.55rem;
+  color: var(--brass);
+  opacity: 0;
+  transition: opacity 0.2s;
+  font-family: var(--font-display);
+  letter-spacing: 0.05em;
+}
+
+/* ── IDENTITY ROW ──────────────────────────────────────────────────── */
+.identity-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin-bottom: 1rem;
+}
+.identity-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+.identity-label {
+  font-family: var(--font-display);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+.identity-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* ── MBTI BADGE ────────────────────────────────────────────────────── */
+.mbti-badge {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+.mbti-type {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--brass-dark);
+  letter-spacing: 0.05em;
+}
+.mbti-label {
+  font-style: italic;
+  color: var(--ink-faint);
+  font-size: 0.9rem;
+}
+
+/* ── SKELETON ROWS ─────────────────────────────────────────────────── */
+.skeleton-row {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid rgba(42,31,20,0.1);
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.skeleton-row:last-child { border-bottom: none; }
+
+.skeleton-key {
+  font-family: var(--font-display);
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  color: var(--brass-dark);
+  text-transform: uppercase;
+  min-width: 100px;
+  padding-top: 0.15rem;
+  flex-shrink: 0;
+}
+.skeleton-val {
+  font-size: 0.92rem;
+  color: var(--ink);
+  flex: 1;
+}
+
+/* ── SECRET SEVERITY ───────────────────────────────────────────────── */
+.severity-badge {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.5rem;
+  border-radius: 2px;
+  margin-right: 0.4rem;
+  vertical-align: middle;
+}
+.severity-low       { background: var(--verdigris);  color: #fff; }
+.severity-medium    { background: var(--steel);       color: #fff; }
+.severity-high      { background: var(--copper);      color: #fff; }
+.severity-explosive { background: var(--rust);        color: #fff; }
+
+/* ── CAST GRID ─────────────────────────────────────────────────────── */
+.cast-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.75rem;
+}
+.cast-card {
+  background: rgba(42,31,20,0.06);
+  border: 1px solid var(--parchment-deep);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+}
+.cast-name {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--brass-dark);
+  margin-bottom: 0.15rem;
+}
+.cast-role {
+  font-size: 0.78rem;
+  font-style: italic;
+  color: var(--ink-faint);
+  margin-bottom: 0.4rem;
+}
+.cast-status-badge {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-family: var(--font-display);
+  letter-spacing: 0.08em;
+  color: var(--brass-dark);
+  background: rgba(184,115,51,0.12);
+  border: 1px solid rgba(184,115,51,0.2);
+  border-radius: 2px;
+  padding: 0.1rem 0.4rem;
+  margin-bottom: 0.4rem;
+}
+.cast-traits {
+  font-size: 0.8rem;
+  color: var(--ink-light);
+  font-style: italic;
+  margin-bottom: 0.3rem;
+}
+.cast-dynamic {
+  font-size: 0.82rem;
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+/* ── OUTPUT FIELDS (AI Dungeon) ────────────────────────────────────── */
+.output-field {
+  margin-bottom: 1rem;
+}
+.field-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.field-label {
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  color: var(--brass-dark);
+  text-transform: uppercase;
+}
+.field-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.char-count {
+  font-family: monospace;
+  font-size: 0.72rem;
+  color: var(--ink-faint);
+}
+.char-count.over { color: var(--rust); font-weight: bold; }
+
+.field-textarea {
+  width: 100%;
+  background: rgba(42,31,20,0.06);
+  border: 1px solid var(--parchment-deep);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--ink);
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s;
+  min-height: 80px;
+}
+.field-textarea:focus { border-color: var(--brass); }
+.field-input {
+  width: 100%;
+  background: rgba(42,31,20,0.06);
+  border: 1px solid var(--parchment-deep);
+  border-radius: var(--radius);
+  padding: 0.6rem 1rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.field-input:focus { border-color: var(--brass); }
+
+/* ── TAGS ──────────────────────────────────────────────────────────── */
+.tags-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.tag-pill {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  padding: 0.25rem 0.65rem;
+  background: rgba(184,115,51,0.12);
+  border: 1px solid rgba(184,115,51,0.25);
+  border-radius: 20px;
+  color: var(--brass-dark);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.tag-pill:hover {
+  background: rgba(184,115,51,0.22);
+  border-color: var(--brass);
+}
+
+/* ── COPY BUTTONS ──────────────────────────────────────────────────── */
+.btn-copy {
+  background: transparent;
+  border: 1px solid var(--brass-dark);
+  border-radius: var(--radius);
+  color: var(--brass);
+  font-family: var(--font-display);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.65rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.btn-copy:hover {
+  background: var(--brass-dark);
+  color: var(--parchment);
+}
+.btn-copy.copied {
+  background: var(--verdigris);
+  border-color: var(--verdigris);
+  color: #fff;
+}
+
+/* ── NPC ENTRY SECTION ─────────────────────────────────────────────── */
+.npc-section { margin-bottom: 1rem; }
+.npc-section-name {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--brass-dark);
+  margin-bottom: 0.4rem;
+}
+
+/* ── COPY ALL BUTTON ───────────────────────────────────────────────── */
+.copy-all-wrap {
+  text-align: center;
+  margin: 2rem 0 1rem;
+}
+.btn-copy-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: 1px solid var(--brass);
+  border-radius: var(--radius);
+  color: var(--gold);
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.65rem 2rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.btn-copy-all:hover {
+  background: rgba(184,115,51,0.15);
+}
+
+/* ── ERROR ─────────────────────────────────────────────────────────── */
+.error-box {
+  background: rgba(139,58,42,0.15);
+  border: 1px solid var(--rust);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  color: var(--rust);
+  font-size: 0.9rem;
+  margin: 1rem 0;
+  display: none;
+}
+.error-box.visible { display: block; }
+
+/* ── EMPTY STATE ───────────────────────────────────────────────────── */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--ink-faint);
+}
+.empty-gear {
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 1rem;
+  opacity: 0.3;
+  animation: slow-spin 20s linear infinite;
+}
+@keyframes slow-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.empty-state p {
+  font-style: italic;
+  color: var(--brass-dark);
+  opacity: 0.6;
+}
+
+/* ── SCROLLBAR ─────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+::-webkit-scrollbar-thumb { background: var(--brass-dark); border-radius: 3px; }
+
+/* ── RESPONSIVE ────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .stat-grid       { grid-template-columns: repeat(2, 1fr); }
+  .cast-grid       { grid-template-columns: 1fr; }
+  .phase-step span { display: none; }
+  .api-section     { flex-direction: column; align-items: stretch; }
+  .site-header::before, .site-header::after { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <h1 class="site-title">Gears of Fate</h1>
+    <p class="site-subtitle">RPG Character Generator for AI Dungeon</p>
+  </header>
+
+  <div class="divider">⚙ ⚙ ⚙</div>
+
+  <!-- API KEY -->
+  <div class="api-section">
+    <label for="api-key">Anthropic API Key</label>
+    <input id="api-key" class="api-input" type="password"
+      placeholder="sk-ant-..." autocomplete="off" spellcheck="false">
+  </div>
+
+  <!-- GENRE SELECTOR -->
+  <div style="text-align:center;margin-bottom:1.25rem;">
+    <div style="font-family:var(--font-display);font-size:0.62rem;letter-spacing:0.16em;color:var(--brass-light);text-transform:uppercase;margin-bottom:0.6rem;">Genre</div>
+    <div style="display:inline-flex;gap:0;border:1px solid var(--brass-dark);border-radius:var(--radius);overflow:hidden;">
+      <button id="genre-modern" onclick="setGenre('modern')"
+        style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:var(--brass);color:var(--ink);transition:background 0.15s,color 0.15s;">
+        Modern
+      </button>
+      <button id="genre-fantasy" onclick="setGenre('fantasy')"
+        style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s;">
+        Fantasy
+      </button>
+    </div>
+  </div>
+
+  <!-- GENERATE BUTTON -->
+  <div class="generate-wrap">
+    <button id="btn-generate" class="btn-generate" onclick="runGenerate()">
+      <span class="gear-icon">⚙</span>
+      Turn the Gears
+    </button>
+  </div>
+
+  <!-- STATUS -->
+  <div id="status-bar" class="status-bar"></div>
+
+  <!-- PHASE PIPELINE -->
+  <div class="phase-pipeline" id="phase-pipeline">
+    <div class="phase-step" id="phase-roll">
+      <div class="phase-dot"></div>
+      <span>Rolling Stats</span>
+    </div>
+    <div class="phase-step" id="phase-mbti">
+      <div class="phase-dot"></div>
+      <span>Personality</span>
+    </div>
+    <div class="phase-step" id="phase-skeleton">
+      <div class="phase-dot"></div>
+      <span>Fate</span>
+    </div>
+    <div class="phase-step" id="phase-ai">
+      <div class="phase-dot"></div>
+      <span>Narrative</span>
+    </div>
+  </div>
+
+  <!-- ERROR -->
+  <div id="error-box" class="error-box"></div>
+
+  <!-- OUTPUT AREA -->
+  <div id="output-area">
+    <!-- Empty state shown before first generation -->
+    <div id="empty-state" class="empty-state">
+      <span class="empty-gear">⚙</span>
+      <p>Your character awaits. Turn the gears.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════════
+// CURATED TABLES — all genre data inlined for single-file operation
+// ═══════════════════════════════════════════════════════════════════════════
+
+const PROFESSIONS = [
+  { title:'Dock worker',industry:'Shipping & logistics',economicTier:2,statAffinity:{strength:1.4,constitution:1.2},sentiments:['resentful','burned out','quietly satisfied','proud'] },
+  { title:'Electrician',industry:'Trades',economicTier:3,statAffinity:{dexterity:1.3,intelligence:1.1},sentiments:['proud','quietly satisfied','indifferent'] },
+  { title:'Plumber',industry:'Trades',economicTier:3,statAffinity:{strength:1.2,dexterity:1.2},sentiments:['proud','indifferent','quietly satisfied'] },
+  { title:'Auto mechanic',industry:'Automotive',economicTier:3,statAffinity:{dexterity:1.3,intelligence:1.1,strength:1.1},sentiments:['passionate','proud','quietly satisfied','burned out'] },
+  { title:'Long-haul truck driver',industry:'Transportation',economicTier:3,statAffinity:{constitution:1.3,wisdom:1.1},sentiments:['indifferent','quietly satisfied','burned out'] },
+  { title:'Construction worker',industry:'Construction',economicTier:2,statAffinity:{strength:1.5,constitution:1.3},sentiments:['resentful','proud','burned out','indifferent'] },
+  { title:'Welder',industry:'Manufacturing',economicTier:3,statAffinity:{strength:1.3,dexterity:1.3},sentiments:['proud','indifferent','quietly satisfied'] },
+  { title:'Garbage collector',industry:'Municipal services',economicTier:2,statAffinity:{constitution:1.4,strength:1.2},sentiments:['resentful','indifferent','quietly satisfied','ashamed'] },
+  { title:'Factory line worker',industry:'Manufacturing',economicTier:2,statAffinity:{constitution:1.3,dexterity:1.1},sentiments:['resentful','burned out','indifferent'] },
+  { title:'Warehouse worker',industry:'Logistics',economicTier:2,statAffinity:{strength:1.3,constitution:1.2},sentiments:['resentful','burned out','indifferent','desperate'] },
+  { title:'Barista',industry:'Food & beverage',economicTier:2,statAffinity:{charisma:1.2,dexterity:1.1},sentiments:['indifferent','quietly satisfied','passionate','burned out'] },
+  { title:'Line cook',industry:'Food & beverage',economicTier:2,statAffinity:{dexterity:1.3,constitution:1.2},sentiments:['passionate','burned out','resentful','proud'] },
+  { title:'Restaurant manager',industry:'Food & beverage',economicTier:3,statAffinity:{charisma:1.3,wisdom:1.2},sentiments:['burned out','proud','resentful','quietly satisfied'] },
+  { title:'Hotel front desk clerk',industry:'Hospitality',economicTier:2,statAffinity:{charisma:1.3,wisdom:1.1},sentiments:['indifferent','burned out','quietly satisfied'] },
+  { title:'Rideshare driver',industry:'Gig economy',economicTier:2,statAffinity:{charisma:1.2,wisdom:1.1},sentiments:['resentful','indifferent','desperate','quietly satisfied'] },
+  { title:'Tattoo artist',industry:'Personal services',economicTier:3,statAffinity:{dexterity:1.5,charisma:1.2},sentiments:['passionate','proud','quietly satisfied'] },
+  { title:'Hairdresser',industry:'Personal services',economicTier:3,statAffinity:{charisma:1.4,dexterity:1.2},sentiments:['passionate','quietly satisfied','burned out','proud'] },
+  { title:'Personal trainer',industry:'Fitness',economicTier:3,statAffinity:{strength:1.4,charisma:1.3,constitution:1.2},sentiments:['passionate','proud','indifferent','burned out'] },
+  { title:'Security guard',industry:'Private security',economicTier:2,statAffinity:{strength:1.3,constitution:1.2},sentiments:['indifferent','resentful','quietly satisfied','burned out'] },
+  { title:'Delivery driver',industry:'Gig economy',economicTier:2,statAffinity:{constitution:1.2,dexterity:1.1},sentiments:['indifferent','resentful','desperate'] },
+  { title:'Freelance graphic designer',industry:'Creative services',economicTier:3,statAffinity:{intelligence:1.3,dexterity:1.2,charisma:1.1},sentiments:['passionate','burned out','quietly satisfied','desperate'] },
+  { title:'Struggling musician',industry:'Entertainment',economicTier:1,statAffinity:{charisma:1.4,wisdom:1.2},sentiments:['passionate','desperate','resentful','burned out'] },
+  { title:'Working actor',industry:'Entertainment',economicTier:2,statAffinity:{charisma:1.5,intelligence:1.2},sentiments:['passionate','desperate','burned out','quietly satisfied'] },
+  { title:'Photographer',industry:'Creative services',economicTier:3,statAffinity:{dexterity:1.2,intelligence:1.2,charisma:1.1},sentiments:['passionate','indifferent','quietly satisfied'] },
+  { title:'Freelance writer',industry:'Media',economicTier:2,statAffinity:{intelligence:1.4,wisdom:1.2},sentiments:['passionate','desperate','burned out','quietly satisfied'] },
+  { title:'Graffiti artist',industry:'Street art',economicTier:1,statAffinity:{dexterity:1.4,charisma:1.2},sentiments:['passionate','resentful','proud'] },
+  { title:'Accountant',industry:'Finance',economicTier:4,statAffinity:{intelligence:1.4,wisdom:1.2},sentiments:['indifferent','quietly satisfied','burned out','resentful'] },
+  { title:'Software developer',industry:'Technology',economicTier:4,statAffinity:{intelligence:1.5,dexterity:1.1},sentiments:['passionate','burned out','indifferent','quietly satisfied'] },
+  { title:'Nurse',industry:'Healthcare',economicTier:3,statAffinity:{wisdom:1.3,constitution:1.2,charisma:1.1},sentiments:['passionate','burned out','proud','resentful'] },
+  { title:'Paramedic',industry:'Emergency services',economicTier:3,statAffinity:{constitution:1.3,wisdom:1.3,dexterity:1.2},sentiments:['passionate','burned out','proud'] },
+  { title:'High school teacher',industry:'Education',economicTier:3,statAffinity:{wisdom:1.4,charisma:1.2,intelligence:1.1},sentiments:['passionate','burned out','resentful','quietly satisfied'] },
+  { title:'Social worker',industry:'Public services',economicTier:3,statAffinity:{wisdom:1.4,charisma:1.2},sentiments:['passionate','burned out','resentful','quietly satisfied'] },
+  { title:'Lawyer',industry:'Legal',economicTier:4,statAffinity:{intelligence:1.4,charisma:1.3,wisdom:1.1},sentiments:['proud','burned out','indifferent','quietly satisfied'] },
+  { title:'Financial analyst',industry:'Finance',economicTier:4,statAffinity:{intelligence:1.5,wisdom:1.1},sentiments:['indifferent','proud','burned out','quietly satisfied'] },
+  { title:'Journalist',industry:'Media',economicTier:3,statAffinity:{intelligence:1.3,charisma:1.3,wisdom:1.1},sentiments:['passionate','burned out','resentful','quietly satisfied'] },
+  { title:'Therapist',industry:'Mental health',economicTier:4,statAffinity:{wisdom:1.5,charisma:1.2,intelligence:1.1},sentiments:['passionate','quietly satisfied','burned out'] },
+  { title:'Car salesperson',industry:'Automotive',economicTier:3,statAffinity:{charisma:1.5,intelligence:1.1},sentiments:['proud','indifferent','resentful','burned out'] },
+  { title:'Real estate agent',industry:'Real estate',economicTier:4,statAffinity:{charisma:1.5,wisdom:1.2},sentiments:['proud','passionate','burned out','quietly satisfied'] },
+  { title:'Police officer',industry:'Law enforcement',economicTier:3,statAffinity:{strength:1.3,constitution:1.2,charisma:1.1},sentiments:['proud','burned out','resentful','quietly satisfied'] },
+  { title:'Private investigator',industry:'Security',economicTier:3,statAffinity:{intelligence:1.3,wisdom:1.3,dexterity:1.1},sentiments:['passionate','quietly satisfied','burned out','indifferent'] },
+  { title:'Firefighter',industry:'Emergency services',economicTier:3,statAffinity:{strength:1.4,constitution:1.3,charisma:1.1},sentiments:['proud','passionate','burned out'] },
+  { title:'Military veteran',industry:'Military',economicTier:2,statAffinity:{strength:1.4,constitution:1.3,wisdom:1.1},sentiments:['proud','resentful','burned out'] },
+  { title:'Street-level drug dealer',industry:'Criminal',economicTier:2,statAffinity:{charisma:1.3,strength:1.2,wisdom:0.8},sentiments:['desperate','resentful','proud','ashamed'] },
+  { title:'Con artist',industry:'Criminal',economicTier:3,statAffinity:{charisma:1.6,intelligence:1.3,wisdom:0.9},sentiments:['proud','passionate','indifferent','quietly satisfied'] },
+  { title:'Burglar',industry:'Criminal',economicTier:2,statAffinity:{dexterity:1.5,intelligence:1.2},sentiments:['proud','desperate','indifferent','resentful'] },
+  { title:'Enforcer / muscle',industry:'Criminal',economicTier:3,statAffinity:{strength:1.6,constitution:1.3},sentiments:['proud','indifferent','resentful','ashamed'] },
+  { title:'Hacker / cybercriminal',industry:'Criminal',economicTier:4,statAffinity:{intelligence:1.6,dexterity:1.2},sentiments:['passionate','proud','indifferent','quietly satisfied'] },
+  { title:'Fixer',industry:'Criminal',economicTier:4,statAffinity:{intelligence:1.4,charisma:1.3,wisdom:1.2},sentiments:['proud','quietly satisfied','indifferent'] },
+  { title:'Money launderer',industry:'Criminal',economicTier:4,statAffinity:{intelligence:1.4,charisma:1.2,wisdom:1.1},sentiments:['indifferent','quietly satisfied','ashamed','proud'] },
+  { title:'Investment banker',industry:'Finance',economicTier:5,statAffinity:{intelligence:1.5,charisma:1.3},sentiments:['proud','burned out','indifferent','quietly satisfied'] },
+  { title:'Surgeon',industry:'Healthcare',economicTier:5,statAffinity:{intelligence:1.5,dexterity:1.4,wisdom:1.2},sentiments:['proud','burned out','passionate','quietly satisfied'] },
+  { title:'Corporate executive',industry:'Corporate',economicTier:5,statAffinity:{charisma:1.4,intelligence:1.3,wisdom:1.2},sentiments:['proud','indifferent','burned out','quietly satisfied'] },
+  { title:'Crime boss',industry:'Criminal',economicTier:5,statAffinity:{charisma:1.5,intelligence:1.4,strength:1.1},sentiments:['proud','quietly satisfied','indifferent'] },
+];
+
+const LIFE_EVENTS = [
+  { id:'lost_parent_young',description:'Lost a parent before the age of twelve',statAffinity:{wisdom:1.2,constitution:0.9} },
+  { id:'lost_sibling',description:'A sibling died — accident, illness, or violence',statAffinity:{wisdom:1.3,constitution:0.9} },
+  { id:'partner_died',description:'Lost a long-term partner or spouse',statAffinity:{wisdom:1.2,charisma:0.9} },
+  { id:'best_friend_overdose',description:'A best friend died of an overdose in their early twenties',statAffinity:{wisdom:1.2,constitution:0.9} },
+  { id:'parents_divorced_badly',description:'Parents divorced in a bitter, drawn-out split during childhood',statAffinity:{wisdom:1.1,charisma:0.9} },
+  { id:'raised_by_grandparent',description:'Raised primarily by a grandparent while parents were absent',statAffinity:{wisdom:1.2} },
+  { id:'foster_care',description:'Spent time in foster care as a child',statAffinity:{constitution:1.1,charisma:0.9,wisdom:1.1} },
+  { id:'abusive_household',description:'Grew up in a household with abuse — physical, emotional, or both',statAffinity:{constitution:1.2,wisdom:0.9,strength:1.1} },
+  { id:'dropped_out_college',description:'Dropped out of college before finishing their degree',statAffinity:{intelligence:0.9,wisdom:0.9},economicHint:-1 },
+  { id:'business_failed',description:'Started a business that collapsed, taking their savings with it',statAffinity:{intelligence:1.1,constitution:0.9},economicHint:-1 },
+  { id:'bankruptcy',description:'Filed for bankruptcy after debt spiraled out of control',statAffinity:{wisdom:0.8,constitution:0.9},economicHint:-2 },
+  { id:'fired_publicly',description:'Was fired in a humiliating or very public way',statAffinity:{charisma:0.9,wisdom:0.9} },
+  { id:'addiction_recovery',description:'Fought through a serious addiction — alcohol, opioids, or gambling — and came out the other side',statAffinity:{constitution:0.8,wisdom:1.3} },
+  { id:'divorced',description:'Went through a painful divorce in their late twenties or thirties',statAffinity:{charisma:0.9,wisdom:1.1} },
+  { id:'did_time',description:'Served time in prison — months or years',statAffinity:{strength:1.2,constitution:1.2,wisdom:0.8},economicHint:-1 },
+  { id:'juvenile_record',description:'Had a juvenile record that followed them into adulthood',statAffinity:{wisdom:0.8,strength:1.1} },
+  { id:'wrongfully_accused',description:'Was wrongfully accused of a crime — charges were eventually dropped, but the damage was done',statAffinity:{wisdom:1.2,charisma:0.9} },
+  { id:'witnessed_crime',description:'Witnessed a serious crime — murder, assault — and stayed silent',statAffinity:{wisdom:0.9,constitution:0.9} },
+  { id:'moved_cities_alone',description:'Moved to a new city alone at 18 with almost nothing',statAffinity:{constitution:1.1,charisma:1.1,wisdom:1.1} },
+  { id:'immigrated',description:'Immigrated to the country as a child or young adult',statAffinity:{constitution:1.2,wisdom:1.1} },
+  { id:'military_service',description:'Served in the military and was deployed abroad',statAffinity:{strength:1.3,constitution:1.3,wisdom:1.1} },
+  { id:'survived_disaster',description:'Survived a natural disaster — flood, fire, hurricane — that destroyed their home',statAffinity:{constitution:1.2,wisdom:1.1} },
+  { id:'career_pivot',description:'Abandoned a well-paying career in their thirties to start over in a new field',statAffinity:{wisdom:1.2,charisma:1.1} },
+  { id:'escaped_cult',description:'Left a controlling religious group or cult in their twenties',statAffinity:{wisdom:1.3,intelligence:1.2} },
+  { id:'scholarship_kid',description:'Won a scholarship that was the only path out of a difficult home situation',statAffinity:{intelligence:1.3,wisdom:1.1},economicHint:1 },
+  { id:'unexpected_inheritance',description:'Received an unexpected inheritance from a distant relative',statAffinity:{charisma:1.1},economicHint:1 },
+  { id:'early_success',description:'Achieved significant professional success very young, then plateaued',statAffinity:{intelligence:1.2,charisma:1.2},economicHint:1 },
+  { id:'small_town_raised',description:'Grew up in a small town and never really left until recently',statAffinity:{wisdom:1.1,charisma:0.9} },
+  { id:'caretaker_role',description:'Spent years as the primary caretaker for a sick or disabled family member',statAffinity:{wisdom:1.3,constitution:1.1,charisma:0.9} },
+  { id:'long_relationship_ended',description:'Was in the same relationship for a decade before it quietly fell apart',statAffinity:{wisdom:1.1,charisma:0.9} },
+  { id:'late_bloomer',description:'Discovered their passion or identity very late — in their 30s or 40s',statAffinity:{wisdom:1.3,intelligence:1.1} },
+  { id:'childhood_prodigy',description:'Was considered a prodigy as a child — the pressure shaped everything that followed',statAffinity:{intelligence:1.4,wisdom:0.9} },
+];
+
+const TENSIONS = [
+  { id:'facing_eviction',description:'Has 30 days before eviction — needs money fast',toneTag:'dramatic',criminalFlag:false },
+  { id:'debt_collectors',description:'Debt collectors — or worse — are circling',toneTag:'gritty',criminalFlag:false },
+  { id:'gambling_debt',description:'Owes a serious gambling debt to people who don\'t do payment plans',toneTag:'gritty',criminalFlag:true },
+  { id:'supporting_family',description:'Sole financial support for a family member who can\'t work',toneTag:'dramatic',criminalFlag:false },
+  { id:'medical_bills',description:'Drowning in medical bills — theirs or someone they love',toneTag:'dramatic',criminalFlag:false },
+  { id:'just_got_fired',description:'Just got fired — unexpectedly, possibly unjustly',toneTag:'dramatic',criminalFlag:false },
+  { id:'business_collapsing',description:'Their small business is collapsing and taking everything with it',toneTag:'dramatic',criminalFlag:false },
+  { id:'midlife_crisis',description:'In the grip of a midlife identity crisis — everything they built feels hollow',toneTag:'cozy',criminalFlag:false },
+  { id:'whistleblower_dilemma',description:'Knows about serious wrongdoing at work — and hasn\'t decided what to do',toneTag:'dramatic',criminalFlag:false },
+  { id:'messy_divorce',description:'In the middle of a contested, bitter divorce',toneTag:'dramatic',criminalFlag:false },
+  { id:'custody_battle',description:'Fighting a custody battle for their child',toneTag:'dramatic',criminalFlag:false },
+  { id:'affair_discovered',description:'Their affair has just been discovered — or they just discovered their partner\'s',toneTag:'dramatic',criminalFlag:false },
+  { id:'toxic_relationship',description:'Trapped in a relationship they know is destroying them but can\'t leave',toneTag:'dramatic',criminalFlag:false },
+  { id:'old_flame_returned',description:'Someone from the past has reappeared — and complicated everything',toneTag:'cozy',criminalFlag:false },
+  { id:'witness_to_murder',description:'Witnessed a murder and is being pressured to stay quiet',toneTag:'gritty',criminalFlag:true },
+  { id:'targeted_by_crew',description:'Has made enemies in the wrong circles — people who hold grudges violently',toneTag:'gritty',criminalFlag:true },
+  { id:'under_investigation',description:'Under police or federal investigation — guilty or not',toneTag:'gritty',criminalFlag:true },
+  { id:'one_last_job',description:'Agreed to do "one last job" to clear a debt — it\'s already gone sideways',toneTag:'gritty',criminalFlag:true },
+  { id:'blackmailed',description:'Being blackmailed over something they did — or something they\'re falsely accused of',toneTag:'gritty',criminalFlag:true },
+  { id:'working_for_wrong_people',description:'Deep in business with people they can\'t just walk away from',toneTag:'gritty',criminalFlag:true },
+  { id:'serious_diagnosis',description:'Just received a serious medical diagnosis that changes everything',toneTag:'dramatic',criminalFlag:false },
+  { id:'relapse',description:'Relapsed after years of sobriety — trying to hide it',toneTag:'gritty',criminalFlag:false },
+  { id:'mental_health_spiral',description:'Quietly unraveling — depression, anxiety, or worse — while keeping up appearances',toneTag:'dramatic',criminalFlag:false },
+  { id:'just_moved_alone',description:'Just moved to a new city alone — starting completely from scratch',toneTag:'cozy',criminalFlag:false },
+  { id:'haunted_by_secret',description:'Carrying a secret that\'s been eating at them for years — and it\'s getting heavier',toneTag:'dramatic',criminalFlag:false },
+  { id:'lost_in_grief',description:'Still processing a loss that happened more recently than anyone knows',toneTag:'dramatic',criminalFlag:false },
+  { id:'searching_for_someone',description:'Quietly searching for someone who disappeared from their life years ago',toneTag:'neutral',criminalFlag:false },
+  { id:'opportunity_of_lifetime',description:'A once-in-a-lifetime opportunity has appeared — but it requires sacrificing something important',toneTag:'neutral',criminalFlag:false },
+];
+
+const SECRETS = [
+  { id:'got_away_with_it',description:'Was responsible for a serious crime years ago — and was never caught',severity:'explosive',statAffinity:{intelligence:1.2,wisdom:0.9} },
+  { id:'informant',description:'Has been, or currently is, a confidential informant for law enforcement',severity:'explosive',statAffinity:{charisma:1.1,constitution:0.9} },
+  { id:'faked_death',description:'Someone important from their past believes they are dead — intentionally',severity:'explosive',statAffinity:{intelligence:1.3,charisma:1.1} },
+  { id:'hit_and_run',description:'Was involved in a hit-and-run accident and fled the scene',severity:'explosive',statAffinity:{wisdom:0.7,constitution:0.9} },
+  { id:'secret_family',description:'Has a child — or a whole family — that their current life doesn\'t know about',severity:'explosive',statAffinity:{charisma:1.1,wisdom:0.8} },
+  { id:'false_identity',description:'Has been living under a false name or constructed identity for years',severity:'explosive',statAffinity:{intelligence:1.3,charisma:1.2} },
+  { id:'witnessed_crime_silent',description:'Witnessed a violent crime and said nothing — someone else took the fall',severity:'high',statAffinity:{constitution:0.9,wisdom:0.9} },
+  { id:'stole_from_employer',description:'Embezzled money from a former employer — never discovered',severity:'high',statAffinity:{intelligence:1.2,wisdom:0.8} },
+  { id:'fake_credentials',description:'Their professional credentials are forged or falsified',severity:'high',statAffinity:{intelligence:1.2,charisma:1.2} },
+  { id:'blackmail_material',description:'Holds damaging information about a powerful person — and hasn\'t decided what to do with it',severity:'high',statAffinity:{intelligence:1.3,charisma:1.1} },
+  { id:'betrayed_a_friend',description:'Betrayed a close friend in a serious way — and let them believe something else happened',severity:'high',statAffinity:{charisma:1.1,wisdom:0.8} },
+  { id:'affair_ongoing',description:'Currently having an affair — with someone their partner knows',severity:'high',statAffinity:{charisma:1.2,wisdom:0.7} },
+  { id:'hidden_addiction',description:'Still using — or using again — and nobody knows',severity:'high',statAffinity:{constitution:0.8,wisdom:0.8} },
+  { id:'serious_diagnosis_hidden',description:'Has received a serious or terminal medical diagnosis and told no one',severity:'high',statAffinity:{constitution:0.8,wisdom:1.2} },
+  { id:'ghost_from_past',description:'Someone they hurt badly long ago has recently surfaced in their city — they don\'t know it yet',severity:'high',statAffinity:{wisdom:0.9,charisma:1.1} },
+  { id:'sabotaged_colleague',description:'Deliberately sabotaged a colleague\'s career to get ahead',severity:'medium',statAffinity:{intelligence:1.2,wisdom:0.8} },
+  { id:'stole_credit',description:'Built their reputation on work that was partially or fully someone else\'s',severity:'medium',statAffinity:{intelligence:1.1,wisdom:0.8,charisma:1.1} },
+  { id:'hidden_debt',description:'Carrying a debt load that would shock everyone who thinks they\'re stable',severity:'medium',statAffinity:{wisdom:0.8,charisma:1.1} },
+  { id:'mental_health_secret',description:'Has been managing a serious mental health condition in secret for years',severity:'medium',statAffinity:{intelligence:1.2,constitution:0.9} },
+  { id:'wants_to_leave',description:'Desperately wants to abandon their current life entirely — has a plan forming',severity:'medium',statAffinity:{wisdom:1.2,charisma:0.9} },
+  { id:'not_really_over_it',description:'Still deeply in love with someone from their past — and pretending otherwise',severity:'low',statAffinity:{wisdom:0.9,charisma:1.1} },
+  { id:'famous_anonymously',description:'Is anonymously famous — a blogger, creator, or figure — that no one in their life knows about',severity:'low',statAffinity:{intelligence:1.2,charisma:1.1} },
+  { id:'doesnt_believe',description:'Has privately lost faith in a religion or ideology that still defines their community',severity:'low',statAffinity:{wisdom:1.2,intelligence:1.1} },
+];
+
+const FAMILY_STRUCTURES = [
+  { id:'two_parent_intact',label:'Two parents, still together',parentCount:2,siblingCount:[0,3],statAffinity:{wisdom:1.1,charisma:1.1} },
+  { id:'two_parent_divorced',label:'Parents divorced',parentCount:2,siblingCount:[0,3],statAffinity:{wisdom:0.9} },
+  { id:'two_parent_one_deceased',label:'One parent deceased, one surviving',parentCount:2,siblingCount:[0,2],statAffinity:{wisdom:1.1,constitution:0.9} },
+  { id:'two_parent_one_absent',label:'One parent absent, one present',parentCount:2,siblingCount:[0,2],statAffinity:{constitution:1.1,charisma:0.9} },
+  { id:'two_parent_blended',label:'Blended family',parentCount:2,siblingCount:[1,4],statAffinity:{} },
+  { id:'two_parent_both_troubled',label:'Both parents troubled',parentCount:2,siblingCount:[0,3],statAffinity:{constitution:1.2,wisdom:0.8} },
+  { id:'single_mother',label:'Raised by a single mother',parentCount:1,parentGender:'mother',siblingCount:[0,3],statAffinity:{charisma:1.1,wisdom:1.1} },
+  { id:'single_father',label:'Raised by a single father',parentCount:1,parentGender:'father',siblingCount:[0,2],statAffinity:{strength:1.1,wisdom:1.1} },
+  { id:'single_parent_struggling',label:'Single parent, financial strain',parentCount:1,siblingCount:[1,4],statAffinity:{constitution:1.2,wisdom:1.1},economicHint:-1 },
+  { id:'raised_by_grandparents',label:'Raised by grandparents',parentCount:0,siblingCount:[0,2],statAffinity:{wisdom:1.2,charisma:0.9} },
+  { id:'raised_by_older_sibling',label:'Raised by older sibling',parentCount:0,siblingCount:[1,2],statAffinity:{constitution:1.2} },
+  { id:'foster_care',label:'Foster care',parentCount:0,siblingCount:[0,1],statAffinity:{constitution:1.3,charisma:0.9,wisdom:1.1} },
+  { id:'orphaned_early',label:'Orphaned before age ten',parentCount:0,siblingCount:[0,2],statAffinity:{constitution:1.3,wisdom:1.2} },
+  { id:'large_family',label:'Large, chaotic household',parentCount:2,siblingCount:[3,6],statAffinity:{charisma:1.2,constitution:1.1} },
+  { id:'only_child_wealthy',label:'Only child of wealthy parents',parentCount:2,siblingCount:[0,0],statAffinity:{intelligence:1.2,charisma:1.1},economicHint:2 },
+  { id:'only_child_isolated',label:'Only child, isolated upbringing',parentCount:2,siblingCount:[0,0],statAffinity:{intelligence:1.2,wisdom:1.1,charisma:0.8} },
+  { id:'commune_or_compound',label:'Commune or religious compound',parentCount:2,siblingCount:[0,3],statAffinity:{wisdom:1.2,charisma:1.1} },
+];
+
+const PARENT_STATUSES = [
+  { id:'present_close',     label:'present and close' },
+  { id:'present_distant',   label:'present but emotionally distant' },
+  { id:'present_difficult', label:'present but a source of tension' },
+  { id:'estranged',         label:'estranged — no contact' },
+  { id:'deceased_recent',   label:'recently deceased' },
+  { id:'deceased_long',     label:'died when the character was young' },
+  { id:'absent_unknown',    label:'absent — never knew them' },
+  { id:'incarcerated',      label:'currently in prison' },
+  { id:'abroad',            label:'lives far away, little contact' },
+];
+
+const SIBLING_DYNAMICS = [
+  { id:'protective_older',  label:'protective older sibling' },
+  { id:'rivalry',           label:'long-running rivalry' },
+  { id:'estranged',         label:'estranged — fell out years ago' },
+  { id:'close_ally',        label:'closest friend and confidant' },
+  { id:'troubled',          label:'struggling with addiction or debt' },
+  { id:'golden_child',      label:"the family's golden child" },
+  { id:'lost_touch',        label:'drifted apart, rarely speak' },
+  { id:'deceased',          label:'deceased' },
+  { id:'younger_dependent', label:'younger and still depends on protagonist' },
+  { id:'reconnecting',      label:'recently reconnected after years apart' },
+];
+
+const ECONOMIC_TIERS = {
+  1: { label:'Survival', descriptors:["sleeping on a friend's couch","living out of a storage unit","one paycheck from nothing","eating from convenience stores"], housing:['couch-surfing','SRO hotel room','shelter','car'], transport:['on foot','bus pass','borrowed bike'] },
+  2: { label:'Working poor', descriptors:['a studio apartment with thin walls','two jobs just to make rent','secondhand everything','no savings, no cushion','the car is old and unreliable'], housing:['studio apartment','shared house with roommates','basement unit'], transport:['aging sedan','public transit','old motorcycle'] },
+  3: { label:'Working / lower-middle class', descriptors:['a decent one-bedroom','a used car that mostly works','small savings they try not to touch'], housing:['one-bedroom apartment','rented house','condo with a stressful mortgage'], transport:['reliable mid-range car','public transit by choice'] },
+  4: { label:'Middle / upper-middle class', descriptors:['a nice apartment in a good part of town','a house in the suburbs','a car they\'re proud of','money is not the problem'], housing:['house in a good neighborhood','upscale apartment','townhouse'], transport:['late-model car','two-car household'] },
+  5: { label:'Wealthy / elite', descriptors:['a penthouse or estate','staff','money as a social weapon','insulated from consequences'], housing:['penthouse','estate','multiple properties'], transport:['luxury vehicle','driver','private car service'] },
+};
+
+const CITY_SETTINGS = [
+  { id:'rust_belt',label:'A Rust Belt city',flavor:'half-empty, post-industrial, cheap rent, proud and fading',statAffinity:{constitution:1.2,strength:1.1} },
+  { id:'coastal',label:'A coastal metropolis',flavor:'expensive, anonymous, electric, everyone is from somewhere else',statAffinity:{charisma:1.2,intelligence:1.1} },
+  { id:'sunbelt',label:'A sprawling Sunbelt city',flavor:'fast-growing, car-dependent, no history, anything can reinvent itself here',statAffinity:{charisma:1.1} },
+  { id:'midwest',label:'A mid-sized Midwestern city',flavor:'overlooked, working, tight-knit neighborhoods, people stay or people leave',statAffinity:{wisdom:1.1,constitution:1.1} },
+  { id:'southern',label:'A Southern city',flavor:'old money and new growth, politeness as armor, history that won\'t stay buried',statAffinity:{charisma:1.2,wisdom:1.1} },
+  { id:'small_town',label:'A small town',flavor:'everyone knows everything, nothing stays secret long, leaving means something',statAffinity:{wisdom:1.2,charisma:0.9} },
+  { id:'port',label:'A port city',flavor:'transient, layered, goods and people moving constantly, old criminal infrastructure',statAffinity:{strength:1.1,charisma:1.1,constitution:1.1} },
+  { id:'tech_hub',label:'A tech hub',flavor:'money and disruption, old neighborhoods disappearing, everyone has a startup or a grievance',statAffinity:{intelligence:1.3,charisma:1.1} },
+  { id:'border',label:'A border town',flavor:'two worlds overlapping, informal economy, the law means different things on different streets',statAffinity:{wisdom:1.1,strength:1.1,constitution:1.2} },
+];
+
+const GENDERS = [
+  { id:'man',label:'Man',pronouns:'he/him',weight:45 },
+  { id:'woman',label:'Woman',pronouns:'she/her',weight:45 },
+  { id:'non_binary',label:'Non-binary',pronouns:'they/them',weight:5 },
+  { id:'trans_man',label:'Trans man',pronouns:'he/him',weight:2 },
+  { id:'trans_woman',label:'Trans woman',pronouns:'she/her',weight:2 },
+  { id:'genderfluid',label:'Genderfluid',pronouns:'they/them',weight:1 },
+];
+
+const ORIENTATIONS = [
+  { id:'straight',label:'Straight',weight:65 },
+  { id:'gay',label:'Gay / Lesbian',weight:10 },
+  { id:'bisexual',label:'Bisexual',weight:12 },
+  { id:'pansexual',label:'Pansexual',weight:5 },
+  { id:'asexual',label:'Asexual',weight:4 },
+  { id:'questioning',label:'Questioning',weight:4 },
+];
+
+const ETHNICITIES = [
+  { broad:'Black',flavor:'African American',weight:13 },
+  { broad:'Black',flavor:'Caribbean descent',weight:3 },
+  { broad:'Black',flavor:'African-born or first-generation',weight:3 },
+  { broad:'Latino',flavor:'Mexican or Mexican-American',weight:9 },
+  { broad:'Latino',flavor:'Puerto Rican',weight:3 },
+  { broad:'Latino',flavor:'Central American',weight:3 },
+  { broad:'Latino',flavor:'South American',weight:2 },
+  { broad:'White',flavor:'White American',weight:20 },
+  { broad:'White',flavor:'Eastern European',weight:3 },
+  { broad:'White',flavor:'Southern European',weight:2 },
+  { broad:'White',flavor:'Irish or Irish-American',weight:2 },
+  { broad:'Middle Eastern / North African',flavor:'Middle Eastern or North African',weight:3 },
+  { broad:'Asian',flavor:'Chinese or Chinese-American',weight:4 },
+  { broad:'Asian',flavor:'Korean or Korean-American',weight:2 },
+  { broad:'Asian',flavor:'Indian or Indian-American',weight:4 },
+  { broad:'Asian',flavor:'Southeast Asian',weight:3 },
+  { broad:'Indigenous / Native American',flavor:'Native American or Alaska Native',weight:1 },
+  { broad:'Multiracial',flavor:'Mixed Black and White heritage',weight:2 },
+  { broad:'Multiracial',flavor:'Mixed Asian and White heritage',weight:2 },
+  { broad:'Multiracial',flavor:'Mixed heritage',weight:2 },
+];
+
+const BUILDS = [
+  { label:'lean, wiry',statAffinity:{constitution:0.9,dexterity:1.2} },
+  { label:'average build',statAffinity:{} },
+  { label:'stocky, solid',statAffinity:{strength:1.2,constitution:1.1} },
+  { label:'athletic, visibly fit',statAffinity:{strength:1.3,constitution:1.2} },
+  { label:'heavyset',statAffinity:{constitution:1.1,strength:1.1} },
+  { label:'tall and lean',statAffinity:{dexterity:1.1} },
+  { label:'short, compact',statAffinity:{} },
+  { label:'thin, worn-looking',statAffinity:{constitution:0.7,wisdom:1.1} },
+];
+
+const HAIR = [
+  'short dark hair','short light hair','close-cropped or shaved',
+  'medium-length, wavy','long, straight','long, curly or coily',
+  'natural coils or locs','going gray, not hiding it',
+  'dyed an unnatural color','perpetually messy','always pulled back','thinning or receding',
+];
+
+const DISTINGUISHING_FEATURES = [
+  'a scar across the face or jaw','scarred or calloused hands',
+  'tattoos that can\'t be hidden','tattoos always kept covered',
+  'unsettlingly direct eye contact','eyes that always look tired',
+  'a nose that\'s been broken at least once','a missing finger or partial digit',
+  'a prominent birthmark','a slight but permanent limp',
+  'deep laugh lines that age them','dressed impeccably, always',
+  'hands that tell their whole story',
+];
+
+const QUIRKS = [
+  { quirk:'Cracks their knuckles before anything they consider important',statAffinity:{strength:1.2,constitution:1.1} },
+  { quirk:'Arrives everywhere early and becomes visibly agitated if forced to wait',statAffinity:{wisdom:1.2,intelligence:1.1} },
+  { quirk:'Over-explains things when nervous — can\'t stop once they\'ve started',statAffinity:{intelligence:1.2,charisma:0.9} },
+  { quirk:'Never sits with their back to the door',statAffinity:{wisdom:1.2,constitution:1.1} },
+  { quirk:'Silently counts things in stressful situations — steps, tiles, ceiling panels',statAffinity:{intelligence:1.3,wisdom:0.9} },
+  { quirk:'Covers their mouth when they lie — even small lies',statAffinity:{charisma:1.1,wisdom:0.8} },
+  { quirk:'Always in motion — tapping, pacing, fidgeting — goes still only when something is very wrong',statAffinity:{dexterity:1.2,constitution:1.1} },
+  { quirk:'Pauses for an uncomfortably long time before answering any direct question',statAffinity:{wisdom:1.3,intelligence:1.1} },
+  { quirk:'Never says sorry — substitutes action for apology every time',statAffinity:{strength:1.2,charisma:0.9} },
+  { quirk:'Mutters to themselves while working through a problem — doesn\'t notice they\'re doing it',statAffinity:{intelligence:1.3,wisdom:1.1} },
+  { quirk:'Deflects anything serious with a joke — the worse the moment, the funnier the deflection',statAffinity:{charisma:1.3,wisdom:0.9} },
+  { quirk:'Remembers exactly what everyone ordered or drank at their first meeting — years later',statAffinity:{charisma:1.3,intelligence:1.2} },
+  { quirk:'Compulsively fixes things that are slightly wrong — a crooked frame, an uneven stack of papers',statAffinity:{intelligence:1.2,dexterity:1.1} },
+  { quirk:'Can\'t leave an argument without getting the last word — even if it costs them',statAffinity:{strength:1.1,wisdom:0.8} },
+  { quirk:'Gives away things they can\'t afford to — money, time, their last cigarette',statAffinity:{charisma:1.2,wisdom:0.8} },
+  { quirk:'Clocks every exit the moment they enter a room',statAffinity:{wisdom:1.2,constitution:1.2} },
+  { quirk:'Will only drink coffee from one specific mug — the ritual is non-negotiable',statAffinity:{wisdom:1.1,constitution:1.1} },
+  { quirk:'Always carries one small object that has no practical use — never explains it',statAffinity:{wisdom:1.2,charisma:1.1} },
+  { quirk:'Writes everything down — grocery lists, phone numbers, things people say — in a battered notebook',statAffinity:{intelligence:1.3,wisdom:1.1} },
+  { quirk:'Laughs at the wrong moments — funerals, confrontations, bad news',statAffinity:{constitution:1.1,wisdom:0.8} },
+  { quirk:'Can fall asleep anywhere, instantly — a skill born from necessity',statAffinity:{constitution:1.3,strength:1.1} },
+  { quirk:'Flinches at sudden movement on their left side — never mentions it, deflects if asked',statAffinity:{constitution:0.9,strength:1.1} },
+  { quirk:'Checks their reflection in every reflective surface, almost unconsciously',statAffinity:{charisma:1.2} },
+  { quirk:'Cracks their neck at the start of any confrontation',statAffinity:{strength:1.3,constitution:1.2} },
+];
+
+const MBTI_TYPES = [
+  { type:'INTJ',label:'The Architect' },{ type:'INTP',label:'The Thinker' },
+  { type:'ENTJ',label:'The Commander' },{ type:'ENTP',label:'The Debater' },
+  { type:'INFJ',label:'The Advocate' },{ type:'INFP',label:'The Mediator' },
+  { type:'ENFJ',label:'The Protagonist' },{ type:'ENFP',label:'The Campaigner' },
+  { type:'ISTJ',label:'The Logistician' },{ type:'ISFJ',label:'The Defender' },
+  { type:'ESTJ',label:'The Executive' },{ type:'ESFJ',label:'The Consul' },
+  { type:'ISTP',label:'The Virtuoso' },{ type:'ISFP',label:'The Adventurer' },
+  { type:'ESTP',label:'The Entrepreneur' },{ type:'ESFP',label:'The Entertainer' },
+];
+
+// ── ETHNICITY-KEYED NAME POOLS ────────────────────────────────────────────
+const NAME_POOLS = {
+  'Black':    { masc:['Darius','DeShawn','Marcus','Andre','Terrence','Calvin','Isaiah','Devonte','Jalen','Malik','Brandon','Curtis','Elijah','Kendrick','Trevon','Xavier','Lamar','Jamal','Quincy','Jerome'], fem:['Keisha','Simone','Tamara','Yolanda','Renee','Aaliyah','Destiny','Imani','Jasmine','Latoya','Monique','Shanice','Tiara','Ebony','Nakia','Tierra','Chantel','Alicia','Brianna','Niecy'], neutral:['Jordan','Morgan','Cameron','Alexis','Reese','Taylor','Jaylen','Kendall','Teagan','Devyn'], last:['Washington','Williams','Jackson','Harris','Johnson','Robinson','Davis','Thompson','Carter','Mitchell','Brooks','Coleman','Reed','Warren','Holt','Mosley','Payne','Owens','Simmons','Grant'] },
+  'Latino':   { masc:['Carlos','Miguel','Javier','Rafael','Santiago','Diego','Alejandro','Luis','Marco','Andrés','Eduardo','Fernando','Hector','Jorge','Ricardo','Sergio','Tomás','Víctor','Emilio','Ignacio'], fem:['Carmen','Valentina','Marisol','Rosa','Lorena','Angie','Claudia','Gabriela','Isabella','Lucia','Mariela','Natalia','Paola','Sofia','Ximena','Adriana','Daniela','Elena','Gloria','Yesenia'], neutral:['Alex','Jordan','Leslie','Remi','Taylor','Morgan'], last:['Reyes','Diaz','Cruz','Vega','Flores','Morales','Ortega','Ramirez','Rivera','Torres','Castillo','Delgado','Gutierrez','Herrera','Lopez','Mendez','Nunez','Perez','Sanchez','Vargas'] },
+  'White':    { masc:['Liam','Brendan','Patrick','Cole','Ethan','Connor','Ryan','Sean','Kyle','Derek','Tyler','Jason','Kevin','Brian','Scott','Evan','Nathan','Trevor','Austin','Dylan'], fem:['Dana','Cassidy','Bridget','Megan','Kira','Ashley','Lauren','Kelsey','Amber','Lindsay','Shannon','Stephanie','Brittany','Heather','Molly','Chelsea','Kayla','Nicole','Rachel','Tiffany'], neutral:['Avery','Quinn','Riley','Reese','Skyler','Alex','Morgan','Cameron','Taylor','Jordan'], last:['Flynn','Walsh','Holt','Mercer','Garrett','Caldwell','Novak','Kowalski','Russo','Moran','Spencer','Barrett','Brennan','Callahan','Donovan','Murphy','Sullivan','Brady','Collins','Burke'] },
+  'Asian':    { masc:['Kevin','Jason','Brian','Daniel','Michael','James','Eric','David','Ryan','Andrew','Justin','Steven','Tony','Chris','Patrick','Raymond','Vincent','Richard','Henry','Alex'], fem:['Jessica','Michelle','Jennifer','Amy','Christine','Angela','Linda','Helen','Cindy','Grace','Lisa','Karen','Alice','Wendy','Vivian','Diana','Annie','Emily','Jenny','Melissa'], neutral:['Alex','Jordan','Taylor','Casey','Cameron','Morgan','Riley','Quinn','Avery','Reese'], last:['Park','Kim','Lee','Tran','Nguyen','Patel','Shah','Chen','Wang','Liu','Zhang','Wu','Yang','Lin','Nakamura','Tanaka','Suzuki','Watanabe','Sato','Singh'] },
+  'Middle Eastern / North African': { masc:['Omar','Hassan','Tariq','Samir','Karim','Khalid','Youssef','Amir','Nasser','Faisal','Bilal','Rami','Ziad','Walid','Tarek','Hamid','Ali','Mohamed','Sami','Adam'], fem:['Leila','Nadia','Yasmin','Fatima','Layla','Rania','Dina','Hana','Lina','Maha','Nour','Reem','Sahar','Salma','Sara','Sana','Dalia','Mariam','Rana','Zainab'], neutral:['Sam','Alex','Remi','Jordan','Sasha'], last:['Hassan','Ali','Ahmed','Khalil','Mansour','Nasser','Rahman','Saleh','Ibrahim','Qureshi','Farhan','Karimi','Rostami','Aziz','Bakr','Hamad','Jaber','Saad','Osman','Haddad'] },
+  'Indigenous / Native American': { masc:['Cody','Tyler','Nathan','Jesse','Marcus','Levi','Aaron','Raymond','Tommy','Victor','Daniel','James','Robert','Michael','Anthony','Joseph','Kevin','Brian','George','Dennis'], fem:['Crystal','Amber','Tanya','Melissa','Angela','Donna','Lisa','Tammy','Sandra','Karen','Brenda','Patricia','Barbara','Linda','Sharon','Susan','Deborah','Mary','Diane','Paula'], neutral:['Jordan','Alex','Casey','Taylor','Morgan','Riley','Quinn','Avery','Jamie','River'], last:['Runningwater','Eagleheart','Whitehorse','Redcloud','Littlefeather','Greyhorse','Twofeathers','Clearwater','Swiftwind','Longbow','Nighthorse','Redwing','Sunwalker','Whitecloud','Blackbird','Yellowhorse','Coldwater','Ironwood','Swiftfoot','Redsky'] },
+  'Multiracial': { masc:['Jordan','Marcus','Andre','Kai','Miles','Damon','Leon','Devon','Cole','Eli','Jalen','Tyler','Derek','Xavier','Brendan','Isaiah','Cameron','Devin','Tristan','Chris'], fem:['Maya','Simone','Kira','Leila','Cassidy','Renata','Soleil','Yara','Dana','Nadia','Bria','Camille','Deja','Jade','Talia','Zoe','Bianca','Serena','Nia','Lena'], neutral:['Sage','River','Quinn','Avery','Jordan','Rowan','Emery','Remy','Marlowe','Lennox'], last:['Mercer','Vance','Park','Russo','Adeyemi','Caldwell','Diaz','Tran','Okafor','Nakamura','Hassan','Patel','Reed','Grant','Flynn','Osei','Shaw','Kim','Boyd','Hayes'] },
+  'default':  { masc:['Alex','Chris','Sam','Pat','Jamie','Casey','Jordan','Morgan','Logan','Blake','Charlie','Reese','Jesse','Corey','Lane','Drew','Brett','Dale','Robin','Lee'], fem:['Alex','Chris','Sam','Pat','Jamie','Casey','Jordan','Morgan','Logan','Blake','Charlie','Reese','Jesse','Corey','Lane','Drew','Brett','Dale','Robin','Lee'], neutral:['Alex','Jordan','Quinn','Avery','Riley','Sage','River','Emery','Remy','Morgan'], last:['Reed','Shaw','Grant','Boyd','Hayes','Moss','Bell','Lane','Gray','Cole','West','Stone','Ford','Ross','Hunt','Ward','Wood','Price','Long','Hill'] },
+};
+
+// Neutral pool for friends/foils (can be any background)
+const NEUTRAL_FIRST_MASC = ['Marcus','Ray','Eli','Nate','Omar','Silas','Calvin','Andre','Luca','Hassan','Ricky','Brendan','Patrick','Curtis','Terrence','Sam','Jordan','Alex','Tyler','Jesse'];
+const NEUTRAL_FIRST_FEM  = ['Diana','Cassie','Renee','Angie','Becca','Simone','Tamara','Rosa','Leila','Claudia','Priya','Nadia','Ashley','Morgan','Keisha','Lauren','Amber','Shannon','Tanya','Jade'];
+const NEUTRAL_LAST       = ['Vega','Tran','Kelly','Osei','Park','Walsh','Grant','Patel','Cruz','Flynn','Moss','Shaw','Reed','Kim','Boyd','Hayes','Leon','Moran','Russo','Diaz'];
+
+function poolFor(broad) { return NAME_POOLS[broad] ?? NAME_POOLS['default']; }
+
+function pickFirst(genderId, pool) {
+  if (['man','trans_man'].includes(genderId))     return uniformPick(pool.masc);
+  if (['woman','trans_woman'].includes(genderId)) return uniformPick(pool.fem);
+  const r = Math.random();
+  return r < 0.4 ? uniformPick(pool.neutral) : r < 0.7 ? uniformPick(pool.masc) : uniformPick(pool.fem);
+}
+
+function protoName(genderId, ethnicityBroad) {
+  const pool = poolFor(ethnicityBroad);
+  const first = pickFirst(genderId, pool);
+  const last  = uniformPick(pool.last);
+  return { first, last, full: `${first} ${last}` };
+}
+
+function neutralName() {
+  const first = Math.random() < 0.5 ? uniformPick(NEUTRAL_FIRST_MASC) : uniformPick(NEUTRAL_FIRST_FEM);
+  return `${first} ${uniformPick(NEUTRAL_LAST)}`;
+}
+
+function familyFirst(genderId, ethnicityBroad) {
+  return pickFirst(genderId, poolFor(ethnicityBroad));
+}
+
+function altLastName(currentLast, ethnicityBroad, namePools) {
+  const opts = (namePools[ethnicityBroad] ?? namePools['default']).last.filter(n => n !== currentLast);
+  return uniformPick(opts.length ? opts : (namePools[ethnicityBroad] ?? namePools['default']).last);
+}
+
+// ── NPC TRAIT POOL — mixed positive/funny/dark ────────────────────────────
+const NPC_TRAITS = [
+  'fiercely loyal','surprisingly funny','the most reliable person alive',
+  'embarrassingly earnest','annoyingly optimistic','good in a crisis',
+  'generous to a fault','shamelessly enthusiastic','never holds a grudge',
+  'always picks up the phone','makes everyone feel seen','weirdly calm under pressure',
+  'charming and unreliable','protective','impulsive','pragmatic','idealistic',
+  'hard to read','stubborn','unpredictable','hot-tempered but quick to apologise',
+  'means well, executes poorly','the world\'s worst liar','allergic to asking for help',
+  'emotionally closed','deeply anxious','cynical','bitter','secretive',
+  'quietly broken','running from something','one bad decision from disaster',
+];
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FANTASY GENRE TABLES
+// ═══════════════════════════════════════════════════════════════════════════
+
+const FANTASY_PROFESSIONS = [
+  { title:'City guard',industry:'Martial',economicTier:3,statAffinity:{strength:1.3,constitution:1.2},sentiments:['proud','burned out','resentful','quietly satisfied'] },
+  { title:'Mercenary soldier',industry:'Martial',economicTier:3,statAffinity:{strength:1.4,constitution:1.3,dexterity:1.1},sentiments:['indifferent','proud','burned out','desperate'] },
+  { title:'Knight in service to a lord',industry:'Martial',economicTier:4,statAffinity:{strength:1.4,charisma:1.2,wisdom:1.1},sentiments:['proud','quietly satisfied','burned out','resentful'] },
+  { title:'Disgraced knight',industry:'Martial',economicTier:2,statAffinity:{strength:1.3,wisdom:1.1},sentiments:['ashamed','resentful','desperate','quietly satisfied'] },
+  { title:'Sellsword',industry:'Martial',economicTier:2,statAffinity:{strength:1.5,dexterity:1.2},sentiments:['indifferent','proud','burned out'] },
+  { title:'Bounty hunter',industry:'Martial',economicTier:3,statAffinity:{strength:1.3,dexterity:1.3,wisdom:1.1},sentiments:['indifferent','passionate','quietly satisfied'] },
+  { title:'Arena fighter',industry:'Martial',economicTier:2,statAffinity:{strength:1.5,constitution:1.4},sentiments:['proud','desperate','burned out','resentful'] },
+  { title:'Thief',industry:'Criminal',economicTier:2,statAffinity:{dexterity:1.5,intelligence:1.2},sentiments:['proud','desperate','indifferent','passionate'] },
+  { title:'Fence',industry:'Criminal',economicTier:3,statAffinity:{charisma:1.3,intelligence:1.2},sentiments:['quietly satisfied','indifferent','proud'] },
+  { title:'Assassin',industry:'Criminal',economicTier:4,statAffinity:{dexterity:1.5,intelligence:1.3,wisdom:1.1},sentiments:['indifferent','quietly satisfied','ashamed','proud'] },
+  { title:'Con artist / grifter',industry:'Criminal',economicTier:3,statAffinity:{charisma:1.6,intelligence:1.3},sentiments:['passionate','proud','indifferent'] },
+  { title:'Smuggler',industry:'Criminal',economicTier:3,statAffinity:{dexterity:1.3,charisma:1.2,wisdom:1.1},sentiments:['indifferent','proud','desperate','quietly satisfied'] },
+  { title:'Spy / informant',industry:'Criminal',economicTier:4,statAffinity:{intelligence:1.4,charisma:1.3,dexterity:1.2},sentiments:['indifferent','quietly satisfied','ashamed'] },
+  { title:'Hedge witch',industry:'Arcane',economicTier:2,statAffinity:{intelligence:1.3,wisdom:1.2},sentiments:['proud','quietly satisfied','indifferent','resentful'] },
+  { title:'Apprentice mage',industry:'Arcane',economicTier:2,statAffinity:{intelligence:1.5,wisdom:1.1},sentiments:['passionate','desperate','burned out','proud'] },
+  { title:'Court wizard',industry:'Arcane',economicTier:4,statAffinity:{intelligence:1.5,charisma:1.2,wisdom:1.2},sentiments:['quietly satisfied','burned out','resentful','proud'] },
+  { title:'Battle mage',industry:'Arcane',economicTier:4,statAffinity:{intelligence:1.4,strength:1.2,constitution:1.1},sentiments:['proud','burned out','passionate'] },
+  { title:'Warlock',industry:'Arcane',economicTier:3,statAffinity:{intelligence:1.3,charisma:1.3,wisdom:0.9},sentiments:['proud','quietly satisfied','desperate','ashamed'] },
+  { title:'Necromancer',industry:'Arcane',economicTier:3,statAffinity:{intelligence:1.5,wisdom:0.9},sentiments:['passionate','indifferent','quietly satisfied','ashamed'] },
+  { title:'Alchemist',industry:'Arcane',economicTier:3,statAffinity:{intelligence:1.5,dexterity:1.2},sentiments:['passionate','burned out','quietly satisfied','proud'] },
+  { title:'Witch hunter',industry:'Arcane',economicTier:3,statAffinity:{wisdom:1.3,strength:1.2,constitution:1.1},sentiments:['proud','burned out','resentful'] },
+  { title:'Temple priest',industry:'Divine',economicTier:3,statAffinity:{wisdom:1.4,charisma:1.2},sentiments:['passionate','quietly satisfied','burned out','proud'] },
+  { title:'Wandering cleric',industry:'Divine',economicTier:2,statAffinity:{wisdom:1.4,constitution:1.2},sentiments:['passionate','quietly satisfied','indifferent'] },
+  { title:'Inquisitor',industry:'Divine',economicTier:4,statAffinity:{wisdom:1.3,strength:1.2,intelligence:1.1},sentiments:['proud','passionate','quietly satisfied','burned out'] },
+  { title:'Fallen paladin',industry:'Divine',economicTier:2,statAffinity:{strength:1.3,wisdom:1.2,constitution:1.1},sentiments:['ashamed','resentful','desperate','quietly satisfied'] },
+  { title:'Oracle / seer',industry:'Divine',economicTier:3,statAffinity:{wisdom:1.5,intelligence:1.2},sentiments:['quietly satisfied','burned out','indifferent','passionate'] },
+  { title:'Druid',industry:'Divine',economicTier:2,statAffinity:{wisdom:1.4,constitution:1.3},sentiments:['quietly satisfied','passionate','indifferent'] },
+  { title:'Blacksmith',industry:'Craft',economicTier:3,statAffinity:{strength:1.4,dexterity:1.2,constitution:1.1},sentiments:['proud','quietly satisfied','indifferent'] },
+  { title:'Weaponsmith',industry:'Craft',economicTier:4,statAffinity:{strength:1.3,dexterity:1.4,intelligence:1.1},sentiments:['passionate','proud','quietly satisfied'] },
+  { title:'Herbalist',industry:'Craft',economicTier:2,statAffinity:{wisdom:1.3,intelligence:1.2,dexterity:1.1},sentiments:['quietly satisfied','passionate','indifferent'] },
+  { title:'Cartographer',industry:'Craft',economicTier:3,statAffinity:{intelligence:1.4,dexterity:1.2,wisdom:1.1},sentiments:['passionate','quietly satisfied','proud'] },
+  { title:'Bard',industry:'Performance',economicTier:2,statAffinity:{charisma:1.5,dexterity:1.2},sentiments:['passionate','indifferent','quietly satisfied','burned out'] },
+  { title:'Innkeeper',industry:'Service',economicTier:3,statAffinity:{charisma:1.3,wisdom:1.2,constitution:1.1},sentiments:['quietly satisfied','burned out','proud','indifferent'] },
+  { title:'Merchant',industry:'Trade',economicTier:4,statAffinity:{charisma:1.4,intelligence:1.3},sentiments:['proud','quietly satisfied','passionate','burned out'] },
+  { title:'Ship captain',industry:'Trade',economicTier:4,statAffinity:{charisma:1.3,wisdom:1.2,strength:1.1},sentiments:['proud','passionate','quietly satisfied'] },
+  { title:'Scribe',industry:'Service',economicTier:3,statAffinity:{intelligence:1.4,dexterity:1.2},sentiments:['indifferent','quietly satisfied','burned out','passionate'] },
+  { title:'Minor noble',industry:'Nobility',economicTier:4,statAffinity:{charisma:1.3,intelligence:1.2},sentiments:['proud','quietly satisfied','resentful','burned out'] },
+  { title:'Disinherited noble',industry:'Nobility',economicTier:2,statAffinity:{charisma:1.3,intelligence:1.2},sentiments:['resentful','ashamed','desperate','proud'] },
+  { title:'Royal advisor',industry:'Nobility',economicTier:5,statAffinity:{intelligence:1.5,charisma:1.3,wisdom:1.2},sentiments:['quietly satisfied','burned out','proud','resentful'] },
+  { title:'Spymaster',industry:'Nobility',economicTier:5,statAffinity:{intelligence:1.5,charisma:1.3,wisdom:1.2},sentiments:['quietly satisfied','indifferent','proud'] },
+  { title:'Crime lord',industry:'Criminal',economicTier:5,statAffinity:{charisma:1.5,intelligence:1.4,strength:1.1},sentiments:['proud','quietly satisfied','indifferent'] },
+  { title:'Hunter / trapper',industry:'Wilderness',economicTier:2,statAffinity:{dexterity:1.4,wisdom:1.2,constitution:1.1},sentiments:['quietly satisfied','proud','indifferent'] },
+  { title:'Ranger',industry:'Wilderness',economicTier:3,statAffinity:{dexterity:1.4,wisdom:1.3,constitution:1.2},sentiments:['quietly satisfied','indifferent','passionate','burned out'] },
+  { title:'Monster hunter',industry:'Wilderness',economicTier:3,statAffinity:{strength:1.3,dexterity:1.3,wisdom:1.2},sentiments:['passionate','burned out','proud','indifferent'] },
+  { title:'Outlaw / bandit',industry:'Criminal',economicTier:2,statAffinity:{strength:1.3,dexterity:1.2,wisdom:0.9},sentiments:['proud','desperate','resentful','indifferent'] },
+  { title:'Pirate',industry:'Criminal',economicTier:3,statAffinity:{strength:1.3,charisma:1.2,dexterity:1.2},sentiments:['proud','passionate','indifferent','desperate'] },
+  { title:'Exiled mage',industry:'Arcane',economicTier:1,statAffinity:{intelligence:1.4,wisdom:1.1},sentiments:['resentful','ashamed','desperate','quietly satisfied'] },
+  { title:'Wandering monk',industry:'Divine',economicTier:1,statAffinity:{wisdom:1.4,constitution:1.2},sentiments:['quietly satisfied','passionate','indifferent'] },
+  { title:'Runesmith',industry:'Arcane',economicTier:4,statAffinity:{intelligence:1.4,dexterity:1.3},sentiments:['passionate','proud','quietly satisfied'] },
+  { title:'Pirate captain',industry:'Criminal',economicTier:4,statAffinity:{charisma:1.4,strength:1.2,wisdom:1.1},sentiments:['proud','passionate','indifferent'] },
+  { title:'Courier / messenger',industry:'Service',economicTier:2,statAffinity:{dexterity:1.3,constitution:1.2},sentiments:['indifferent','quietly satisfied','desperate'] },
+  { title:'Escaped slave',industry:'Outcast',economicTier:1,statAffinity:{constitution:1.3,strength:1.2},sentiments:['desperate','resentful','proud','quietly satisfied'] },
+];
+
+const FANTASY_LIFE_EVENTS = [
+  { id:'village_burned',description:'Their home village was destroyed — by war, monsters, or something worse — when they were young',statAffinity:{constitution:1.2,wisdom:1.1} },
+  { id:'lost_mentor',description:'Lost their teacher or mentor — the person who gave them their first real purpose',statAffinity:{wisdom:1.2,intelligence:1.1} },
+  { id:'watch_friend_die',description:'Watched a companion die and couldn\'t prevent it — and has been running from that moment since',statAffinity:{constitution:0.9,strength:1.1} },
+  { id:'lost_sibling_war',description:'Lost a sibling to war, conscription, or a campaign that should never have happened',statAffinity:{wisdom:1.2,strength:1.1} },
+  { id:'sold_to_guild',description:'Was sold or indentured to a guild, temple, or trade as a child',statAffinity:{constitution:1.2,wisdom:1.1} },
+  { id:'noble_fell',description:'Their family was noble once — a war, a bad debt, or a political enemy ended that',statAffinity:{charisma:1.1,wisdom:1.1},economicHint:-2 },
+  { id:'bastard_child',description:'Is a bastard — officially unacknowledged by a parent of some standing',statAffinity:{charisma:1.1,wisdom:1.1} },
+  { id:'orphaned_war',description:'Orphaned by a war or raid they\'re too young to remember clearly',statAffinity:{constitution:1.2,strength:1.1} },
+  { id:'failed_quest',description:'Failed a quest or mission that mattered — lives were lost, and they carry that',statAffinity:{wisdom:1.1,constitution:0.9} },
+  { id:'expelled_order',description:'Was expelled from a guild, order, or temple — the official story isn\'t the whole truth',statAffinity:{charisma:0.9,wisdom:1.1} },
+  { id:'betrayed_party',description:'Betrayed by companions they trusted completely — has been cautious about trust since',statAffinity:{wisdom:1.2,charisma:0.9} },
+  { id:'lost_battle',description:'Survived a battle that everyone else didn\'t — asks themselves why, still',statAffinity:{constitution:1.2,wisdom:1.1} },
+  { id:'wrongly_branded',description:'Was wrongly accused, branded, or imprisoned — and the real culprit never faced justice',statAffinity:{wisdom:1.2,charisma:0.9} },
+  { id:'served_wrong_lord',description:'Served a lord or cause they now know was wrong — won\'t talk about what they did',statAffinity:{wisdom:1.1,constitution:0.9} },
+  { id:'escaped_slavery',description:'Escaped slavery or forced servitude — carries both the scars and the skills it gave them',statAffinity:{constitution:1.3,strength:1.2},economicHint:-1 },
+  { id:'cursed',description:'Carries a curse — minor but persistent, a reminder of a bad decision or worse luck',statAffinity:{wisdom:1.1,intelligence:1.1} },
+  { id:'magic_accident',description:'Was caught in a magical accident that changed something fundamental about them',statAffinity:{intelligence:1.2,wisdom:1.1} },
+  { id:'survived_ritual',description:'Survived a ritual they weren\'t supposed to survive — nobody is sure what that means',statAffinity:{constitution:1.3,wisdom:1.1} },
+  { id:'saw_something',description:'Saw something they cannot explain — a vision, a creature, a truth — and it hasn\'t left them',statAffinity:{wisdom:1.3,intelligence:1.1} },
+  { id:'long_road',description:'Spent years wandering after leaving home — learned more about the world than about themselves',statAffinity:{constitution:1.2,wisdom:1.1} },
+  { id:'deserted',description:'Deserted from an army or order — technically still wanted in at least one jurisdiction',statAffinity:{dexterity:1.2,wisdom:1.1},economicHint:-1 },
+  { id:'changed_sides',description:'Changed allegiances mid-conflict — has never been fully trusted by either side since',statAffinity:{wisdom:1.2,charisma:0.9} },
+  { id:'made_pact',description:'Made a pact or bargain they\'ve been paying off ever since — the terms were not as clear as they seemed',statAffinity:{intelligence:1.2,wisdom:0.9} },
+  { id:'slew_monster',description:'Killed something famous enough that stories about it still circulate — they\'re more complicated about it than the stories suggest',statAffinity:{strength:1.3,constitution:1.1},economicHint:1 },
+  { id:'found_treasure',description:'Found significant treasure once — and spent it in ways that made sense at the time',statAffinity:{wisdom:0.9,charisma:1.1} },
+  { id:'saved_someone',description:'Saved someone important without knowing who they were — the debt hasn\'t been called in yet',statAffinity:{wisdom:1.1,charisma:1.1} },
+  { id:'self_taught',description:'Taught themselves everything they know — no master, no school, just necessity and stubbornness',statAffinity:{intelligence:1.3,constitution:1.2} },
+  { id:'good_childhood',description:'Had a genuinely good childhood — which makes the contrast with everything since all the sharper',statAffinity:{wisdom:1.1,charisma:1.1} },
+  { id:'late_bloomer',description:'Discovered their calling or power late — later than everyone around them — and is still catching up',statAffinity:{wisdom:1.2,intelligence:1.1} },
+  { id:'still_from_home',description:'Never travelled far from where they were born until recently — every town is still a little astonishing',statAffinity:{wisdom:1.1,constitution:1.1} },
+];
+
+const FANTASY_TENSIONS = [
+  { id:'debt_to_guild',description:'Owes a significant debt to a guild or criminal organization — the clock is ticking',toneTag:'dramatic',criminalFlag:true },
+  { id:'owed_service',description:'Is bound by oath or contract to perform a service they\'ve been avoiding',toneTag:'dramatic',criminalFlag:false },
+  { id:'price_on_head',description:'Has a bounty on their head in at least one territory — for reasons that are complicated',toneTag:'gritty',criminalFlag:true },
+  { id:'magic_debt',description:'Owes a debt to something supernatural — a spirit, a deity, or something harder to name',toneTag:'dramatic',criminalFlag:false },
+  { id:'being_hunted',description:'Is being hunted by someone with the resources to actually find them',toneTag:'gritty',criminalFlag:true },
+  { id:'prophecy_attached',description:'Has had a prophecy attached to their name — and is not sure if they believe it, but others do',toneTag:'dramatic',criminalFlag:false },
+  { id:'cursed_item',description:'Is in possession of something powerful and cursed that they cannot simply put down',toneTag:'dramatic',criminalFlag:false },
+  { id:'old_enemy',description:'An enemy from their past has resurfaced — better resourced and angrier than before',toneTag:'gritty',criminalFlag:false },
+  { id:'witness_conspiracy',description:'Witnessed something they weren\'t supposed to see — the people involved have noticed',toneTag:'gritty',criminalFlag:true },
+  { id:'lord_demands',description:'Their lord, patron, or employer has issued a command they are not comfortable carrying out',toneTag:'dramatic',criminalFlag:false },
+  { id:'protect_someone',description:'Responsible for protecting someone who makes that job as difficult as possible',toneTag:'neutral',criminalFlag:false },
+  { id:'conflicting_oaths',description:'Has made oaths to two parties whose interests are now directly in conflict',toneTag:'dramatic',criminalFlag:false },
+  { id:'last_of_something',description:'Is the last known member of an order, bloodline, or tradition — and that means something dangerous',toneTag:'dramatic',criminalFlag:false },
+  { id:'power_growing',description:'Their power is growing faster than their control — and they haven\'t told anyone',toneTag:'dramatic',criminalFlag:false },
+  { id:'something_wants_them',description:'Something magical or divine is taking an interest in them — the attention is not comfortable',toneTag:'dramatic',criminalFlag:false },
+  { id:'rival_ahead',description:'A rival is close to achieving something that would be very bad for everyone — including them',toneTag:'neutral',criminalFlag:false },
+  { id:'political_pawn',description:'Has been caught between two powerful factions who both want to use them',toneTag:'dramatic',criminalFlag:false },
+  { id:'searching',description:'Is searching for someone who disappeared — or was taken — and the trail is finally warm',toneTag:'neutral',criminalFlag:false },
+  { id:'health_curse',description:'Something is wrong with them — a wound, a curse, a corruption — and they haven\'t told their companions',toneTag:'dramatic',criminalFlag:false },
+  { id:'running_out_of_time',description:'Is working against a deadline they haven\'t told anyone about — something will happen if they don\'t act',toneTag:'dramatic',criminalFlag:false },
+  { id:'job_gone_wrong',description:'A job went sideways — someone died who wasn\'t supposed to, and the fallout is still arriving',toneTag:'gritty',criminalFlag:true },
+  { id:'broke_and_desperate',description:'Flat broke in a city that rewards wealth and punishes poverty, with skills and no coin',toneTag:'gritty',criminalFlag:false },
+  { id:'reluctant_hero',description:'Keeps being asked to solve problems they didn\'t cause and didn\'t volunteer for',toneTag:'cozy',criminalFlag:false },
+  { id:'first_adventure',description:'Has landed in their first real adventure — considerably more dangerous than anticipated',toneTag:'cozy',criminalFlag:false },
+  { id:'unlikely_alliance',description:'Has formed an unlikely alliance that makes both parties uncomfortable — but it\'s working',toneTag:'cozy',criminalFlag:false },
+];
+
+const FANTASY_SECRETS = [
+  { id:'noble_blood',description:'Has noble or royal blood they\'ve been hiding — claiming it would be complicated and dangerous',severity:'high',statAffinity:{charisma:1.2,intelligence:1.1} },
+  { id:'not_who_they_claim',description:'Is not who they claim to be — the real person is somewhere, and the lie is getting harder to maintain',severity:'explosive',statAffinity:{charisma:1.3,dexterity:1.1} },
+  { id:'marked_by_darkness',description:'Bears a mark or corruption from a dark power — functional, hidden, and growing',severity:'explosive',statAffinity:{constitution:0.9,intelligence:1.2} },
+  { id:'former_enemy',description:'Was once an enemy of the people they now travel with — in a different life, or under different orders',severity:'explosive',statAffinity:{wisdom:1.1,strength:1.1} },
+  { id:'divine_chosen',description:'Has been marked or chosen by a deity — an honour they have not mentioned because the responsibilities are alarming',severity:'high',statAffinity:{wisdom:1.3,charisma:1.1} },
+  { id:'killed_someone',description:'Has killed someone who didn\'t deserve it — an accident, an order, a moment of rage — and lives with it',severity:'explosive',statAffinity:{constitution:0.9,wisdom:1.1} },
+  { id:'responsible_for_disaster',description:'Was responsible for a disaster — directly or through inaction — that others have been blamed for',severity:'explosive',statAffinity:{wisdom:0.9,intelligence:1.1} },
+  { id:'still_works_for_them',description:'Still has ties to a faction, organization, or lord they claim to have left',severity:'high',statAffinity:{charisma:1.2,intelligence:1.2} },
+  { id:'stole_something',description:'Stole something significant — an artifact, a secret, an identity — and hasn\'t found a way to return it',severity:'high',statAffinity:{dexterity:1.3,intelligence:1.2} },
+  { id:'betrayed_someone',description:'Betrayed someone who trusted them completely — the betrayal had consequences they\'re still living with',severity:'high',statAffinity:{charisma:1.1,wisdom:0.9} },
+  { id:'untrained_power',description:'Has magical ability they\'ve never formally trained — more powerful than they should be, less controlled',severity:'high',statAffinity:{intelligence:1.3,wisdom:0.9} },
+  { id:'pact_with_something',description:'Has made a pact with a being or power they haven\'t disclosed — the terms require occasional... services',severity:'explosive',statAffinity:{charisma:1.2,wisdom:0.8} },
+  { id:'cursed_secret',description:'Has been cursed in a way that isn\'t immediately obvious — it surfaces under pressure',severity:'medium',statAffinity:{constitution:0.9,wisdom:1.1} },
+  { id:'lost_faith',description:'Has privately lost their faith or connection to their deity — still going through the motions',severity:'medium',statAffinity:{wisdom:1.2,charisma:0.9} },
+  { id:'informing_on_party',description:'Has been reporting on their companions to a third party — the original reasons seemed justified',severity:'explosive',statAffinity:{intelligence:1.2,charisma:1.1} },
+  { id:'protecting_enemy',description:'Is protecting or covering for someone their companions would consider an enemy',severity:'high',statAffinity:{charisma:1.2,wisdom:1.1} },
+  { id:'family_involved',description:'Has a family member entangled in the current situation — in a way that creates a conflict of interest they\'ve concealed',severity:'high',statAffinity:{wisdom:1.1,constitution:1.1} },
+  { id:'doesnt_want_this',description:'Doesn\'t want the destiny, quest, or role that keeps finding them — and is starting to consider walking away',severity:'low',statAffinity:{wisdom:1.2,charisma:0.9} },
+  { id:'knows_how_it_ends',description:'Has seen or been told how things end for them — and has told no one',severity:'medium',statAffinity:{wisdom:1.3,intelligence:1.1} },
+  { id:'just_tired',description:'Is more exhausted than they let on — has been running on obligation and stubbornness for a long time',severity:'low',statAffinity:{constitution:0.8,wisdom:1.2} },
+  { id:'wants_something_simple',description:'Secretly wants something embarrassingly simple — a home, a quiet year, a garden — and is ashamed of how much',severity:'low',statAffinity:{wisdom:1.2,constitution:1.1} },
+];
+
+const FANTASY_FAMILY_STRUCTURES = [
+  { id:'two_parent_intact',label:'Two parents, still together',parentCount:2,siblingCount:[0,3],statAffinity:{wisdom:1.1,charisma:1.1} },
+  { id:'two_parent_divorced',label:'Parents separated or estranged',parentCount:2,siblingCount:[0,3],statAffinity:{wisdom:0.9} },
+  { id:'two_parent_one_deceased',label:'One parent deceased, one surviving',parentCount:2,siblingCount:[0,2],statAffinity:{wisdom:1.1,constitution:0.9} },
+  { id:'two_parent_one_absent',label:'One parent absent or unknown',parentCount:2,siblingCount:[0,2],statAffinity:{constitution:1.1,charisma:0.9} },
+  { id:'two_parent_both_troubled',label:'Both parents troubled',parentCount:2,siblingCount:[0,3],statAffinity:{constitution:1.2,wisdom:0.8} },
+  { id:'single_mother',label:'Raised by a single mother',parentCount:1,parentGender:'mother',siblingCount:[0,3],statAffinity:{charisma:1.1,wisdom:1.1} },
+  { id:'single_father',label:'Raised by a single father',parentCount:1,parentGender:'father',siblingCount:[0,2],statAffinity:{strength:1.1,wisdom:1.1} },
+  { id:'single_parent_struggling',label:'Single parent under severe hardship',parentCount:1,siblingCount:[1,4],statAffinity:{constitution:1.2,wisdom:1.1},economicHint:-1 },
+  { id:'raised_by_grandparents',label:'Raised by grandparents',parentCount:0,siblingCount:[0,2],statAffinity:{wisdom:1.2,charisma:0.9} },
+  { id:'raised_by_older_sibling',label:'Raised by an older sibling',parentCount:0,siblingCount:[1,2],statAffinity:{constitution:1.2} },
+  { id:'orphaned_early',label:'Orphaned before age ten',parentCount:0,siblingCount:[0,2],statAffinity:{constitution:1.3,wisdom:1.2} },
+  { id:'temple_raised',label:'Raised by a temple or religious order',parentCount:0,siblingCount:[0,1],statAffinity:{wisdom:1.3,intelligence:1.1} },
+  { id:'guild_raised',label:'Raised by a guild or trade house',parentCount:0,siblingCount:[0,1],statAffinity:{intelligence:1.2,dexterity:1.1} },
+  { id:'large_family',label:'Large, chaotic household',parentCount:2,siblingCount:[3,6],statAffinity:{charisma:1.2,constitution:1.1} },
+  { id:'only_child_wealthy',label:'Only child of wealthy parents',parentCount:2,siblingCount:[0,0],statAffinity:{intelligence:1.2,charisma:1.1},economicHint:2 },
+  { id:'noble_household',label:'Noble household with servants and politics',parentCount:2,siblingCount:[0,3],statAffinity:{charisma:1.3,intelligence:1.2},economicHint:2 },
+  { id:'war_orphan',label:'War orphan — raised among survivors',parentCount:0,siblingCount:[0,2],statAffinity:{constitution:1.3,strength:1.2} },
+];
+
+const FANTASY_ECONOMIC_TIERS = {
+  1:{ label:'Destitute', descriptors:['sleeping rough or in a stable','begging or stealing to eat','one bad day from nothing','clothes that were someone else\'s first'], housing:['stable loft','doorway or alley','a crowded common room corner','a cave or ruin'], transport:['on foot','a lame mule','nothing'] },
+  2:{ label:'Common folk', descriptors:['a rented room above a tavern','pays their debts, barely','secondhand gear that mostly works','coin enough for bread and not much else'], housing:['rented room','shared dormitory','a modest cottage'], transport:['on foot','a serviceable horse','passage on a merchant barge'] },
+  3:{ label:'Skilled / journeyman', descriptors:['decent lodgings in the craftsmen\'s quarter','a horse of their own','gear they chose rather than inherited','steady work if not spectacular'], housing:['own room at an inn','rented townhouse','quarters provided by an employer'], transport:['reliable horse','their own small boat','hired passage'] },
+  4:{ label:'Prosperous', descriptors:['a house in the merchant district','well-equipped','money is not currently the problem','a name that opens some doors'], housing:['townhouse','estate rooms','private quarters at a keep'], transport:['quality horse','carriage','private ship cabin'] },
+  5:{ label:'Wealthy / noble', descriptors:['an estate or manor','staff and servants','money as leverage','insulated from the consequences that affect everyone else'], housing:['manor house','castle wing','palatial city residence'], transport:['fine warhorse','private carriage','personal ship'] },
+};
+
+const FANTASY_CITY_SETTINGS = [
+  { id:'great_city',label:'A great walled city',flavor:'political, overcrowded, layered with history and competing factions — everyone wants something here',toneTag:'neutral',statAffinity:{charisma:1.2,intelligence:1.1} },
+  { id:'frontier_town',label:'A frontier town',flavor:'rough, practical, too far from the capital to care about its laws — people come here to disappear or start over',toneTag:'gritty',statAffinity:{constitution:1.2,strength:1.1} },
+  { id:'port_city',label:'A busy port city',flavor:'transient, corrupt, alive with trade and the things that follow trade — nobody is from here, everyone is passing through',toneTag:'gritty',statAffinity:{charisma:1.1,dexterity:1.1} },
+  { id:'kingdom_capital',label:'The kingdom\'s capital',flavor:'grand, stratified, where reputations are made and destroyed — the kind of city that rewards the ruthless',toneTag:'dramatic',statAffinity:{charisma:1.3,intelligence:1.2} },
+  { id:'small_town',label:'A small market town',flavor:'everyone knows everyone, gossip is currency, leaving is an event — the kind of place that\'s easier to love from a distance',toneTag:'cozy',statAffinity:{wisdom:1.2,charisma:0.9} },
+  { id:'mage_city',label:'A city of mages and scholars',flavor:'stratified by knowledge, experimental, occasionally on fire — fascinating if you\'re in the right guild, dangerous if you\'re not',toneTag:'neutral',statAffinity:{intelligence:1.4,wisdom:1.1} },
+  { id:'fortress_town',label:'A fortress town near a border',flavor:'military, tense, built for war whether or not there\'s one currently happening — discipline enforced, questions discouraged',toneTag:'gritty',statAffinity:{strength:1.2,constitution:1.2} },
+  { id:'ancient_city',label:'An ancient city on a trade road',flavor:'layered over centuries of history, haunted by what came before, rich and paranoid in equal measure',toneTag:'dramatic',statAffinity:{wisdom:1.2,intelligence:1.1} },
+  { id:'village',label:'A small village',flavor:'close-knit, suspicious of outsiders, the kind of quiet that holds its breath — something is always just beneath the surface',toneTag:'cozy',statAffinity:{wisdom:1.2,constitution:1.1} },
+  { id:'thieves_city',label:'A city where the guilds run things',flavor:'politely lawless, everything has a price, the watch looks the other way as long as the bribes are current',toneTag:'gritty',statAffinity:{dexterity:1.2,charisma:1.2} },
+];
+
+const FANTASY_TAG_POOLS = {
+  always:['fantasy','character-driven'],
+  gritty:['gritty','dark','survival','crime','low-fantasy'],
+  dramatic:['drama','political','secrets','betrayal','high-stakes'],
+  cozy:['cozy','slice-of-life','light-fantasy'],
+  neutral:['adventure','classic-fantasy'],
+  criminal:['crime','thieves-guild','underworld'],
+  professionTags:{
+    'Martial':['action','combat','soldier'],
+    'Criminal':['crime','thieves-guild','heist'],
+    'Arcane':['magic','arcane','sorcery'],
+    'Divine':['religion','gods','faith'],
+    'Craft':['crafting','artisan'],
+    'Performance':['bard','music'],
+    'Service':['slice-of-life','community'],
+    'Trade':['merchant','trade'],
+    'Nobility':['political','intrigue','power'],
+    'Wilderness':['ranger','nature','survival'],
+    'Outcast':['exile','survival','redemption'],
+  },
+};
+
+const FANTASY_RACES = [
+  { id:'human_common',broad:'Human',flavor:'common folk, unremarkable features, built for endurance',weight:30 },
+  { id:'human_noble',broad:'Human',flavor:'finer features suggesting distant noble blood — probably means nothing',weight:10 },
+  { id:'human_frontier',broad:'Human',flavor:'frontier stock — weathered, practical, the kind who fixes things',weight:10 },
+  { id:'elf_high',broad:'Elf',flavor:'high elf — angular features, silver or gold hair, moves like they know they\'re watched',weight:6 },
+  { id:'elf_wood',broad:'Elf',flavor:'wood elf — lean, earth-toned, more comfortable in trees than taverns',weight:6 },
+  { id:'elf_dark',broad:'Elf',flavor:'dark elf — obsidian skin, white hair, the kind of entrance that silences a room',weight:4 },
+  { id:'half_elf',broad:'Half-Elf',flavor:'half-elf — caught between worlds, slightly pointed ears, perpetually underestimated',weight:8 },
+  { id:'dwarf_hill',broad:'Dwarf',flavor:'hill dwarf — stocky, braided beard, smells faintly of forge smoke and ale',weight:6 },
+  { id:'dwarf_mountain',broad:'Dwarf',flavor:'mountain dwarf — dense as granite, twice as stubborn, eyes that never miss a flaw',weight:4 },
+  { id:'halfling',broad:'Halfling',flavor:'halfling — barely reaches most people\'s chests, mistaken for a child once a week',weight:5 },
+  { id:'half_orc',broad:'Half-Orc',flavor:'half-orc — grey-green skin, tusks they may or may not hide, stronger than they look',weight:5 },
+  { id:'orc',broad:'Orc',flavor:'full orc — imposing, scarred, carries a reputation into every room before they do',weight:3 },
+  { id:'tiefling',broad:'Tiefling',flavor:'tiefling — small horns, unusual skin tone, tail they\'ve learned to tuck away or flaunt',weight:4 },
+  { id:'dragonborn',broad:'Dragonborn',flavor:'dragonborn — scaled, proud, occasionally breathes something alarming when startled',weight:3 },
+  { id:'gnome',broad:'Gnome',flavor:'gnome — small, bright-eyed, the most dangerous person in the room to underestimate',weight:3 },
+  { id:'aasimar',broad:'Aasimar',flavor:'aasimar — faint luminescence, striking eyes, the weight of divine attention they didn\'t ask for',weight:3 },
+];
+
+const FANTASY_BUILDS = [
+  { label:'lean and wiry',statAffinity:{constitution:0.9,dexterity:1.3} },
+  { label:'average build',statAffinity:{} },
+  { label:'stocky and solid',statAffinity:{strength:1.2,constitution:1.2} },
+  { label:'powerfully built',statAffinity:{strength:1.5,constitution:1.2} },
+  { label:'heavyset',statAffinity:{constitution:1.2,strength:1.1} },
+  { label:'tall and rangy',statAffinity:{dexterity:1.1} },
+  { label:'compact and low to the ground',statAffinity:{} },
+  { label:'thin, underfed-looking',statAffinity:{constitution:0.7,wisdom:1.1} },
+  { label:'broad-shouldered, soldier-built',statAffinity:{strength:1.4,constitution:1.1} },
+];
+
+const FANTASY_HAIR = [
+  'close-cropped','roughly shorn','shaved',
+  'long and braided','long and loose','pulled back in a knot',
+  'wild and unkempt','short and dark','short and fair',
+  'silver-streaked','always half-hidden by a hood',
+  'matted, not by choice','impeccably kept despite everything',
+];
+
+const FANTASY_DISTINGUISHING_FEATURES = [
+  'a sword scar across the jaw','missing two fingers on the left hand',
+  'a brand or tattoo they don\'t explain','eyes that are two different colors',
+  'a nose that\'s been broken at least twice','calloused hands that tell the whole story',
+  'a limp they\'ve long since stopped apologising for',
+  'a scar that crosses one eye — the eye still works, somehow',
+  'ritual scarring across the cheeks','teeth filed to points',
+  'burns along one forearm — old, not recent',
+  'an old collar scar they keep covered',
+  'moves with a fighter\'s economy even when relaxed',
+  'always impeccably clean — unnervingly so given their life',
+];
+
+const FANTASY_QUIRKS = [
+  { quirk:'Cracks their knuckles before anything they consider important',statAffinity:{strength:1.2,constitution:1.1} },
+  { quirk:'Always arrives early and becomes visibly agitated if forced to wait',statAffinity:{wisdom:1.2,intelligence:1.1} },
+  { quirk:'Over-explains things when nervous — can\'t stop once they\'ve started',statAffinity:{intelligence:1.2,charisma:0.9} },
+  { quirk:'Never sits with their back to the door',statAffinity:{wisdom:1.2,constitution:1.1} },
+  { quirk:'Silently counts things in stressful situations — steps, stones, candles',statAffinity:{intelligence:1.3,wisdom:0.9} },
+  { quirk:'Covers their mouth when they lie — even small lies',statAffinity:{charisma:1.1,wisdom:0.8} },
+  { quirk:'Always in motion — tapping, pacing, fidgeting — goes completely still only when danger is near',statAffinity:{dexterity:1.2,constitution:1.1} },
+  { quirk:'Pauses for an uncomfortably long time before answering any direct question',statAffinity:{wisdom:1.3,intelligence:1.1} },
+  { quirk:'Never says sorry — substitutes action for apology every time',statAffinity:{strength:1.2,charisma:0.9} },
+  { quirk:'Deflects anything serious with a joke — the worse the moment, the funnier the deflection',statAffinity:{charisma:1.3,wisdom:0.9} },
+  { quirk:'Remembers exactly what everyone ordered or drank at their first meeting — years later',statAffinity:{charisma:1.3,intelligence:1.2} },
+  { quirk:'Can\'t leave an argument without getting the last word — even if it costs them',statAffinity:{strength:1.1,wisdom:0.8} },
+  { quirk:'Gives away things they can\'t afford to — food, coin, their last torch',statAffinity:{charisma:1.2,wisdom:0.8} },
+  { quirk:'Clocks every exit the moment they enter a room',statAffinity:{wisdom:1.2,constitution:1.2} },
+  { quirk:'Carries one small object that has no practical use — never explains it',statAffinity:{wisdom:1.2,charisma:1.1} },
+  { quirk:'Laughs at the wrong moments — deaths, confessions, bad news',statAffinity:{constitution:1.1,wisdom:0.8} },
+  { quirk:'Can fall asleep anywhere, instantly — a skill born from necessity',statAffinity:{constitution:1.3,strength:1.1} },
+  { quirk:'Flinches at sudden movement on their left side — never mentions it',statAffinity:{constitution:0.9,strength:1.1} },
+  { quirk:'Checks their weapon\'s edge obsessively — even mid-conversation',statAffinity:{dexterity:1.3,strength:1.1} },
+  { quirk:'Refuses to sleep indoors if they can possibly avoid it',statAffinity:{wisdom:1.2,constitution:1.2} },
+  { quirk:'Mutters a quiet prayer before eating — even tavern slop that doesn\'t deserve one',statAffinity:{wisdom:1.3} },
+  { quirk:'Has a deeply specific hatred of a particular monster — brings it up unprompted',statAffinity:{strength:1.2,wisdom:1.1} },
+  { quirk:'Compulsively maps new spaces — scratches diagrams in dirt or on whatever\'s handy',statAffinity:{intelligence:1.3,dexterity:1.1} },
+  { quirk:'Tastes unfamiliar liquids before identifying them — has not died yet',statAffinity:{constitution:1.3,wisdom:0.8} },
+  { quirk:'Apologises to objects they damage — doors, walls, unfortunate furniture',statAffinity:{wisdom:1.2,charisma:1.1} },
+];
+
+const FANTASY_NAME_POOLS = {
+  'Human':     { masc:['Aldric','Brennan','Caelan','Dorin','Edric','Faolan','Gareth','Hadwin','Idris','Jareth','Kellan','Lucan','Merrin','Nolan','Oswin','Peran','Rowan','Soren','Tavish','Ulric'], fem:['Aerith','Brynn','Calla','Delia','Elowen','Fiona','Gwyneth','Hilde','Isadora','Jessa','Keela','Lena','Maren','Niamh','Oria','Petra','Rhiannon','Senna','Tara','Una'], neutral:['Ash','Blair','Cael','Dale','Eden','Finch','Grey','Haven','Indra','Jesse'], last:['Ashford','Blackwood','Calloway','Drake','Edgewater','Fairholm','Grimshaw','Hartwell','Ironsides','Justrom','Kellam','Larkmoor','Morven','Nighthollow','Ostram','Pendrath','Redvale','Stonebridge','Thornfield','Underhill'] },
+  'Elf':       { masc:['Aelindra','Caladrel','Darafel','Elaion','Faervel','Galadh','Haladrel','Ithildir','Laerion','Maedhros','Neldoreth','Orophin','Rúmil','Saradoc','Tauron','Uruvon','Vardamir','Welcin','Xyrandel','Zephilior'], fem:['Aelindra','Caladwen','Daerith','Elowen','Faelwen','Galadreth','Hîril','Ithiliel','Laeriel','Maewen','Neldeth','Orodreth','Penneth','Rúthiel','Sarael','Tauril','Uruviel','Vardawen','Weleth','Xyraiel'], neutral:['Aelin','Caelen','Daerin','Ellin','Faerin','Gaelin','Haelin','Ilin','Laerin','Maelin'], last:['Amberleaf','Brightstream','Dawnwhisper','Evenfall','Fernweave','Goldenbough','Highglen','Ironbark','Leafsong','Moonshadow','Nightbloom','Oakenheart','Petalfall','Rivensong','Silverleaf','Twilightway'] },
+  'Half-Elf':  { masc:['Adan','Beren','Calin','Daeron','Erlan','Ferin','Galen','Haren','Iolan','Jared','Kalen','Lorn','Miran','Nael','Orin','Peren','Rolan','Sael','Taren','Valen'], fem:['Ada','Brenna','Calla','Dara','Elara','Fara','Gwyn','Hara','Iola','Jara','Kira','Lara','Mira','Nara','Ora','Petra','Rina','Sera','Tara','Vara'], neutral:['Ash','Blair','Caen','Dale','Eden','Fern','Grey','Haven','Ira','Jesse'], last:['Ashwood','Bridgeborn','Crosswater','Dualborn','Edgewalker','Farshore','Greyveil','Halfborn','Ironleaf','Kinmeet','Longbridge','Merrowside','Outborn','Pathweave','Rimborn','Splitway'] },
+  'Dwarf':     { masc:['Aldrik','Borin','Dolgrin','Eberk','Fargrim','Gardain','Harbek','Kilvar','Maulnar','Nalkur','Olbric','Pendrak','Rangrim','Suldrun','Tordek','Ulfgar','Vondal','Wulfgar','Zarbak','Brundar'], fem:['Agna','Bodill','Dagnal','Eliff','Fenna','Gunnloda','Helja','Kathra','Mardred','Natalka','Orla','Perdra','Ruqiah','Sannl','Tola','Ulma','Vondred','Wylda','Zarda','Bera'], neutral:['Anvil','Ember','Flint','Grim','Helm','Iron','Stone','Keg','Forge','Rock'], last:['Anvilstrike','Boulderback','Copperforge','Deepdelve','Emberhammer','Flinteye','Goldvein','Hardrock','Ironbeard','Keenaxe','Lodesmith','Mountainheart','Orehammer','Proudstone','Rockbreaker','Thunderforge'] },
+  'Halfling':  { masc:['Alton','Beau','Cade','Dav','Eldon','Finn','Garret','Halin','Jasper','Kelpin','Lyle','Merry','Ned','Osric','Pip','Reed','Sam','Tobias','Ulmo','Will'], fem:['Andry','Bree','Corinna','Dalla','Elva','Falco','Greta','Hilda','Ida','Josie','Kara','Lily','Mira','Nelly','Ophelia','Pearl','Rosie','Salvia','Tilly','Ursa'], neutral:['Burr','Clay','Dock','Fern','Grove','Hedge','Knoll','Leaf','Moor','Nook'], last:['Bogworthy','Burrows','Cobblepath','Everpip','Fairfoot','Goodbarrel','Hilltop','Ironfoot','Kettle','Larder','Merrifoot','Oakhollow','Proudfoot','Sandyfoot','Thickethole','Tunnelward'] },
+  'Half-Orc':  { masc:['Brug','Crag','Dorn','Drog','Fenk','Gorg','Hurk','Jark','Korg','Lurk','Morg','Narg','Orkan','Rorg','Sorg','Torg','Vorg','Brak','Dreg','Grak'], fem:['Bruga','Crega','Dorna','Droga','Gorga','Hurka','Korga','Lurka','Morga','Narga','Sorga','Torga','Vorga','Bruka','Dreka','Groka'], neutral:['Ash','Bark','Crag','Edge','Fang','Grit','Iron','Keld','Dusk','Husk'], last:['Ashbone','Bloodtusk','Craghide','Fangtooth','Greytusk','Hardbone','Ironhide','Jadeclaw','Longfang','Maulborn','Nighthide','Prowltusk','Ravenfang','Shadowtusk','Tuskhide','Voidborn'] },
+  'Orc':       { masc:['Azog','Bolg','Crug','Drog','Elog','Farg','Gorg','Hruk','Irok','Jorg','Karg','Lurk','Morg','Narg','Org','Prag','Rorg','Sarg','Torg','Ulk'], fem:['Azra','Bolga','Cruga','Droga','Gorga','Hruka','Jorga','Karga','Lurka','Morga','Narga','Sarga','Torga','Ulka','Groka','Brega'], neutral:['Ash','Bark','Claw','Edge','Fang','Grit','Iron','Keld','Tusk','Bone'], last:['Bonebreaker','Clawtooth','Darkbane','Fangstrike','Gorehand','Helmcrush','Ironjaw','Killhand','Maulstrike','Neckbreak','Painhand','Razorhand','Skullsplit','Toothshatter','Warshout','Grimtusk'] },
+  'Tiefling':  { masc:['Akmenos','Amnon','Barakas','Damakos','Ekemon','Iados','Kairon','Leucis','Melech','Morthos','Pelaios','Skamos','Therai','Valigan','Wrogar','Xykon','Ygorl','Zaxis','Zel','Brim'], fem:['Akta','Anakis','Bryseis','Criella','Damaia','Ea','Kallista','Lerissa','Makaria','Nemeia','Orianna','Phelaia','Rieta','Siora','Taeri','Ubani','Valna','Werna','Xanathos','Yeva'], neutral:['Ash','Brim','Char','Ember','Flame','Glow','Hex','Ink','Jest','Shadow'], last:['Ashborne','Brimstone','Charblood','Duskweave','Emberkin','Flameborn','Glowshadow','Hexborn','Inkstain','Kindleblood','Lightsbane','Moonscar','Nightborn','Portentborn','Rimeshadow','Shadowkin'] },
+  'Dragonborn':{ masc:['Arjhan','Balasar','Bharash','Donaar','Ghesh','Heskan','Kriv','Medrash','Mehen','Nadarr','Pandjed','Patrin','Rhogar','Shamash','Shedinn','Tarhun','Torinn','Vrondiss','Zedaar','Grax'], fem:['Akra','Biri','Daar','Farideh','Harann','Havilar','Jheri','Kava','Korinn','Mishann','Nala','Perra','Raiann','Sora','Surina','Thava','Wreas','Zer','Vrex','Nyx'], neutral:['Ash','Blaze','Claw','Drake','Fang','Gale','Haze','Kindle','Scale','Ember'], last:['Clethtinthiallor','Daardendrian','Delmirev','Fenkenkabradon','Kerrhylon','Kimbatuul','Myastan','Nemmonis','Norixius','Ophinshtalajiir','Shestendeliath','Turnuroth','Umbyrphrax','Yarjerit','Zolthux','Zyxannis'] },
+  'Gnome':     { masc:['Alston','Alvyn','Boddynock','Brocc','Burgell','Dimble','Eldon','Erky','Fonkin','Frug','Gerbo','Gimble','Glim','Jebeddo','Kellen','Namfoodle','Orryn','Roondar','Seebo','Sindri'], fem:['Bimpnottin','Breena','Caramip','Carlin','Donella','Duvamil','Ella','Ellyjobell','Ellywick','Lilli','Lorilla','Mardnab','Nissa','Nyx','Oda','Orla','Roywyn','Shamil','Tana','Zanna'], neutral:['Bell','Chirp','Clink','Dab','Echo','Fizz','Gizmo','Hinge','Imp','Jest'], last:['Beren','Daergel','Folkor','Garrick','Nackle','Murnig','Ningel','Raulnor','Scheppen','Timbers','Turen','Waywocket','Flimwick','Galvorn','Hornrook','Quickspring'] },
+  'Aasimar':   { masc:['Ariel','Bartholomew','Celestin','Elias','Gabriel','Hallowed','Illumin','Jasper','Kael','Luminor','Michael','Nathiel','Orindel','Phael','Raphael','Seraph','Triel','Uriel','Vael','Zael'], fem:['Aelia','Brielle','Celestia','Elara','Gabrielle','Illumina','Jasia','Kaelia','Lumia','Mikaela','Nathaela','Orindela','Phaelia','Raphaela','Seraphia','Trisia','Urisia','Vaelia','Zalia','Dawn'], neutral:['Dawn','Glow','Halo','Light','Lumen','Nimb','Ora','Pure','Ray','Shine'], last:['Brightmantle','Celestborn','Dawnwalker','Faithborn','Glorysong','Hallowed','Highblessed','Illuminborn','Justiceborn','Lightborn','Miracleborn','Nobleborn','Oathblessed','Peaceborn','Rightborn','Soulblessed'] },
+  'default':   { masc:['Aldric','Bran','Cael','Dorn','Eld','Fenn','Gar','Holt','Ior','Jael','Kel','Lorn','Mor','Nor','Orin','Pen','Ror','Sael','Tor','Vel'], fem:['Aela','Bree','Calli','Dara','Ela','Fara','Gwen','Hara','Ira','Jara','Kira','Lara','Mira','Nara','Ora','Petra','Rina','Sera','Tara','Vara'], neutral:['Ash','Blair','Cael','Dale','Eden','Fern','Grey','Haven','Ira','Jesse'], last:['Ashford','Blackwood','Calloway','Drake','Edgewater','Fairholm','Grimshaw','Hartwell','Ironsides','Justrom','Kellam','Larkmoor','Morven','Nighthollow','Pendrath','Stonebridge'] },
+};
+
+const FANTASY_GENDERS = [
+  { id:'man',label:'Man',pronouns:'he/him',weight:45 },
+  { id:'woman',label:'Woman',pronouns:'she/her',weight:45 },
+  { id:'non_binary',label:'Non-binary',pronouns:'they/them',weight:10 },
+];
+const FANTASY_ORIENTATIONS = [
+  { id:'straight',label:'Straight',weight:60 },
+  { id:'gay',label:'Gay / Lesbian',weight:12 },
+  { id:'bisexual',label:'Bisexual',weight:15 },
+  { id:'pansexual',label:'Pansexual',weight:8 },
+  { id:'asexual',label:'Asexual',weight:5 },
+];
+
+// ── Fantasy sibling dynamics (same ids as modern, can share cast-builder) ─
+const FANTASY_SIBLING_DYNAMICS = [
+  { id:'protective_older',label:'protective older sibling' },
+  { id:'rivalry',label:'long-running rivalry' },
+  { id:'estranged',label:'estranged — fell out years ago' },
+  { id:'close_ally',label:'closest friend and confidant' },
+  { id:'troubled',label:'struggling — conscripted, cursed, or in debt' },
+  { id:'golden_child',label:"the family's golden child" },
+  { id:'lost_touch',label:'drifted apart, rarely in contact' },
+  { id:'deceased',label:'deceased — war, plague, or worse' },
+  { id:'younger_dependent',label:'younger and still depends on the character' },
+  { id:'reconnecting',label:'recently reconnected after years apart' },
+];
+
+const FANTASY_PARENT_STATUSES = [
+  { id:'present_close',label:'present and close' },
+  { id:'present_distant',label:'present but emotionally distant' },
+  { id:'present_difficult',label:'present but a source of tension' },
+  { id:'estranged',label:'estranged — no contact' },
+  { id:'deceased_recent',label:'recently deceased' },
+  { id:'deceased_long',label:'died when the character was young' },
+  { id:'absent_unknown',label:'absent — never knew them' },
+  { id:'imprisoned',label:'imprisoned or indentured' },
+  { id:'missing',label:'missing — presumed dead, but unconfirmed' },
+];
+
+// ── Genre routing ─────────────────────────────────────────────────────────
+function getGenreTables(genre) {
+  if (genre === 'fantasy') {
+    return {
+      PROFESSIONS:           FANTASY_PROFESSIONS,
+      LIFE_EVENTS:           FANTASY_LIFE_EVENTS,
+      TENSIONS:              FANTASY_TENSIONS,
+      SECRETS:               FANTASY_SECRETS,
+      FAMILY_STRUCTURES:     FANTASY_FAMILY_STRUCTURES,
+      PARENT_STATUSES:       FANTASY_PARENT_STATUSES,
+      SIBLING_DYNAMICS:      FANTASY_SIBLING_DYNAMICS,
+      ECONOMIC_TIERS:        FANTASY_ECONOMIC_TIERS,
+      CITY_SETTINGS:         FANTASY_CITY_SETTINGS,
+      TAG_POOLS:             FANTASY_TAG_POOLS,
+      RACES_OR_ETHNICITIES:  FANTASY_RACES,
+      GENDERS:               FANTASY_GENDERS,
+      ORIENTATIONS:          FANTASY_ORIENTATIONS,
+      BUILDS:                FANTASY_BUILDS,
+      HAIR:                  FANTASY_HAIR,
+      DISTINGUISHING_FEATURES: FANTASY_DISTINGUISHING_FEATURES.map(l => ({ label: l })),
+      QUIRKS:                FANTASY_QUIRKS,
+      NAME_POOLS:            FANTASY_NAME_POOLS,
+    };
+  }
+  // Default: modern
+  return {
+    PROFESSIONS,
+    LIFE_EVENTS,
+    TENSIONS,
+    SECRETS,
+    FAMILY_STRUCTURES,
+    PARENT_STATUSES,
+    SIBLING_DYNAMICS,
+    ECONOMIC_TIERS,
+    CITY_SETTINGS,
+    TAG_POOLS,
+    RACES_OR_ETHNICITIES: ETHNICITIES,
+    GENDERS,
+    ORIENTATIONS,
+    BUILDS,
+    HAIR: HAIR.map(h => ({ label: h })),
+    DISTINGUISHING_FEATURES: DISTINGUISHING_FEATURES.map(l => ({ label: l })),
+    QUIRKS,
+    NAME_POOLS,
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// GENERATOR ENGINE — inlined (no imports)
+// ═══════════════════════════════════════════════════════════════════════════
+
+// ── Selectors ────────────────────────────────────────────────────────────
+function uniformPick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+function uniformPickN(arr, n) { return [...arr].sort(() => Math.random() - 0.5).slice(0, Math.min(n, arr.length)); }
+function randomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+function weightedPick(arr) {
+  const total = arr.reduce((s, i) => s + (i.weight ?? 1), 0);
+  let r = Math.random() * total;
+  for (const item of arr) { r -= (item.weight ?? 1); if (r <= 0) return item; }
+  return arr[arr.length - 1];
+}
+
+function effectiveWeight(item, stats, base = 10) {
+  const aff = item.statAffinity ?? {};
+  let m = 1;
+  for (const [stat, factor] of Object.entries(aff)) {
+    if (stats[stat] !== undefined) m *= 1 + (factor - 1) * (stats[stat] / 100);
+  }
+  return Math.max(0.1, (item.weight ?? base) * m);
+}
+
+function statWeightedPick(arr, stats) {
+  const w = arr.map(i => ({ item: i, weight: effectiveWeight(i, stats) }));
+  const total = w.reduce((s, x) => s + x.weight, 0);
+  let r = Math.random() * total;
+  for (const { item, weight } of w) { r -= weight; if (r <= 0) return item; }
+  return w[w.length - 1].item;
+}
+
+function statAndWeightPick(arr, stats) {
+  const w = arr.map(i => ({ item: i, weight: effectiveWeight(i, stats, i.weight ?? 10) }));
+  const total = w.reduce((s, x) => s + x.weight, 0);
+  let r = Math.random() * total;
+  for (const { item, weight } of w) { r -= weight; if (r <= 0) return item; }
+  return w[w.length - 1].item;
+}
+
+// ── Stat rolling ─────────────────────────────────────────────────────────
+function rollStat() {
+  return Math.min(100, Math.max(1, Math.round((Math.random()*100+1 + Math.random()*100+1) / 2)));
+}
+function rollStats() {
+  return { strength:rollStat(), intelligence:rollStat(), wisdom:rollStat(), charisma:rollStat(), dexterity:rollStat(), constitution:rollStat() };
+}
+
+// ── MBTI ─────────────────────────────────────────────────────────────────
+function norm(v, min, max) { return Math.min(1, Math.max(0, (v - min) / (max - min))); }
+function decide(p) { return Math.random() < p; }
+
+function assignMBTI(s) {
+  const isE = decide(norm((s.charisma + s.strength)/2 - (s.wisdom + s.intelligence)/2 + 50, 0, 100));
+  const isN = decide(norm((s.intelligence + s.wisdom)/2 - (s.constitution + s.strength)/2 + 50, 0, 100));
+  const isT = decide(norm(s.intelligence - (s.charisma + s.wisdom)/2 + 50, 0, 100));
+  const isJ = decide(norm((s.wisdom + s.constitution)/2 - (s.charisma + s.dexterity)/2 + 50, 0, 100));
+  const typeStr = `${isE?'E':'I'}${isN?'N':'S'}${isT?'T':'F'}${isJ?'J':'P'}`;
+  return MBTI_TYPES.find(m => m.type === typeStr) ?? MBTI_TYPES[0];
+}
+
+// ── Cast builder ─────────────────────────────────────────────────────────
+const FRIEND_DYNAMICS = [
+  'The person {n} calls when things go sideways — and they always pick up',
+  'Has covered for {n} before. Will probably have to again.',
+  'Believes in {n} more than {n} believes in themselves',
+  'The only person who can make {n} laugh when things are genuinely terrible',
+  'Has their own chaos, but shows up for {n} anyway',
+  'Knows every embarrassing story and has never weaponised one',
+  'Drifted for a while; they\'re close again now, pretending the gap never happened',
+  'Would absolutely help {n} move a body. No questions. Light snacks provided.',
+  'The voice in {n}\'s head that says "are you sure about this?" — usually right',
+  'Knows {n} better than anyone and has decided to stay anyway',
+];
+const PARENT_DYNAMICS_ALIVE = [
+  '{n} calls more often than they admit and less often than they mean to',
+  'Has opinions about every choice {n} has made since roughly age seven',
+  'Proud of {n} in ways they mostly express sideways, at inconvenient moments',
+  'The relationship has improved significantly since {n} moved out',
+  'Still sends clippings — actual clippings — of things they think {n} should know',
+  'Knows something is wrong with {n} right now and is waiting to be asked',
+  '{n} inherited exactly the traits they were hoping to avoid',
+];
+const FOIL_ROLES = [
+  { role:'rival', dynamics:['Wants what {n} has — and is closer to getting it than {n} realises','Grew up alongside {n}; the competition technically never ended','Respects {n} just enough to make the rivalry feel personal','The only person who can beat {n} — which {n} finds both infuriating and motivating'] },
+  { role:'antagonist', dynamics:["Has a reason to want things to go badly for {n} — and the patience to wait","Operates in the same world as {n}, just on the other side of a line","Knows something about {n} that {n} wishes they didn't","Honestly believes they're the reasonable one in this situation"] },
+  { role:'love interest', dynamics:["Has known {n} long enough to see past the performance — still here","Wants more from {n} than {n} knows how to give right now","The timing has never been right. Might never be. They're both ignoring this.","Finds {n}'s specific brand of disaster oddly endearing"] },
+  { role:'estranged former ally', dynamics:["Used to be the person {n} trusted most. Something happened. Neither talks about it.","Resurfaces at exactly the wrong moment, as they always do","Could be an asset or a liability — {n} genuinely doesn't know which"] },
+];
+const SIBLING_MAP = {
+  protective_older:   n => `Stepped up for ${n} when no one else did — a habit they haven't broken`,
+  rivalry:            n => `The competition with ${n} started in childhood and technically never stopped`,
+  estranged:          n => `${n} and them haven't spoken in years. The reason is known. Unremarked upon.`,
+  close_ally:         n => `The one person ${n} tells everything to, including the parts they shouldn't`,
+  troubled:           n => `${n} is the "stable" one in this equation, which is its own kind of funny`,
+  golden_child:       n => `The family benchmark — ${n} has spent years being measured against them without consent`,
+  lost_touch:         n => `They were close once. Drifted. ${n} still occasionally drafts messages and doesn't send them`,
+  deceased:           n => `Gone — and ${n} still sometimes forgets, for a moment, before remembering again`,
+  younger_dependent:  n => `Looks to ${n} for stability ${n} is largely improvising`,
+  reconnecting:       n => `Back in ${n}'s life after years away, both pretending it wasn't that long`,
+};
+
+function fillD(t, n) { return t.replace(/\{n\}/g, n); }
+function pickTraits(n) { return uniformPickN(NPC_TRAITS, n); }
+
+function buildCast(protName, protLast, ethnicityBroad, familyStructure, tables) {
+  const namePools = tables.NAME_POOLS;
+  const SIBLING_DYN = tables.SIBLING_DYNAMICS;
+  const PARENT_STAT = tables.PARENT_STATUSES;
+  const cast = [];
+  const MAX = 7;
+  const pc = familyStructure.parentCount ?? 0;
+
+  function _parentName(isMother) {
+    const pool = namePools[ethnicityBroad] ?? namePools['default'];
+    const fn = isMother ? uniformPick(pool.fem) : uniformPick(pool.masc);
+    return fn;
+  }
+  function _buildParent(role, structure) {
+    let status;
+    const id = structure.id;
+    if (id === 'two_parent_one_deceased') {
+      status = role === 'deceased' ? uniformPick(PARENT_STAT.filter(s => s.id.startsWith('deceased')))
+             : uniformPick(PARENT_STAT.filter(s => !s.id.startsWith('deceased') && s.id !== 'absent_unknown'));
+    } else if (id === 'two_parent_one_absent') {
+      status = role === 'absent' ? uniformPick(PARENT_STAT.filter(s => s.id === 'absent_unknown' || s.id === 'estranged'))
+             : uniformPick(PARENT_STAT.filter(s => !s.id.startsWith('deceased') && s.id !== 'absent_unknown'));
+    } else if (['foster_care','orphaned_early','raised_by_grandparents','raised_by_older_sibling','temple_raised','guild_raised','war_orphan'].includes(id)) {
+      status = uniformPick(PARENT_STAT.filter(s => s.id.startsWith('deceased') || s.id === 'absent_unknown' || s.id === 'estranged' || s.id === 'missing'));
+    } else {
+      status = uniformPick(PARENT_STAT);
+    }
+    const isDeceased = status.id.startsWith('deceased') || status.id === 'missing';
+    const isAbsent   = status.id === 'absent_unknown';
+    const isDivorced = id === 'two_parent_divorced';
+    const isMother   = role === 'mother';
+    const useDiffLast = isAbsent || (isDivorced && isMother && Math.random() < 0.5);
+    const lastName = useDiffLast ? altLastName(protLast, ethnicityBroad, namePools) : protLast;
+    const firstName = _parentName(isMother);
+    const dynamic = isDeceased
+      ? `${protName} still catches themselves thinking "I should call" before remembering`
+      : fillD(uniformPick(PARENT_DYNAMICS_ALIVE), protName);
+    return { name:`${firstName} ${lastName}`, role:isMother?'mother':'father', status:status.label, traits:pickTraits(2), dynamic };
+  }
+
+  if (pc === 2) {
+    const isOneDeceased = familyStructure.id === 'two_parent_one_deceased';
+    const isOneAbsent   = familyStructure.id === 'two_parent_one_absent';
+    const mRole = isOneDeceased ? (Math.random()<0.5?'deceased':'surviving')
+                : isOneAbsent   ? (Math.random()<0.5?'absent':'present') : 'present';
+    const fRole = isOneDeceased ? (mRole==='deceased'?'surviving':'deceased')
+                : isOneAbsent   ? (mRole==='absent'?'present':'absent') : 'present';
+    cast.push(_buildParent('mother', {...familyStructure, _r:mRole}));
+    cast.push(_buildParent('father', {...familyStructure, _r:fRole}));
+  } else if (pc === 1) {
+    const g = familyStructure.parentGender ?? (Math.random()<0.5?'mother':'father');
+    cast.push(_buildParent(g, familyStructure));
+  }
+
+  const [minS, maxS] = familyStructure.siblingCount ?? [0,0];
+  const sibSlots = Math.min(randomInt(minS, maxS), 2, MAX - cast.length - 2);
+  for (let i = 0; i < sibSlots; i++) {
+    const dyn = uniformPick(SIBLING_DYN);
+    const genderId = Math.random() < 0.5 ? 'man' : 'woman';
+    const pool = namePools[ethnicityBroad] ?? namePools['default'];
+    const firstName = genderId === 'man' ? uniformPick(pool.masc) : uniformPick(pool.fem);
+    const isOlder = ['protective_older','golden_child'].includes(dyn.id);
+    const isYounger = dyn.id === 'younger_dependent';
+    cast.push({
+      name: `${firstName} ${protLast}`,
+      role: isOlder ? 'older sibling' : isYounger ? 'younger sibling' : 'sibling',
+      status: dyn.id === 'deceased' ? 'deceased' : dyn.label,
+      traits: pickTraits(2),
+      dynamic: (SIBLING_MAP[dyn.id] ?? (n => `Part of ${n}'s story in ways that are hard to untangle`))(protName),
+    });
+  }
+
+  const friendSlots = Math.min(randomInt(1,2), MAX - cast.length - 1);
+  for (let i = 0; i < friendSlots; i++) {
+    cast.push({ name:neutralName(), role:'best friend', status:'present and close', traits:pickTraits(3), dynamic:fillD(uniformPick(FRIEND_DYNAMICS), protName) });
+  }
+
+  if (cast.length < MAX) {
+    const foilType = uniformPick(FOIL_ROLES);
+    cast.push({ name:neutralName(), role:foilType.role, status:'present', traits:pickTraits(2), dynamic:fillD(uniformPick(foilType.dynamics), protName) });
+  }
+  return cast;
+}
+
+// ── Skeleton builder ──────────────────────────────────────────────────────
+function buildSkeleton(stats, mbti, tables) {
+  const { PROFESSIONS:P, LIFE_EVENTS:LE, TENSIONS:T, SECRETS:S, FAMILY_STRUCTURES:FS,
+          ECONOMIC_TIERS:ET, CITY_SETTINGS:CS, TAG_POOLS:TP,
+          RACES_OR_ETHNICITIES:ROE, GENDERS:G, ORIENTATIONS:O,
+          BUILDS:B, HAIR:H, DISTINGUISHING_FEATURES:DF, QUIRKS:Q, NAME_POOLS:NP } = tables;
+
+  const gender      = statAndWeightPick(G, stats);
+  const orientation = weightedPick(O);
+  const identity    = statAndWeightPick(ROE, stats);
+  const namePool    = NP[identity.broad] ?? NP['default'];
+  const nameResult  = protoName(gender.id, namePool);
+  const name        = nameResult.full;
+  const lastName    = nameResult.last;
+  const ageRoll     = Math.random();
+  const age         = ageRoll < 0.1 ? randomInt(19,24) : ageRoll < 0.75 ? randomInt(25,45) : ageRoll < 0.95 ? randomInt(46,58) : randomInt(59,70);
+  const build       = statWeightedPick(B, stats);
+  const hairItem    = uniformPick(H);
+  const hair        = typeof hairItem === 'string' ? hairItem : hairItem.label;
+  const feat        = Math.random() < 0.25 ? null : uniformPick(DF.filter(f => f.label)).label;
+  const quirk       = statWeightedPick(Q, stats);
+  const profession  = statWeightedPick(P, stats);
+  const sentiment   = uniformPick(profession.sentiments);
+  const famStruct   = statWeightedPick(FS, stats);
+  const lifeEvent   = statWeightedPick(LE, stats);
+  let tier = profession.economicTier + (lifeEvent.economicHint ?? 0) + (famStruct.economicHint ?? 0);
+  tier = Math.min(5, Math.max(1, Math.round(tier)));
+  const econ = ET[tier];
+  const econMarkers = [...econ.descriptors].sort(() => Math.random()-0.5).slice(0,2);
+  const tension  = statWeightedPick(T, stats);
+  const secret   = statWeightedPick(S, stats);
+  const city     = statWeightedPick(CS, stats);
+  const cast     = buildCast(name, lastName, identity.broad, famStruct, tables);
+
+  // assemble tags
+  const tags = new Set(TP.always);
+  if (TP[city.toneTag]) TP[city.toneTag].forEach(t => tags.add(t));
+  if (TP[tension.toneTag]) TP[tension.toneTag].forEach(t => tags.add(t));
+  if (tension.criminalFlag && TP.criminal) TP.criminal.forEach(t => tags.add(t));
+  (TP.professionTags?.[profession.industry] ?? []).forEach(t => tags.add(t));
+  if (secret.severity === 'explosive' || secret.severity === 'high') { tags.add('secrets'); tags.add('betrayal'); }
+
+  return {
+    name, age,
+    gender: gender.label, pronouns: gender.pronouns,
+    orientation: orientation.label,
+    ethnicityBroad: identity.broad, ethnicityFlavor: identity.flavor,
+    appearance: { build: build.label, hair, distinguishingFeature: feat },
+    quirk: quirk.quirk,
+    stats, mbti: mbti.type, mbtiLabel: mbti.label,
+    profession: profession.title, industry: profession.industry,
+    economicTier: tier, economicLabel: econ.label,
+    economicMarkers: econMarkers,
+    housing: uniformPick(econ.housing), transport: uniformPick(econ.transport),
+    cityLabel: city.label, cityFlavor: city.flavor,
+    sentiment, lifeEvent: lifeEvent.description,
+    tension: tension.description, secret: secret.description,
+    secretSeverity: secret.severity,
+    tags: [...tags].slice(0,10),
+    cast,
+  };
+}
+
+// ── Prompt builder ────────────────────────────────────────────────────────
+const SYSTEM_PROMPT = `You are a creative writer generating AI Dungeon scenario content.
+Your output must be vivid, specific, and immediately usable as a game scenario.
+
+TONE — this is critical:
+These characters are for a game. Players should want to play them.
+Write with energy, wit, and a light touch even when the material is dark.
+Dark comedy is welcome. Characters should feel alive, flawed, and fun — not just tragic.
+A character drowning in debt can still be the funniest person in the room.
+A burned-out nurse can love her job at 7am and hate it by noon.
+Misery is a seasoning, not the whole dish.
+Every character should have at least one quality that makes you root for them.
+
+STYLE:
+- Behavioral prose — show character through action, detail, and implication. Never explain.
+- Never mention stat numbers, MBTI types by name, or any generation metadata.
+- Never state ethnicity, orientation, or gender as labels — weave them naturally.
+- Use sentence fragments where they sharpen the prose.
+- Stay within the exact character limits given. Count carefully.
+
+Output only the JSON structure requested. No preamble, no commentary, no markdown fences.`;
+
+function buildPrompt(sk, genre) {
+  const castLines = sk.cast.map(npc =>
+    `  - ${npc.name} (${npc.role}, ${npc.status}): ${npc.traits.join(', ')}. ${npc.dynamic}`
+  ).join('\n');
+  const appParts = [sk.appearance.build, sk.appearance.hair, sk.appearance.distinguishingFeature].filter(Boolean).join('; ');
+  const identityLabel = genre === 'fantasy' ? 'Race' : 'Ethnicity';
+  const genreLabel    = genre === 'fantasy' ? 'fantasy' : 'AI Dungeon';
+  const entryNote     = genre === 'fantasy'
+    ? 'Lead with name, rough age, role. Weave in race appearance and quirk through behavior. Ground in sensory fantasy detail. End on forward momentum.'
+    : 'Lead with name, age, role. Use sentence fragments. Fold in appearance and quirk through behavior. Reference key cast members. End on forward momentum.';
+  const openingNote   = genre === 'fantasy'
+    ? 'Second person. Drop the player into a vivid fantasy moment right now — mid-scene. Sensory detail (smells, sounds, weight of gear). End mid-moment with a clear choice.'
+    : 'Second person. Drop the player directly into a vivid, specific moment — right now. Sensory detail. End mid-moment with a clear next decision.';
+
+  return `Generate ${genreLabel} content for this character. Return a single JSON object with these exact keys:
+"characterEntry", "npcEntries", "title", "description", "tags", "opening"
+
+CHARACTER SKELETON:
+Name: ${sk.name}, ${sk.age}, ${sk.gender} (${sk.pronouns})
+${identityLabel}: ${sk.ethnicityFlavor}
+Orientation: ${sk.orientation}
+Appearance: ${appParts}
+Quirk: ${sk.quirk}
+Profession: ${sk.profession} (${sk.industry}) — feels ${sk.sentiment} about it
+Stats: STR ${sk.stats.strength} | INT ${sk.stats.intelligence} | WIS ${sk.stats.wisdom} | CHA ${sk.stats.charisma} | DEX ${sk.stats.dexterity} | CON ${sk.stats.constitution}
+Personality: ${sk.mbti} — ${sk.mbtiLabel}
+Economic status: ${sk.economicLabel} — ${(sk.econMarkers || sk.economicMarkers).join('; ')}
+Housing: ${sk.housing} | Transport: ${sk.transport}
+Setting: ${sk.cityLabel} — ${sk.cityFlavor}
+Formative event: ${sk.lifeEvent}
+Current tension: ${sk.tension}
+Secret (severity: ${sk.secretSeverity}): ${sk.secret}
+
+SUPPORTING CAST:
+${castLines}
+
+OUTPUT RULES:
+
+"characterEntry": MAX 1000 chars. Terse behavioral prose. ${entryNote} Make the reader want to be this person, at least for an evening. Specific, alive, a little fun.
+
+"npcEntries": Object keyed by NPC name. Each value MAX 1000 chars. Same style. Reference protagonist by name. These people should feel worth knowing.
+
+"title": MAX 70 chars. Hook the player. Specific, evocative. Can be darkly funny if it fits.
+
+"description": MAX 5000 chars. Second person ("You are..."). Set the scene: who the player is, what their world feels like, what's at stake. Weave in 2–3 cast members. Hint at the tension and secret without stating them plainly. End with something that makes the player want to begin.
+
+"tags": Array of 8–10 lowercase strings. Genre-appropriate.
+
+"opening": MAX 4000 chars. ${openingNote}`;
+}
+
+function parseResponse(raw) {
+  try {
+    const clean = raw.replace(/^```json\s*/i,'').replace(/^```\s*/i,'').replace(/```\s*$/i,'').trim();
+    const p = JSON.parse(clean);
+    return { characterEntry: p.characterEntry??'', npcEntries: p.npcEntries??{}, title: p.title??'', description: p.description??'', tags: p.tags??[], opening: p.opening??'' };
+  } catch(e) { return null; }
+}
+
+// ── API call ──────────────────────────────────────────────────────────────
+function getSystemPrompt(genre) {
+  if (genre === 'fantasy') {
+    return `You are a creative writer generating AI Dungeon fantasy scenario content.
+Your output must be vivid, specific, and immediately usable as a game scenario.
+
+TONE — this is critical:
+These characters are for a game. Players should want to play them.
+Write with energy, wit, and a light touch even when the material is dark.
+Dark comedy is welcome. Fantasy characters should feel like real people who happen to live in a world with magic and monsters — not cardboard archetypes.
+A broke sellsword can be the funniest person in the tavern. A fallen paladin can be genuinely good company while being a genuine mess.
+Suffering is a seasoning, not the whole dish. Every character should have at least one quality that makes you want to spend time with them.
+
+STYLE:
+- Behavioral prose — show character through action, detail, and implication. Never explain.
+- Never mention stat numbers, MBTI types, race labels, or generation metadata as clinical labels.
+- Weave race, appearance, and quirk naturally into behavior and description.
+- Ground descriptions in sensory detail — smells of forge smoke, the weight of armor, the sound of a crowded tavern.
+- Stay within the exact character limits given.
+
+Output only the JSON structure requested. No preamble, no commentary, no markdown fences.`;
+  }
+  return SYSTEM_PROMPT;
+}
+
+async function callClaude(skeleton, apiKey, genre) {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true',
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 4096,
+      system: getSystemPrompt(genre),
+      messages: [{ role: 'user', content: buildPrompt(skeleton, genre) }],
+    }),
+  });
+  if (!res.ok) { const t = await res.text().catch(()=>''); throw new Error(`API error ${res.status}: ${t}`); }
+  const data = await res.json();
+  const raw = data.content?.filter(b=>b.type==='text').map(b=>b.text).join('') ?? '';
+  if (!raw) throw new Error('Empty response from API');
+  const parsed = parseResponse(raw);
+  if (!parsed) throw new Error('Failed to parse API response as JSON');
+  return parsed;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// UI STATE
+// ═══════════════════════════════════════════════════════════════════════════
+let currentSkeleton = null;
+let currentOutput   = null;
+let isGenerating    = false;
+let currentGenre    = 'modern';
+
+function setGenre(genre) {
+  currentGenre = genre;
+  const modernBtn  = document.getElementById('genre-modern');
+  const fantasyBtn = document.getElementById('genre-fantasy');
+  if (genre === 'fantasy') {
+    modernBtn.style.background  = 'rgba(26,18,8,0.6)';
+    modernBtn.style.color       = 'var(--brass-light)';
+    fantasyBtn.style.background = 'var(--brass)';
+    fantasyBtn.style.color      = 'var(--ink)';
+  } else {
+    fantasyBtn.style.background = 'rgba(26,18,8,0.6)';
+    fantasyBtn.style.color      = 'var(--brass-light)';
+    modernBtn.style.background  = 'var(--brass)';
+    modernBtn.style.color       = 'var(--ink)';
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// UI HELPERS
+// ═══════════════════════════════════════════════════════════════════════════
+
+function setPhase(id) {
+  ['phase-roll','phase-mbti','phase-skeleton','phase-ai'].forEach(p => {
+    const el = document.getElementById(p);
+    if (!el) return;
+    el.classList.remove('active','done');
+    if (p === id) el.classList.add('active');
+    else if (['phase-roll','phase-mbti','phase-skeleton','phase-ai'].indexOf(p) < ['phase-roll','phase-mbti','phase-skeleton','phase-ai'].indexOf(id)) {
+      el.classList.add('done');
+    }
+  });
+}
+
+function clearPhases() {
+  ['phase-roll','phase-mbti','phase-skeleton','phase-ai'].forEach(p => {
+    document.getElementById(p)?.classList.remove('active','done');
+  });
+}
+
+function setStatus(msg) {
+  const el = document.getElementById('status-bar');
+  el.textContent = msg;
+  el.classList.toggle('visible', !!msg);
+}
+
+function showError(msg) {
+  const el = document.getElementById('error-box');
+  el.textContent = msg;
+  el.classList.toggle('visible', !!msg);
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// ── Copy to clipboard ─────────────────────────────────────────────────────
+// Uses Clipboard API where available, falls back to execCommand for
+// environments that block navigator.clipboard (iframes, non-HTTPS, etc.)
+function copyToClipboard(text) {
+  // Modern API first
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    return navigator.clipboard.writeText(text).then(() => true).catch(() => {
+      return execCommandCopy(text);
+    });
+  }
+  return Promise.resolve(execCommandCopy(text));
+}
+
+function execCommandCopy(text) {
+  try {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;pointer-events:none';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    const ok = document.execCommand('copy');
+    document.body.removeChild(ta);
+    return ok;
+  } catch(e) {
+    return false;
+  }
+}
+
+async function copyText(text, btn) {
+  const originalHTML = btn.innerHTML;
+  const ok = await copyToClipboard(text);
+  if (ok) {
+    btn.innerHTML = '✓ Copied';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.innerHTML = originalHTML; btn.classList.remove('copied'); }, 1800);
+  } else {
+    btn.innerHTML = '✗ Failed';
+    setTimeout(() => { btn.innerHTML = originalHTML; }, 1800);
+  }
+}
+
+// ── Char counter ──────────────────────────────────────────────────────────
+function attachCounter(textarea, limit, counterId) {
+  const counter = document.getElementById(counterId);
+  if (!counter || !textarea) return;
+  const update = () => {
+    const len = textarea.value.length;
+    const remaining = limit - len;
+    counter.textContent = `${len} / ${limit}`;
+    counter.classList.toggle('over', remaining < 0);
+  };
+  textarea.addEventListener('input', update);
+  update();
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════════════════════════════════
+
+function renderSkeleton(sk) {
+  const appParts = [sk.appearance.build, sk.appearance.hair, sk.appearance.distinguishingFeature].filter(Boolean).join(', ');
+
+  return `
+  <!-- CHARACTER SHEET -->
+  <div class="card" id="card-sheet">
+    <div class="card-header">
+      <span class="card-title">⚙ Character Sheet</span>
+      <button class="btn-copy" onclick="copySkeletonText(this)">Copy</button>
+    </div>
+    <div class="card-body">
+
+      <!-- Name + Identity -->
+      <div style="margin-bottom:1rem;">
+        <div style="font-family:var(--font-display);font-size:1.5rem;font-weight:700;color:var(--brass-dark);margin-bottom:0.1rem;">${sk.name}</div>
+        <div style="font-style:italic;color:var(--ink-faint);font-size:0.95rem;">${sk.age} · ${sk.gender} (${sk.pronouns}) · ${sk.ethnicityBroad}</div>
+      </div>
+
+      <!-- Stats -->
+      <div style="margin-bottom:1.25rem;">
+        <div style="font-family:var(--font-display);font-size:0.62rem;letter-spacing:0.16em;color:var(--brass-dark);text-transform:uppercase;margin-bottom:0.5rem;">Stats <span style="font-size:0.55rem;color:var(--ink-faint)">(click to reroll)</span></div>
+        <div class="stat-grid" id="stat-grid">
+          ${['strength','intelligence','wisdom','charisma','dexterity','constitution'].map(stat => `
+          <div class="stat-cell" onclick="rerollStat('${stat}')" title="Reroll ${stat}">
+            <span class="stat-name">${stat.slice(0,3).toUpperCase()}</span>
+            <span class="stat-value" id="stat-${stat}">${sk.stats[stat]}</span>
+            <div class="stat-bar"><div class="stat-bar-fill" id="bar-${stat}" style="width:${sk.stats[stat]}%"></div></div>
+            <span class="stat-reroll-hint">reroll</span>
+          </div>`).join('')}
+        </div>
+      </div>
+
+      <!-- MBTI -->
+      <div class="skeleton-row">
+        <span class="skeleton-key">Personality</span>
+        <span class="skeleton-val">
+          <span class="mbti-badge">
+            <span class="mbti-type">${sk.mbti}</span>
+            <span class="mbti-label">${sk.mbtiLabel}</span>
+          </span>
+        </span>
+      </div>
+
+      <!-- Identity rows -->
+      <div class="skeleton-row">
+        <span class="skeleton-key">Profession</span>
+        <span class="skeleton-val">${sk.profession} <span style="color:var(--ink-faint);font-style:italic">(${sk.industry}) — ${sk.sentiment}</span></span>
+      </div>
+      <div class="skeleton-row">
+        <span class="skeleton-key">Appearance</span>
+        <span class="skeleton-val">${appParts || '—'}</span>
+      </div>
+      <div class="skeleton-row">
+        <span class="skeleton-key">Quirk</span>
+        <span class="skeleton-val">${sk.quirk}</span>
+      </div>
+      <div class="skeleton-row">
+        <span class="skeleton-key">Economy</span>
+        <span class="skeleton-val">${sk.economicLabel} · ${sk.housing} · ${sk.transport}</span>
+      </div>
+      <div class="skeleton-row">
+        <span class="skeleton-key">City</span>
+        <span class="skeleton-val">${sk.cityLabel} <span style="color:var(--ink-faint);font-style:italic">— ${sk.cityFlavor}</span></span>
+      </div>
+      <div class="skeleton-row">
+        <span class="skeleton-key">Life Event</span>
+        <span class="skeleton-val">${sk.lifeEvent}</span>
+      </div>
+      <div class="skeleton-row">
+        <span class="skeleton-key">Tension</span>
+        <span class="skeleton-val">${sk.tension}</span>
+      </div>
+      <div class="skeleton-row">
+        <span class="skeleton-key">Secret</span>
+        <span class="skeleton-val">
+          <span class="severity-badge severity-${sk.secretSeverity}">${sk.secretSeverity}</span>${sk.secret}
+        </span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CAST -->
+  <div class="card" id="card-cast">
+    <div class="card-header">
+      <span class="card-title">⚙ Supporting Cast</span>
+    </div>
+    <div class="card-body">
+      <div class="cast-grid">
+        ${sk.cast.map(npc => `
+        <div class="cast-card">
+          <div class="cast-name">${npc.name}</div>
+          <div class="cast-role">${npc.role}</div>
+          <div class="cast-status-badge">${npc.status}</div>
+          <div class="cast-traits">${npc.traits.join(' · ')}</div>
+          <div class="cast-dynamic">${npc.dynamic}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>
+  `;
+}
+
+function renderOutput(sk, output) {
+  const tagHTML = output.tags.map(t => `<span class="tag-pill">${t}</span>`).join('');
+
+  const npcEntriesHTML = Object.entries(output.npcEntries).map(([name, entry]) => `
+    <div class="npc-section">
+      <div class="field-header">
+        <span class="npc-section-name">${name}</span>
+        <div class="field-meta">
+          <span class="char-count" id="cc-npc-${name.replace(/\s+/g,'_')}">${entry.length} / 1000</span>
+          <button class="btn-copy" onclick="copyField('npc-entry-${name.replace(/\s+/g,'_')}', this)">Copy</button>
+        </div>
+      </div>
+      <textarea class="field-textarea" id="npc-entry-${name.replace(/\s+/g,'_')}" rows="4"
+        oninput="updateCount(this,'cc-npc-${name.replace(/\s+/g,'_')}',1000)">${entry}</textarea>
+    </div>
+  `).join('');
+
+  return `
+  <!-- SCENARIO OUTPUT -->
+  <div class="card" id="card-scenario">
+    <div class="card-header">
+      <span class="card-title">⚙ AI Dungeon — Scenario</span>
+    </div>
+    <div class="card-body">
+
+      <div class="output-field">
+        <div class="field-header">
+          <span class="field-label">Title</span>
+          <div class="field-meta">
+            <span class="char-count" id="cc-title">${output.title.length} / 70</span>
+            <button class="btn-copy" onclick="copyField('field-title',this)">Copy</button>
+          </div>
+        </div>
+        <input class="field-input" id="field-title" type="text" maxlength="80"
+          value="${escHtml(output.title)}"
+          oninput="updateCount(this,'cc-title',70)">
+      </div>
+
+      <div class="output-field">
+        <div class="field-header">
+          <span class="field-label">Tags</span>
+          <div class="field-meta">
+            <button class="btn-copy" onclick="copyTags(this)">Copy</button>
+          </div>
+        </div>
+        <div class="tags-wrap" id="tags-wrap">${tagHTML}</div>
+      </div>
+
+      <div class="output-field">
+        <div class="field-header">
+          <span class="field-label">Description</span>
+          <div class="field-meta">
+            <span class="char-count" id="cc-desc">${output.description.length} / 5000</span>
+            <button class="btn-copy" onclick="copyField('field-desc',this)">Copy</button>
+          </div>
+        </div>
+        <textarea class="field-textarea" id="field-desc" rows="10"
+          oninput="updateCount(this,'cc-desc',5000)">${escHtml(output.description)}</textarea>
+      </div>
+
+      <div class="output-field">
+        <div class="field-header">
+          <span class="field-label">Opening</span>
+          <div class="field-meta">
+            <span class="char-count" id="cc-opening">${output.opening.length} / 4000</span>
+            <button class="btn-copy" onclick="copyField('field-opening',this)">Copy</button>
+          </div>
+        </div>
+        <textarea class="field-textarea" id="field-opening" rows="10"
+          oninput="updateCount(this,'cc-opening',4000)">${escHtml(output.opening)}</textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CHARACTER ENTRIES -->
+  <div class="card" id="card-entries">
+    <div class="card-header">
+      <span class="card-title">⚙ AI Dungeon — Character Entries</span>
+    </div>
+    <div class="card-body">
+
+      <div class="npc-section" style="margin-bottom:1.5rem;">
+        <div class="field-header">
+          <span class="npc-section-name" style="font-size:0.85rem;">${sk.name} — Protagonist</span>
+          <div class="field-meta">
+            <span class="char-count" id="cc-protagonist">${output.characterEntry.length} / 1000</span>
+            <button class="btn-copy" onclick="copyField('field-protagonist',this)">Copy</button>
+          </div>
+        </div>
+        <textarea class="field-textarea" id="field-protagonist" rows="5"
+          oninput="updateCount(this,'cc-protagonist',1000)">${escHtml(output.characterEntry)}</textarea>
+      </div>
+
+      ${npcEntriesHTML}
+
+    </div>
+  </div>
+
+  <div class="copy-all-wrap">
+    <button class="btn-copy-all" onclick="copyAll(this)">
+      ⚙ Copy Full Scenario Package
+    </button>
+  </div>
+  `;
+}
+
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// INTERACTIVE FUNCTIONS
+// ═══════════════════════════════════════════════════════════════════════════
+
+function updateCount(el, counterId, limit) {
+  const counter = document.getElementById(counterId);
+  if (!counter) return;
+  counter.textContent = `${el.value.length} / ${limit}`;
+  counter.classList.toggle('over', el.value.length > limit);
+}
+
+async function copyField(id, btn) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  await copyText(el.value ?? el.textContent, btn);
+}
+
+async function copyTags(btn) {
+  const pills = document.querySelectorAll('#tags-wrap .tag-pill');
+  const text = Array.from(pills).map(p => p.textContent).join(', ');
+  await copyText(text, btn);
+}
+
+async function copyAll(btn) {
+  if (!currentOutput || !currentSkeleton) return;
+  const payload = {
+    skeleton: currentSkeleton,
+    scenario: {
+      title:       currentOutput.title,
+      description: currentOutput.description,
+      tags:        currentOutput.tags,
+      opening:     currentOutput.opening,
+    },
+    characters: {
+      [currentSkeleton.name]: currentOutput.characterEntry,
+      ...currentOutput.npcEntries,
+    },
+  };
+  await copyText(JSON.stringify(payload, null, 2), btn);
+}
+
+function copySkeletonText(btn) {
+  if (!currentSkeleton) return;
+  const sk = currentSkeleton;
+  const app = [sk.appearance.build, sk.appearance.hair, sk.appearance.distinguishingFeature].filter(Boolean).join(', ');
+  const text = [
+    `${sk.name}, ${sk.age}, ${sk.gender} (${sk.pronouns})`,
+    `Ethnicity: ${sk.ethnicityBroad}`,
+    `Stats: STR ${sk.stats.strength} | INT ${sk.stats.intelligence} | WIS ${sk.stats.wisdom} | CHA ${sk.stats.charisma} | DEX ${sk.stats.dexterity} | CON ${sk.stats.constitution}`,
+    `MBTI: ${sk.mbti} — ${sk.mbtiLabel}`,
+    `Profession: ${sk.profession} (${sk.industry}) — ${sk.sentiment}`,
+    `Appearance: ${app}`,
+    `Quirk: ${sk.quirk}`,
+    `Economy: ${sk.economicLabel} · ${sk.housing} · ${sk.transport}`,
+    `City: ${sk.cityLabel}`,
+    `Life event: ${sk.lifeEvent}`,
+    `Tension: ${sk.tension}`,
+    `Secret [${sk.secretSeverity}]: ${sk.secret}`,
+  ].join('\n');
+  copyToClipboard(text);
+}
+
+async function rerollStat(statName) {
+  if (isGenerating || !currentSkeleton) return;
+  const newVal = Math.min(100, Math.max(1, Math.round((Math.random()*100+1 + Math.random()*100+1)/2)));
+  currentSkeleton.stats[statName] = newVal;
+
+  const valEl = document.getElementById(`stat-${statName}`);
+  const barEl = document.getElementById(`bar-${statName}`);
+  if (valEl) {
+    valEl.textContent = newVal;
+    valEl.closest('.stat-cell').classList.add('rolling');
+    setTimeout(() => valEl.closest('.stat-cell')?.classList.remove('rolling'), 700);
+  }
+  if (barEl) barEl.style.width = `${newVal}%`;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// MAIN GENERATE FLOW
+// ═══════════════════════════════════════════════════════════════════════════
+
+async function runGenerate() {
+  if (isGenerating) return;
+  const apiKey = document.getElementById('api-key').value.trim();
+  if (!apiKey) {
+    showError('Please enter your Anthropic API key to generate narrative content. (You can find it at console.anthropic.com)');
+    return;
+  }
+
+  isGenerating = true;
+  showError('');
+  const btn = document.getElementById('btn-generate');
+  btn.disabled = true;
+  btn.classList.add('spinning');
+
+  // Clear old output
+  document.getElementById('output-area').innerHTML = '';
+
+  try {
+    // Phase 1 — Roll stats
+    setPhase('phase-roll');
+    setStatus('The gears begin to turn…');
+    await sleep(300);
+    const stats = rollStats();
+
+    // Phase 2 — MBTI
+    setPhase('phase-mbti');
+    setStatus('Consulting the personality oracle…');
+    await sleep(250);
+    const mbti = assignMBTI(stats);
+
+    // Phase 3 — Skeleton
+    setPhase('phase-skeleton');
+    setStatus('Weaving the threads of fate…');
+    await sleep(300);
+    const tables = getGenreTables(currentGenre);
+    const skeleton = buildSkeleton(stats, mbti, tables);
+    currentSkeleton = skeleton;
+
+    // Render skeleton immediately
+    const outputArea = document.getElementById('output-area');
+    outputArea.innerHTML = renderSkeleton(skeleton);
+    await sleep(50);
+    document.querySelectorAll('.card').forEach((c, i) => {
+      setTimeout(() => c.classList.add('revealed'), i * 120);
+    });
+
+    // Phase 4 — AI narrative
+    setPhase('phase-ai');
+    setStatus('Summoning the narrative…');
+
+    const output = await callClaude(skeleton, apiKey, currentGenre);
+    currentOutput = output;
+
+    // Append output cards
+    outputArea.innerHTML += renderOutput(skeleton, output);
+    await sleep(50);
+    document.querySelectorAll('.card:not(.revealed)').forEach((c, i) => {
+      setTimeout(() => c.classList.add('revealed'), i * 150);
+    });
+
+    // Mark all phases done
+    ['phase-roll','phase-mbti','phase-skeleton','phase-ai'].forEach(p => {
+      document.getElementById(p)?.classList.remove('active');
+      document.getElementById(p)?.classList.add('done');
+    });
+
+    setStatus('Your fate is sealed. Edit and copy as needed.');
+
+  } catch(err) {
+    showError(`Generation failed: ${err.message}`);
+    setStatus('');
+    clearPhases();
+  } finally {
+    isGenerating = false;
+    btn.disabled = false;
+    btn.classList.remove('spinning');
+  }
+}
+
+// Init: show empty state with slow gear
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('empty-state')?.style && (document.getElementById('output-area').style.minHeight = '200px');
+});
+</script>
+</body>
+</html>

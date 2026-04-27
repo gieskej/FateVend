@@ -1,0 +1,433 @@
+// genres/fantasy/professions.js
+// Fantasy professions — grouped by archetype.
+// Economic tiers map to fantasy wealth:
+//   1 = destitute / thrall / beggar
+//   2 = peasant / laborer / hedge worker
+//   3 = craftsperson / soldier / journeyman
+//   4 = merchant / knight / skilled mage
+//   5 = noble / archmage / guild master
+
+export const PROFESSIONS = [
+
+  // ── MARTIAL ───────────────────────────────────────────────────────────────
+  {
+    title: 'City guard',
+    industry: 'Martial',
+    economicTier: 3,
+    statAffinity: { strength: 1.3, constitution: 1.2 },
+    sentiments: ['proud', 'burned out', 'resentful', 'quietly satisfied'],
+  },
+  {
+    title: 'Mercenary soldier',
+    industry: 'Martial',
+    economicTier: 3,
+    statAffinity: { strength: 1.4, constitution: 1.3, dexterity: 1.1 },
+    sentiments: ['indifferent', 'proud', 'burned out', 'desperate'],
+  },
+  {
+    title: 'Knight in service to a lord',
+    industry: 'Martial',
+    economicTier: 4,
+    statAffinity: { strength: 1.4, charisma: 1.2, wisdom: 1.1 },
+    sentiments: ['proud', 'quietly satisfied', 'burned out', 'resentful'],
+  },
+  {
+    title: 'Disgraced knight',
+    industry: 'Martial',
+    economicTier: 2,
+    statAffinity: { strength: 1.3, wisdom: 1.1 },
+    sentiments: ['ashamed', 'resentful', 'desperate', 'quietly satisfied'],
+  },
+  {
+    title: 'Sellsword',
+    industry: 'Martial',
+    economicTier: 2,
+    statAffinity: { strength: 1.5, dexterity: 1.2 },
+    sentiments: ['indifferent', 'proud', 'burned out'],
+  },
+  {
+    title: 'Bounty hunter',
+    industry: 'Martial',
+    economicTier: 3,
+    statAffinity: { strength: 1.3, dexterity: 1.3, wisdom: 1.1 },
+    sentiments: ['indifferent', 'passionate', 'quietly satisfied'],
+  },
+  {
+    title: 'Arena fighter',
+    industry: 'Martial',
+    economicTier: 2,
+    statAffinity: { strength: 1.5, constitution: 1.4 },
+    sentiments: ['proud', 'desperate', 'burned out', 'resentful'],
+  },
+  {
+    title: 'Bodyguard',
+    industry: 'Martial',
+    economicTier: 3,
+    statAffinity: { strength: 1.3, constitution: 1.2, wisdom: 1.1 },
+    sentiments: ['indifferent', 'quietly satisfied', 'proud'],
+  },
+
+  // ── ROGUISH ───────────────────────────────────────────────────────────────
+  {
+    title: 'Thief',
+    industry: 'Criminal',
+    economicTier: 2,
+    statAffinity: { dexterity: 1.5, intelligence: 1.2 },
+    sentiments: ['proud', 'desperate', 'indifferent', 'passionate'],
+  },
+  {
+    title: 'Fence',
+    industry: 'Criminal',
+    economicTier: 3,
+    statAffinity: { charisma: 1.3, intelligence: 1.2 },
+    sentiments: ['quietly satisfied', 'indifferent', 'proud'],
+  },
+  {
+    title: 'Assassin',
+    industry: 'Criminal',
+    economicTier: 4,
+    statAffinity: { dexterity: 1.5, intelligence: 1.3, wisdom: 1.1 },
+    sentiments: ['indifferent', 'quietly satisfied', 'ashamed', 'proud'],
+  },
+  {
+    title: 'Guild thief',
+    industry: 'Criminal',
+    economicTier: 3,
+    statAffinity: { dexterity: 1.4, charisma: 1.1, intelligence: 1.2 },
+    sentiments: ['proud', 'indifferent', 'passionate'],
+  },
+  {
+    title: 'Con artist / grifter',
+    industry: 'Criminal',
+    economicTier: 3,
+    statAffinity: { charisma: 1.6, intelligence: 1.3 },
+    sentiments: ['passionate', 'proud', 'indifferent'],
+  },
+  {
+    title: 'Smuggler',
+    industry: 'Criminal',
+    economicTier: 3,
+    statAffinity: { dexterity: 1.3, charisma: 1.2, wisdom: 1.1 },
+    sentiments: ['indifferent', 'proud', 'desperate', 'quietly satisfied'],
+  },
+  {
+    title: 'Spy / informant',
+    industry: 'Criminal',
+    economicTier: 4,
+    statAffinity: { intelligence: 1.4, charisma: 1.3, dexterity: 1.2 },
+    sentiments: ['indifferent', 'quietly satisfied', 'ashamed'],
+  },
+
+  // ── ARCANE ────────────────────────────────────────────────────────────────
+  {
+    title: 'Hedge witch',
+    industry: 'Arcane',
+    economicTier: 2,
+    statAffinity: { intelligence: 1.3, wisdom: 1.2 },
+    sentiments: ['proud', 'quietly satisfied', 'indifferent', 'resentful'],
+  },
+  {
+    title: 'Apprentice mage',
+    industry: 'Arcane',
+    economicTier: 2,
+    statAffinity: { intelligence: 1.5, wisdom: 1.1 },
+    sentiments: ['passionate', 'desperate', 'burned out', 'proud'],
+  },
+  {
+    title: 'Court wizard',
+    industry: 'Arcane',
+    economicTier: 4,
+    statAffinity: { intelligence: 1.5, charisma: 1.2, wisdom: 1.2 },
+    sentiments: ['quietly satisfied', 'burned out', 'resentful', 'proud'],
+  },
+  {
+    title: 'Battle mage',
+    industry: 'Arcane',
+    economicTier: 4,
+    statAffinity: { intelligence: 1.4, strength: 1.2, constitution: 1.1 },
+    sentiments: ['proud', 'burned out', 'passionate'],
+  },
+  {
+    title: 'Warlock',
+    industry: 'Arcane',
+    economicTier: 3,
+    statAffinity: { intelligence: 1.3, charisma: 1.3, wisdom: 0.9 },
+    sentiments: ['proud', 'quietly satisfied', 'desperate', 'ashamed'],
+  },
+  {
+    title: 'Necromancer',
+    industry: 'Arcane',
+    economicTier: 3,
+    statAffinity: { intelligence: 1.5, wisdom: 0.9 },
+    sentiments: ['passionate', 'indifferent', 'quietly satisfied', 'ashamed'],
+  },
+  {
+    title: 'Runesmith',
+    industry: 'Arcane',
+    economicTier: 4,
+    statAffinity: { intelligence: 1.4, dexterity: 1.3 },
+    sentiments: ['passionate', 'proud', 'quietly satisfied'],
+  },
+  {
+    title: 'Alchemist',
+    industry: 'Arcane',
+    economicTier: 3,
+    statAffinity: { intelligence: 1.5, dexterity: 1.2 },
+    sentiments: ['passionate', 'burned out', 'quietly satisfied', 'proud'],
+  },
+  {
+    title: 'Witch hunter',
+    industry: 'Arcane',
+    economicTier: 3,
+    statAffinity: { wisdom: 1.3, strength: 1.2, constitution: 1.1 },
+    sentiments: ['proud', 'burned out', 'resentful'],
+  },
+
+  // ── DIVINE ────────────────────────────────────────────────────────────────
+  {
+    title: 'Temple priest',
+    industry: 'Divine',
+    economicTier: 3,
+    statAffinity: { wisdom: 1.4, charisma: 1.2 },
+    sentiments: ['passionate', 'quietly satisfied', 'burned out', 'proud'],
+  },
+  {
+    title: 'Wandering cleric',
+    industry: 'Divine',
+    economicTier: 2,
+    statAffinity: { wisdom: 1.4, constitution: 1.2 },
+    sentiments: ['passionate', 'quietly satisfied', 'indifferent'],
+  },
+  {
+    title: 'Inquisitor',
+    industry: 'Divine',
+    economicTier: 4,
+    statAffinity: { wisdom: 1.3, strength: 1.2, intelligence: 1.1 },
+    sentiments: ['proud', 'passionate', 'quietly satisfied', 'burned out'],
+  },
+  {
+    title: 'Fallen paladin',
+    industry: 'Divine',
+    economicTier: 2,
+    statAffinity: { strength: 1.3, wisdom: 1.2, constitution: 1.1 },
+    sentiments: ['ashamed', 'resentful', 'desperate', 'quietly satisfied'],
+  },
+  {
+    title: 'Oracle / seer',
+    industry: 'Divine',
+    economicTier: 3,
+    statAffinity: { wisdom: 1.5, intelligence: 1.2 },
+    sentiments: ['quietly satisfied', 'burned out', 'indifferent', 'passionate'],
+  },
+  {
+    title: 'Druid',
+    industry: 'Divine',
+    economicTier: 2,
+    statAffinity: { wisdom: 1.4, constitution: 1.3 },
+    sentiments: ['quietly satisfied', 'passionate', 'indifferent'],
+  },
+
+  // ── SKILLED TRADES / CRAFT ────────────────────────────────────────────────
+  {
+    title: 'Blacksmith',
+    industry: 'Craft',
+    economicTier: 3,
+    statAffinity: { strength: 1.4, dexterity: 1.2, constitution: 1.1 },
+    sentiments: ['proud', 'quietly satisfied', 'indifferent'],
+  },
+  {
+    title: 'Weaponsmith',
+    industry: 'Craft',
+    economicTier: 4,
+    statAffinity: { strength: 1.3, dexterity: 1.4, intelligence: 1.1 },
+    sentiments: ['passionate', 'proud', 'quietly satisfied'],
+  },
+  {
+    title: 'Shipwright',
+    industry: 'Craft',
+    economicTier: 3,
+    statAffinity: { intelligence: 1.2, strength: 1.2, dexterity: 1.2 },
+    sentiments: ['proud', 'quietly satisfied', 'burned out'],
+  },
+  {
+    title: 'Herbalist',
+    industry: 'Craft',
+    economicTier: 2,
+    statAffinity: { wisdom: 1.3, intelligence: 1.2, dexterity: 1.1 },
+    sentiments: ['quietly satisfied', 'passionate', 'indifferent'],
+  },
+  {
+    title: 'Cartographer',
+    industry: 'Craft',
+    economicTier: 3,
+    statAffinity: { intelligence: 1.4, dexterity: 1.2, wisdom: 1.1 },
+    sentiments: ['passionate', 'quietly satisfied', 'proud'],
+  },
+  {
+    title: 'Tattooist / scarifier',
+    industry: 'Craft',
+    economicTier: 3,
+    statAffinity: { dexterity: 1.5, charisma: 1.1 },
+    sentiments: ['passionate', 'quietly satisfied', 'proud'],
+  },
+
+  // ── SOCIAL / SERVICE ──────────────────────────────────────────────────────
+  {
+    title: 'Bard',
+    industry: 'Performance',
+    economicTier: 2,
+    statAffinity: { charisma: 1.5, dexterity: 1.2 },
+    sentiments: ['passionate', 'indifferent', 'quietly satisfied', 'burned out'],
+  },
+  {
+    title: 'Innkeeper',
+    industry: 'Service',
+    economicTier: 3,
+    statAffinity: { charisma: 1.3, wisdom: 1.2, constitution: 1.1 },
+    sentiments: ['quietly satisfied', 'burned out', 'proud', 'indifferent'],
+  },
+  {
+    title: 'Merchant',
+    industry: 'Trade',
+    economicTier: 4,
+    statAffinity: { charisma: 1.4, intelligence: 1.3 },
+    sentiments: ['proud', 'quietly satisfied', 'passionate', 'burned out'],
+  },
+  {
+    title: 'Ship captain',
+    industry: 'Trade',
+    economicTier: 4,
+    statAffinity: { charisma: 1.3, wisdom: 1.2, strength: 1.1 },
+    sentiments: ['proud', 'passionate', 'quietly satisfied'],
+  },
+  {
+    title: 'Sailor / deckhand',
+    industry: 'Trade',
+    economicTier: 2,
+    statAffinity: { constitution: 1.3, strength: 1.2 },
+    sentiments: ['indifferent', 'proud', 'burned out', 'desperate'],
+  },
+  {
+    title: 'Tavern keeper',
+    industry: 'Service',
+    economicTier: 3,
+    statAffinity: { charisma: 1.2, constitution: 1.2, wisdom: 1.1 },
+    sentiments: ['quietly satisfied', 'burned out', 'indifferent'],
+  },
+  {
+    title: 'Scribe',
+    industry: 'Service',
+    economicTier: 3,
+    statAffinity: { intelligence: 1.4, dexterity: 1.2 },
+    sentiments: ['indifferent', 'quietly satisfied', 'burned out', 'passionate'],
+  },
+  {
+    title: 'Courier / messenger',
+    industry: 'Service',
+    economicTier: 2,
+    statAffinity: { dexterity: 1.3, constitution: 1.2 },
+    sentiments: ['indifferent', 'quietly satisfied', 'desperate'],
+  },
+  {
+    title: 'Gravedigger',
+    industry: 'Service',
+    economicTier: 2,
+    statAffinity: { constitution: 1.3, strength: 1.2 },
+    sentiments: ['indifferent', 'quietly satisfied', 'resentful', 'ashamed'],
+  },
+
+  // ── NOBILITY / POWER ──────────────────────────────────────────────────────
+  {
+    title: 'Minor noble',
+    industry: 'Nobility',
+    economicTier: 4,
+    statAffinity: { charisma: 1.3, intelligence: 1.2 },
+    sentiments: ['proud', 'quietly satisfied', 'resentful', 'burned out'],
+  },
+  {
+    title: 'Disinherited noble',
+    industry: 'Nobility',
+    economicTier: 2,
+    statAffinity: { charisma: 1.3, intelligence: 1.2 },
+    sentiments: ['resentful', 'ashamed', 'desperate', 'proud'],
+  },
+  {
+    title: 'Royal advisor',
+    industry: 'Nobility',
+    economicTier: 5,
+    statAffinity: { intelligence: 1.5, charisma: 1.3, wisdom: 1.2 },
+    sentiments: ['quietly satisfied', 'burned out', 'proud', 'resentful'],
+  },
+  {
+    title: 'Spymaster',
+    industry: 'Nobility',
+    economicTier: 5,
+    statAffinity: { intelligence: 1.5, charisma: 1.3, wisdom: 1.2 },
+    sentiments: ['quietly satisfied', 'indifferent', 'proud'],
+  },
+  {
+    title: 'Crime lord',
+    industry: 'Criminal',
+    economicTier: 5,
+    statAffinity: { charisma: 1.5, intelligence: 1.4, strength: 1.1 },
+    sentiments: ['proud', 'quietly satisfied', 'indifferent'],
+  },
+
+  // ── OUTCAST / WILDERNESS ──────────────────────────────────────────────────
+  {
+    title: 'Hunter / trapper',
+    industry: 'Wilderness',
+    economicTier: 2,
+    statAffinity: { dexterity: 1.4, wisdom: 1.2, constitution: 1.1 },
+    sentiments: ['quietly satisfied', 'proud', 'indifferent'],
+  },
+  {
+    title: 'Ranger',
+    industry: 'Wilderness',
+    economicTier: 3,
+    statAffinity: { dexterity: 1.4, wisdom: 1.3, constitution: 1.2 },
+    sentiments: ['quietly satisfied', 'indifferent', 'passionate', 'burned out'],
+  },
+  {
+    title: 'Monster hunter',
+    industry: 'Wilderness',
+    economicTier: 3,
+    statAffinity: { strength: 1.3, dexterity: 1.3, wisdom: 1.2 },
+    sentiments: ['passionate', 'burned out', 'proud', 'indifferent'],
+  },
+  {
+    title: 'Outlaw / bandit',
+    industry: 'Criminal',
+    economicTier: 2,
+    statAffinity: { strength: 1.3, dexterity: 1.2, wisdom: 0.9 },
+    sentiments: ['proud', 'desperate', 'resentful', 'indifferent'],
+  },
+  {
+    title: 'Pirate',
+    industry: 'Criminal',
+    economicTier: 3,
+    statAffinity: { strength: 1.3, charisma: 1.2, dexterity: 1.2 },
+    sentiments: ['proud', 'passionate', 'indifferent', 'desperate'],
+  },
+  {
+    title: 'Exiled mage',
+    industry: 'Arcane',
+    economicTier: 1,
+    statAffinity: { intelligence: 1.4, wisdom: 1.1 },
+    sentiments: ['resentful', 'ashamed', 'desperate', 'quietly satisfied'],
+  },
+  {
+    title: 'Escaped slave',
+    industry: 'Outcast',
+    economicTier: 1,
+    statAffinity: { constitution: 1.3, strength: 1.2 },
+    sentiments: ['desperate', 'resentful', 'proud', 'quietly satisfied'],
+  },
+  {
+    title: 'Wandering monk',
+    industry: 'Divine',
+    economicTier: 1,
+    statAffinity: { wisdom: 1.4, constitution: 1.2 },
+    sentiments: ['quietly satisfied', 'passionate', 'indifferent'],
+  },
+];
