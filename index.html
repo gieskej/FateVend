@@ -292,6 +292,80 @@ body::before {
   50%       { transform: scale(1.4); }
 }
 
+/* ── PORTRAIT ───────────────────────────────────────────────────────── */
+.btn-gen-portrait {
+  margin-top: 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: 1px solid var(--brass-dark);
+  border-radius: var(--radius);
+  color: var(--brass-light);
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.btn-gen-portrait:hover:not(:disabled) {
+  background: var(--brass-dark);
+  color: var(--parchment);
+  border-color: var(--brass);
+}
+.btn-gen-portrait:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.portrait-wrap {
+  margin-top: 0.75rem;
+}
+.portrait-wrap img {
+  display: block;
+  max-width: 320px;
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--brass-dark);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+.portrait-actions {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.portrait-error {
+  color: var(--rust);
+  font-style: italic;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+/* ── AI LOADING PLACEHOLDER ────────────────────────────────────────── */
+.ai-loading-placeholder .card-header {
+  border-bottom: 1px solid var(--parchment-deep);
+}
+.loading-gear {
+  display: inline-block;
+  animation: spin 1.4s linear infinite;
+  color: var(--brass-dark);
+}
+.shimmer-line {
+  height: 0.8rem;
+  border-radius: 3px;
+  background: linear-gradient(90deg,
+    var(--parchment-dark) 0%,
+    var(--parchment-deep) 40%,
+    var(--parchment-dark) 80%
+  );
+  background-size: 300% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+  margin-bottom: 0.65rem;
+}
+@keyframes shimmer {
+  0%   { background-position: 200% center; }
+  100% { background-position: -100% center; }
+}
+
 /* ── CARD BASE ─────────────────────────────────────────────────────── */
 .card {
   background: linear-gradient(160deg, var(--parchment) 0%, var(--parchment-dark) 100%);
@@ -753,11 +827,16 @@ body::before {
 
   <div class="divider">⚙ ⚙ ⚙</div>
 
-  <!-- API KEY -->
+  <!-- API KEYS -->
   <div class="api-section">
     <label for="api-key">Anthropic API Key</label>
     <input id="api-key" class="api-input" type="password"
       placeholder="sk-ant-..." autocomplete="off" spellcheck="false">
+  </div>
+  <div class="api-section">
+    <label for="img-api-key">Stability AI Key <span style="font-style:italic;font-size:0.65rem;color:var(--ink-faint);text-transform:none;letter-spacing:0">(for portraits)</span></label>
+    <input id="img-api-key" class="api-input" type="password"
+      placeholder="sk-..." autocomplete="off" spellcheck="false">
   </div>
 
   <!-- GENRE SELECTOR -->
@@ -1881,9 +1960,12 @@ function buildPrompt(sk, genre) {
   const openingNote   = genre === 'fantasy'
     ? 'Second person. Drop the player into a vivid fantasy moment right now — mid-scene. Sensory detail (smells, sounds, weight of gear). End mid-moment with a clear choice.'
     : 'Second person. Drop the player directly into a vivid, specific moment — right now. Sensory detail. End mid-moment with a clear next decision.';
+  const appearanceNote = genre === 'fantasy'
+    ? 'Comma-separated visual descriptors for a text-to-image model. Start with "portrait of" then: race, age range, gender, body type, hair color and style, eye description, distinguishing feature if any, armor or clothing suited to their role, setting mood. Include "face of [a historical figure, classical warrior, or well-known portrait subject whose gender, racial appearance, and approximate age match this character]". Close with: fantasy character art, detailed digital illustration, dramatic lighting. No sentences — descriptors only.'
+    : 'Comma-separated visual descriptors for a text-to-image model. Start with "portrait of" then: age range, gender, body type, hair color and style, eye description, distinguishing feature if any, outfit suited to their job and economic tier, setting mood. Include "face of [a historical figure or classic-cinema figure whose gender, ethnicity, and approximate age match this character — someone whose likeness is well-documented in photographs or portraiture]". Close with: photorealistic, cinematic lighting. No sentences — descriptors only.';
 
   return `Generate ${genreLabel} content for this character. Return a single JSON object with these exact keys:
-"characterEntry", "npcEntries", "title", "description", "tags", "opening"
+"characterEntry", "npcEntries", "title", "description", "tags", "opening", "appearancePrompt"
 
 CHARACTER SKELETON:
 Name: ${sk.name}, ${sk.age}, ${sk.gender} (${sk.pronouns})
@@ -1916,14 +1998,16 @@ OUTPUT RULES:
 
 "tags": Array of 8–10 lowercase strings. Genre-appropriate.
 
-"opening": MAX 4000 chars. ${openingNote}`;
+"opening": MAX 4000 chars. ${openingNote}
+
+"appearancePrompt": MAX 500 chars. ${appearanceNote}`;
 }
 
 function parseResponse(raw) {
   try {
     const clean = raw.replace(/^```json\s*/i,'').replace(/^```\s*/i,'').replace(/```\s*$/i,'').trim();
     const p = JSON.parse(clean);
-    return { characterEntry: p.characterEntry??'', npcEntries: p.npcEntries??{}, title: p.title??'', description: p.description??'', tags: p.tags??[], opening: p.opening??'' };
+    return { characterEntry: p.characterEntry??'', npcEntries: p.npcEntries??{}, title: p.title??'', description: p.description??'', tags: p.tags??[], opening: p.opening??'', appearancePrompt: p.appearancePrompt??'' };
   } catch(e) { return null; }
 }
 
@@ -1962,7 +2046,7 @@ async function callClaude(skeleton, apiKey, genre) {
       'anthropic-dangerous-direct-browser-access': 'true',
     },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-sonnet-4-5',
       max_tokens: 4096,
       system: getSystemPrompt(genre),
       messages: [{ role: 'user', content: buildPrompt(skeleton, genre) }],
@@ -2249,6 +2333,21 @@ function renderOutput(sk, output) {
         <div class="tags-wrap" id="tags-wrap">${tagHTML}</div>
       </div>
 
+      ${output.appearancePrompt ? `
+      <div class="output-field">
+        <div class="field-header">
+          <span class="field-label">Portrait Prompt <span style="font-size:0.75rem;color:var(--ink-faint);font-style:italic;font-family:var(--font-body)">(text-to-image)</span></span>
+          <div class="field-meta">
+            <span class="char-count" id="cc-appearance">${output.appearancePrompt.length} / 500</span>
+            <button class="btn-copy" onclick="copyField('field-appearance',this)">Copy</button>
+          </div>
+        </div>
+        <textarea class="field-textarea" id="field-appearance" rows="3"
+          oninput="updateCount(this,'cc-appearance',500)">${escHtml(output.appearancePrompt)}</textarea>
+        <button class="btn-gen-portrait" onclick="generatePortrait(this)">⚙ Generate Portrait</button>
+        <div class="portrait-wrap" id="portrait-wrap"></div>
+      </div>` : ''}
+
       <div class="output-field">
         <div class="field-header">
           <span class="field-label">Description</span>
@@ -2344,10 +2443,11 @@ async function copyAll(btn) {
   const payload = {
     skeleton: currentSkeleton,
     scenario: {
-      title:       currentOutput.title,
-      description: currentOutput.description,
-      tags:        currentOutput.tags,
-      opening:     currentOutput.opening,
+      title:           currentOutput.title,
+      description:     currentOutput.description,
+      tags:            currentOutput.tags,
+      opening:         currentOutput.opening,
+      appearancePrompt: currentOutput.appearancePrompt,
     },
     characters: {
       [currentSkeleton.name]: currentOutput.characterEntry,
@@ -2447,8 +2547,26 @@ async function runGenerate() {
     setPhase('phase-ai');
     setStatus('Summoning the narrative…');
 
+    outputArea.insertAdjacentHTML('beforeend', `
+      <div id="ai-placeholder" class="card ai-loading-placeholder revealed">
+        <div class="card-header">
+          <span class="card-title"><span class="loading-gear">⚙</span> Generating Scenario…</span>
+        </div>
+        <div class="card-body" style="padding:1.25rem 1.5rem;">
+          <div class="shimmer-line" style="width:88%"></div>
+          <div class="shimmer-line" style="width:72%"></div>
+          <div class="shimmer-line" style="width:81%"></div>
+          <div class="shimmer-line" style="width:65%"></div>
+          <div class="shimmer-line" style="width:78%"></div>
+          <div class="shimmer-line" style="width:55%"></div>
+        </div>
+      </div>
+    `);
+
     const output = await callClaude(skeleton, apiKey, currentGenre);
     currentOutput = output;
+
+    document.getElementById('ai-placeholder')?.remove();
 
     // Append output cards
     outputArea.innerHTML += renderOutput(skeleton, output);
@@ -2473,6 +2591,59 @@ async function runGenerate() {
     isGenerating = false;
     btn.disabled = false;
     btn.classList.remove('spinning');
+  }
+}
+
+// ── Portrait generation ───────────────────────────────────────────────────
+async function generatePortrait(btn) {
+  const apiKey = document.getElementById('img-api-key').value.trim();
+  if (!apiKey) {
+    showError('Enter your Stability AI API key to generate portraits.');
+    return;
+  }
+  const promptEl = document.getElementById('field-appearance');
+  if (!promptEl || !promptEl.value.trim()) return;
+
+  const wrapEl = document.getElementById('portrait-wrap');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading-gear">⚙</span> Rendering…';
+  wrapEl.innerHTML = `<div style="color:var(--brass-light);font-style:italic;font-size:0.9rem;margin-top:0.4rem;">Painting the portrait…</div>`;
+
+  try {
+    const form = new FormData();
+    form.append('prompt', promptEl.value.trim());
+    form.append('aspect_ratio', '2:3');
+    form.append('output_format', 'png');
+
+    const res = await fetch('https://api.stability.ai/v2beta/stable-image/generate/core', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Accept': 'application/json',
+      },
+      body: form,
+    });
+
+    if (!res.ok) {
+      const txt = await res.text().catch(() => '');
+      throw new Error(`Stability API ${res.status}: ${txt}`);
+    }
+
+    const data = await res.json();
+    const src = `data:image/png;base64,${data.image}`;
+    const filename = `${(currentSkeleton?.name ?? 'portrait').replace(/\s+/g, '-')}.png`;
+
+    wrapEl.innerHTML = `
+      <img src="${src}" alt="Character portrait">
+      <div class="portrait-actions">
+        <a href="${src}" download="${filename}" class="btn-gen-portrait" style="text-decoration:none;">↓ Save</a>
+        <button class="btn-gen-portrait" onclick="generatePortrait(this)">⚙ Regenerate</button>
+      </div>`;
+  } catch (err) {
+    wrapEl.innerHTML = `<div class="portrait-error">Portrait failed: ${err.message}</div>`;
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '⚙ Generate Portrait';
   }
 }
 

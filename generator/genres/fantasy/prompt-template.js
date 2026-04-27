@@ -39,7 +39,7 @@ export function buildPrompt(sk) {
   ].filter(Boolean).join('; ');
 
   return `Generate AI Dungeon fantasy content for this character. Return a single JSON object with these exact keys:
-"characterEntry", "npcEntries", "title", "description", "tags", "opening"
+"characterEntry", "npcEntries", "title", "description", "tags", "opening", "appearancePrompt"
 
 CHARACTER SKELETON:
 Name: ${sk.name}, ${sk.age}, ${sk.gender} (${sk.pronouns})
@@ -72,7 +72,9 @@ OUTPUT RULES:
 
 "tags": Array of 8–10 lowercase strings. E.g. ["fantasy", "adventure", "magic", "gritty", "thieves-guild"].
 
-"opening": MAX 4000 chars. Second person. Drop the player into a vivid, specific moment right now — mid-scene. Something is happening. Use sensory detail. End mid-moment with a clear choice or action available. No backstory dumps.`;
+"opening": MAX 4000 chars. Second person. Drop the player into a vivid, specific moment right now — mid-scene. Something is happening. Use sensory detail. End mid-moment with a clear choice or action available. No backstory dumps.
+
+"appearancePrompt": MAX 500 chars. Comma-separated visual descriptors for a text-to-image model. Build a portrait prompt: start with "portrait of" then describe the subject (race, age range, gender, body type), hair color and style, eye description, distinguishing feature if any, armor or clothing suited to their role, and setting mood. Include "face of [a historical figure, classical warrior, or well-known portrait subject whose gender, racial appearance, and approximate age match this character]". Close with: fantasy character art, detailed digital illustration, dramatic lighting. Descriptors only — no full sentences, no labels, no stats.`;
 }
 
 /**
@@ -89,12 +91,13 @@ export function parseResponse(rawText) {
       .trim();
     const parsed = JSON.parse(cleaned);
     return {
-      characterEntry: parsed.characterEntry ?? '',
-      npcEntries:     parsed.npcEntries     ?? {},
-      title:          parsed.title          ?? '',
-      description:    parsed.description    ?? '',
-      tags:           parsed.tags           ?? [],
-      opening:        parsed.opening        ?? '',
+      characterEntry:  parsed.characterEntry  ?? '',
+      npcEntries:      parsed.npcEntries      ?? {},
+      title:           parsed.title           ?? '',
+      description:     parsed.description     ?? '',
+      tags:            parsed.tags            ?? [],
+      opening:         parsed.opening         ?? '',
+      appearancePrompt: parsed.appearancePrompt ?? '',
     };
   } catch (err) {
     return null;

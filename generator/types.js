@@ -76,6 +76,7 @@
  * @property {string}              description      Scenario description (≤5000 chars)
  * @property {string[]}            tags             8–10 lowercase tag strings
  * @property {string}              opening          Scenario opening (≤4000 chars)
+ * @property {string}              appearancePrompt Comma-separated visual descriptors for text-to-image generation (≤500 chars)
  */
 
 /**

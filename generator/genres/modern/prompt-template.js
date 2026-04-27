@@ -41,7 +41,7 @@ export function buildPrompt(sk) {
   ].filter(Boolean).join('; ');
 
   return `Generate AI Dungeon content for this character. Return a single JSON object with these exact keys:
-"characterEntry", "npcEntries", "title", "description", "tags", "opening"
+"characterEntry", "npcEntries", "title", "description", "tags", "opening", "appearancePrompt"
 
 CHARACTER SKELETON:
 Name: ${sk.name}, ${sk.age}, ${sk.gender} (${sk.pronouns})
@@ -74,7 +74,9 @@ OUTPUT RULES:
 
 "tags": Array of 8–10 lowercase strings. Genre-appropriate. E.g. ["modern", "drama", "crime", "dark-comedy", "redemption"].
 
-"opening": MAX 4000 chars. Second person. Drop the player into a specific vivid moment — right now, mid-scene. Something is happening. Use sensory detail. The tension is present or arriving. End mid-moment, leaving the player with a clear choice or action. No backstory. No summaries. Just: you are here, this is happening, what do you do.`;
+"opening": MAX 4000 chars. Second person. Drop the player into a specific vivid moment — right now, mid-scene. Something is happening. Use sensory detail. The tension is present or arriving. End mid-moment, leaving the player with a clear choice or action. No backstory. No summaries. Just: you are here, this is happening, what do you do.
+
+"appearancePrompt": MAX 500 chars. Comma-separated visual descriptors for a text-to-image model. Build a portrait prompt: start with "portrait of" then describe the subject (age range, gender, body type), hair color and style, eye description, distinguishing feature if any, outfit suited to their job and economic tier, and setting mood. Include "face of [a historical figure or classic-cinema figure whose gender, ethnicity, and approximate age match this character — choose someone whose likeness is well-documented in photographs or portraiture]". Close with: photorealistic, cinematic lighting. Descriptors only — no full sentences, no labels, no stats.`;
 }
 
 /**
@@ -91,12 +93,13 @@ export function parseResponse(rawText) {
       .trim();
     const parsed = JSON.parse(cleaned);
     return {
-      characterEntry: parsed.characterEntry ?? '',
-      npcEntries:     parsed.npcEntries     ?? {},
-      title:          parsed.title          ?? '',
-      description:    parsed.description    ?? '',
-      tags:           parsed.tags           ?? [],
-      opening:        parsed.opening        ?? '',
+      characterEntry:  parsed.characterEntry  ?? '',
+      npcEntries:      parsed.npcEntries      ?? {},
+      title:           parsed.title           ?? '',
+      description:     parsed.description     ?? '',
+      tags:            parsed.tags            ?? [],
+      opening:         parsed.opening         ?? '',
+      appearancePrompt: parsed.appearancePrompt ?? '',
     };
   } catch (err) {
     console.error('Failed to parse Claude response:', err);
