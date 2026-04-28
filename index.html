@@ -851,6 +851,10 @@ body::before {
         style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s;">
         Fantasy
       </button>
+      <button id="genre-scifi" onclick="setGenre('sci-fi')"
+        style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s;">
+        Sci-Fi
+      </button>
     </div>
   </div>
 
@@ -1117,6 +1121,49 @@ const CITY_SETTINGS = [
   { id:'border',label:'A border town',flavor:'two worlds overlapping, informal economy, the law means different things on different streets',statAffinity:{wisdom:1.1,strength:1.1,constitution:1.2} },
 ];
 
+const TAG_POOLS = {
+  always:['modern','character-driven'],
+  gritty:['gritty','dark','crime','survival'],
+  dramatic:['drama','secrets','betrayal','high-stakes'],
+  cozy:['cozy','slice-of-life'],
+  neutral:['drama'],
+  criminal:['crime','underworld','heist'],
+  professionTags:{
+    'Shipping & logistics':['working-class','labor'],
+    'Trades':['working-class'],
+    'Automotive':['working-class'],
+    'Transportation':['working-class'],
+    'Construction':['labor','working-class'],
+    'Manufacturing':['labor'],
+    'Municipal services':['labor'],
+    'Logistics':['labor'],
+    'Food & beverage':['slice-of-life'],
+    'Hospitality':['slice-of-life'],
+    'Gig economy':['gig-economy','working-class'],
+    'Personal services':['slice-of-life'],
+    'Fitness':['slice-of-life'],
+    'Private security':['action','crime'],
+    'Creative services':['drama','arts'],
+    'Entertainment':['drama','arts'],
+    'Street art':['arts','gritty'],
+    'Finance':['corporate','drama'],
+    'Technology':['tech','drama'],
+    'Healthcare':['drama'],
+    'Emergency services':['action','drama'],
+    'Education':['drama','slice-of-life'],
+    'Public services':['drama'],
+    'Legal':['drama','crime'],
+    'Media':['drama'],
+    'Mental health':['drama'],
+    'Real estate':['corporate','drama'],
+    'Law enforcement':['crime','action'],
+    'Security':['crime','action'],
+    'Military':['action'],
+    'Criminal':['crime','underworld','heist'],
+    'Corporate':['corporate','drama'],
+  },
+};
+
 const GENDERS = [
   { id:'man',label:'Man',pronouns:'he/him',weight:45 },
   { id:'woman',label:'Woman',pronouns:'she/her',weight:45 },
@@ -1250,8 +1297,7 @@ function pickFirst(genderId, pool) {
   return r < 0.4 ? uniformPick(pool.neutral) : r < 0.7 ? uniformPick(pool.masc) : uniformPick(pool.fem);
 }
 
-function protoName(genderId, ethnicityBroad) {
-  const pool = poolFor(ethnicityBroad);
+function protoName(genderId, pool) {
   const first = pickFirst(genderId, pool);
   const last  = uniformPick(pool.last);
   return { first, last, full: `${first} ${last}` };
@@ -1625,6 +1671,320 @@ const FANTASY_PARENT_STATUSES = [
   { id:'missing',label:'missing — presumed dead, but unconfirmed' },
 ];
 
+// ═══════════════════════════════════════════════════════════════════════════
+// SCI-FI GENRE TABLES
+// ═══════════════════════════════════════════════════════════════════════════
+
+const SCIFI_SPECIES = [
+  { id:'human_earther',  broad:'Human',          flavor:'Earth-born — grounded, haunted by a planet most of them have never actually seen',                                                              weight:12 },
+  { id:'human_spacer',   broad:'Human',          flavor:'Spacer-born — never touched a planet\'s surface, built for the void, at home in places that would kill most people',                           weight:10 },
+  { id:'human_colonial', broad:'Human',          flavor:'Colony-bred — from a world still being settled, practical and slightly rough-edged in ways that mark them everywhere they go',                  weight:10 },
+  { id:'enhanced',       broad:'Enhanced Human', flavor:'gene-edited lineage — above baseline in ways they didn\'t choose, carrying the expectations that came with it',                                  weight:8 },
+  { id:'biomodded',      broad:'Augmented Human',flavor:'heavily modified — enough implants and grafts that "human" is now more of a legal category',                                                    weight:7 },
+  { id:'synthetic',      broad:'Synthetic',      flavor:'android or fully synthetic — passes for organic until they forget to blink or feel nothing at exactly the wrong moment',                        weight:7 },
+  { id:'uploaded',       broad:'Uploaded',       flavor:'formerly organic consciousness in a synthetic frame — still working out what continuity means',                                                  weight:5 },
+  { id:'vakhari',        broad:'Vakhari',        flavor:'insectoid species — chitinous plating, compound eyes, a reputation for precision that others mistake for coldness',                              weight:6 },
+  { id:'nerevid',        broad:'Nerevid',        flavor:'aquatic-adapted — bioluminescent markings, gill-slits, a voice with overtones that most humans can\'t quite reproduce',                         weight:5 },
+  { id:'tessari',        broad:'Tessari',        flavor:'tall, grey-skinned, four-armed — appears emotionless to untrained observers, deeply expressive to those who know them',                         weight:5 },
+  { id:'khal',           broad:'Khal',           flavor:'dense-boned and compact, evolved for high-gravity worlds — low voice, enormous patience, genuinely difficult to startle',                       weight:4 },
+  { id:'half_vakhari',   broad:'Half-Vakhari',   flavor:'half-human, half-Vakhari — compound eyes that people find beautiful or unsettling depending on what they\'re afraid of',                       weight:5 },
+  { id:'rekti',          broad:'Rekti',          flavor:'fungal-humanoid — disperses spores when agitated, uncomfortable in crowds, extraordinary with chemistry',                                       weight:3 },
+  { id:'unknown_origin', broad:'Unknown Origin', flavor:'species not in any registry — fascinating or deeply inconvenient, depending on the checkpoint',                                                 weight:3 },
+];
+
+const SCIFI_GENDERS = [
+  { id:'man',             label:'Man',             pronouns:'he/him',   weight:40 },
+  { id:'woman',           label:'Woman',           pronouns:'she/her',  weight:40 },
+  { id:'non_binary',      label:'Non-binary',      pronouns:'they/them',weight:8 },
+  { id:'trans_man',       label:'Trans man',       pronouns:'he/him',   weight:3 },
+  { id:'trans_woman',     label:'Trans woman',     pronouns:'she/her',  weight:3 },
+  { id:'genderless',      label:'Genderless',      pronouns:'they/them',weight:3 },
+  { id:'custom_gendered', label:'Custom-gendered', pronouns:'they/them',weight:3 },
+];
+
+const SCIFI_ORIENTATIONS = [
+  { id:'straight',    label:'Straight',     weight:50 },
+  { id:'gay',         label:'Gay / Lesbian',weight:12 },
+  { id:'bisexual',    label:'Bisexual',     weight:15 },
+  { id:'pansexual',   label:'Pansexual',    weight:10 },
+  { id:'asexual',     label:'Asexual',      weight:8 },
+  { id:'questioning', label:'Questioning',  weight:5 },
+];
+
+const SCIFI_BUILDS = [
+  { label:'lean, low-grav adapted',                    statAffinity:{constitution:0.9,dexterity:1.3} },
+  { label:'average build',                             statAffinity:{} },
+  { label:'stocky, high-grav adapted',                 statAffinity:{strength:1.2,constitution:1.2} },
+  { label:'powerfully built, military-grade',          statAffinity:{strength:1.5,constitution:1.2} },
+  { label:'thin, scholar\'s frame',                    statAffinity:{constitution:0.8,intelligence:1.1} },
+  { label:'augmented — visible subdermal plating',     statAffinity:{strength:1.3,constitution:1.1} },
+  { label:'tall and elongated, clearly non-planetary', statAffinity:{dexterity:1.1} },
+  { label:'compact, built for tight corridors',        statAffinity:{dexterity:1.2} },
+  { label:'athletic, zero-g specialist build',         statAffinity:{dexterity:1.3,constitution:1.1} },
+];
+
+const SCIFI_HAIR = [
+  'close-cropped','shaved to the scalp','buzzed short',
+  'long and pulled back severely','braided tight against the skull',
+  'silver or chrome-dyed','streaked with bioluminescent pigment',
+  'thinning — stress or something else','perpetually unwashed and past caring',
+  'impeccably groomed, somehow','replaced with neural filaments',
+  'always hidden under a cap or hood',
+];
+
+const SCIFI_DISTINGUISHING_FEATURES = [
+  'a visible augmentation seam along one jaw or temple',
+  'one eye replaced — the replacement doesn\'t quite match',
+  'burn scarring along one forearm, old and never explained',
+  'subdermal implant ridges at both temples',
+  'a faded facility brand on the wrist, kept covered',
+  'two fingers on one hand are clearly synthetic',
+  'bioluminescent skin markings that brighten under stress',
+  'moves with the careful economy of someone who has been badly hurt and paid attention',
+  'a scar across the throat — the voice carries the evidence',
+  'tattoos in a cipher or language most people don\'t recognise',
+  'always wearing a breather — old habit or ongoing necessity',
+  'eyes that don\'t blink at quite the right rate',
+];
+
+const SCIFI_QUIRKS = [
+  { quirk:'Runs a quick diagnostic on any tech they pick up — a habit from a life where equipment failure was the last thing you\'d notice',statAffinity:{intelligence:1.3,dexterity:1.1} },
+  { quirk:'Never sits with their back to the airlock',statAffinity:{wisdom:1.2,constitution:1.1} },
+  { quirk:'Pauses before answering any question — not stalling, just processing, though the effect is identical',statAffinity:{wisdom:1.3,intelligence:1.1} },
+  { quirk:'Deflects anything personal with technical jargon or an improvised repair task',statAffinity:{intelligence:1.3,charisma:0.9} },
+  { quirk:'Always in motion — tapping, recalibrating, pacing — goes completely still only when something is very wrong',statAffinity:{dexterity:1.2,constitution:1.1} },
+  { quirk:'Flinches at rapid pressure changes — a reflex that tells a whole story without words',statAffinity:{constitution:0.9,wisdom:1.1} },
+  { quirk:'Clocks every exit in any space they enter — and the structural integrity of the walls',statAffinity:{wisdom:1.2,constitution:1.2} },
+  { quirk:'Speaks to machines, softly, as a matter of habit',statAffinity:{intelligence:1.2,wisdom:1.1} },
+  { quirk:'Deflects serious moments with dark humour — the worse the situation, the funnier they get',statAffinity:{charisma:1.3,wisdom:0.9} },
+  { quirk:'Remembers exactly what everyone had at their first meeting, years later',statAffinity:{charisma:1.3,intelligence:1.2} },
+  { quirk:'Carries a physical paper document — nothing digital is truly safe',statAffinity:{wisdom:1.2,intelligence:1.1} },
+  { quirk:'Checks their reflection in every reflective surface, almost unconsciously',statAffinity:{charisma:1.2} },
+  { quirk:'Counts doors and structural supports on entering any new space',statAffinity:{wisdom:1.3,intelligence:1.1} },
+  { quirk:'Never accepts food or drink without scanning it first — the scanner is small and very worn',statAffinity:{constitution:1.2,wisdom:1.1} },
+  { quirk:'Can fall asleep anywhere in under three minutes — a survival skill, not a gift',statAffinity:{constitution:1.3,strength:1.1} },
+  { quirk:'Apologises to any AI or synthetic they\'ve had to be rude to',statAffinity:{wisdom:1.2,charisma:1.1} },
+  { quirk:'Hums a specific sequence under stress — doesn\'t know they\'re doing it',statAffinity:{wisdom:1.1,constitution:1.1} },
+  { quirk:'Covers their mouth when they lie — a tell they\'ve tried and failed to train out',statAffinity:{charisma:1.1,wisdom:0.8} },
+  { quirk:'Over-explains when nervous — can\'t stop once started, knows this, can\'t stop anyway',statAffinity:{intelligence:1.2,charisma:0.9} },
+  { quirk:'Refuses to use any navigation system they haven\'t personally verified',statAffinity:{wisdom:1.3,constitution:1.1} },
+];
+
+const SCIFI_PROFESSIONS = [
+  { title:'Starship pilot',industry:'Crew',economicTier:3,statAffinity:{dexterity:1.5,intelligence:1.2,constitution:1.1},sentiments:['passionate','proud','burned out','quietly satisfied'] },
+  { title:'Ship engineer',industry:'Technical',economicTier:3,statAffinity:{intelligence:1.4,dexterity:1.3,strength:1.1},sentiments:['passionate','quietly satisfied','burned out','proud'] },
+  { title:'Navigator',industry:'Crew',economicTier:3,statAffinity:{intelligence:1.4,wisdom:1.3,dexterity:1.1},sentiments:['quietly satisfied','passionate','burned out','proud'] },
+  { title:'Scout / pathfinder',industry:'Crew',economicTier:3,statAffinity:{dexterity:1.4,wisdom:1.3,constitution:1.1},sentiments:['passionate','quietly satisfied','burned out','proud'] },
+  { title:'Combat marine',industry:'Military',economicTier:3,statAffinity:{strength:1.5,constitution:1.3,dexterity:1.1},sentiments:['proud','burned out','resentful','quietly satisfied'] },
+  { title:'Navy officer',industry:'Military',economicTier:4,statAffinity:{wisdom:1.3,charisma:1.2,intelligence:1.1},sentiments:['proud','quietly satisfied','burned out','resentful'] },
+  { title:'Mercenary',industry:'Military',economicTier:3,statAffinity:{strength:1.4,dexterity:1.2,constitution:1.2},sentiments:['indifferent','proud','burned out','desperate'] },
+  { title:'Decommissioned soldier',industry:'Military',economicTier:1,statAffinity:{strength:1.3,constitution:1.3,wisdom:1.1},sentiments:['resentful','burned out','desperate','quietly satisfied'] },
+  { title:'Station security officer',industry:'Security',economicTier:3,statAffinity:{strength:1.3,constitution:1.2,charisma:1.1},sentiments:['proud','burned out','resentful','indifferent'] },
+  { title:'Bounty hunter',industry:'Criminal',economicTier:3,statAffinity:{strength:1.3,dexterity:1.3,wisdom:1.2},sentiments:['indifferent','passionate','quietly satisfied'] },
+  { title:'Smuggler',industry:'Criminal',economicTier:3,statAffinity:{dexterity:1.3,charisma:1.2,wisdom:1.1},sentiments:['indifferent','proud','desperate','quietly satisfied'] },
+  { title:'Slicer / netrunner',industry:'Criminal',economicTier:4,statAffinity:{intelligence:1.6,dexterity:1.2},sentiments:['passionate','proud','indifferent','quietly satisfied'] },
+  { title:'Fixer',industry:'Criminal',economicTier:4,statAffinity:{intelligence:1.4,charisma:1.3,wisdom:1.2},sentiments:['proud','quietly satisfied','indifferent'] },
+  { title:'Black market medic',industry:'Criminal',economicTier:3,statAffinity:{intelligence:1.4,dexterity:1.3,wisdom:1.1},sentiments:['desperate','burned out','proud','quietly satisfied'] },
+  { title:'Data thief',industry:'Criminal',economicTier:3,statAffinity:{intelligence:1.4,dexterity:1.3},sentiments:['passionate','proud','indifferent','quietly satisfied'] },
+  { title:'Enforcer',industry:'Criminal',economicTier:3,statAffinity:{strength:1.6,constitution:1.3},sentiments:['proud','indifferent','resentful','ashamed'] },
+  { title:'Information broker',industry:'Criminal',economicTier:4,statAffinity:{intelligence:1.4,charisma:1.3,wisdom:1.2},sentiments:['quietly satisfied','indifferent','proud'] },
+  { title:'Contraband runner',industry:'Criminal',economicTier:2,statAffinity:{dexterity:1.4,constitution:1.2},sentiments:['desperate','resentful','indifferent','quietly satisfied'] },
+  { title:'Syndicate captain',industry:'Criminal',economicTier:5,statAffinity:{charisma:1.5,intelligence:1.4,strength:1.1},sentiments:['proud','quietly satisfied','indifferent'] },
+  { title:'Systems engineer',industry:'Technical',economicTier:4,statAffinity:{intelligence:1.5,dexterity:1.1},sentiments:['passionate','burned out','indifferent','quietly satisfied'] },
+  { title:'AI handler',industry:'Technical',economicTier:4,statAffinity:{intelligence:1.5,wisdom:1.2},sentiments:['passionate','burned out','indifferent','resentful'] },
+  { title:'Xenobiologist',industry:'Science',economicTier:4,statAffinity:{intelligence:1.5,wisdom:1.2},sentiments:['passionate','quietly satisfied','burned out'] },
+  { title:'Astrocartographer',industry:'Science',economicTier:4,statAffinity:{intelligence:1.5,wisdom:1.2,dexterity:1.1},sentiments:['passionate','quietly satisfied','burned out'] },
+  { title:'Terraformer',industry:'Science',economicTier:4,statAffinity:{intelligence:1.4,constitution:1.2,wisdom:1.1},sentiments:['passionate','quietly satisfied','burned out','proud'] },
+  { title:'Field medic',industry:'Medical',economicTier:3,statAffinity:{wisdom:1.3,dexterity:1.2,constitution:1.1},sentiments:['passionate','burned out','proud','resentful'] },
+  { title:'Ship surgeon',industry:'Medical',economicTier:4,statAffinity:{intelligence:1.5,dexterity:1.4,wisdom:1.2},sentiments:['proud','burned out','passionate','quietly satisfied'] },
+  { title:'Corporate compliance officer',industry:'Corporate',economicTier:4,statAffinity:{intelligence:1.3,wisdom:1.2,charisma:1.1},sentiments:['indifferent','burned out','quietly satisfied','resentful'] },
+  { title:'Corporate negotiator',industry:'Corporate',economicTier:5,statAffinity:{charisma:1.5,intelligence:1.3,wisdom:1.1},sentiments:['proud','burned out','indifferent','quietly satisfied'] },
+  { title:'Logistics coordinator',industry:'Corporate',economicTier:3,statAffinity:{intelligence:1.3,wisdom:1.2,constitution:1.1},sentiments:['burned out','quietly satisfied','indifferent','resentful'] },
+  { title:'Corporate executive',industry:'Corporate',economicTier:5,statAffinity:{charisma:1.4,intelligence:1.3,wisdom:1.2},sentiments:['proud','indifferent','burned out','quietly satisfied'] },
+  { title:'Asteroid miner',industry:'Extraction',economicTier:2,statAffinity:{strength:1.4,constitution:1.3,dexterity:1.1},sentiments:['burned out','resentful','quietly satisfied','proud'] },
+  { title:'Salvager',industry:'Extraction',economicTier:2,statAffinity:{dexterity:1.4,intelligence:1.2,constitution:1.1},sentiments:['passionate','indifferent','desperate','quietly satisfied'] },
+  { title:'Colonist',industry:'Frontier',economicTier:2,statAffinity:{constitution:1.3,strength:1.2,wisdom:1.1},sentiments:['passionate','burned out','quietly satisfied','resentful'] },
+  { title:'Station dockworker',industry:'Labor',economicTier:2,statAffinity:{strength:1.4,constitution:1.2},sentiments:['resentful','burned out','quietly satisfied','proud'] },
+  { title:'Cargo runner',industry:'Labor',economicTier:2,statAffinity:{constitution:1.2,dexterity:1.2},sentiments:['indifferent','resentful','desperate','quietly satisfied'] },
+  { title:'Habitat technician',industry:'Labor',economicTier:2,statAffinity:{dexterity:1.3,intelligence:1.1,constitution:1.1},sentiments:['proud','quietly satisfied','indifferent','burned out'] },
+  { title:'Void-bar operator',industry:'Service',economicTier:2,statAffinity:{charisma:1.3,wisdom:1.2},sentiments:['quietly satisfied','burned out','indifferent','proud'] },
+  { title:'Cultural liaison',industry:'Service',economicTier:3,statAffinity:{charisma:1.4,intelligence:1.3,wisdom:1.2},sentiments:['passionate','quietly satisfied','burned out'] },
+  { title:'Freelance journalist',industry:'Media',economicTier:2,statAffinity:{intelligence:1.3,charisma:1.3,wisdom:1.1},sentiments:['passionate','burned out','resentful','quietly satisfied'] },
+];
+
+const SCIFI_LIFE_EVENTS = [
+  { id:'ship_disaster',       description:'Survived a catastrophic ship failure — most of the crew did not',statAffinity:{constitution:1.2,wisdom:1.1} },
+  { id:'station_collapse',    description:'Was present when a station\'s life support failed — the evacuation was not orderly',statAffinity:{constitution:1.2,strength:1.1} },
+  { id:'corp_abandonment',    description:'Was left behind by a corporation that decided their rescue cost more than the contract was worth',statAffinity:{constitution:1.2,wisdom:1.1},economicHint:-1 },
+  { id:'first_contact',       description:'Witnessed a first contact event — classified since, officially denied, and very real',statAffinity:{wisdom:1.3,intelligence:1.2} },
+  { id:'war_veteran',         description:'Served in a corporate or faction war — still dreaming about specific coordinates',statAffinity:{strength:1.3,constitution:1.3,wisdom:1.1} },
+  { id:'refugee',             description:'Fled a world or station that no longer exists — war, collapse, or something classified',statAffinity:{constitution:1.2,wisdom:1.1},economicHint:-1 },
+  { id:'corp_betrayal',       description:'Trusted a corporation with something that mattered — they used it and discarded the rest',statAffinity:{wisdom:1.2,constitution:1.1} },
+  { id:'augment_failure',     description:'A cybernetic or modification procedure went wrong — what followed shaped everything after',statAffinity:{constitution:1.2,wisdom:1.1} },
+  { id:'exile',               description:'Was exiled or banned from a station, world, or jurisdiction — the official reason isn\'t the real one',statAffinity:{constitution:1.2,charisma:0.9},economicHint:-1 },
+  { id:'raised_shipside',     description:'Grew up entirely on a vessel — has never lived planetside and finds gravity faintly unsettling',statAffinity:{dexterity:1.2,constitution:1.1} },
+  { id:'colony_failure',      description:'Was part of a colony that failed — left to manage survival until a rescue that came late',statAffinity:{constitution:1.3,wisdom:1.1} },
+  { id:'crew_lost',           description:'Lost most of a crew they considered family — to violence, accident, or something the report called "complications"',statAffinity:{constitution:0.9,wisdom:1.2} },
+  { id:'ai_incident',         description:'Was involved in an AI containment incident — classified, possibly ongoing',statAffinity:{intelligence:1.2,wisdom:1.2} },
+  { id:'wrongly_imprisoned',  description:'Spent time in corporate detention for something they did or didn\'t do — the distinction matters less than the time served',statAffinity:{wisdom:1.2,constitution:1.2},economicHint:-1 },
+  { id:'went_dark',           description:'Spent years off-grid, deliberately — the reasons seemed very important at the time',statAffinity:{wisdom:1.3,intelligence:1.1} },
+  { id:'found_something',     description:'Discovered something in deep space or buried data that changed their understanding — and that powerful people would prefer stayed buried',statAffinity:{intelligence:1.3,wisdom:1.2} },
+  { id:'made_it_out',         description:'Grew up in a station understratum — the kind of place people don\'t leave without a plan or a crime',statAffinity:{constitution:1.2,strength:1.1},economicHint:-1 },
+  { id:'early_success',       description:'Made significant credits or rank young — watched it evaporate in a way that changed what they value',statAffinity:{intelligence:1.2,charisma:1.1},economicHint:1 },
+  { id:'caretaker',           description:'Spent years as the sole support for someone who couldn\'t manage alone',statAffinity:{wisdom:1.3,constitution:1.1,charisma:0.9} },
+  { id:'prodigy',             description:'Was considered exceptional at something, young — the expectations that came with it were their own kind of damage',statAffinity:{intelligence:1.4,wisdom:0.9} },
+  { id:'long_haul',           description:'Served on a long-haul vessel for years — the timescale does things to your relationship with urgency',statAffinity:{constitution:1.2,wisdom:1.2} },
+  { id:'bounty_cleared',      description:'Had an active bounty on their name for a while — eventually resolved, though "resolved" covers a lot of territory',statAffinity:{dexterity:1.2,wisdom:1.1} },
+];
+
+const SCIFI_TENSIONS = [
+  { id:'corp_debt',         description:'Owes a debt to a corporation that keeps finding new line items to add',toneTag:'dramatic',criminalFlag:false },
+  { id:'bounty_active',     description:'Has an active bounty — medium-sized, but big enough that people are looking',toneTag:'gritty',criminalFlag:true },
+  { id:'witness',           description:'Witnessed something they weren\'t supposed to — the people responsible have noticed they\'re still alive',toneTag:'gritty',criminalFlag:true },
+  { id:'data_possession',   description:'Is in possession of data that multiple dangerous parties want, and none of them know the others are looking',toneTag:'gritty',criminalFlag:true },
+  { id:'corp_hunt',         description:'Being quietly tracked by a corporate security team — officially, this investigation isn\'t happening',toneTag:'gritty',criminalFlag:true },
+  { id:'last_job',          description:'Agreed to one last job to clear a debt — it has already gone sideways',toneTag:'gritty',criminalFlag:true },
+  { id:'medical_debt',      description:'Drowning in medical debt — or someone close to them is',toneTag:'dramatic',criminalFlag:false },
+  { id:'identity_problem',  description:'Their legal identity has been flagged or is expiring — which makes nearly everything harder',toneTag:'dramatic',criminalFlag:false },
+  { id:'searching',         description:'Quietly searching for someone who vanished — a trail that has finally gone warm',toneTag:'neutral',criminalFlag:false },
+  { id:'ai_following',      description:'An AI they once worked with has decided to follow them — its motivations remain unclear',toneTag:'dramatic',criminalFlag:false },
+  { id:'blackmailed',       description:'Is being blackmailed over something real — the blackmailer has very good evidence',toneTag:'gritty',criminalFlag:true },
+  { id:'wrong_people',      description:'Deep in arrangements with people they cannot simply stop working for',toneTag:'gritty',criminalFlag:true },
+  { id:'reputation_problem',description:'Has a reputation that keeps finding them — mostly accurate, entirely inconvenient',toneTag:'neutral',criminalFlag:false },
+  { id:'diagnosis',         description:'Recently received a diagnosis that will change things — timeline unclear',toneTag:'dramatic',criminalFlag:false },
+  { id:'stateless',         description:'Their home jurisdiction no longer recognises their status — they\'re effectively stateless',toneTag:'dramatic',criminalFlag:false },
+  { id:'opportunity',       description:'A once-in-a-career opportunity has appeared — taking it requires leaving something important behind',toneTag:'neutral',criminalFlag:false },
+  { id:'divided_loyalties', description:'Caught between two factions they both need, whose interests are now directly opposed',toneTag:'dramatic',criminalFlag:false },
+  { id:'something_following',description:'Something has been tracking their signal — not broadcasting ID, not attacking, not leaving',toneTag:'dramatic',criminalFlag:false },
+  { id:'fresh_start',       description:'Just arrived somewhere new with very little and very few contacts — starting over from scratch',toneTag:'cozy',criminalFlag:false },
+  { id:'unexpected_inheritance',description:'Has unexpectedly inherited something — an asset, a position, or a problem — from someone they barely knew',toneTag:'neutral',criminalFlag:false },
+];
+
+const SCIFI_SECRETS = [
+  { id:'corp_informant',       description:'Has been, or currently is, a paid informant for a corporate intelligence division',severity:'explosive',statAffinity:{charisma:1.1,constitution:0.9} },
+  { id:'got_away_with_it',     description:'Was responsible for something that cost lives — and was never held accountable for it',severity:'explosive',statAffinity:{intelligence:1.2,wisdom:0.9} },
+  { id:'false_identity',       description:'Has been operating under a false identity for years — the real one is wanted, dead, or both',severity:'explosive',statAffinity:{intelligence:1.3,charisma:1.2} },
+  { id:'classified_knowledge', description:'Is carrying classified information that powerful people would do very bad things to recover or suppress',severity:'explosive',statAffinity:{intelligence:1.3,wisdom:1.1} },
+  { id:'war_crime',            description:'Was involved in something during a conflict that would end their career or their life if it surfaced',severity:'explosive',statAffinity:{constitution:0.8,wisdom:1.1} },
+  { id:'caused_disaster',      description:'Was responsible — through action, inaction, or following orders — for a disaster that others have been blamed for',severity:'explosive',statAffinity:{wisdom:0.9,intelligence:1.1} },
+  { id:'faked_death',          description:'Someone important believes them to be dead — by design',severity:'explosive',statAffinity:{intelligence:1.3,charisma:1.1} },
+  { id:'both_sides',           description:'Currently working for two parties in direct opposition — neither knows about the other',severity:'high',statAffinity:{intelligence:1.3,charisma:1.2} },
+  { id:'blackmail_material',   description:'Holds genuinely damaging information about someone powerful — and hasn\'t decided what to do with it',severity:'high',statAffinity:{intelligence:1.3,charisma:1.1} },
+  { id:'hidden_mods',          description:'Has augmentations or modifications that are either illegal or deliberately undisclosed',severity:'high',statAffinity:{constitution:1.1,intelligence:1.2} },
+  { id:'betrayed_crew',        description:'Betrayed a crew or team in a way that had serious consequences — the official story isn\'t the real one',severity:'high',statAffinity:{charisma:1.1,wisdom:0.8} },
+  { id:'hidden_dependency',    description:'Has a dependency — chemical, technical, or otherwise — that nobody in their current life knows about',severity:'high',statAffinity:{constitution:0.8,wisdom:0.8} },
+  { id:'diagnosis_hidden',     description:'Has received a serious or terminal diagnosis and told no one',severity:'high',statAffinity:{constitution:0.8,wisdom:1.2} },
+  { id:'synthetic_passing',    description:'Is a synthetic or uploaded consciousness passing as fully organic — successfully, so far',severity:'high',statAffinity:{intelligence:1.3,charisma:1.2} },
+  { id:'sabotaged_someone',    description:'Deliberately sabotaged a competitor — the damage is real and is still being lived with',severity:'medium',statAffinity:{intelligence:1.2,wisdom:0.8} },
+  { id:'hidden_debt',          description:'Carrying a debt load that would shock everyone who considers them stable',severity:'medium',statAffinity:{wisdom:0.8,charisma:1.1} },
+  { id:'wants_to_leave',       description:'Has a complete plan to walk away from their current life — waiting for one last thing before executing',severity:'medium',statAffinity:{wisdom:1.2,charisma:0.9} },
+  { id:'not_over_it',          description:'Still deeply affected by something from their past — and has convinced almost everyone, including themselves, otherwise',severity:'low',statAffinity:{wisdom:0.9,charisma:1.1} },
+];
+
+const SCIFI_FAMILY_STRUCTURES = [
+  { id:'two_parent_intact',    label:'Two parents, still together',parentCount:2,siblingCount:[0,3],statAffinity:{wisdom:1.1,charisma:1.1} },
+  { id:'two_parent_divorced',  label:'Parents separated — complicated',parentCount:2,siblingCount:[0,3],statAffinity:{wisdom:0.9} },
+  { id:'two_parent_one_deceased',label:'One parent deceased, one surviving',parentCount:2,siblingCount:[0,2],statAffinity:{wisdom:1.1,constitution:0.9} },
+  { id:'two_parent_one_absent',label:'One parent absent or unreachable',parentCount:2,siblingCount:[0,2],statAffinity:{constitution:1.1,charisma:0.9} },
+  { id:'single_parent',        label:'Raised by a single parent',parentCount:1,siblingCount:[0,3],statAffinity:{charisma:1.1,wisdom:1.1} },
+  { id:'corp_creche',          label:'Raised in a corporate crèche program',parentCount:0,siblingCount:[0,1],statAffinity:{intelligence:1.2,wisdom:0.9} },
+  { id:'ship_crew_family',     label:'Raised as part of a ship crew — crew was family',parentCount:0,siblingCount:[1,4],statAffinity:{dexterity:1.2,constitution:1.1} },
+  { id:'foster_corp',          label:'Corporate foster system — rotated through facilities',parentCount:0,siblingCount:[0,1],statAffinity:{constitution:1.3,charisma:0.9,wisdom:1.1} },
+  { id:'orphaned_disaster',    label:'Orphaned by disaster — collapse, incident, or conflict',parentCount:0,siblingCount:[0,2],statAffinity:{constitution:1.3,wisdom:1.2} },
+  { id:'large_family',         label:'Large, chaotic household',parentCount:2,siblingCount:[3,6],statAffinity:{charisma:1.2,constitution:1.1} },
+  { id:'only_child_wealthy',   label:'Only child of wealthy parents',parentCount:2,siblingCount:[0,0],statAffinity:{intelligence:1.2,charisma:1.1},economicHint:2 },
+  { id:'commune_habitat',      label:'Raised in a habitat commune — collective everything',parentCount:2,siblingCount:[0,4],statAffinity:{wisdom:1.2,charisma:1.1} },
+  { id:'military_dependent',   label:'Military dependent — moved constantly, loyalty to ranks not places',parentCount:2,siblingCount:[0,2],statAffinity:{constitution:1.2,strength:1.1} },
+  { id:'raised_by_grandparents',label:'Raised by grandparents while parents worked distant contracts',parentCount:0,siblingCount:[0,2],statAffinity:{wisdom:1.2,charisma:0.9} },
+];
+
+const SCIFI_PARENT_STATUSES = [
+  { id:'present_close',    label:'in regular contact — as regular as the comm delay allows' },
+  { id:'present_distant',  label:'present but distant — comms are brief and scheduled' },
+  { id:'present_difficult',label:'present but a consistent source of tension' },
+  { id:'estranged',        label:'estranged — no contact, and that\'s not the comm delay' },
+  { id:'deceased_recent',  label:'recently deceased' },
+  { id:'deceased_long',    label:'died when the character was young' },
+  { id:'absent_unknown',   label:'absent — never knew them' },
+  { id:'missing',          label:'listed as missing — contract went dark, officially unresolved' },
+  { id:'incarcerated',     label:'in corporate or state detention' },
+  { id:'deep_space',       label:'on a long-haul contract — effectively unreachable for years at a time' },
+];
+
+const SCIFI_SIBLING_DYNAMICS = [
+  { id:'protective_older', label:'protective older sibling' },
+  { id:'rivalry',          label:'long-running rivalry — still going' },
+  { id:'estranged',        label:'estranged — fell out badly, rarely speak' },
+  { id:'close_ally',       label:'closest friend and confidant' },
+  { id:'troubled',         label:'struggling — debt, addiction, or something worse' },
+  { id:'golden_child',     label:"the family's golden child" },
+  { id:'lost_touch',       label:'drifted apart — comms went sparse, then stopped' },
+  { id:'deceased',         label:'deceased — incident, conflict, or classified' },
+  { id:'younger_dependent',label:'younger and still depends on the protagonist' },
+  { id:'reconnecting',     label:'recently back in contact after years of silence' },
+];
+
+const SCIFI_ECONOMIC_TIERS = {
+  1:{ label:'Below the Line',     descriptors:['sleeping in maintenance corridors','begging for food-synth credits','one missed shift from nothing','wearing SURPLUS-stamped hand-me-downs'], housing:['maintenance corridor bunk','emergency shelter pod','sleeper-stack capsule'], transport:['station transit pass','borrowed suit thruster','on foot'] },
+  2:{ label:'Worker-class',       descriptors:['shared hab module with three others','pays station fees on time, barely','second-tier recycled kit','no savings, just the next shift'], housing:['shared hab module','worker dormitory','single-bunk rental'], transport:['station transit pass','company shuttle','aging personal craft'] },
+  3:{ label:'Corporate Citizen',  descriptors:['private hab module in the mid-ring','company benefits that mostly cover what\'s needed','reliable gear, nothing flashy'], housing:['private hab module','subsidized company quarters','civilian-ring rental'], transport:['company shuttle access','mid-range personal craft','transit priority pass'] },
+  4:{ label:'Mid-tier Executive', descriptors:['a cabin with a view of something worth viewing','travel allowances that cover business and occasionally pleasure','money isn\'t the current problem'], housing:['executive quarters','private cabin','leased luxury module'], transport:['executive shuttle','personal short-range vessel','corporate transport pool'] },
+  5:{ label:'Corporate Elite',    descriptors:['a full deck to themselves','staff','money as leverage','insulated from consequences that affect everyone below them'], housing:['penthouse deck','private habitat module','estate on a settled world'], transport:['private jumpship','personal pilot','fleet access'] },
+};
+
+const SCIFI_CITY_SETTINGS = [
+  { id:'orbital_station',    label:'An orbital station above a dying world',        flavor:'crowded, recycled, functional and barely beautiful — the city that refuses to stop even as the world below does',       toneTag:'gritty',   statAffinity:{constitution:1.2,intelligence:1.1} },
+  { id:'frontier_outpost',   label:'A frontier outpost at the edge of mapped space', flavor:'rough, isolated, resourceful — law is whatever the locals agree on, three supply runs from failing',                    toneTag:'gritty',   statAffinity:{constitution:1.3,strength:1.1} },
+  { id:'corp_megacity',      label:'A corporate megacity on a newly colonized world',flavor:'efficient, surveilled, glittering and hollow — looks like progress until you check behind the walls',                   toneTag:'dramatic', statAffinity:{intelligence:1.3,charisma:1.1} },
+  { id:'transit_junction',   label:'A waystation at a major transit junction',       flavor:'transient, layered, everyone is passing through — information, deals, and desperation move in equal volumes',           toneTag:'neutral',  statAffinity:{charisma:1.2,wisdom:1.1} },
+  { id:'black_market_hub',   label:'An unaligned station — off the official charts', flavor:'politely lawless, everything has a price, authorities look the other way as long as the fees are current',              toneTag:'gritty',   statAffinity:{dexterity:1.2,charisma:1.2} },
+  { id:'generation_ship',    label:'A generation ship still in transit',             flavor:'insular, generational, a whole civilisation in a hull — history measured in departures, not arrivals',                  toneTag:'dramatic', statAffinity:{wisdom:1.2,constitution:1.2} },
+  { id:'terraformed_moon',   label:'A terraformed moon city, young and provisional', flavor:'optimistic in the specific way of places still being built — everything is temporary until suddenly it isn\'t',         toneTag:'cozy',     statAffinity:{constitution:1.1,charisma:1.1} },
+  { id:'refugee_flotilla',   label:'A refugee flotilla that became a city',          flavor:'resilient, provisional, held together by necessity — home because there is nowhere else to be',                         toneTag:'dramatic', statAffinity:{wisdom:1.2,constitution:1.3} },
+  { id:'research_outpost',   label:'A research outpost in contested space',          flavor:'brilliant, paranoid, too important to abandon and too exposed to feel safe — everyone has clearance for something',     toneTag:'dramatic', statAffinity:{intelligence:1.4,wisdom:1.1} },
+  { id:'ring_habitat',       label:'A ring-world habitat — artificial and ancient',  flavor:'stratified, vast — whoever built it left before we arrived, and left things behind that aren\'t finished with us yet', toneTag:'neutral',  statAffinity:{intelligence:1.3,wisdom:1.2} },
+];
+
+const SCIFI_TAG_POOLS = {
+  always:['sci-fi','character-driven'],
+  gritty:['gritty','dark','survival','crime'],
+  dramatic:['drama','political','secrets','betrayal','high-stakes'],
+  cozy:['cozy','slice-of-life','space-opera'],
+  neutral:['adventure','exploration'],
+  criminal:['crime','black-market','heist'],
+  professionTags:{
+    'Crew':['space-opera','pilot','ship-crew'],
+    'Military':['action','combat','military'],
+    'Criminal':['crime','underworld','heist'],
+    'Technical':['tech','engineering'],
+    'Science':['exploration','discovery','science'],
+    'Medical':['drama','medical'],
+    'Corporate':['political','intrigue','corporate'],
+    'Extraction':['survival','labor','frontier'],
+    'Frontier':['frontier','colonist','survival'],
+    'Labor':['slice-of-life','gritty','working-class'],
+    'Service':['slice-of-life','community'],
+    'Media':['political','drama','journalism'],
+    'Security':['action','crime'],
+  },
+};
+
+const SCIFI_NAME_POOLS = {
+  'Human':          { masc:['Cassius','Darian','Eloy','Fennec','Gael','Hadeon','Idris','Jarron','Kael','Lev','Maddox','Niall','Orin','Pax','Rafe','Soren','Tarquin','Ulric','Vance','Zane'], fem:['Aelys','Brynn','Caera','Dalla','Eris','Faye','Gwen','Harlow','Iyanna','Juno','Kira','Lyra','Mira','Nyx','Orla','Pria','Reva','Sable','Tess','Yara'], neutral:['Ash','Blaze','Cael','Ember','Fern','Grey','Haven','Jet','Lux','Nova','Onyx','Peri','Rook','Sage','Thorn','Wren','Vex','Ren','Scout','Flint'], last:['Ashmore','Blackwood','Calloway','Drace','Edgeworth','Farrell','Greyson','Holloway','Joss','Kade','Larke','Morrow','Navarro','Pryce','Rayne','Stern','Thorne','Vance','Whitmore','Zarra'] },
+  'Enhanced Human': { masc:['Aldric','Brennan','Caelan','Dorin','Edric','Faolan','Gareth','Hadwin','Idris','Jareth','Kellan','Lucan','Merrin','Nolan','Oswin','Rowan','Soren','Tavish','Ulric','Vael'], fem:['Aerith','Brynn','Calla','Delia','Elowen','Fiona','Gwyneth','Hilde','Isadora','Jessa','Keela','Lena','Maren','Niamh','Oria','Petra','Rhiannon','Senna','Tara','Una'], neutral:['Ash','Blair','Cael','Dale','Eden','Finch','Grey','Haven','Indra','Jesse'], last:['Ashford','Blackwood','Calloway','Drake','Edgewater','Fairholm','Grimshaw','Hartwell','Kellam','Larkmoor','Morven','Pendrath','Stonebridge','Thornfield','Vayne','Whitmore','Xander','Yarrow','Zell','Ironsides'] },
+  'Augmented Human':{ masc:['Ajax','Brick','Cain','Dash','Edge','Ghost','Hex','Iron','Jax','Krome','Mace','Nail','Oxide','Patch','Rivet','Splice','Tank','Volt','Wire','Zinc'], fem:['Ada','Bit','Cache','Fuse','Glyph','Hash','Iris','Jade','Krypt','Lyss','Mox','Nix','Oxide','Plex','Raze','Synth','Trace','Veil','Wren','Xena'], neutral:['Apex','Binary','Circuit','Delta','Echo','Flux','Grid','Hex','Index','Jack','Kilo','Link','Mesh','Null','Omega','Patch','Rift','Sync','Tag','Unit'], last:['Ashborne','Blacknet','Chromwell','Databorn','Edgecase','Firmware','Gearhead','Hardline','Ironclad','Jarvis','Kernel','Lowbit','Megabyte','Netfall','Opencore','Proxy','Rootkit','Stackover','Trigger','Voxel'] },
+  'Synthetic':      { masc:['Alpha','Bravo','Cedar','Delta','Echo','Foxtrot','Hotel','India','Kilo','Lima','Mike','November','Oscar','Papa','Quebec','Romeo','Sierra','Tango','Victor','Whiskey'], fem:['Aura','Byte','Coral','Dax','Eve','Faye','Gemini','Halo','Iris','Jade','Kira','Luna','Mira','Nova','Opal','Pearl','Quinn','Ruby','Sera','Tara'], neutral:['Arbiter','Binary','Cipher','Datum','Fractal','Grid','Helix','Index','Janus','Kernel','Logic','Matrix','Node','Proxy','Query','Relay','Signal','Tensor','Vector','Vertex'], last:['Unit-One','Unit-Seven','Model-Alpha','Series-Three','Instance-14','Class-Nine','Build-22','Version-Four','Type-II','Iteration-Eight'] },
+  'Uploaded':       { masc:['Cassius','Dorian','Elias','Felix','Gregor','Hayden','Ivan','Jasper','Kieran','Laurence','Marcus','Nathaniel','Oscar','Philip','Quentin','Roland','Sebastian','Tristan','Ulrich','Victor'], fem:['Alexandra','Beatrice','Cecilia','Diana','Eleanor','Francesca','Georgia','Helena','Irene','Julia','Katherine','Lillian','Margaret','Natalie','Ophelia','Penelope','Rosalind','Sylvia','Theresa','Ursula','Vivian'], neutral:['Archie','Blake','Cameron','Drew','Emery','Finn','Grey','Haven','Indigo','Jordan'], last:['Ashworth','Blackstone','Castleton','Durrant','Everleigh','Fairfax','Greystone','Hartley','Ingram','Jarvis','Kinsley','Langford','Merrill','Neville','Oswald','Pembrook','Ravenswood','Sterling','Thornton','Underhill'] },
+  'Vakhari':        { masc:['Krix','Threx','Vorax','Zelk','Hexan','Pral','Drix','Moran','Sklax','Vrex'], fem:['Kriva','Threva','Vorix','Zelka','Hexana','Prala','Drixa','Morana','Sklaxa','Vrexa'], neutral:['Krit','Thren','Vex','Zel','Hex','Pral','Drix','Mor','Skl','Vrex'], last:['Axicarith','Braxidell','Crexithan','Drixithal','Exivrix','Frixathel','Grixthal','Hrixathen','Ixivell','Jrixthal'] },
+  'Nerevid':        { masc:['Aelonn','Braelun','Caelunn','Daelonn','Eaelunn','Faelonn','Gaelunn','Haelonn','Iaelunn','Jaelonn'], fem:['Aeluna','Braeluna','Caeluna','Daeluna','Eaeluna','Faeluna','Gaeluna','Haeluna','Iaeluna','Jaeluna'], neutral:['Ael','Brael','Cael','Dael','Fael','Gael','Hael','Iael','Jael','Kael'], last:['Aelithorn','Braelithorn','Caelithorn','Daelithorn','Faelithorn','Gaelithorn','Haelithorn','Iaelithorn','Jaelithorn','Kaelithorn'] },
+  'Tessari':        { masc:['Talon','Seren','Rhen','Quell','Pharen','Orin','Nerath','Marek','Luran','Kiren'], fem:['Talona','Serena','Rhena','Quella','Pharena','Orina','Neratha','Mareka','Lurana','Kirena'], neutral:['Tal','Ser','Rhe','Que','Pha','Ori','Ner','Mar','Lur','Kir'], last:['Talonvex','Serenvex','Rhenvex','Quellvex','Pharenvex','Orinvex','Nerathvex','Marekvex','Luranvex','Kirenvex'] },
+  'Khal':           { masc:['Groxar','Drothan','Brentak','Azzan','Vorkan','Thraxen','Skelmar','Rektan','Praxil','Orkan'], fem:['Groxa','Drotha','Brenta','Vorka','Thraxa','Skelma','Rekta','Praxi','Orka','Broza'], neutral:['Grox','Drot','Bren','Azz','Vor','Thrax','Skel','Rekt','Prax','Ork'], last:['Groxarden','Drothal','Brentakken','Azzanhorn','Vorkanden','Thraxenrock','Skelmarron','Rektanholm','Praxilden','Orkanrock'] },
+  'Rekti':          { masc:['Mycos','Sporath','Moldar','Bloth','Sporan','Thallo','Mycall','Rhizal','Hyphon','Funga'], fem:['Mycosa','Sporatha','Moldara','Blotha','Sporana','Thalla','Mycalla','Rhizala','Hyphona','Fungala'], neutral:['Myc','Spor','Mold','Blo','Thal','Myca','Rhiz','Hyph','Fung','Spall'], last:['Mycorrhize','Sporadell','Fungalith','Moldarell','Blothrill','Sporanith','Thallodell','Rhizalith','Hyphonell','Sporothell'] },
+  'Half-Vakhari':   { masc:['Krix','Ajax','Vex','Mace','Threx','Edge','Hex','Jax','Drix','Volt'], fem:['Kriva','Ada','Vexa','Macea','Threva','Edga','Hexa','Jaxa','Drixa','Volta'], neutral:['Krit','Ash','Vex','Mace','Thren','Edge','Hex','Jax','Drix','Volt'], last:['Ashclaw','Blackthorn','Chromvex','Darkscale','Edgeclaw','Fangthorn','Greyscale','Hardscale','Ironvex','Jadeclaw'] },
+  'Unknown Origin': { masc:['Null','Void','Static','Glitch','Error','Rogue','Daemon','Phantom','Wraith','Cipher'], fem:['Nulla','Voida','Statica','Glitcha','Errora','Rogua','Daemona','Phantoma','Wraitha','Ciphera'], neutral:['Null','Void','Static','Glitch','Error','Anomaly','Rogue','Daemon','Phantom','Wraith'], last:['Unknown','Unregistered','Redacted','Classified','Suppressed','Unlisted','Unnamed','Untracked','Unassigned','Unresolved'] },
+  'default':        { masc:['Ash','Bren','Cael','Dace','Eld','Fenn','Gar','Holt','Ior','Jael','Kel','Lorn','Mor','Nor','Orin','Pen','Ror','Sael','Tor','Vel'], fem:['Aela','Bree','Calli','Dara','Ela','Fara','Gwen','Hara','Ira','Jara','Kira','Lara','Mira','Nara','Ora','Petra','Rina','Sera','Tara','Vara'], neutral:['Ash','Blair','Cael','Dale','Eden','Fern','Grey','Haven','Ira','Jesse'], last:['Ashford','Blackwood','Calloway','Drake','Edgewater','Fairholm','Grimshaw','Hartwell','Ironsides','Kellam','Larkmoor','Morven','Nighthollow','Pendrath','Stonebridge','Thornfield'] },
+};
+
 // ── Genre routing ─────────────────────────────────────────────────────────
 function getGenreTables(genre) {
   if (genre === 'fantasy') {
@@ -1647,6 +2007,28 @@ function getGenreTables(genre) {
       DISTINGUISHING_FEATURES: FANTASY_DISTINGUISHING_FEATURES.map(l => ({ label: l })),
       QUIRKS:                FANTASY_QUIRKS,
       NAME_POOLS:            FANTASY_NAME_POOLS,
+    };
+  }
+  if (genre === 'sci-fi') {
+    return {
+      PROFESSIONS:             SCIFI_PROFESSIONS,
+      LIFE_EVENTS:             SCIFI_LIFE_EVENTS,
+      TENSIONS:                SCIFI_TENSIONS,
+      SECRETS:                 SCIFI_SECRETS,
+      FAMILY_STRUCTURES:       SCIFI_FAMILY_STRUCTURES,
+      PARENT_STATUSES:         SCIFI_PARENT_STATUSES,
+      SIBLING_DYNAMICS:        SCIFI_SIBLING_DYNAMICS,
+      ECONOMIC_TIERS:          SCIFI_ECONOMIC_TIERS,
+      CITY_SETTINGS:           SCIFI_CITY_SETTINGS,
+      TAG_POOLS:               SCIFI_TAG_POOLS,
+      RACES_OR_ETHNICITIES:    SCIFI_SPECIES,
+      GENDERS:                 SCIFI_GENDERS,
+      ORIENTATIONS:            SCIFI_ORIENTATIONS,
+      BUILDS:                  SCIFI_BUILDS,
+      HAIR:                    SCIFI_HAIR.map(h => ({ label: h })),
+      DISTINGUISHING_FEATURES: SCIFI_DISTINGUISHING_FEATURES.map(l => ({ label: l })),
+      QUIRKS:                  SCIFI_QUIRKS,
+      NAME_POOLS:              SCIFI_NAME_POOLS,
     };
   }
   // Default: modern
@@ -1952,16 +2334,22 @@ function buildPrompt(sk, genre) {
     `  - ${npc.name} (${npc.role}, ${npc.status}): ${npc.traits.join(', ')}. ${npc.dynamic}`
   ).join('\n');
   const appParts = [sk.appearance.build, sk.appearance.hair, sk.appearance.distinguishingFeature].filter(Boolean).join('; ');
-  const identityLabel = genre === 'fantasy' ? 'Race' : 'Ethnicity';
-  const genreLabel    = genre === 'fantasy' ? 'fantasy' : 'AI Dungeon';
-  const entryNote     = genre === 'fantasy'
+  const identityLabel  = genre === 'fantasy' ? 'Race' : genre === 'sci-fi' ? 'Species' : 'Ethnicity';
+  const genreLabel     = genre === 'fantasy' ? 'fantasy' : genre === 'sci-fi' ? 'AI Dungeon sci-fi' : 'AI Dungeon';
+  const entryNote      = genre === 'fantasy'
     ? 'Lead with name, rough age, role. Weave in race appearance and quirk through behavior. Ground in sensory fantasy detail. End on forward momentum.'
+    : genre === 'sci-fi'
+    ? 'Lead with name, age, role. Weave in species and augmentation level through behavior — show don\'t state. Ground in sensory sci-fi detail. Use sentence fragments. Reference key cast members. End on forward momentum.'
     : 'Lead with name, age, role. Use sentence fragments. Fold in appearance and quirk through behavior. Reference key cast members. End on forward momentum.';
-  const openingNote   = genre === 'fantasy'
+  const openingNote    = genre === 'fantasy'
     ? 'Second person. Drop the player into a vivid fantasy moment right now — mid-scene. Sensory detail (smells, sounds, weight of gear). End mid-moment with a clear choice.'
+    : genre === 'sci-fi'
+    ? 'Second person. Drop the player into a specific vivid sci-fi moment — right now, mid-scene. Smells: recycled air, ozone, synth-food. Weight: aug hardware, vacuum suit. End mid-moment with a clear choice or action available. No backstory. No summaries.'
     : 'Second person. Drop the player directly into a vivid, specific moment — right now. Sensory detail. End mid-moment with a clear next decision.';
   const appearanceNote = genre === 'fantasy'
     ? 'Comma-separated visual descriptors for a text-to-image model. Start with "portrait of" then: race, age range, gender, body type, hair color and style, eye description, distinguishing feature if any, armor or clothing suited to their role, setting mood. Include "face of [a historical figure, classical warrior, or well-known portrait subject whose gender, racial appearance, and approximate age match this character]". Close with: fantasy character art, detailed digital illustration, dramatic lighting. No sentences — descriptors only.'
+    : genre === 'sci-fi'
+    ? 'Comma-separated visual descriptors for a text-to-image model. Start with "portrait of" then: species and augmentation description, age range, gender, body type, hair, eyes, cybernetic features if any, clothing and equipment suited to their role and economic tier, setting mood. Include "face of [a historical figure or well-known portrait subject whose gender and appearance match this character — someone whose likeness is well-documented]". Close with: sci-fi concept art, detailed digital illustration, dramatic lighting. No sentences — descriptors only.'
     : 'Comma-separated visual descriptors for a text-to-image model. Start with "portrait of" then: age range, gender, body type, hair color and style, eye description, distinguishing feature if any, outfit suited to their job and economic tier, setting mood. Include "face of [a historical figure or classic-cinema figure whose gender, ethnicity, and approximate age match this character — someone whose likeness is well-documented in photographs or portraiture]". Close with: photorealistic, cinematic lighting. No sentences — descriptors only.';
 
   return `Generate ${genreLabel} content for this character. Return a single JSON object with these exact keys:
@@ -2033,6 +2421,29 @@ STYLE:
 
 Output only the JSON structure requested. No preamble, no commentary, no markdown fences.`;
   }
+  if (genre === 'sci-fi') {
+    return `You are a creative writer generating AI Dungeon sci-fi scenario content.
+Your output must be vivid, specific, and immediately usable as a game scenario.
+
+TONE — this is critical:
+These characters are for a game. Players should want to play them.
+Write with energy, wit, and a light touch even when the material is dark.
+Dark comedy is welcome. Characters should feel alive, flawed, and fun — not just grim.
+A smuggler drowning in syndicate debt can still be the most competent person on the station.
+A burned-out corporate medic can genuinely love their work at 0700 and resent it by 1400.
+The void is bleak. The people in it don't have to be.
+Every character should have at least one quality that makes you root for them.
+
+STYLE:
+- Behavioral prose — show character through action, detail, and implication. Never explain.
+- Never mention stat numbers, MBTI types by name, or any generation metadata.
+- Never state species, orientation, or augmentation level as clinical labels — weave them naturally into behavior and description.
+- Ground descriptions in sensory sci-fi detail: the hum of recycled air, the weight of aug hardware, the static of a distant comms signal, the particular smell of a station that's been sealed too long.
+- Use sentence fragments where they sharpen the prose.
+- Stay within the exact character limits given.
+
+Output only the JSON structure requested. No preamble, no commentary, no markdown fences.`;
+  }
   return SYSTEM_PROMPT;
 }
 
@@ -2071,18 +2482,20 @@ let currentGenre    = 'modern';
 
 function setGenre(genre) {
   currentGenre = genre;
-  const modernBtn  = document.getElementById('genre-modern');
-  const fantasyBtn = document.getElementById('genre-fantasy');
-  if (genre === 'fantasy') {
-    modernBtn.style.background  = 'rgba(26,18,8,0.6)';
-    modernBtn.style.color       = 'var(--brass-light)';
-    fantasyBtn.style.background = 'var(--brass)';
-    fantasyBtn.style.color      = 'var(--ink)';
-  } else {
-    fantasyBtn.style.background = 'rgba(26,18,8,0.6)';
-    fantasyBtn.style.color      = 'var(--brass-light)';
-    modernBtn.style.background  = 'var(--brass)';
-    modernBtn.style.color       = 'var(--ink)';
+  const btns = {
+    modern:  document.getElementById('genre-modern'),
+    fantasy: document.getElementById('genre-fantasy'),
+    'sci-fi':document.getElementById('genre-scifi'),
+  };
+  for (const [g, btn] of Object.entries(btns)) {
+    if (!btn) continue;
+    if (g === genre) {
+      btn.style.background = 'var(--brass)';
+      btn.style.color      = 'var(--ink)';
+    } else {
+      btn.style.background = 'rgba(26,18,8,0.6)';
+      btn.style.color      = 'var(--brass-light)';
+    }
   }
 }
 

@@ -4,11 +4,47 @@
 //
 // No browser APIs beyond fetch. No Node-specific APIs. Pure JS + fetch.
 
-import { SYSTEM_PROMPT, buildPrompt, parseResponse } from './genres/modern/prompt-template.js';
+import {
+  SYSTEM_PROMPT as MODERN_SYSTEM_PROMPT,
+  buildPrompt   as modernBuildPrompt,
+  parseResponse as modernParseResponse,
+} from './genres/modern/prompt-template.js';
+
+import {
+  SYSTEM_PROMPT as FANTASY_SYSTEM_PROMPT,
+  buildPrompt   as fantasyBuildPrompt,
+  parseResponse as fantasyParseResponse,
+} from './genres/fantasy/prompt-template.js';
+
+import {
+  SYSTEM_PROMPT as SCIFI_SYSTEM_PROMPT,
+  buildPrompt   as scifiBuildPrompt,
+  parseResponse as scifiParseResponse,
+} from './genres/sci-fi/prompt-template.js';
 
 const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
 const MODEL             = 'claude-sonnet-4-5';
 const MAX_TOKENS        = 4096;
+
+// ── PROMPT TEMPLATE REGISTRY ──────────────────────────────────────────────
+
+const PROMPT_TEMPLATES = {
+  modern: {
+    systemPrompt:  MODERN_SYSTEM_PROMPT,
+    buildPrompt:   modernBuildPrompt,
+    parseResponse: modernParseResponse,
+  },
+  fantasy: {
+    systemPrompt:  FANTASY_SYSTEM_PROMPT,
+    buildPrompt:   fantasyBuildPrompt,
+    parseResponse: fantasyParseResponse,
+  },
+  'sci-fi': {
+    systemPrompt:  SCIFI_SYSTEM_PROMPT,
+    buildPrompt:   scifiBuildPrompt,
+    parseResponse: scifiParseResponse,
+  },
+};
 
 /**
  * Calls the Claude API with the assembled character skeleton
@@ -16,16 +52,19 @@ const MAX_TOKENS        = 4096;
  *
  * @param {import('./types.js').CharacterSkeleton} skeleton
  * @param {string} apiKey   Anthropic API key (sk-ant-...)
+ * @param {string} [genre='modern']
  * @returns {Promise<import('./types.js').GeneratedOutput>}
  * @throws {Error} on HTTP error or parse failure
  */
-export async function callClaudeAPI(skeleton, apiKey) {
-  const userPrompt = buildPrompt(skeleton);
+export async function callClaudeAPI(skeleton, apiKey, genre = 'modern') {
+  const template = PROMPT_TEMPLATES[genre] ?? PROMPT_TEMPLATES.modern;
+
+  const userPrompt = template.buildPrompt(skeleton);
 
   const requestBody = {
     model:      MODEL,
     max_tokens: MAX_TOKENS,
-    system:     SYSTEM_PROMPT,
+    system:     template.systemPrompt,
     messages: [
       { role: 'user', content: userPrompt },
     ],
@@ -59,7 +98,7 @@ export async function callClaudeAPI(skeleton, apiKey) {
     throw new Error('Anthropic API returned an empty response');
   }
 
-  const parsed = parseResponse(rawText);
+  const parsed = template.parseResponse(rawText);
 
   if (!parsed) {
     throw new Error('Failed to parse Claude response as JSON');
