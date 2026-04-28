@@ -113,9 +113,9 @@ export function assignMBTI(stats) {
   const nScore = normalize(intuitiveScore - sensingScore + 50, 0, 100);
   const isIntuitive = decide(nScore);
 
-  // T/F — high Intelligence skews Thinking; high Charisma+Wisdom skews Feeling
-  const thinkingScore = intelligence;
-  const feelingScore  = (charisma + wisdom) / 2;
+  // T/F — high Intelligence+Wisdom skews Thinking; high Charisma skews Feeling
+  const thinkingScore = (intelligence + wisdom) / 2;
+  const feelingScore  = charisma;
   const tScore = normalize(thinkingScore - feelingScore + 50, 0, 100);
   const isThinking = decide(tScore);
 

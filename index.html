@@ -228,6 +228,50 @@ body::before {
   to   { transform: rotate(360deg); }
 }
 
+/* ── CONTINUE BAR ─────────────────────────────────────────────────── */
+.continue-bar {
+  text-align: center;
+  padding: 1.75rem 0 0.5rem;
+  animation: fadeIn 0.4s ease both;
+}
+.continue-bar-label {
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brass-light);
+  margin-bottom: 0.8rem;
+}
+.btn-continue {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: transparent;
+  color: var(--brass);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.8rem 2.25rem;
+  border: 1px solid var(--brass-dark);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 2px 12px rgba(184,115,51,0.15);
+}
+.btn-continue:hover:not(:disabled) {
+  background: var(--brass);
+  color: var(--ink);
+  border-color: var(--brass);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(184,115,51,0.35);
+}
+.btn-continue:active:not(:disabled) { transform: translateY(0); }
+.btn-continue:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-continue.spinning .gear-icon { animation: spin 0.8s linear infinite; }
+
 /* ── STATUS BAR ────────────────────────────────────────────────────── */
 .status-bar {
   text-align: center;
@@ -2110,7 +2154,7 @@ function decide(p) { return Math.random() < p; }
 function assignMBTI(s) {
   const isE = decide(norm((s.charisma + s.strength)/2 - (s.wisdom + s.intelligence)/2 + 50, 0, 100));
   const isN = decide(norm((s.intelligence + s.wisdom)/2 - (s.constitution + s.strength)/2 + 50, 0, 100));
-  const isT = decide(norm(s.intelligence - (s.charisma + s.wisdom)/2 + 50, 0, 100));
+  const isT = decide(norm((s.intelligence + s.wisdom)/2 - s.charisma + 50, 0, 100));
   const isJ = decide(norm((s.wisdom + s.constitution)/2 - (s.charisma + s.dexterity)/2 + 50, 0, 100));
   const typeStr = `${isE?'E':'I'}${isN?'N':'S'}${isT?'T':'F'}${isJ?'J':'P'}`;
   return MBTI_TYPES.find(m => m.type === typeStr) ?? MBTI_TYPES[0];
@@ -2919,12 +2963,13 @@ async function runGenerate() {
   }
 
   isGenerating = true;
+  currentOutput = null;
   showError('');
   const btn = document.getElementById('btn-generate');
   btn.disabled = true;
   btn.classList.add('spinning');
 
-  // Clear old output
+  // Clear old output and any lingering continue bar
   document.getElementById('output-area').innerHTML = '';
 
   try {
@@ -2948,7 +2993,7 @@ async function runGenerate() {
     const skeleton = buildSkeleton(stats, mbti, tables);
     currentSkeleton = skeleton;
 
-    // Render skeleton immediately
+    // Render skeleton cards
     const outputArea = document.getElementById('output-area');
     outputArea.innerHTML = renderSkeleton(skeleton);
     await sleep(50);
@@ -2956,7 +3001,56 @@ async function runGenerate() {
       setTimeout(() => c.classList.add('revealed'), i * 120);
     });
 
-    // Phase 4 — AI narrative
+    // Pause — show Continue bar instead of immediately calling Claude
+    outputArea.insertAdjacentHTML('beforeend', `
+      <div id="continue-bar" class="continue-bar">
+        <div class="continue-bar-label">Like this character? Generate the full scenario.</div>
+        <button id="btn-continue" class="btn-continue" onclick="runAIPhase()">
+          <span class="gear-icon">⚙</span> Generate Scenario
+        </button>
+      </div>
+    `);
+
+    // Mark phases 1-3 done, leave phase-ai idle
+    ['phase-roll','phase-mbti','phase-skeleton'].forEach(p => {
+      document.getElementById(p)?.classList.remove('active');
+      document.getElementById(p)?.classList.add('done');
+    });
+    setStatus('Review the character sheet, then generate the scenario when ready.');
+
+  } catch(err) {
+    showError(`Generation failed: ${err.message}`);
+    setStatus('');
+    clearPhases();
+  } finally {
+    isGenerating = false;
+    btn.disabled = false;
+    btn.classList.remove('spinning');
+  }
+}
+
+async function runAIPhase() {
+  if (isGenerating || !currentSkeleton) return;
+  const apiKey = document.getElementById('api-key').value.trim();
+  if (!apiKey) {
+    showError('Please enter your Anthropic API key.');
+    return;
+  }
+
+  isGenerating = true;
+  showError('');
+
+  const continueBtn = document.getElementById('btn-continue');
+  const generateBtn = document.getElementById('btn-generate');
+  if (continueBtn) { continueBtn.disabled = true; continueBtn.classList.add('spinning'); }
+  generateBtn.disabled = true;
+
+  const outputArea = document.getElementById('output-area');
+
+  try {
+    // Remove Continue bar and insert shimmer placeholder
+    document.getElementById('continue-bar')?.remove();
+
     setPhase('phase-ai');
     setStatus('Summoning the narrative…');
 
@@ -2976,19 +3070,17 @@ async function runGenerate() {
       </div>
     `);
 
-    const output = await callClaude(skeleton, apiKey, currentGenre);
+    const output = await callClaude(currentSkeleton, apiKey, currentGenre);
     currentOutput = output;
 
     document.getElementById('ai-placeholder')?.remove();
 
-    // Append output cards
-    outputArea.innerHTML += renderOutput(skeleton, output);
+    outputArea.innerHTML += renderOutput(currentSkeleton, output);
     await sleep(50);
     document.querySelectorAll('.card:not(.revealed)').forEach((c, i) => {
       setTimeout(() => c.classList.add('revealed'), i * 150);
     });
 
-    // Mark all phases done
     ['phase-roll','phase-mbti','phase-skeleton','phase-ai'].forEach(p => {
       document.getElementById(p)?.classList.remove('active');
       document.getElementById(p)?.classList.add('done');
@@ -2999,11 +3091,19 @@ async function runGenerate() {
   } catch(err) {
     showError(`Generation failed: ${err.message}`);
     setStatus('');
-    clearPhases();
+    // Restore continue bar so they can try again
+    outputArea.insertAdjacentHTML('beforeend', `
+      <div id="continue-bar" class="continue-bar">
+        <div class="continue-bar-label">Generation failed — try again?</div>
+        <button id="btn-continue" class="btn-continue" onclick="runAIPhase()">
+          <span class="gear-icon">⚙</span> Generate Scenario
+        </button>
+      </div>
+    `);
   } finally {
     isGenerating = false;
-    btn.disabled = false;
-    btn.classList.remove('spinning');
+    generateBtn.disabled = false;
+    generateBtn.classList.remove('spinning');
   }
 }
 
