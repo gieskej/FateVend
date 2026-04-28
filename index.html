@@ -499,11 +499,21 @@ body::before {
   100% { opacity: 1;   transform: scale(1);   }
 }
 
+.stat-adj {
+  font-family: var(--font-body);
+  font-size: 0.6rem;
+  font-style: italic;
+  color: var(--ink-faint);
+  display: block;
+  margin-top: 0.25rem;
+  letter-spacing: 0.02em;
+}
+
 .stat-bar {
   height: 3px;
   background: var(--parchment-deep);
   border-radius: 2px;
-  margin-top: 0.4rem;
+  margin-top: 0.35rem;
   overflow: hidden;
 }
 .stat-bar-fill {
@@ -2304,7 +2314,8 @@ function buildSkeleton(stats, mbti, tables) {
   const lastName    = nameResult.last;
   const ageRoll     = Math.random();
   const age         = ageRoll < 0.1 ? randomInt(19,24) : ageRoll < 0.75 ? randomInt(25,45) : ageRoll < 0.95 ? randomInt(46,58) : randomInt(59,70);
-  const build       = statWeightedPick(B, stats);
+  const compatBuilds = B.filter(b => { const sa = b.statAffinity?.strength ?? 1.0; if (sa >= 1.4 && stats.strength < 55) return false; if (sa >= 1.2 && stats.strength < 35) return false; if (sa <= 0.75 && stats.strength > 65) return false; return true; });
+  const build       = statWeightedPick(compatBuilds.length >= 2 ? compatBuilds : B, stats);
   const hairItem    = uniformPick(H);
   const hair        = typeof hairItem === 'string' ? hairItem : hairItem.label;
   const feat        = Math.random() < 0.25 ? null : uniformPick(DF.filter(f => f.label)).label;
@@ -2335,7 +2346,7 @@ function buildSkeleton(stats, mbti, tables) {
     gender: gender.label, pronouns: gender.pronouns,
     orientation: orientation.label,
     ethnicityBroad: identity.broad, ethnicityFlavor: identity.flavor,
-    appearance: { build: build.label, hair, distinguishingFeature: feat },
+    appearance: { build: build.label, hair, distinguishingFeature: feat, statNotes: appearanceStatNotes(stats) },
     quirk: quirk.quirk,
     stats, mbti: mbti.type, mbtiLabel: mbti.label,
     profession: profession.title, industry: profession.industry,
@@ -2377,7 +2388,7 @@ function buildPrompt(sk, genre) {
   const castLines = sk.cast.map(npc =>
     `  - ${npc.name} (${npc.role}, ${npc.status}): ${npc.traits.join(', ')}. ${npc.dynamic}`
   ).join('\n');
-  const appParts = [sk.appearance.build, sk.appearance.hair, sk.appearance.distinguishingFeature].filter(Boolean).join('; ');
+  const appParts = [sk.appearance.build, sk.appearance.hair, sk.appearance.distinguishingFeature, ...(sk.appearance.statNotes ?? [])].filter(Boolean).join('; ');
   const identityLabel  = genre === 'fantasy' ? 'Race' : genre === 'sci-fi' ? 'Species' : 'Ethnicity';
   const genreLabel     = genre === 'fantasy' ? 'fantasy' : genre === 'sci-fi' ? 'AI Dungeon sci-fi' : 'AI Dungeon';
   const entryNote      = genre === 'fantasy'
@@ -2639,8 +2650,35 @@ function attachCounter(textarea, limit, counterId) {
 // RENDER
 // ═══════════════════════════════════════════════════════════════════════════
 
+const STAT_ADJECTIVES = {
+  strength:     ['feeble',    'weak',      'average',    'strong',     'mighty'    ],
+  intelligence: ['dim',       'slow',      'capable',    'sharp',      'brilliant' ],
+  wisdom:       ['reckless',  'naive',     'grounded',   'perceptive', 'sage'      ],
+  charisma:     ['repellent', 'awkward',   'personable', 'charming',   'magnetic'  ],
+  dexterity:    ['clumsy',    'sluggish',  'nimble',     'agile',      'acrobatic' ],
+  constitution: ['frail',     'sickly',    'hardy',      'tough',      'resilient' ],
+};
+
+function statAdjective(stat, value) {
+  const tiers = STAT_ADJECTIVES[stat];
+  if (!tiers) return '';
+  return tiers[Math.min(4, Math.floor((value - 1) / 20))];
+}
+
+const CON_APPEARANCE_NOTES = ['chronically run-down look','looks worn, running on less','','healthy, clear-eyed','visibly robust, built to last'];
+const CHA_APPEARANCE_NOTES = ['unkempt, indifferent to appearances','rough-edged','','well-groomed, easy confidence','striking — the room notices'];
+
+// STR is represented by the build label — a separate note would risk contradicting it.
+function appearanceStatNotes(stats) {
+  const t = v => Math.min(4, Math.floor((v - 1) / 20));
+  return [
+    CON_APPEARANCE_NOTES[t(stats.constitution)],
+    CHA_APPEARANCE_NOTES[t(stats.charisma)],
+  ].filter(Boolean);
+}
+
 function renderSkeleton(sk) {
-  const appParts = [sk.appearance.build, sk.appearance.hair, sk.appearance.distinguishingFeature].filter(Boolean).join(', ');
+  const appParts = [sk.appearance.build, sk.appearance.hair, sk.appearance.distinguishingFeature, ...(sk.appearance.statNotes ?? [])].filter(Boolean).join('; ');
 
   return `
   <!-- CHARACTER SHEET -->
@@ -2665,6 +2703,7 @@ function renderSkeleton(sk) {
           <div class="stat-cell" onclick="rerollStat('${stat}')" title="Reroll ${stat}">
             <span class="stat-name">${stat.slice(0,3).toUpperCase()}</span>
             <span class="stat-value" id="stat-${stat}">${sk.stats[stat]}</span>
+            <span class="stat-adj" id="adj-${stat}">${statAdjective(stat, sk.stats[stat])}</span>
             <div class="stat-bar"><div class="stat-bar-fill" id="bar-${stat}" style="width:${sk.stats[stat]}%"></div></div>
             <span class="stat-reroll-hint">reroll</span>
           </div>`).join('')}
@@ -2689,7 +2728,7 @@ function renderSkeleton(sk) {
       </div>
       <div class="skeleton-row">
         <span class="skeleton-key">Appearance</span>
-        <span class="skeleton-val">${appParts || '—'}</span>
+        <span class="skeleton-val" id="appearance-val">${appParts || '—'}</span>
       </div>
       <div class="skeleton-row">
         <span class="skeleton-key">Quirk</span>
@@ -2917,7 +2956,7 @@ async function copyAll(btn) {
 function copySkeletonText(btn) {
   if (!currentSkeleton) return;
   const sk = currentSkeleton;
-  const app = [sk.appearance.build, sk.appearance.hair, sk.appearance.distinguishingFeature].filter(Boolean).join(', ');
+  const app = [sk.appearance.build, sk.appearance.hair, sk.appearance.distinguishingFeature, ...(sk.appearance.statNotes ?? [])].filter(Boolean).join('; ');
   const text = [
     `${sk.name}, ${sk.age}, ${sk.gender} (${sk.pronouns})`,
     `Ethnicity: ${sk.ethnicityBroad}`,
@@ -2941,13 +2980,26 @@ async function rerollStat(statName) {
   currentSkeleton.stats[statName] = newVal;
 
   const valEl = document.getElementById(`stat-${statName}`);
+  const adjEl = document.getElementById(`adj-${statName}`);
   const barEl = document.getElementById(`bar-${statName}`);
+  const appEl = document.getElementById('appearance-val');
   if (valEl) {
     valEl.textContent = newVal;
     valEl.closest('.stat-cell').classList.add('rolling');
     setTimeout(() => valEl.closest('.stat-cell')?.classList.remove('rolling'), 700);
   }
+  if (adjEl) adjEl.textContent = statAdjective(statName, newVal);
   if (barEl) barEl.style.width = `${newVal}%`;
+  if (appEl && currentSkeleton) {
+    currentSkeleton.appearance.statNotes = appearanceStatNotes(currentSkeleton.stats);
+    const parts = [
+      currentSkeleton.appearance.build,
+      currentSkeleton.appearance.hair,
+      currentSkeleton.appearance.distinguishingFeature,
+      ...currentSkeleton.appearance.statNotes,
+    ].filter(Boolean).join('; ');
+    appEl.textContent = parts || '—';
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════════════════

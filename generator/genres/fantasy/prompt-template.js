@@ -36,6 +36,7 @@ export function buildPrompt(sk) {
     sk.appearance.build,
     sk.appearance.hair,
     sk.appearance.distinguishingFeature,
+    ...(sk.appearance.statNotes ?? []),
   ].filter(Boolean).join('; ');
 
   return `Generate AI Dungeon fantasy content for this character. Return a single JSON object with these exact keys:

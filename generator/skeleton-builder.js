@@ -104,11 +104,33 @@ export function buildSkeleton(stats, mbti, tables) {
             :                  randomInt(59, 70);
 
   // ── APPEARANCE ────────────────────────────────────────────────────────
-  const build = statWeightedPick(BUILDS, stats);
+  // Filter builds to those compatible with actual STR before weighted pick,
+  // preventing contradictions like "powerfully built" on a feeble character.
+  const compatibleBuilds = BUILDS.filter(b => {
+    const sa = b.statAffinity?.strength ?? 1.0;
+    if (sa >= 1.4 && stats.strength < 55) return false;
+    if (sa >= 1.2 && stats.strength < 35) return false;
+    if (sa <= 0.75 && stats.strength > 65) return false;
+    return true;
+  });
+  const build = statWeightedPick(compatibleBuilds.length >= 2 ? compatibleBuilds : BUILDS, stats);
+
   const hair  = uniformPick(HAIR);
   const distinguishingFeature = Math.random() < 0.25
     ? null
     : uniformPick(DISTINGUISHING_FEATURES.filter(f => f.label !== null)).label;
+
+  // Stat-derived appearance notes for CON and CHA only.
+  // STR is represented by the build label — a separate note would risk contradicting it.
+  const statAppearanceNote = (() => {
+    const t = v => Math.min(4, Math.floor((v - 1) / 20));
+    const CON_NOTES = ['chronically run-down look', 'looks worn, running on less', '', 'healthy, clear-eyed', 'visibly robust, built to last'];
+    const CHA_NOTES = ['unkempt, indifferent to appearances', 'rough-edged',       '', 'well-groomed, easy confidence', 'striking — the room notices'];
+    return [
+      CON_NOTES[t(stats.constitution)],
+      CHA_NOTES[t(stats.charisma)],
+    ].filter(Boolean);
+  })();
 
   // ── QUIRK ─────────────────────────────────────────────────────────────
   const quirkEntry = statWeightedPick(QUIRKS, stats);
@@ -154,6 +176,7 @@ export function buildSkeleton(stats, mbti, tables) {
       build:               build.label,
       hair:                typeof hair === 'string' ? hair : hair.label,
       distinguishingFeature,
+      statNotes:           statAppearanceNote,
     },
     quirk:           quirkEntry.quirk,
     stats,
