@@ -888,7 +888,12 @@ body::before {
       placeholder="sk-ant-..." autocomplete="off" spellcheck="false">
   </div>
   <div class="api-section">
-    <label for="img-api-key">Stability AI Key <span style="font-style:italic;font-size:0.65rem;color:var(--ink-faint);text-transform:none;letter-spacing:0">(for portraits)</span></label>
+    <label for="sd-url">Local SD URL <span style="font-style:italic;font-size:0.65rem;color:var(--ink-faint);text-transform:none;letter-spacing:0">(portraits — takes priority)</span></label>
+    <input id="sd-url" class="api-input" type="text"
+      placeholder="http://bonobo.local:7860" autocomplete="off" spellcheck="false">
+  </div>
+  <div class="api-section">
+    <label for="img-api-key">Stability AI Key <span style="font-style:italic;font-size:0.65rem;color:var(--ink-faint);text-transform:none;letter-spacing:0">(portraits — fallback)</span></label>
     <input id="img-api-key" class="api-input" type="password"
       placeholder="sk-..." autocomplete="off" spellcheck="false">
   </div>
@@ -3140,6 +3145,11 @@ async function runAIPhase() {
 
     setStatus('Your fate is sealed. Edit and copy as needed.');
 
+    // Auto-generate portrait if a backend is configured
+    if (output.appearancePrompt && (document.getElementById('sd-url').value.trim() || document.getElementById('img-api-key').value.trim())) {
+      generatePortrait(null);
+    }
+
   } catch(err) {
     showError(`Generation failed: ${err.message}`);
     setStatus('');
@@ -3161,43 +3171,56 @@ async function runAIPhase() {
 
 // ── Portrait generation ───────────────────────────────────────────────────
 async function generatePortrait(btn) {
-  const apiKey = document.getElementById('img-api-key').value.trim();
-  if (!apiKey) {
-    showError('Enter your Stability AI API key to generate portraits.');
+  const sdUrl    = document.getElementById('sd-url').value.trim();
+  const apiKey   = document.getElementById('img-api-key').value.trim();
+  if (!sdUrl && !apiKey) {
+    showError('Enter a local SD URL or Stability AI key to generate portraits.');
     return;
   }
   const promptEl = document.getElementById('field-appearance');
   if (!promptEl || !promptEl.value.trim()) return;
 
   const wrapEl = document.getElementById('portrait-wrap');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="loading-gear">⚙</span> Rendering…';
+  if (btn) { btn.disabled = true; btn.innerHTML = '<span class="loading-gear">⚙</span> Rendering…'; }
   wrapEl.innerHTML = `<div style="color:var(--brass-light);font-style:italic;font-size:0.9rem;margin-top:0.4rem;">Painting the portrait…</div>`;
 
   try {
-    const form = new FormData();
-    form.append('prompt', promptEl.value.trim());
-    form.append('aspect_ratio', '2:3');
-    form.append('output_format', 'png');
-
-    const res = await fetch('https://api.stability.ai/v2beta/stable-image/generate/core', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Accept': 'application/json',
-      },
-      body: form,
-    });
-
-    if (!res.ok) {
-      const txt = await res.text().catch(() => '');
-      throw new Error(`Stability API ${res.status}: ${txt}`);
+    let src;
+    if (sdUrl) {
+      // ── Local Stable Diffusion WebUI (Forge / A1111) ──────────────────
+      const res = await fetch(`${sdUrl}/sdapi/v1/txt2img`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          prompt:           promptEl.value.trim(),
+          negative_prompt:  'low quality, blurry, duplicate, deformed, bad anatomy, extra limbs, text, watermark, logo',
+          steps:            25,
+          width:            512,
+          height:           768,
+          cfg_scale:        1,
+          sampler_name:     'Euler',
+        }),
+      });
+      if (!res.ok) { const t = await res.text().catch(()=>''); throw new Error(`SD API ${res.status}: ${t}`); }
+      const data = await res.json();
+      src = `data:image/png;base64,${data.images[0]}`;
+    } else {
+      // ── Stability AI fallback ─────────────────────────────────────────
+      const form = new FormData();
+      form.append('prompt', promptEl.value.trim());
+      form.append('aspect_ratio', '2:3');
+      form.append('output_format', 'png');
+      const res = await fetch('https://api.stability.ai/v2beta/stable-image/generate/core', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${apiKey}`, 'Accept': 'application/json' },
+        body: form,
+      });
+      if (!res.ok) { const t = await res.text().catch(()=>''); throw new Error(`Stability API ${res.status}: ${t}`); }
+      const data = await res.json();
+      src = `data:image/png;base64,${data.image}`;
     }
 
-    const data = await res.json();
-    const src = `data:image/png;base64,${data.image}`;
     const filename = `${(currentSkeleton?.name ?? 'portrait').replace(/\s+/g, '-')}.png`;
-
     wrapEl.innerHTML = `
       <img src="${src}" alt="Character portrait">
       <div class="portrait-actions">
@@ -3207,8 +3230,7 @@ async function generatePortrait(btn) {
   } catch (err) {
     wrapEl.innerHTML = `<div class="portrait-error">Portrait failed: ${err.message}</div>`;
   } finally {
-    btn.disabled = false;
-    btn.innerHTML = '⚙ Generate Portrait';
+    if (btn) { btn.disabled = false; btn.innerHTML = '⚙ Generate Portrait'; }
   }
 }
 
@@ -3227,15 +3249,18 @@ function getCookie(name) {
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('empty-state')?.style && (document.getElementById('output-area').style.minHeight = '200px');
 
-  // Restore saved keys
+  // Restore saved keys / URLs
   const antKey = getCookie('gof_anthropic_key');
   if (antKey) document.getElementById('api-key').value = antKey;
   const imgKey = getCookie('gof_stability_key');
   if (imgKey) document.getElementById('img-api-key').value = imgKey;
+  const sdUrl = getCookie('gof_sd_url');
+  if (sdUrl) document.getElementById('sd-url').value = sdUrl;
 
-  // Persist keys as they change
+  // Persist as they change
   document.getElementById('api-key').addEventListener('input', e => setCookie('gof_anthropic_key', e.target.value, 365));
   document.getElementById('img-api-key').addEventListener('input', e => setCookie('gof_stability_key', e.target.value, 365));
+  document.getElementById('sd-url').addEventListener('input', e => setCookie('gof_sd_url', e.target.value, 365));
 });
 </script>
 </body>
