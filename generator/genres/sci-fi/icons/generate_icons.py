@@ -24,8 +24,8 @@ VARIANTS = 3
 PARAMS = dict(
     negative_prompt    = NEG,
     steps              = 20,
-    width              = 512,
-    height             = 512,
+    width              = 256,
+    height             = 256,
     cfg_scale          = 1,
     distilled_cfg_scale= 3.5,
     sampler_name       = "Euler",
@@ -198,37 +198,37 @@ for i, (slug, body) in enumerate(PR, 1):
 
 # ── SENTIMENTS ────────────────────────────────────────────────────────────────
 SE = [
-    ("proud",             "person standing upright with quiet self-assurance, achievement visible in their posture, earned not given"),
-    ("resentful",         "person with barely contained anger, watching someone else get what should have been theirs, keeping it internal"),
-    ("indifferent",       "person going through the motions of their work with complete emotional distance, professionally hollow"),
-    ("passionate",        "person fully absorbed in their work, leaning in, the task mattering to them in a way that shows"),
-    ("burned_out",        "person slumped at a workstation surrounded by empty stimulant containers, everything done, nothing left"),
-    ("desperate",         "person calculating on a cracked screen with almost no options left, choosing the least bad one"),
-    ("quietly_satisfied", "person at the end of a shift, quiet smile, nothing dramatic, just something done well"),
-    ("ashamed",           "person unable to meet anyone's eyes at work, the thing they did for this job sitting behind their expression"),
-    ("lost",              "person standing in a corridor not moving, job done, no idea what comes next, genuinely uncertain"),
+    ("proud",             "proud emoji"),
+    ("resentful",         "resentful emoji"),
+    ("indifferent",       "indifferent emoji"),
+    ("passionate",        "passionate emoji"),
+    ("burned_out",        "burned_out emoji"),
+    ("desperate",         "desperate emoji"),
+    ("quietly_satisfied", "smug emoji"),
+    ("ashamed",           "ashamed emoji"),
+    ("lost",              "lost emoji"),
 ]
 for i, (slug, body) in enumerate(SE, 1):
     ITEMS.append((f"SENTIMENTS#{i}#{slug}", body + ", " + STYLE))
 
 # ── MBTI_TYPES ────────────────────────────────────────────────────────────────
 MB = [
-    ("INTJ", "solitary strategist in a dark war room, holographic plans surrounding them, building something no one else can see yet"),
-    ("INTP", "researcher surrounded by layered data screens, pulling apart a complex system, the theory almost within reach"),
-    ("ENTJ", "commander on a ship bridge giving orders, the crew moving with precision, the outcome never in doubt"),
-    ("ENTP", "tech entrepreneur gesturing at a whiteboard covered in half-finished ideas, three arguments happening at once"),
-    ("INFJ", "counsellor in a relief shelter, one person at a time, quiet intensity, seeing further than the immediate crisis"),
-    ("INFP", "poet or artist alone in a quiet corner of a station, writing or painting, making something real from the inside out"),
-    ("ENFJ", "charismatic leader at the front of a crowd, not performing, genuinely carrying everyone forward"),
-    ("ENFP", "activist with a crowd behind them, ideas sparking like static, three conversations at once, all of them real"),
-    ("ISTJ", "methodical administrator at a perfectly organised workstation, every file in place, the system trusted and maintained"),
-    ("ISFJ", "field medic tending to an injured stranger, quiet competence, no drama, the work is the point"),
-    ("ESTJ", "executive at a boardroom head, every system running, the structure held together by visible will"),
-    ("ESFJ", "community coordinator at a station hub, knowing everyone's name, making sure nobody falls through the gap"),
-    ("ISTP", "mechanic with a piece of broken equipment open in front of them, figuring it out by hand, alone and absorbed"),
-    ("ISFP", "scout sitting on a rock on an alien world at dawn, just watching, not reporting yet, present in the moment"),
-    ("ESTP", "deal-maker shaking hands in a corridor, the terms still changing, confident the outcome will be good"),
-    ("ESFP", "performer in a crowded station bar, the room turned toward them, energy infectious, nobody unhappy"),
+    ("INTJ", "The Architect - A solitary strategist in a dark war room, holographic plans surrounding them"),
+    ("INTP", "The Thinker - A researcher surrounded by sensors, microscopes, and data streams"),
+    ("ENTJ", "The Commander - A commander on a starship bridge giving orders"),
+    ("ENTP", "The Debater - A Senator debating policy in a legislative chamber"),
+    ("INFJ", "The Advocate - A wealthy man giving his coat to a beggar"),
+    ("INFP", "The Mediator - A judge listening to opposing views"),
+    ("ENFJ", "The Protagonist - A charismatic leader at the front of a crowd"),
+    ("ENFP", "The Campaigner - A politician rallying a crowd"),
+    ("ISTJ", "The Logistician - A company accountant reviewing spreadsheets"),
+    ("ISFJ", "The Defender - A medic tending to an injured stranger"),
+    ("ESTJ", "The Executive - A company executive in a boardroom at the head of the table"),
+    ("ESFJ", "The Consul - A lawyer advising a client in a quiet office"),
+    ("ISTP", "The Virtuoso - A mechanic with a piece of broken equipment open in front of them"),
+    ("ISFP", "The Adventurer - A scout sitting on a rock on an alien world at dawn"),
+    ("ESTP", "The Entrepreneur - A deal-maker shaking hands in a corridor"),
+    ("ESFP", "The Entertainer - A singer performing in a smoky club"),
 ]
 for i, (slug, body) in enumerate(MB, 1):
     ITEMS.append((f"MBTI_TYPES#{i}#{slug}", body + ", " + STYLE))
