@@ -19,6 +19,8 @@ export const ECONOMIC_TIERS = {
     ],
     housing: ['undercity stack bunk', 'abandoned maintenance corridor', 'grey-market capsule pod', 'substation squat'],
     transport: ['on foot', 'mag-rail with a borrowed pass', 'unreliable cargo bike'],
+    iconPrompt: 'A person standing in a undercity setting, looking out over the ruins.',
+    iconPath: 'icons/ECONOMIC_TIERS#1#below_the_line.png'
   },
   2: {
     label: 'Wage-Serf',
@@ -31,6 +33,8 @@ export const ECONOMIC_TIERS = {
     ],
     housing: ['corp-assigned hab unit', 'shared worker block', 'station dormitory bay'],
     transport: ['public mag-rail', 'corp shuttle pass', 'beat-up personal skimmer'],
+    iconPrompt: 'A person standing in a wage-serf setting, looking out over the ruins.',
+    iconPath: 'icons/ECONOMIC_TIERS#2#wage_serf.png'
   },
   3: {
     label: 'Independent Contractor',
@@ -43,6 +47,8 @@ export const ECONOMIC_TIERS = {
     ],
     housing: ['private hab unit', 'berth on their own ship', 'rented ring-sector apartment'],
     transport: ['own ship or share of a ship', 'reliable skimmer', 'station transit unrestricted'],
+    iconPrompt: 'A person standing in a independent contractor setting, looking out over the ruins.',
+    iconPath: 'icons/ECONOMIC_TIERS#3#independent_contractor.png'
   },
   4: {
     label: 'Corporate Citizen',
@@ -55,6 +61,8 @@ export const ECONOMIC_TIERS = {
     ],
     housing: ['corp-provided arcology apartment', 'mid-ring private residence', 'executive hab suite'],
     transport: ['corp vehicle with full systems', 'priority shuttle access', 'company cruiser clearance'],
+    iconPrompt: 'A person standing in a corporate citizen setting, looking out over the ruins.',
+    iconPath: 'icons/ECONOMIC_TIERS#4#corporate_citizen.png'
   },
   5: {
     label: 'Elite / Exec',
@@ -67,6 +75,8 @@ export const ECONOMIC_TIERS = {
     ],
     housing: ['arcology penthouse', 'private orbital residence', 'multi-property portfolio'],
     transport: ['personal ship', 'private shuttle on demand', 'corp executive transport with escort'],
+    iconPrompt: 'A person standing in a elite/exec setting, looking out over the ruins.',
+    iconPath: 'icons/ECONOMIC_TIERS#5#elite_exec.png'
   },
 };
 
@@ -81,6 +91,8 @@ export const CITY_SETTINGS = [
     flavor: 'recycled air and recycled people, everyone transient, everything negotiable, the void just outside the hull',
     toneTag: 'neutral',
     statAffinity: { intelligence: 1.2, dexterity: 1.1 },
+    iconPrompt: 'A person standing in an orbital station setting, looking out over the ruins.',
+    iconPath: 'icons/CITY_SETTINGS#1#orbital_station.png'
   },
   {
     id: 'megacity_sprawl',
@@ -88,6 +100,8 @@ export const CITY_SETTINGS = [
     flavor: 'ninety levels of vertical geography, corp logos blocking out the sky, the lower you are the less the rules apply',
     toneTag: 'gritty',
     statAffinity: { charisma: 1.1, constitution: 1.1 },
+    iconPrompt: 'A person standing in a megacity sprawl setting, looking out over the ruins.',
+    iconPath: 'icons/CITY_SETTINGS#2#megacity_sprawl.png'
   },
   {
     id: 'corp_arcology',
@@ -95,6 +109,8 @@ export const CITY_SETTINGS = [
     flavor: 'self-contained, climate-controlled, the whole city is the company — nice if you don\'t notice the edges',
     toneTag: 'neutral',
     statAffinity: { intelligence: 1.2, charisma: 1.1 },
+    iconPrompt: 'A person standing in a corporate arcology setting, looking out over the ruins.',
+    iconPath: 'icons/CITY_SETTINGS#3#corp_arcology.png'
   },
   {
     id: 'colony_world',
@@ -102,6 +118,8 @@ export const CITY_SETTINGS = [
     flavor: 'young settlement, everything still being built, the rules are what you negotiate, corp presence is recent and hungry',
     toneTag: 'neutral',
     statAffinity: { constitution: 1.3, strength: 1.1 },
+    iconPrompt: 'A person standing in a colony world setting, looking out over the ruins.',
+    iconPath: 'icons/CITY_SETTINGS#4#colony_world.png'
   },
   {
     id: 'mining_belt',
@@ -109,6 +127,8 @@ export const CITY_SETTINGS = [
     flavor: 'rock dust and shift rotations, everyone has a number and a quota, space is close and so are the people',
     toneTag: 'gritty',
     statAffinity: { strength: 1.2, constitution: 1.3 },
+    iconPrompt: 'A person standing in a mining belt installation setting, looking out over the ruins.',
+    iconPath: 'icons/CITY_SETTINGS#5#mining_belt.png'
   },
   {
     id: 'deep_space_outpost',
@@ -116,6 +136,8 @@ export const CITY_SETTINGS = [
     flavor: 'days from the nearest lane marker, crew-small, supply-dependent, the silence outside is total',
     toneTag: 'gritty',
     statAffinity: { constitution: 1.3, wisdom: 1.2 },
+    iconPrompt: 'A person standing in a deep-space outpost setting, looking out over the ruins.',
+    iconPath: 'icons/CITY_SETTINGS#6#deep_space_outpost.png'
   },
   {
     id: 'generation_ship',
@@ -123,6 +145,8 @@ export const CITY_SETTINGS = [
     flavor: 'born mid-voyage, destination theoretical, the ship is the world and the world has politics',
     toneTag: 'dramatic',
     statAffinity: { wisdom: 1.2, charisma: 1.1 },
+    iconPrompt: 'A person standing in a generation ship setting, looking out over the ruins.',
+    iconPath: 'icons/CITY_SETTINGS#7#generation_ship.png'
   },
   {
     id: 'post_collapse_ruins',
@@ -130,6 +154,8 @@ export const CITY_SETTINGS = [
     flavor: 'whatever this was before the corp withdrew or the war came through, it isn\'t anymore; people live here anyway',
     toneTag: 'gritty',
     statAffinity: { constitution: 1.2, wisdom: 1.1 },
+    iconPrompt: 'A person standing in a post-collapse city ruins setting, looking out over the ruins.',
+    iconPath: 'icons/CITY_SETTINGS#8#post_collapse_ruins.png'
   },
   {
     id: 'frontier_outpost',
@@ -137,6 +163,8 @@ export const CITY_SETTINGS = [
     flavor: 'edge of mapped space, three factions competing for the same resources, law is what the locals agree to this week',
     toneTag: 'neutral',
     statAffinity: { constitution: 1.2, wisdom: 1.1, charisma: 1.1 },
+    iconPrompt: 'A person standing in a frontier outpost setting, looking out over the ruins.',
+    iconPath: 'icons/CITY_SETTINGS#9#frontier_outpost.png'
   },
   {
     id: 'undercity',
@@ -144,6 +172,8 @@ export const CITY_SETTINGS = [
     flavor: 'below the corp-serviced levels, grey-market everything, the infrastructure is older than anyone living remembers, survival is a local expertise',
     toneTag: 'gritty',
     statAffinity: { dexterity: 1.2, constitution: 1.2 },
+    iconPrompt: 'A person standing in the undercity setting, looking out over the ruins.',
+    iconPath: 'icons/CITY_SETTINGS#10#undercity.png'
   },
 ];
 

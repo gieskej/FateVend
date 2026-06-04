@@ -509,6 +509,77 @@ body::before {
   letter-spacing: 0.02em;
 }
 
+/* ── SLOT MACHINE ──────────────────────────────────────────────────────── */
+.slot-machine {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  padding: 1rem 0.25rem 0.5rem;
+}
+.slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80px;
+}
+.slot-header {
+  font-family: var(--font-display);
+  font-size: 0.48rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 3px;
+  white-space: nowrap;
+}
+.slot-window {
+  width: 80px;
+  height: 80px;
+  overflow: hidden;
+  border: 1px solid var(--brass-dark);
+  border-radius: var(--radius);
+  background: rgba(26,18,8,0.7);
+  position: relative;
+  transition: border-color 0.4s, box-shadow 0.4s;
+}
+.slot-window img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  display: block;
+  transition: opacity 0.08s;
+}
+.slot-placeholder {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: var(--brass-dark);
+  opacity: 0.4;
+}
+.slot.rolling .slot-window {
+  border-color: var(--brass-dark);
+}
+.slot.landed .slot-window {
+  border-color: var(--brass);
+  box-shadow: 0 0 12px rgba(184,115,51,0.45), inset 0 0 6px rgba(184,115,51,0.1);
+}
+.slot-label {
+  font-size: 0.56rem;
+  text-align: center;
+  color: var(--brass-light);
+  margin-top: 4px;
+  max-width: 80px;
+  line-height: 1.35;
+  min-height: 1.6em;
+  opacity: 0;
+  transition: opacity 0.5s;
+  word-break: break-word;
+}
+.slot.landed .slot-label { opacity: 1; }
+
 .stat-bar {
   height: 3px;
   background: var(--parchment-deep);
@@ -2346,6 +2417,12 @@ function buildSkeleton(stats, mbti, tables) {
   (TP.professionTags?.[profession.industry] ?? []).forEach(t => tags.add(t));
   if (secret.severity === 'explosive' || secret.severity === 'high') { tags.add('secrets'); tags.add('betrayal'); }
 
+  const PROF_SLUG_OVERRIDES = { 'Mid-level corporate suit': 'corporate_suit' };
+  function profSlug(t) {
+    if (PROF_SLUG_OVERRIDES[t]) return PROF_SLUG_OVERRIDES[t];
+    return t.toLowerCase().replace(/\s*\/\s*/g,'_').replace(/[-\s]+/g,'_').replace(/[^a-z0-9_]/g,'');
+  }
+
   return {
     name, age,
     gender: gender.label, pronouns: gender.pronouns,
@@ -2364,6 +2441,19 @@ function buildSkeleton(stats, mbti, tables) {
     secretSeverity: secret.severity,
     tags: [...tags].slice(0,10),
     cast,
+    _slots: {
+      species:   identity.id,
+      gender:    gender.id,
+      orient:    resolveIconSlug('ORIENTATIONS', orientation.id),
+      mbti:      mbti.type,
+      prof:      profSlug(profession.title),
+      sentiment: sentiment.replace(/\s+/g, '_'),
+      econ:      `tier${tier}-${econ.label.toLowerCase().replace(/[\s/]+/g,'-').replace(/[^a-z0-9-]/g,'')}`,
+      city:      city.id,
+      family:    resolveIconSlug('FAMILY_STRUCTURES', famStruct.id),
+      lifeEvent: resolveIconSlug('LIFE_EVENTS', lifeEvent.id),
+      tension:   resolveIconSlug('TENSIONS', tension.id),
+    },
   };
 }
 
@@ -2649,6 +2739,248 @@ function attachCounter(textarea, limit, counterId) {
   };
   textarea.addEventListener('input', update);
   update();
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SLOT MACHINE
+// ═══════════════════════════════════════════════════════════════════════════
+
+const ICON_BASE = 'generator/genres/sci-fi/icons/';
+
+// Each entry: [sequenceN, slug, displayLabel]
+const SLOT_CATALOG = {
+  SPECIES: [
+    [1,'human_earther','Human (Earther)'],[2,'human_spacer','Human (Spacer)'],[3,'human_colonial','Human (Colonial)'],
+    [4,'enhanced','Enhanced Human'],[5,'biomodded','Augmented Human'],[6,'synthetic','Synthetic'],
+    [7,'uploaded','Uploaded'],[8,'vakhari','Vakhari'],[9,'nerevid','Nerevid'],
+    [10,'tessari','Tessari'],[11,'khal','Khal'],[12,'half_vakhari','Half-Vakhari'],
+    [13,'rekti','Rekti'],[14,'unknown_origin','Unknown Origin'],
+  ],
+  GENDERS: [
+    [1,'man','Man'],[2,'woman','Woman'],[3,'non_binary','Non-binary'],
+    [4,'trans_man','Trans man'],[5,'trans_woman','Trans woman'],[6,'genderless','Genderless'],[7,'custom_gendered','Custom'],
+  ],
+  ORIENTATIONS: [
+    [1,'straight','Straight'],[2,'gay_lesbian','Gay / Lesbian'],[3,'bisexual','Bisexual'],
+    [4,'pansexual','Pansexual'],[5,'asexual','Asexual'],[6,'questioning','Questioning'],
+  ],
+  MBTI_TYPES: [
+    [1,'INTJ','INTJ'],[2,'INTP','INTP'],[3,'ENTJ','ENTJ'],[4,'ENTP','ENTP'],
+    [5,'INFJ','INFJ'],[6,'INFP','INFP'],[7,'ENFJ','ENFJ'],[8,'ENFP','ENFP'],
+    [9,'ISTJ','ISTJ'],[10,'ISFJ','ISFJ'],[11,'ESTJ','ESTJ'],[12,'ESFJ','ESFJ'],
+    [13,'ISTP','ISTP'],[14,'ISFP','ISFP'],[15,'ESTP','ESTP'],[16,'ESFP','ESFP'],
+  ],
+  PROFESSIONS: [
+    [1,'freighter_pilot','Freighter Pilot'],[2,'ship_engineer','Ship Engineer'],[3,'cargo_hauler','Cargo Hauler'],
+    [4,'navigation_specialist','Navigator'],[5,'shuttle_operator','Shuttle Operator'],[6,'corporate_mercenary','Corp Mercenary'],
+    [7,'bounty_hunter','Bounty Hunter'],[8,'station_security','Station Security'],[9,'military_veteran','Military Veteran'],
+    [10,'combat_medic','Combat Medic'],[11,'hacker_netrunner','Hacker/Netrunner'],[12,'ai_technician','AI Technician'],
+    [13,'data_broker','Data Broker'],[14,'systems_analyst','Systems Analyst'],[15,'comm_tech','Comm Tech'],
+    [16,'street_doc','Street Doc'],[17,'corporate_physician','Corp Physician'],[18,'gene_tech','Gene-Tech'],
+    [19,'psych_tech','Psych-Tech'],[20,'smuggler','Smuggler'],[21,'black_market_dealer','Black Market Dealer'],
+    [22,'corporate_spy','Corporate Spy'],[23,'fixer','Fixer'],[24,'augmentation_bootlegger','Aug Bootlegger'],
+    [25,'memory_thief','Memory Thief'],[26,'undercity_enforcer','Undercity Enforcer'],[27,'corporate_suit','Corporate Suit'],
+    [28,'compliance_officer','Compliance Officer'],[29,'propaganda_specialist','Propaganda Specialist'],
+    [30,'terraforming_engineer','Terraformer'],[31,'xenobiologist','Xenobiologist'],[32,'deep_space_scout','Deep-Space Scout'],
+    [33,'colonist','Colonist'],[34,'salvager','Salvager'],[35,'netspace_artist','Netspace Artist'],
+    [36,'underground_journalist','Underground Journalist'],[37,'megacorp_executive','Megacorp Exec'],
+    [38,'ai_architect','AI Architect'],[39,'orbital_mogul','Orbital Mogul'],
+  ],
+  SENTIMENTS: [
+    [1,'proud','Proud'],[2,'resentful','Resentful'],[3,'indifferent','Indifferent'],[4,'passionate','Passionate'],
+    [5,'burned_out','Burned Out'],[6,'desperate','Desperate'],[7,'quietly_satisfied','Quietly Satisfied'],
+    [8,'ashamed','Ashamed'],[9,'lost','Lost'],
+  ],
+  ECONOMIC_TIERS: [
+    [1,'tier1-below-the-line','Below the Line'],[2,'tier2-wage-serf','Wage-Serf'],
+    [3,'tier3-independent-contractor','Contractor'],[4,'tier4-corporate-citizen','Corp Citizen'],
+    [5,'tier5-elite-exec','Elite / Exec'],
+  ],
+  CITY_SETTINGS: [
+    [1,'orbital_station','Orbital Station'],[2,'megacity_sprawl','Megacity Sprawl'],
+    [3,'corp_arcology','Corp Arcology'],[4,'colony_world','Colony World'],
+    [5,'mining_belt','Mining Belt'],[6,'deep_space_outpost','Deep-Space Outpost'],
+    [7,'generation_ship','Generation Ship'],[8,'post_collapse_ruins','Post-Collapse Ruins'],
+    [9,'frontier_outpost','Frontier Outpost'],[10,'undercity','Undercity'],
+  ],
+  FAMILY_STRUCTURES: [
+    [1,'biological_intact','Intact Family'],[2,'single_parent','Single Parent'],
+    [3,'two_parent_one_deceased','One Parent Lost'],[4,'corp_foster','Corp Foster'],
+    [5,'orphan_station','Station Orphan'],[6,'vat_born','Vat-Born'],
+    [7,'crew_family','Crew Family'],[8,'multigenerational','Multigenerational'],
+    [9,'commune_collective','Commune'],[10,'estranged_all','Estranged'],
+  ],
+  LIFE_EVENTS: [
+    [1,'corp_proxy_war','Proxy War'],[2,'sole_survivor','Sole Survivor'],[3,'station_siege','Station Siege'],
+    [4,'corp_purge','Corp Purge'],[5,'corp_indentured','Indentured'],[6,'corp_pawn','Corp Pawn'],
+    [7,'void_incident','Void Incident'],[8,'aug_rejection','Aug Rejection'],[9,'memory_wipe','Memory Wipe'],
+    [10,'lost_partner','Lost Partner'],[11,'first_contact','First Contact'],[12,'derelict_discovery','Derelict Discovery'],
+    [13,'physics_violation','Physics Violation'],[14,'wrongful_prison','Wrongful Prison'],[15,'burned_informant','Burned Informant'],
+    [16,'heist_sideways','Heist Gone Wrong'],[17,'colony_collapse','Colony Collapse'],[18,'ship_failure','Ship Failure'],
+    [19,'mass_evacuation','Mass Evacuation'],[20,'built_reputation','Built Rep'],[21,'megacorp_defector','Corp Defector'],
+  ],
+  TENSIONS: [
+    [1,'megacorp_debt','Megacorp Debt'],[2,'syndicate_debt','Syndicate Debt'],[3,'ship_failing','Ship Failing'],
+    [4,'corp_termination','Corp Termination'],[5,'resistance_recruitment','Resistance Recruit'],[6,'leaked_data','Leaked Data'],
+    [7,'political_exile','Political Exile'],[8,'contested_cargo','Contested Cargo'],[9,'bounty','Bounty'],
+    [10,'heist_something_off','Heist'],[11,'witnessed_massacre','Witnessed Massacre'],[12,'life_support_failing','Life Support'],
+    [13,'aug_rejection_onset','Aug Rejection'],[14,'void_pursuit','Void Pursuit'],[15,'identity_fracture','Identity Fracture'],
+    [16,'someone_in_danger','Someone in Danger'],[17,'ai_awakening','AI Awakening'],[18,'past_resurfaced','Past Resurfaced'],
+    [19,'contract_ending','Contract Ending'],[20,'two_factions','Two Factions'],
+  ],
+};
+
+// Ordered slots to display (and their skeleton key mapping)
+const SLOT_DEFS = [
+  { key:'species',   header:'Species',    cat:'SPECIES'          },
+  { key:'gender',    header:'Gender',     cat:'GENDERS'          },
+  { key:'orient',    header:'Orientation',cat:'ORIENTATIONS'     },
+  { key:'mbti',      header:'Personality',cat:'MBTI_TYPES'       },
+  { key:'prof',      header:'Profession', cat:'PROFESSIONS'      },
+  { key:'sentiment', header:'Sentiment',  cat:'SENTIMENTS'       },
+  { key:'econ',      header:'Economy',    cat:'ECONOMIC_TIERS'   },
+  { key:'city',      header:'Setting',    cat:'CITY_SETTINGS'    },
+  { key:'family',    header:'Background', cat:'FAMILY_STRUCTURES'},
+  { key:'lifeEvent', header:'Life Event', cat:'LIFE_EVENTS'      },
+  { key:'tension',   header:'Tension',    cat:'TENSIONS'         },
+];
+
+// Maps data IDs (from skeleton) → icon slugs (as named in generate_icons.py)
+const ICON_SLUG_MAP = {
+  ORIENTATIONS: { gay: 'gay_lesbian' },
+  FAMILY_STRUCTURES: {
+    two_parent_intact:      'biological_intact',
+    two_parent_divorced:    'biological_intact',
+    two_parent_one_absent:  'single_parent',
+    corp_creche:            'corp_foster',
+    ship_crew_family:       'crew_family',
+    foster_corp:            'corp_foster',
+    orphaned_disaster:      'orphan_station',
+    large_family:           'multigenerational',
+    commune_habitat:        'commune_collective',
+    military_dependent:     'crew_family',
+    raised_by_grandparents: 'multigenerational',
+    only_child_wealthy:     'biological_intact',
+  },
+  TENSIONS: {
+    corp_debt:          'megacorp_debt',
+    bounty_active:      'bounty',
+    corp_hunt:          'corp_termination',
+    last_job:           'heist_something_off',
+    identity_problem:   'identity_fracture',
+    ai_following:       'ai_awakening',
+    divided_loyalties:  'two_factions',
+    something_following:'void_pursuit',
+    stateless:          'political_exile',
+    blackmailed:        'syndicate_debt',
+    wrong_people:       'syndicate_debt',
+    medical_debt:       'megacorp_debt',
+    witness:            'witnessed_massacre',
+    data_possession:    'leaked_data',
+  },
+  LIFE_EVENTS: {
+    ship_disaster:      'ship_failure',
+    station_collapse:   'station_siege',
+    corp_abandonment:   'corp_pawn',
+    war_veteran:        'corp_proxy_war',
+    refugee:            'colony_collapse',
+    corp_betrayal:      'burned_informant',
+    augment_failure:    'aug_rejection',
+    exile:              'corp_pawn',
+    colony_failure:     'colony_collapse',
+    crew_lost:          'sole_survivor',
+    wrongly_imprisoned: 'wrongful_prison',
+    found_something:    'derelict_discovery',
+    made_it_out:        'built_reputation',
+    bounty_cleared:     'burned_informant',
+    raised_shipside:    'sole_survivor',
+    ai_incident:        'physics_violation',
+    went_dark:          'megacorp_defector',
+    early_success:      'built_reputation',
+    caretaker:          'lost_partner',
+    prodigy:            'built_reputation',
+    long_haul:          'sole_survivor',
+  },
+};
+
+function resolveIconSlug(cat, dataId) {
+  return ICON_SLUG_MAP[cat]?.[dataId] ?? dataId;
+}
+
+function iconPath(cat, n, slug, variant=1) {
+  return `${ICON_BASE}${cat}#${n}#${slug}#${variant}.png`;
+}
+
+function renderSlotMachine() {
+  const slots = SLOT_DEFS.map(d => `
+    <div class="slot rolling" id="slot-${d.key}">
+      <div class="slot-header">${d.header}</div>
+      <div class="slot-window">
+        <img id="slot-img-${d.key}" src="" alt=""
+          onerror="this.onerror=null;this.closest('.slot-window').innerHTML='<div class=slot-placeholder>⚙</div>'">
+      </div>
+      <div class="slot-label" id="slot-lbl-${d.key}"></div>
+    </div>`).join('');
+  return `<div class="slot-machine" id="slot-machine">${slots}</div>`;
+}
+
+async function animateSlots(skeleton) {
+  if (currentGenre !== 'sci-fi') return;
+  const slots = skeleton._slots;
+  if (!slots) return;
+
+  // For each slot, preload the entries and start cycling
+  const intervals = {};
+  const indices = {};
+
+  SLOT_DEFS.forEach(def => {
+    const entries = SLOT_CATALOG[def.cat] ?? [];
+    if (!entries.length) return;
+    indices[def.key] = Math.floor(Math.random() * entries.length);
+
+    const img = document.getElementById(`slot-img-${def.key}`);
+    if (!img) return;
+
+    const showFrame = () => {
+      const [n, slug] = entries[indices[def.key]];
+      img.src = iconPath(def.cat, n, slug);
+    };
+    showFrame();
+
+    intervals[def.key] = setInterval(() => {
+      indices[def.key] = (indices[def.key] + 1) % entries.length;
+      showFrame();
+    }, 90);
+  });
+
+  // Land each slot with a stagger
+  for (let i = 0; i < SLOT_DEFS.length; i++) {
+    await sleep(i === 0 ? 600 : 150);
+
+    const def = SLOT_DEFS[i];
+    clearInterval(intervals[def.key]);
+
+    const entries   = SLOT_CATALOG[def.cat] ?? [];
+    const targetSlug = slots[def.key];
+    const entry     = entries.find(e => e[1] === targetSlug);
+
+    const img    = document.getElementById(`slot-img-${def.key}`);
+    const lblEl  = document.getElementById(`slot-lbl-${def.key}`);
+    const slotEl = document.getElementById(`slot-${def.key}`);
+
+    if (entry) {
+      const [n, slug, label] = entry;
+      const variant = Math.ceil(Math.random() * 3);
+      if (img) img.src = iconPath(def.cat, n, slug, variant);
+      if (lblEl) lblEl.textContent = label;
+    } else {
+      // No matching icon — show gear placeholder and the raw id
+      if (img) img.closest('.slot-window').innerHTML = '<div class="slot-placeholder">⚙</div>';
+      if (lblEl) lblEl.textContent = (targetSlug ?? '').replace(/_/g, ' ');
+    }
+
+    if (slotEl) { slotEl.classList.remove('rolling'); slotEl.classList.add('landed'); }
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -3050,9 +3382,21 @@ async function runGenerate() {
     const skeleton = buildSkeleton(stats, mbti, tables);
     currentSkeleton = skeleton;
 
-    // Render skeleton cards
     const outputArea = document.getElementById('output-area');
-    outputArea.innerHTML = renderSkeleton(skeleton);
+
+    if (currentGenre === 'sci-fi') {
+      // ── Slot machine phase ───────────────────────────────────────────
+      setStatus('The fates are deciding…');
+      outputArea.innerHTML = renderSlotMachine();
+      await animateSlots(skeleton);           // ~2s staggered animation
+      await sleep(200);
+
+      // Skeleton cards appear below the (now locked) slot machine
+      outputArea.insertAdjacentHTML('beforeend', renderSkeleton(skeleton));
+    } else {
+      outputArea.innerHTML = renderSkeleton(skeleton);
+    }
+
     await sleep(50);
     document.querySelectorAll('.card').forEach((c, i) => {
       setTimeout(() => c.classList.add('revealed'), i * 120);
@@ -3234,33 +3578,23 @@ async function generatePortrait(btn) {
   }
 }
 
-// ── Cookie helpers ────────────────────────────────────────────────────────
-function setCookie(name, value, days) {
-  const expires = new Date(Date.now() + days * 864e5).toUTCString();
-  document.cookie = `${name}=${encodeURIComponent(value)};expires=${expires};path=/;SameSite=Strict`;
-}
-
-function getCookie(name) {
-  const match = document.cookie.split('; ').find(r => r.startsWith(name + '='));
-  return match ? decodeURIComponent(match.split('=')[1]) : '';
-}
-
-// Init
-document.addEventListener('DOMContentLoaded', () => {
+// ── .env loader ───────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('empty-state')?.style && (document.getElementById('output-area').style.minHeight = '200px');
 
-  // Restore saved keys / URLs
-  const antKey = getCookie('gof_anthropic_key');
-  if (antKey) document.getElementById('api-key').value = antKey;
-  const imgKey = getCookie('gof_stability_key');
-  if (imgKey) document.getElementById('img-api-key').value = imgKey;
-  const sdUrl = getCookie('gof_sd_url');
-  if (sdUrl) document.getElementById('sd-url').value = sdUrl;
-
-  // Persist as they change
-  document.getElementById('api-key').addEventListener('input', e => setCookie('gof_anthropic_key', e.target.value, 365));
-  document.getElementById('img-api-key').addEventListener('input', e => setCookie('gof_stability_key', e.target.value, 365));
-  document.getElementById('sd-url').addEventListener('input', e => setCookie('gof_sd_url', e.target.value, 365));
+  try {
+    const text = await fetch('.env').then(r => r.ok ? r.text() : '');
+    const env = {};
+    text.split('\n').forEach(line => {
+      const m = line.match(/^\s*([^#=\s]+)\s*=\s*(.*?)\s*$/);
+      if (m) env[m[1]] = m[2].replace(/^["']|["']$/g, '');
+    });
+    if (env.ANTHROPIC_API_KEY) document.getElementById('api-key').value     = env.ANTHROPIC_API_KEY;
+    if (env.STABILITY_API_KEY) document.getElementById('img-api-key').value = env.STABILITY_API_KEY;
+    if (env.SD_URL)             document.getElementById('sd-url').value      = env.SD_URL;
+  } catch (_) {
+    // .env not accessible — user fills in fields manually
+  }
 });
 </script>
 </body>

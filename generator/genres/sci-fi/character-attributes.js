@@ -12,25 +12,9 @@
 //     Claude assembles these into prose.
 //   - One quirk per character — picked from a pool, weighted by stats.
 
-// ── GENDER ────────────────────────────────────────────────────────────────
-export const GENDERS = [
-  { id: 'man',         label: 'Man',         pronouns: 'he/him',   weight: 45 },
-  { id: 'woman',       label: 'Woman',       pronouns: 'she/her',  weight: 45 },
-  { id: 'non_binary',  label: 'Non-binary',  pronouns: 'they/them',weight: 5  },
-  { id: 'trans_man',   label: 'Trans man',   pronouns: 'he/him',   weight: 2  },
-  { id: 'trans_woman', label: 'Trans woman', pronouns: 'she/her',  weight: 2  },
-  { id: 'genderfluid', label: 'Genderfluid', pronouns: 'they/them',weight: 1  },
-];
+import { GENDERS } from '../../common/genders.js';
+import { ORIENTATIONS } from '../../common/orientations.js';
 
-// ── SEXUAL ORIENTATION ────────────────────────────────────────────────────
-export const ORIENTATIONS = [
-  { id: 'straight',    label: 'Straight',      weight: 65 },
-  { id: 'gay_lesbian', label: 'Gay / Lesbian',  weight: 10 },
-  { id: 'bisexual',    label: 'Bisexual',       weight: 12 },
-  { id: 'pansexual',   label: 'Pansexual',      weight: 5  },
-  { id: 'asexual',     label: 'Asexual',        weight: 4  },
-  { id: 'questioning', label: 'Questioning',    weight: 4  },
-];
 
 // ── SPECIES ───────────────────────────────────────────────────────────────
 // Structured as broad category + evocative flavor detail.
@@ -46,24 +30,32 @@ export const SPECIES = [
     broad: 'Human',
     flavor: 'Earther — born gravity-side, stockier bone density, carries a particular wariness toward anyone who has never needed to worry about weather',
     weight: 15,
+    iconPrompt: 'A person with a stockier bone density and a particular wariness toward anyone who has never needed to worry about weather',
+    iconPath: 'icons/SPECIES#human_earther.png'
   },
   {
     id: 'human_colonist',
     broad: 'Human',
     flavor: 'Colonist — raised on a settled world not Earth, adapted to local gravity and light, pragmatic in ways that confuse people who grew up with safety nets',
     weight: 12,
+    iconPrompt: 'A person raised on a settled world not Earth, adapted to local gravity and light, pragmatic in ways that confuse people who grew up with safety nets',
+    iconPath: 'icons/SPECIES#human_colonist.png'
   },
   {
     id: 'human_spacer',
     broad: 'Human',
     flavor: 'Spacer — born or raised aboard ships or stations, lean frame from variable-g, skin that\'s never quite seen enough real light, reads pressure changes in a room the way others read faces',
     weight: 8,
+    iconPrompt: 'A person born or raised aboard ships or stations, lean frame from variable-g, skin that\'s never quite seen enough real light, reads pressure changes in a room the way others read faces',
+    iconPath: 'icons/SPECIES#human_spacer.png'
   },
   {
     id: 'human_corp',
     broad: 'Human',
     flavor: 'Corp citizen — raised inside a megacorporate arcology, good teeth, filtered air their whole life, a slightly uncanny social ease that comes from being managed since birth',
     weight: 8,
+    iconPrompt: 'A person raised inside a megacorporate arcology, good teeth, filtered air their whole life, a slightly uncanny social ease that comes from being managed since birth',
+    iconPath: 'icons/SPECIES#human_corp.png'
   },
 
   // ── CYBORG ────────────────────────────────────────────────────────────
@@ -72,12 +64,16 @@ export const SPECIES = [
     broad: 'Cyborg',
     flavor: 'Lightly augmented — one or two integrated systems, subdermal ports or a replacement limb, biological baseline mostly intact but the seams are visible if you look',
     weight: 12,
+    iconPrompt: 'A person with one or two integrated systems, subdermal ports or a replacement limb, biological baseline mostly intact but the seams are visible if you look',
+    iconPath: 'icons/SPECIES#cyborg_light.png'
   },
   {
     id: 'cyborg_heavy',
     broad: 'Cyborg',
     flavor: 'Heavily augmented — more synthetic than biological now, the remaining organic parts feel almost decorative, moves with a precision that unsettles people who aren\'t used to it',
     weight: 5,
+    iconPrompt: 'A person who is more synthetic than biological now, the remaining organic parts feel almost decorative, moves with a precision that unsettles people who aren\'t used to it',
+    iconPath: 'icons/SPECIES#cyborg_heavy.png'
   },
 
   // ── ANDROID ───────────────────────────────────────────────────────────
@@ -86,6 +82,8 @@ export const SPECIES = [
     broad: 'Android',
     flavor: 'Android — fully synthetic, designed to pass at conversational distance, gets clocked by medscans and anyone who has been looking long enough; the question of personhood is legally unsettled and they are aware of this',
     weight: 6,
+    iconPrompt: 'A fully synthetic being designed to pass at conversational distance, gets clocked by medscans and anyone who has been looking long enough; the question of personhood is legally unsettled and they are aware of this',
+    iconPath: 'icons/SPECIES#android.png'
   },
 
   // ── UPLIFTED ──────────────────────────────────────────────────────────
@@ -94,12 +92,16 @@ export const SPECIES = [
     broad: 'Uplifted',
     flavor: 'Uplifted primate — enhanced cognition and fine motor precision from a corps-funded programme that\'s since been shut down, navigates a world built for a species that still isn\'t sure how to treat them',
     weight: 4,
+    iconPrompt: 'An uplifted primate with enhanced cognition and fine motor precision from a corps-funded programme that\'s since been shut down, navigates a world built for a species that still isn\'t sure how to treat them',
+    iconPath: 'icons/SPECIES#uplift_primate.png'
   },
   {
     id: 'uplift_feline',
     broad: 'Uplifted',
     flavor: 'Uplifted feline — heightened reflexes and senses, bipedal and fully sapient, the ears and tail are real, the patience for human inefficiency is synthetic',
     weight: 3,
+    iconPrompt: 'An uplifted feline with heightened reflexes and senses, bipedal and fully sapient, the ears and tail are real, the patience for human inefficiency is synthetic',
+    iconPath: 'icons/SPECIES#uplift_feline.png'
   },
 
   // ── CLONE ─────────────────────────────────────────────────────────────
@@ -108,12 +110,16 @@ export const SPECIES = [
     broad: 'Clone',
     flavor: 'Clone — baseline print, no notable deviations from the source template, grown and decanted like product; the paperwork says they have rights and the paperwork is technically accurate',
     weight: 5,
+    iconPrompt: 'A clone with a baseline print, no notable deviations from the source template, grown and decanted like product; the paperwork says they have rights and the paperwork is technically accurate',
+    iconPath: 'icons/SPECIES#clone_baseline.png'
   },
   {
     id: 'clone_notable',
     broad: 'Clone',
     flavor: 'Clone — divergent from baseline, whether by design, incident, or the slow drift of living; they may share a face with someone they have never met and would rather not',
     weight: 2,
+    iconPrompt: 'A clone divergent from baseline, whether by design, incident, or the slow drift of living; they may share a face with someone they have never met and would rather not',
+    iconPath: 'icons/SPECIES#clone_notable.png'
   },
 
   // ── MUTANT ────────────────────────────────────────────────────────────
@@ -122,6 +128,8 @@ export const SPECIES = [
     broad: 'Mutant',
     flavor: 'Mutant — radiation, unregulated biotech, or something in the water; whatever the cause the changes are real and unasked-for, and they have learned which ones to hide',
     weight: 5,
+    iconPrompt: 'A mutant with radiation, unregulated biotech, or something in the water; whatever the cause the changes are real and unasked-for, and they have learned which ones to hide',
+    iconPath: 'icons/SPECIES#mutant.png'
   },
 
   // ── ALIEN ─────────────────────────────────────────────────────────────
@@ -130,12 +138,16 @@ export const SPECIES = [
     broad: 'Alien',
     flavor: 'Humanoid alien — bipedal, bilaterally symmetrical, close enough to pass in a crowd until they don\'t; first contact was a generation ago and the social infrastructure for integration is still catching up',
     weight: 6,
+    iconPrompt: 'A humanoid alien — bipedal, bilaterally symmetrical, close enough to pass in a crowd until they don\'t; first contact was a generation ago and the social infrastructure for integration is still catching up',
+    iconPath: 'icons/SPECIES#alien_humanoid.png'
   },
   {
     id: 'alien_nonhumanoid',
     broad: 'Alien',
     flavor: 'Non-humanoid alien — the interface between their natural form and human-built space requires ongoing adaptation in both directions; they have opinions about the chair situation',
     weight: 2,
+    iconPrompt: 'A non-humanoid alien — the interface between their natural form and human-built space requires ongoing adaptation in both directions; they have opinions about the chair situation',
+    iconPath: 'icons/SPECIES#alien_nonhumanoid.png'
   },
 ];
 
@@ -150,31 +162,57 @@ export const SPECIES = [
 //   charisma     → presentation/grooming skew
 
 export const BUILDS = [
-  { id: 'lean',            label: 'lean, wiry',                statAffinity: { constitution: 0.9, dexterity: 1.2 } },
-  { id: 'average',         label: 'average build',             statAffinity: {} },
-  { id: 'stocky',          label: 'stocky, solid',             statAffinity: { strength: 1.2, constitution: 1.1 } },
-  { id: 'powerful',        label: 'powerfully built',          statAffinity: { strength: 1.5, constitution: 1.2 } },
-  { id: 'heavyset',        label: 'heavyset',                  statAffinity: { constitution: 1.1, strength: 1.1 } },
-  { id: 'tall_rangy',      label: 'tall and rangy',            statAffinity: { dexterity: 1.1 } },
-  { id: 'compact',         label: 'compact',                   statAffinity: {} },
-  { id: 'thin_underfed',   label: 'thin, underfed-looking',    statAffinity: { constitution: 0.7, wisdom: 1.1 } },
-  { id: 'synthetic_smooth',label: 'synthetic-smooth, uniform', statAffinity: { charisma: 1.2 } },
+  { id: 'lean',            label: 'lean, wiry',                    statAffinity: { constitution: 0.9, dexterity: 1.2 } },
+  { id: 'average',         label: 'average build',                 statAffinity: {} },
+  { id: 'stocky',          label: 'stocky, solid',                 statAffinity: { strength: 1.2, constitution: 1.1 } },
+  { id: 'powerful',        label: 'powerfully built',              statAffinity: { strength: 1.5, constitution: 1.2 } },
+  { id: 'heavyset',        label: 'heavyset',                      statAffinity: { constitution: 1.1, strength: 1.1, dexterity: 0.8 } },
+  { id: 'tall_rangy',      label: 'tall and rangy',                statAffinity: { dexterity: 1.1 } },
+  { id: 'toned',           label: 'lean, toned but not too bulky', statAffinity: { charisma: 1.2, strength: 1.1 } },
+  { id: 'thin_underfed',   label: 'thin, underfed-looking',        statAffinity: { constitution: 0.7, wisdom: 1.1 } },
+  { id: 'synthetic_smooth',label: 'synthetic-smooth, uniform',     statAffinity: { charisma: 1.2 } },
 ];
 
 // ── HAIR ─────────────────────────────────────────────────────────────────
 export const HAIR = [
-  'close-cropped',
-  'shaved to the scalp',
-  'long and loose',
-  'pulled back',
-  'shaved one side',
-  'synthfibre dreadlocks',
-  'bioluminescent-dyed',
-  'chrome-tipped',
-  'neural-port patches visible through close-cut hair',
+  'adaptive color based on emotion, long and flowing',
   'always under a hood',
-  'barely maintained',
-  'impeccably styled',
+  'auburn, braided with synthetic fibers',
+  'bald',
+  'bald, polished chrome',
+  'bald, scalp-mounted antenna array',
+  'black, close-cropped',
+  'black, long and straight',
+  'black, Medusa hair that moves on its own, almost alive',
+  'black, medium-length, greased and slicked back',
+  'black, swept to one side with a metallic sheen',
+  'black, tightly braided with embedded circuitry',
+  'black, voluminous and styled with holographic gel',
+  'black, with a shaved undercut',
+  'black, with streaks of neon blue',
+  'black, bobcut',
+  'black, short and spiky',
+  'blonde, long and loose',
+  'blonde, shoulder-length',
+  'blonde, short and spiky',
+  'blonde, pixie cut',
+  'blue, short, neon-dyed',
+  'brown, dreadlocks',
+  'brown, pulled back',
+  'brown, shoulder-length',
+  'brown, short and spiky',
+  'brown, wild and unkempt',
+  'chestnut, gorgeous flowing locks',
+  'gray ponytail',
+  'gray, buzzed short',
+  'green, mohawk',
+  'multicolored, dyed in neon colors',
+  'platinum, impeccably styled',
+  'purple, glowing bioluminescent-dyed',
+  'purple, chrome-tipped',
+  'red, barely maintained',
+  'shaved stubble',
+  'silver, shaved on one side',
 ];
 
 // ── DISTINGUISHING FEATURES ───────────────────────────────────────────────
@@ -185,9 +223,10 @@ export const DISTINGUISHING_FEATURES = [
   { id: 'synthetic_eyes',      label: 'synthetic eyes — too bright, too steady, don\'t quite track right' },
   { id: 'plasma_burn',         label: 'a plasma burn scar across one side of the face or neck'           },
   { id: 'prosthetic_limb',     label: 'a mechanical prosthetic limb — well-maintained or conspicuously not' },
-  { id: 'neural_ports',        label: 'neural interface ports at the temple, visible even when not in use'  },
+  { id: 'neural_ports',        label: 'neural interface ports at the temple or neck, visible even when not in use'  },
   { id: 'colour_shifting_skin',label: 'colour-shifting skin panels — biohack, probably not approved'     },
   { id: 'corp_tattoo',         label: 'a corporate ID tattoo they haven\'t bothered to remove'           },
+  { id: 'embarrassing_tattoo', label: 'an embarrassing tattoo they try to cover'                         },
   { id: 'mismatched_eyes',     label: 'mismatched eyes — one biological, one mechanical, neither warm'   },
   { id: 'chrome_fingers',      label: 'missing fingers replaced by chrome, no attempt to disguise it'    },
   { id: 'vacuum_burn',         label: 'vacuum burn scarring across the back of one hand'                  },

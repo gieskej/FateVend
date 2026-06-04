@@ -7,6 +7,8 @@
 //   4 = merchant / knight / skilled mage
 //   5 = noble / archmage / guild master
 
+import { SENTIMENTS } from '../../common/sentiments.js';
+
 export const PROFESSIONS = [
 
   // ── MARTIAL ───────────────────────────────────────────────────────────────
@@ -16,6 +18,8 @@ export const PROFESSIONS = [
     economicTier: 3,
     statAffinity: { strength: 1.3, constitution: 1.2 },
     sentiments: ['proud', 'burned out', 'resentful', 'quietly satisfied'],
+    iconPrompt: 'Fantasy RPG icon. An armored city guard standing at a gatehouse archway, spear in hand, surveying the street below with a tired but watchful eye, the city walls looming behind them.',
+    iconPath: 'fantasy/icons/PROFESSION#city_guard.png',
   },
   {
     title: 'Mercenary soldier',
@@ -23,6 +27,8 @@ export const PROFESSIONS = [
     economicTier: 3,
     statAffinity: { strength: 1.4, constitution: 1.3, dexterity: 1.1 },
     sentiments: ['indifferent', 'proud', 'burned out', 'desperate'],
+    iconPrompt: 'Fantasy RPG icon. A battle-scarred mercenary in mismatched armor, a fraying company banner behind them, coin purse at their belt, appraising the next contract with professional indifference.',
+    iconPath: 'fantasy/icons/PROFESSION#mercenary_soldier.png',
   },
   {
     title: 'Knight in service to a lord',
@@ -30,6 +36,8 @@ export const PROFESSIONS = [
     economicTier: 4,
     statAffinity: { strength: 1.4, charisma: 1.2, wisdom: 1.1 },
     sentiments: ['proud', 'quietly satisfied', 'burned out', 'resentful'],
+    iconPrompt: 'Fantasy RPG icon. A fully armored knight kneeling before a noble lord on a dais, receiving a blessed sword, heraldic banners hanging from stone pillars in a great hall.',
+    iconPath: 'fantasy/icons/PROFESSION#knight_in_service_to_a_lord.png',
   },
   {
     title: 'Disgraced knight',
@@ -37,6 +45,8 @@ export const PROFESSIONS = [
     economicTier: 2,
     statAffinity: { strength: 1.3, wisdom: 1.1 },
     sentiments: ['ashamed', 'resentful', 'desperate', 'quietly satisfied'],
+    iconPrompt: 'Fantasy RPG icon. A knight in dented, unpolished armor sitting alone at a tavern table, a tarnished heraldic emblem visible on their chest, staring into an untouched cup.',
+    iconPath: 'fantasy/icons/PROFESSION#disgraced_knight.png',
   },
   {
     title: 'Sellsword',
@@ -44,6 +54,8 @@ export const PROFESSIONS = [
     economicTier: 2,
     statAffinity: { strength: 1.5, dexterity: 1.2 },
     sentiments: ['indifferent', 'proud', 'burned out'],
+    iconPrompt: 'Fantasy RPG icon. A lean fighter for hire leaning against a market square wall, sword casually visible at their hip, watching passersby with calculating eyes, no allegiance to anyone.',
+    iconPath: 'fantasy/icons/PROFESSION#sellsword.png',
   },
   {
     title: 'Bounty hunter',
@@ -51,6 +63,8 @@ export const PROFESSIONS = [
     economicTier: 3,
     statAffinity: { strength: 1.3, dexterity: 1.3, wisdom: 1.1 },
     sentiments: ['indifferent', 'passionate', 'quietly satisfied'],
+    iconPrompt: 'Fantasy RPG icon. A cloaked bounty hunter studying a wanted poster on a tavern wall, manacles and a chain visible at their belt, patient and methodical, already planning the route.',
+    iconPath: 'fantasy/icons/PROFESSION#bounty_hunter.png',
   },
   {
     title: 'Arena fighter',
@@ -58,6 +72,8 @@ export const PROFESSIONS = [
     economicTier: 2,
     statAffinity: { strength: 1.5, constitution: 1.4 },
     sentiments: ['proud', 'desperate', 'burned out', 'resentful'],
+    iconPrompt: 'Fantasy RPG icon. A gladiator standing on blood-stained sand, weapons raised, the roaring crowd of a stone colosseum surrounding them, sweat and grit on their face, surviving on skill alone.',
+    iconPath: 'fantasy/icons/PROFESSION#arena_fighter.png',
   },
   {
     title: 'Bodyguard',
@@ -65,6 +81,8 @@ export const PROFESSIONS = [
     economicTier: 3,
     statAffinity: { strength: 1.3, constitution: 1.2, wisdom: 1.1 },
     sentiments: ['indifferent', 'quietly satisfied', 'proud'],
+    iconPrompt: 'Fantasy RPG icon. A broad-shouldered bodyguard standing half a step behind a wealthy patron in a crowded market, hand resting on their weapon\'s pommel, eyes scanning the crowd for threats.',
+    iconPath: 'fantasy/icons/PROFESSION#bodyguard.png',
   },
 
   // ── ROGUISH ───────────────────────────────────────────────────────────────
@@ -74,6 +92,8 @@ export const PROFESSIONS = [
     economicTier: 2,
     statAffinity: { dexterity: 1.5, intelligence: 1.2 },
     sentiments: ['proud', 'desperate', 'indifferent', 'passionate'],
+    iconPrompt: 'Fantasy RPG icon. A nimble thief perched on a rooftop at night, reaching through a shuttered window toward a glinting jewel inside, the moonlit city spread out below them.',
+    iconPath: 'fantasy/icons/PROFESSION#thief.png',
   },
   {
     title: 'Fence',
@@ -81,6 +101,8 @@ export const PROFESSIONS = [
     economicTier: 3,
     statAffinity: { charisma: 1.3, intelligence: 1.2 },
     sentiments: ['quietly satisfied', 'indifferent', 'proud'],
+    iconPrompt: 'Fantasy RPG icon. A fence examining a stolen artifact under candlelight in a cluttered back-room shop, shelves of dubious goods on every wall, appraising the piece with a practiced and unimpressed eye.',
+    iconPath: 'fantasy/icons/PROFESSION#fence.png',
   },
   {
     title: 'Assassin',
@@ -88,6 +110,8 @@ export const PROFESSIONS = [
     economicTier: 4,
     statAffinity: { dexterity: 1.5, intelligence: 1.3, wisdom: 1.1 },
     sentiments: ['indifferent', 'quietly satisfied', 'ashamed', 'proud'],
+    iconPrompt: 'Fantasy RPG icon. A black-clad assassin poised in the shadows of a moonlit corridor, twin daggers drawn, a target visible through a doorway ahead, absolutely still and utterly lethal.',
+    iconPath: 'fantasy/icons/PROFESSION#assassin.png',
   },
   {
     title: 'Guild thief',
@@ -95,6 +119,8 @@ export const PROFESSIONS = [
     economicTier: 3,
     statAffinity: { dexterity: 1.4, charisma: 1.1, intelligence: 1.2 },
     sentiments: ['proud', 'indifferent', 'passionate'],
+    iconPrompt: 'Fantasy RPG icon. A guild thief in the middle of a precision vault job, lockpicks spread on the floor, a guild mark visible on their wrist, working with the calm of someone who has done this many times.',
+    iconPath: 'fantasy/icons/PROFESSION#guild_thief.png',
   },
   {
     title: 'Con artist / grifter',
@@ -102,6 +128,8 @@ export const PROFESSIONS = [
     economicTier: 3,
     statAffinity: { charisma: 1.6, intelligence: 1.3 },
     sentiments: ['passionate', 'proud', 'indifferent'],
+    iconPrompt: 'Fantasy RPG icon. A charming grifter mid-performance at a tavern table, a crowd of marks leaning in, cards and coin spread between them, a warm smile that never quite reaches their eyes.',
+    iconPath: 'fantasy/icons/PROFESSION#con_artist_grifter.png',
   },
   {
     title: 'Smuggler',
@@ -109,6 +137,8 @@ export const PROFESSIONS = [
     economicTier: 3,
     statAffinity: { dexterity: 1.3, charisma: 1.2, wisdom: 1.1 },
     sentiments: ['indifferent', 'proud', 'desperate', 'quietly satisfied'],
+    iconPrompt: 'Fantasy RPG icon. A smuggler guiding a loaded cart down a hidden forest path at night, lantern shuttered, one hand raised to halt the group while listening for patrol sounds.',
+    iconPath: 'fantasy/icons/PROFESSION#smuggler.png',
   },
   {
     title: 'Spy / informant',
@@ -116,6 +146,8 @@ export const PROFESSIONS = [
     economicTier: 4,
     statAffinity: { intelligence: 1.4, charisma: 1.3, dexterity: 1.2 },
     sentiments: ['indifferent', 'quietly satisfied', 'ashamed'],
+    iconPrompt: 'Fantasy RPG icon. A spy in aristocratic dress at a candlelit court gathering, appearing to sip wine while listening intently, a folded cipher note half-concealed in their sleeve.',
+    iconPath: 'fantasy/icons/PROFESSION#spy_informant.png',
   },
 
   // ── ARCANE ────────────────────────────────────────────────────────────────
@@ -125,6 +157,8 @@ export const PROFESSIONS = [
     economicTier: 2,
     statAffinity: { intelligence: 1.3, wisdom: 1.2 },
     sentiments: ['proud', 'quietly satisfied', 'indifferent', 'resentful'],
+    iconPrompt: 'Fantasy RPG icon. A weathered hedge witch in a cluttered woodland cottage, drying herbs hanging from the rafters, a worn spellbook open on the table, knowledge earned through practice not privilege.',
+    iconPath: 'fantasy/icons/PROFESSION#hedge_witch.png',
   },
   {
     title: 'Apprentice mage',
@@ -132,6 +166,8 @@ export const PROFESSIONS = [
     economicTier: 2,
     statAffinity: { intelligence: 1.5, wisdom: 1.1 },
     sentiments: ['passionate', 'desperate', 'burned out', 'proud'],
+    iconPrompt: 'Fantasy RPG icon. A young apprentice mage hunched over a towering stack of spellbooks by candlelight, a failed spell sending sparks across the study, determination refusing to become defeat.',
+    iconPath: 'fantasy/icons/PROFESSION#apprentice_mage.png',
   },
   {
     title: 'Court wizard',
@@ -139,6 +175,8 @@ export const PROFESSIONS = [
     economicTier: 4,
     statAffinity: { intelligence: 1.5, charisma: 1.2, wisdom: 1.2 },
     sentiments: ['quietly satisfied', 'burned out', 'resentful', 'proud'],
+    iconPrompt: 'Fantasy RPG icon. A court wizard in fine robes standing at the king\'s shoulder in the throne room, advising quietly, arcane instruments on a nearby table, power wielded through knowledge rather than force.',
+    iconPath: 'fantasy/icons/PROFESSION#court_wizard.png',
   },
   {
     title: 'Battle mage',
@@ -146,6 +184,8 @@ export const PROFESSIONS = [
     economicTier: 4,
     statAffinity: { intelligence: 1.4, strength: 1.2, constitution: 1.1 },
     sentiments: ['proud', 'burned out', 'passionate'],
+    iconPrompt: 'Fantasy RPG icon. A battle mage in armored robes channeling destructive energy between gauntleted hands, soldiers falling back around them on a smoky battlefield, power and discipline held in equal measure.',
+    iconPath: 'fantasy/icons/PROFESSION#battle_mage.png',
   },
   {
     title: 'Warlock',
@@ -153,6 +193,8 @@ export const PROFESSIONS = [
     economicTier: 3,
     statAffinity: { intelligence: 1.3, charisma: 1.3, wisdom: 0.9 },
     sentiments: ['proud', 'quietly satisfied', 'desperate', 'ashamed'],
+    iconPrompt: 'Fantasy RPG icon. A warlock standing in a summoning circle, dark energy coiling around their outstretched hand, the faint and massive suggestion of an otherworldly patron looming in the shadows behind them.',
+    iconPath: 'fantasy/icons/PROFESSION#warlock.png',
   },
   {
     title: 'Necromancer',
@@ -160,6 +202,8 @@ export const PROFESSIONS = [
     economicTier: 3,
     statAffinity: { intelligence: 1.5, wisdom: 0.9 },
     sentiments: ['passionate', 'indifferent', 'quietly satisfied', 'ashamed'],
+    iconPrompt: 'Fantasy RPG icon. A necromancer in dark robes raising skeletal forms from cracked earth, cold blue light emanating from their staff, clinical curiosity rather than malice on their face.',
+    iconPath: 'fantasy/icons/PROFESSION#necromancer.png',
   },
   {
     title: 'Runesmith',
@@ -167,6 +211,8 @@ export const PROFESSIONS = [
     economicTier: 4,
     statAffinity: { intelligence: 1.4, dexterity: 1.3 },
     sentiments: ['passionate', 'proud', 'quietly satisfied'],
+    iconPrompt: 'Fantasy RPG icon. A runesmith etching glowing sigils into a sword blade with a fine chisel, the metal coming alive with arcane light, rune diagrams and reference scrolls spread across the workbench.',
+    iconPath: 'fantasy/icons/PROFESSION#runesmith.png',
   },
   {
     title: 'Alchemist',
@@ -174,6 +220,8 @@ export const PROFESSIONS = [
     economicTier: 3,
     statAffinity: { intelligence: 1.5, dexterity: 1.2 },
     sentiments: ['passionate', 'burned out', 'quietly satisfied', 'proud'],
+    iconPrompt: 'Fantasy RPG icon. An alchemist surrounded by bubbling flasks and labeled vials in a cluttered laboratory, carefully measuring a luminous substance over a flame, the air around them faintly smoking.',
+    iconPath: 'fantasy/icons/PROFESSION#alchemist.png',
   },
   {
     title: 'Witch hunter',
@@ -181,6 +229,8 @@ export const PROFESSIONS = [
     economicTier: 3,
     statAffinity: { wisdom: 1.3, strength: 1.2, constitution: 1.1 },
     sentiments: ['proud', 'burned out', 'resentful'],
+    iconPrompt: 'Fantasy RPG icon. A grim witch hunter in heavy leather armor moving through a misty village at night, silver-tipped crossbow raised, a ward-medallion around their neck, absolutely certain of their purpose.',
+    iconPath: 'fantasy/icons/PROFESSION#witch_hunter.png',
   },
 
   // ── DIVINE ────────────────────────────────────────────────────────────────
@@ -190,6 +240,8 @@ export const PROFESSIONS = [
     economicTier: 3,
     statAffinity: { wisdom: 1.4, charisma: 1.2 },
     sentiments: ['passionate', 'quietly satisfied', 'burned out', 'proud'],
+    iconPrompt: 'Fantasy RPG icon. A robed priest conducting a candlelit ritual at a stone altar, divine symbols carved into the walls behind them, the faithful gathered in the shadows, devotion in every gesture.',
+    iconPath: 'fantasy/icons/PROFESSION#temple_priest.png',
   },
   {
     title: 'Wandering cleric',
@@ -197,6 +249,8 @@ export const PROFESSIONS = [
     economicTier: 2,
     statAffinity: { wisdom: 1.4, constitution: 1.2 },
     sentiments: ['passionate', 'quietly satisfied', 'indifferent'],
+    iconPrompt: 'Fantasy RPG icon. A cleric in travel-worn robes kneeling to tend an injured stranger at a roadside, holy symbol glowing softly at their chest, a walking staff leaning against a tree nearby.',
+    iconPath: 'fantasy/icons/PROFESSION#wandering_cleric.png',
   },
   {
     title: 'Inquisitor',
@@ -204,6 +258,8 @@ export const PROFESSIONS = [
     economicTier: 4,
     statAffinity: { wisdom: 1.3, strength: 1.2, intelligence: 1.1 },
     sentiments: ['proud', 'passionate', 'quietly satisfied', 'burned out'],
+    iconPrompt: 'Fantasy RPG icon. A steel-eyed inquisitor in ceremonial armor standing over a bound suspect in a stone chamber, a holy seal carved into the wall behind them, righteous and utterly certain.',
+    iconPath: 'fantasy/icons/PROFESSION#inquisitor.png',
   },
   {
     title: 'Fallen paladin',
@@ -218,6 +274,8 @@ export const PROFESSIONS = [
     economicTier: 3,
     statAffinity: { wisdom: 1.5, intelligence: 1.2 },
     sentiments: ['quietly satisfied', 'burned out', 'indifferent', 'passionate'],
+    iconPrompt: 'Fantasy RPG icon. A veiled oracle seated before a glowing scrying pool, hands hovering over the water\'s surface, visions of distant events reflected in their clouded eyes, voice hollow and precise.',
+    iconPath: 'fantasy/icons/PROFESSION#oracle_seer.png',
   },
   {
     title: 'Druid',
@@ -225,6 +283,8 @@ export const PROFESSIONS = [
     economicTier: 2,
     statAffinity: { wisdom: 1.4, constitution: 1.3 },
     sentiments: ['quietly satisfied', 'passionate', 'indifferent'],
+    iconPrompt: 'Fantasy RPG icon. A druid standing in an ancient stone circle at dawn, arms raised, roots and vines stirring in response, one hand resting on the bark of a vast and gnarled oak tree.',
+    iconPath: 'fantasy/icons/PROFESSION#druid.png',
   },
 
   // ── SKILLED TRADES / CRAFT ────────────────────────────────────────────────
@@ -234,6 +294,8 @@ export const PROFESSIONS = [
     economicTier: 3,
     statAffinity: { strength: 1.4, dexterity: 1.2, constitution: 1.1 },
     sentiments: ['proud', 'quietly satisfied', 'indifferent'],
+    iconPrompt: 'Fantasy RPG icon. A blacksmith at a roaring forge, hammer raised over a glowing blade on the anvil, sparks flying, strong arms and a lifetime of practiced precision in every strike.',
+    iconPath: 'fantasy/icons/PROFESSION#blacksmith.png',
   },
   {
     title: 'Weaponsmith',
@@ -241,6 +303,8 @@ export const PROFESSIONS = [
     economicTier: 4,
     statAffinity: { strength: 1.3, dexterity: 1.4, intelligence: 1.1 },
     sentiments: ['passionate', 'proud', 'quietly satisfied'],
+    iconPrompt: 'Fantasy RPG icon. A weaponsmith holding a freshly finished sword up to the light, inspecting every edge with exacting care, a wall of completed blades and armaments displayed behind them.',
+    iconPath: 'fantasy/icons/PROFESSION#weaponsmith.png',
   },
   {
     title: 'Shipwright',
@@ -248,6 +312,8 @@ export const PROFESSIONS = [
     economicTier: 3,
     statAffinity: { intelligence: 1.2, strength: 1.2, dexterity: 1.2 },
     sentiments: ['proud', 'quietly satisfied', 'burned out'],
+    iconPrompt: 'Fantasy RPG icon. A shipwright standing atop a half-built hull in a harbor yard, blueprints in hand, directing workers below, a finished tall-masted ship waiting in the water behind them.',
+    iconPath: 'fantasy/icons/PROFESSION#shipwright.png',
   },
   {
     title: 'Herbalist',
@@ -255,6 +321,8 @@ export const PROFESSIONS = [
     economicTier: 2,
     statAffinity: { wisdom: 1.3, intelligence: 1.2, dexterity: 1.1 },
     sentiments: ['quietly satisfied', 'passionate', 'indifferent'],
+    iconPrompt: 'Fantasy RPG icon. An herbalist at a garden table carefully sorting and bundling dried plants, shelves of labeled tinctures and poultices behind them, healing knowledge rooted in the natural world.',
+    iconPath: 'fantasy/icons/PROFESSION#herbalist.png',
   },
   {
     title: 'Cartographer',
@@ -262,6 +330,8 @@ export const PROFESSIONS = [
     economicTier: 3,
     statAffinity: { intelligence: 1.4, dexterity: 1.2, wisdom: 1.1 },
     sentiments: ['passionate', 'quietly satisfied', 'proud'],
+    iconPrompt: 'Fantasy RPG icon. A cartographer bent over a large map on a cluttered desk, quill tracing a newly discovered coastline, explorer\'s notes and specimen jars scattered across the surface, the world growing under their hand.',
+    iconPath: 'fantasy/icons/PROFESSION#cartographer.png',
   },
   {
     title: 'Tattooist / scarifier',
@@ -269,6 +339,8 @@ export const PROFESSIONS = [
     economicTier: 3,
     statAffinity: { dexterity: 1.5, charisma: 1.1 },
     sentiments: ['passionate', 'quietly satisfied', 'proud'],
+    iconPrompt: 'Fantasy RPG icon. A tattooist with ink-stained fingers working an intricate pattern onto a client\'s arm, the design glowing faintly with magical resonance in the dim light of a parlor filled with art.',
+    iconPath: 'fantasy/icons/PROFESSION#tattooist_scarifier.png',
   },
 
   // ── SOCIAL / SERVICE ──────────────────────────────────────────────────────
@@ -278,6 +350,8 @@ export const PROFESSIONS = [
     economicTier: 2,
     statAffinity: { charisma: 1.5, dexterity: 1.2 },
     sentiments: ['passionate', 'indifferent', 'quietly satisfied', 'burned out'],
+    iconPrompt: 'Fantasy RPG icon. A bard mid-performance on a tavern stage, lute in hand, a crowded room hanging on every note, mischief in their smile, a story unfolding in every pause between chords.',
+    iconPath: 'fantasy/icons/PROFESSION#bard.png',
   },
   {
     title: 'Innkeeper',
@@ -285,6 +359,8 @@ export const PROFESSIONS = [
     economicTier: 3,
     statAffinity: { charisma: 1.3, wisdom: 1.2, constitution: 1.1 },
     sentiments: ['quietly satisfied', 'burned out', 'proud', 'indifferent'],
+    iconPrompt: 'Fantasy RPG icon. A stout innkeeper behind a well-worn bar, polishing a tankard with calm authority, overseeing a full and rowdy common room with the ease of someone who has seen everything.',
+    iconPath: 'fantasy/icons/PROFESSION#innkeeper.png',
   },
   {
     title: 'Merchant',
@@ -292,6 +368,8 @@ export const PROFESSIONS = [
     economicTier: 4,
     statAffinity: { charisma: 1.4, intelligence: 1.3 },
     sentiments: ['proud', 'quietly satisfied', 'passionate', 'burned out'],
+    iconPrompt: 'Fantasy RPG icon. A prosperous merchant at a market stall reviewing trade documents with a partner, scales and coin on the table between them, a loaded caravan waiting in the street behind.',
+    iconPath: 'fantasy/icons/PROFESSION#merchant.png',
   },
   {
     title: 'Ship captain',
@@ -299,6 +377,8 @@ export const PROFESSIONS = [
     economicTier: 4,
     statAffinity: { charisma: 1.3, wisdom: 1.2, strength: 1.1 },
     sentiments: ['proud', 'passionate', 'quietly satisfied'],
+    iconPrompt: 'Fantasy RPG icon. A ship captain at the helm in heavy weather, coat whipping in the wind, commanding the crew with calm certainty, the sea crashing over the bow below.',
+    iconPath: 'fantasy/icons/PROFESSION#ship_captain.png',
   },
   {
     title: 'Sailor / deckhand',
@@ -306,6 +386,8 @@ export const PROFESSIONS = [
     economicTier: 2,
     statAffinity: { constitution: 1.3, strength: 1.2 },
     sentiments: ['indifferent', 'proud', 'burned out', 'desperate'],
+    iconPrompt: 'Fantasy RPG icon. A weathered sailor hauling rope on the deck of a tall-masted ship at sea, the deck pitching beneath their feet, wind-burned and capable, the open horizon ahead.',
+    iconPath: 'fantasy/icons/PROFESSION#sailor_deckhand.png',
   },
   {
     title: 'Tavern keeper',
@@ -313,6 +395,8 @@ export const PROFESSIONS = [
     economicTier: 3,
     statAffinity: { charisma: 1.2, constitution: 1.2, wisdom: 1.1 },
     sentiments: ['quietly satisfied', 'burned out', 'indifferent'],
+    iconPrompt: 'Fantasy RPG icon. A tavern keeper managing a rowdy night crowd with practiced efficiency, breaking up a minor argument at one table while refilling cups at another, master of their domain.',
+    iconPath: 'fantasy/icons/PROFESSION#tavern_keeper.png',
   },
   {
     title: 'Scribe',
@@ -320,6 +404,8 @@ export const PROFESSIONS = [
     economicTier: 3,
     statAffinity: { intelligence: 1.4, dexterity: 1.2 },
     sentiments: ['indifferent', 'quietly satisfied', 'burned out', 'passionate'],
+    iconPrompt: 'Fantasy RPG icon. A scribe hunched over parchment by candlelight in a scriptorium, quill moving in careful strokes, stacks of finished documents and wax seals beside them, copying without sentiment.',
+    iconPath: 'fantasy/icons/PROFESSION#scribe.png',
   },
   {
     title: 'Courier / messenger',
@@ -327,6 +413,8 @@ export const PROFESSIONS = [
     economicTier: 2,
     statAffinity: { dexterity: 1.3, constitution: 1.2 },
     sentiments: ['indifferent', 'quietly satisfied', 'desperate'],
+    iconPrompt: 'Fantasy RPG icon. A courier on horseback galloping hard down a road at dusk, sealed message satchel over their shoulder, urgency in every line of their posture, distance still to cover.',
+    iconPath: 'fantasy/icons/PROFESSION#courier_messenger.png',
   },
   {
     title: 'Gravedigger',
@@ -334,6 +422,8 @@ export const PROFESSIONS = [
     economicTier: 2,
     statAffinity: { constitution: 1.3, strength: 1.2 },
     sentiments: ['indifferent', 'quietly satisfied', 'resentful', 'ashamed'],
+    iconPrompt: 'Fantasy RPG icon. A gravedigger at work in a torch-lit cemetery at night, shovel over their shoulder, an open grave behind them, matter-of-fact about the work that no one else will do.',
+    iconPath: 'fantasy/icons/PROFESSION#gravedigger.png',
   },
 
   // ── NOBILITY / POWER ──────────────────────────────────────────────────────
@@ -343,6 +433,8 @@ export const PROFESSIONS = [
     economicTier: 4,
     statAffinity: { charisma: 1.3, intelligence: 1.2 },
     sentiments: ['proud', 'quietly satisfied', 'resentful', 'burned out'],
+    iconPrompt: 'Fantasy RPG icon. A minor noble in fine but not extravagant dress standing in a modest manor hall, aware of their station but equally aware of the greater names above them in the hierarchy.',
+    iconPath: 'fantasy/icons/PROFESSION#minor_noble.png',
   },
   {
     title: 'Disinherited noble',
@@ -350,6 +442,8 @@ export const PROFESSIONS = [
     economicTier: 2,
     statAffinity: { charisma: 1.3, intelligence: 1.2 },
     sentiments: ['resentful', 'ashamed', 'desperate', 'proud'],
+    iconPrompt: 'Fantasy RPG icon. A well-dressed figure in clothes that were once finer standing outside the closed gates of an estate that is no longer theirs, pride and bitterness struggling on their face.',
+    iconPath: 'fantasy/icons/PROFESSION#disinherited_noble.png',
   },
   {
     title: 'Royal advisor',
@@ -357,6 +451,8 @@ export const PROFESSIONS = [
     economicTier: 5,
     statAffinity: { intelligence: 1.5, charisma: 1.3, wisdom: 1.2 },
     sentiments: ['quietly satisfied', 'burned out', 'proud', 'resentful'],
+    iconPrompt: 'Fantasy RPG icon. A lean advisor standing at the shoulder of a throne, leaning close to whisper counsel, a scroll of intelligence in one hand, every word to the king chosen with precise intent.',
+    iconPath: 'fantasy/icons/PROFESSION#royal_advisor.png',
   },
   {
     title: 'Spymaster',
@@ -364,6 +460,8 @@ export const PROFESSIONS = [
     economicTier: 5,
     statAffinity: { intelligence: 1.5, charisma: 1.3, wisdom: 1.2 },
     sentiments: ['quietly satisfied', 'indifferent', 'proud'],
+    iconPrompt: 'Fantasy RPG icon. A figure in unremarkable dress seated in a candlelit room full of maps and correspondence, a network of strings connecting locations on the wall behind them, knowing everything.',
+    iconPath: 'fantasy/icons/PROFESSION#spymaster.png',
   },
   {
     title: 'Crime lord',
@@ -371,6 +469,8 @@ export const PROFESSIONS = [
     economicTier: 5,
     statAffinity: { charisma: 1.5, intelligence: 1.4, strength: 1.1 },
     sentiments: ['proud', 'quietly satisfied', 'indifferent'],
+    iconPrompt: 'Fantasy RPG icon. A crime lord seated in a shadowed throne of their own making, lieutenants at each side, the city visible through the window below, owning it all without ever being seen to.',
+    iconPath: 'fantasy/icons/PROFESSION#crime_lord.png',
   },
 
   // ── OUTCAST / WILDERNESS ──────────────────────────────────────────────────
@@ -380,6 +480,8 @@ export const PROFESSIONS = [
     economicTier: 2,
     statAffinity: { dexterity: 1.4, wisdom: 1.2, constitution: 1.1 },
     sentiments: ['quietly satisfied', 'proud', 'indifferent'],
+    iconPrompt: 'Fantasy RPG icon. A hunter moving silently through a dense forest, bow in hand, reading the signs in the underbrush with practiced ease, utterly at home in the wilderness.',
+    iconPath: 'fantasy/icons/PROFESSION#hunter_trapper.png',
   },
   {
     title: 'Ranger',
@@ -387,6 +489,8 @@ export const PROFESSIONS = [
     economicTier: 3,
     statAffinity: { dexterity: 1.4, wisdom: 1.3, constitution: 1.2 },
     sentiments: ['quietly satisfied', 'indifferent', 'passionate', 'burned out'],
+    iconPrompt: 'Fantasy RPG icon. A ranger crouched at a treeline, studying the landscape ahead, longbow across their back, reading the land like a map, guardian of the boundary between civilization and wild.',
+    iconPath: 'fantasy/icons/PROFESSION#ranger.png',
   },
   {
     title: 'Monster hunter',
@@ -394,6 +498,8 @@ export const PROFESSIONS = [
     economicTier: 3,
     statAffinity: { strength: 1.3, dexterity: 1.3, wisdom: 1.2 },
     sentiments: ['passionate', 'burned out', 'proud', 'indifferent'],
+    iconPrompt: 'Fantasy RPG icon. A monster hunter checking silver-tipped bolts before entering a dark cave, specialized hunting kit spread on a flat rock, a monster trophy visible on their worn gear.',
+    iconPath: 'fantasy/icons/PROFESSION#monster_hunter.png',
   },
   {
     title: 'Outlaw / bandit',
@@ -401,6 +507,8 @@ export const PROFESSIONS = [
     economicTier: 2,
     statAffinity: { strength: 1.3, dexterity: 1.2, wisdom: 0.9 },
     sentiments: ['proud', 'desperate', 'resentful', 'indifferent'],
+    iconPrompt: 'Fantasy RPG icon. An outlaw resting at a roadside camp in the trees, a stolen saddlebag nearby, cloth mask pulled down, watching the road below with wary and calculating eyes.',
+    iconPath: 'fantasy/icons/PROFESSION#outlaw_bandit.png',
   },
   {
     title: 'Pirate',
@@ -408,6 +516,8 @@ export const PROFESSIONS = [
     economicTier: 3,
     statAffinity: { strength: 1.3, charisma: 1.2, dexterity: 1.2 },
     sentiments: ['proud', 'passionate', 'indifferent', 'desperate'],
+    iconPrompt: 'Fantasy RPG icon. A pirate at the prow of a ship, a merchant vessel closing in the distance, crew armed and ready at their back, a flag of no allegiance cracking in the wind above.',
+    iconPath: 'fantasy/icons/PROFESSION#pirate.png',
   },
   {
     title: 'Exiled mage',
@@ -415,6 +525,8 @@ export const PROFESSIONS = [
     economicTier: 1,
     statAffinity: { intelligence: 1.4, wisdom: 1.1 },
     sentiments: ['resentful', 'ashamed', 'desperate', 'quietly satisfied'],
+    iconPrompt: 'Fantasy RPG icon. A mage walking a lonely road alone, staff in hand, the city that cast them out fading on the horizon behind them, their robes stripped of every guild mark and insignia.',
+    iconPath: 'fantasy/icons/PROFESSION#exiled_mage.png',
   },
   {
     title: 'Escaped slave',
@@ -422,6 +534,8 @@ export const PROFESSIONS = [
     economicTier: 1,
     statAffinity: { constitution: 1.3, strength: 1.2 },
     sentiments: ['desperate', 'resentful', 'proud', 'quietly satisfied'],
+    iconPrompt: 'Fantasy RPG icon. A figure moving fast through a dark forest at night, the broken remnant of a shackle still on one wrist, determined expression, putting as much distance as possible between themselves and what they left.',
+    iconPath: 'fantasy/icons/PROFESSION#escaped_slave.png',
   },
   {
     title: 'Wandering monk',
@@ -429,5 +543,7 @@ export const PROFESSIONS = [
     economicTier: 1,
     statAffinity: { wisdom: 1.4, constitution: 1.2 },
     sentiments: ['quietly satisfied', 'passionate', 'indifferent'],
+    iconPrompt: 'Fantasy RPG icon. A wandering monk on a dusty road with a simple staff, a single small pack on their back, pausing to help a stranger at the roadside, carrying nothing that cannot be carried alone.',
+    iconPath: 'fantasy/icons/PROFESSION#wandering_monk.png',
   },
 ];

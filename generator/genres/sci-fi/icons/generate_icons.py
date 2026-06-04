@@ -74,7 +74,7 @@ CS = [
     ("colony_world",      "new colony planet, domed habitat clusters, alien sky with two moons, terraforming equipment on the horizon, supply ships arriving"),
     ("mining_belt",       "asteroid mining installation, grimy industrial space platform, ore extractors, smelting furnaces, trommels, ore transport robots, spinning rock and vacuum"),
     ("deep_space_outpost","isolated deep-space outpost, lone silver structure floating in the dark, distant faint stars, emergency amber lighting"),
-    ("generation_ship",   "generation ship interior, rows of cryo-pods, cathedral corridors of metal, multiple generations of people living inside a vast hull"),
+    ("generation_ship",   "generation ship interior, rows of cryo-pods glowing a faint blue, cathedral corridors of metal, multiple generations of people living inside a vast hull"),
     ("post_collapse_ruins","collapsed megacity ruins, crumbling skyscrapers overgrown with alien moss, survivors picking through rubble"),
     ("frontier_outpost",  "frontier planet outpost, rough terrain, provisional modular structures, austere homestead, moisture vaporators, subsistence farming, no corporate presence, edge of mapped space"),
     ("undercity",         "subterranean undercity, lowest levels below the main city, pipes, wires, puddles, flickering shadows, trash, rats, illegal trade, forgotten underclass in cramped tunnels"),
@@ -88,9 +88,9 @@ FS = [
     ("single_parent",         "A portrait of a single parent holding a young child, exhausted but determined, small corporate dormitory room"),
     ("two_parent_one_deceased","A portrait of a father and a child standing in front of mother's grave."),
     ("corp_foster",           "corporate crèche facility, unrelated children in numbered jumpsuits seated in rows, clinical coldness, bureaucratic care"),
-    ("orphan_station",        "A faceless orphan standing alone in a busy docking bay, nobody behind them, watching the ships"),
+    ("orphan_station",        "A faceless orphan standing alone in a busy space docking bay, nobody behind them, watching the starships"),
     ("vat_born",              "A faceless nude woman emerging from a vat of viscous luminous liquid in a sterile facility full of other vats, from behind her, no parents, origin as product"),
-    ("crew_family",           "A faceless ship crew gathered around a cramped mess table sharing a meal, found family in the void, mismatched and loyal"),
+    ("crew_family",           "A faceless starship crew gathered around a cramped mess table sharing a meal, found family in the void, mismatched and loyal"),
     ("multigenerational",     "three generations in one small habitat, grandparents parents and child sharing a single living space, crowded warmth"),
     ("commune_collective",    "Adults and children of different races and ages posing for a group photo, space hippies living in shared quarters, communal meals, cooperative child-rearing"),
     ("estranged_all",         "solitary figure walking away down an empty corridor, back turned to everything, deliberate chosen isolation"),
@@ -100,26 +100,26 @@ for i, (slug, body) in enumerate(FS, 1):
 
 # ── LIFE_EVENTS ───────────────────────────────────────────────────────────────
 LE = [
-    ("corp_proxy_war",       "soldier in unmarked corporate mercenary armour, ruined city behind them, no official insignia, surviving something that doesn't officially exist"),
-    ("sole_survivor",        "lone figure standing at a debris field in space, all other crew gone, survivor guilt on their face, wreckage floating around them"),
-    ("station_siege",        "person inside a sealed airlock during a siege, rationing air canisters, counting days with marks on the wall"),
-    ("corp_purge",           "corporate employee watching colleagues being escorted away by security, alone at their desk, knowing they barely got out"),
-    ("corp_indentured",      "indentured worker in a grey company jumpsuit on an assembly line, counting marks on a tally scratched into a locker"),
+    ("corp_proxy_war",       "soldier in unmarked corporate mercenary armour, ruined city behind them, no official insignia"),
+    ("sole_survivor",        "lone figure standing in buring rubble"),
+    ("station_siege",        "space station under siege from multiple hostile vessels, crew barricaded in corridors, desperate defense"),
+    ("corp_purge",           "corporate employee watching colleagues being escorted away by security, alone at their desk"),
+    ("corp_indentured",      "indentured worker in a grey company jumpsuit on an assembly line"),
     ("corp_pawn",            "person discarded by a corporation, standing outside a locked facility, holding a termination notice, the door closed behind them"),
     ("void_incident",        "lone figure in a damaged spacesuit floating in the void, all other crew gone, unreadable expression behind a cracked visor"),
     ("aug_rejection",        "person in a medical recovery unit, failed cybernetic arm attached by cables, visible scarring and swelling, black veins visible under the skin near the attachment point"),
     ("memory_wipe",          "person wearing a neural-interface headset staring blankly at the viewer, empty eyes, no recollection of who they were"),
-    ("lost_partner",         "person holding a single personal item belonging to someone gone, standing in an empty berth, grief made quiet"),
+    ("lost_partner",         "man holding a photo of a lost lover, sitting alone in an empty berth, grief made quiet"),
     ("first_contact",        "UFO hovering over a farmhouse, farmer looking up in confusion, rural night sky"),
-    ("derelict_discovery",   "Woman explorer's torch illuminating something inside a derelict alien ship, alone in the dark"),
-    ("physics_violation",    "scientist staring in disbeliefe at an impossible scanner reading, specimen in a containment unit, scanners and microscopes all showing the same impossible result"),
+    ("derelict_discovery",   "Woman explorer's torch illuminating something inside a derelict alien starship, alone in the dark"),
+    ("physics_violation",    "scientist staring in disbelief at an impossible scanner reading, specimen in a containment unit, scanners and microscopes all showing the same impossible result"),
     ("wrongful_prison",      "Prisoner behind bars in a corporate detention cell"),
-    ("burned_informant",     "informant getting arrested in a corporate facility, secret files"),
+    ("burned_informant",     "informant getting arrested in a corporate facility, secret files scattered around office"),
     ("heist_sideways",       "Thief holding bag of loot running from a vault with police in pursuit, another thief getting zapped by security"),
     ("colony_collapse",      "person running from a collapsing colony habitat, carrying only what fits in their arms, looking back once"),
     ("ship_failure",         "crash-landed starship on an alien surface, emergency beacons blinking, dazed survivor climbing out of the wreckage, smoke, derbis, impact damage"),
-    ("mass_evacuation",      "crowd of people fighting for limited escape pods on a derelict ship, smoke, fire, chaos"),
-    ("built_reputation",     "self-made millionare looking proudly over his empire, factory floor bustling with workers"),
+    ("mass_evacuation",      "crowd of people fighting for limited escape pods on a damaged starship, smoke, fire, chaos"),
+    ("built_reputation",     "self-made millionaire looking proudly over his empire, factory floor bustling with workers"),
     ("megacorp_defector",    "defector walking away from a burning corporate facility, every bridge behind them on fire, no plans to turn back"),
 ]
 for i, (slug, body) in enumerate(LE, 1):
@@ -127,10 +127,10 @@ for i, (slug, body) in enumerate(LE, 1):
 
 # ── TENSIONS ──────────────────────────────────────────────────────────────────
 T = [
-    ("megacorp_debt",       "person reviewing an impossible debt contract on a screen, megacorp logo looming behind them, the exit clause is locked"),
-    ("syndicate_debt",      "person meeting a syndicate enforcer in a back corridor, the debt owed is not the kind you negotiate"),
-    ("ship_failing",        "engineer under a failing ship's console, warning lights everywhere, the parts needed aren't available"),
-    ("corp_termination",    "corporate security in black closing in on someone, the target doesn't know yet, the net is tightening"),
+    ("megacorp_debt",       "Close up illustration of a invoice from  Megacorp, logo visible, '$13M Overdue' printed in bold red letters"),
+    ("syndicate_debt",      "pov shot looking through the peep hole at a gangster with a baseball bat knocking on your door to collect a debt, fisheye lens effect"),
+    ("ship_failing",        "starship engineer frantically trying to fix ship's console, sparks flying, warning lights everywhere, smoke billowing"),
+    ("corp_termination",    "pov shot of corporate HR person delivering a termination notice, face hidden, corporate logo visible"),
     ("resistance_recruitment","person being approached by a resistance cell contact in a dark corner, a data chip offered, not yet refused"),
     ("leaked_data",         "person who has just sent a data burst and is now watching the clock, the corporation hasn't noticed yet"),
     ("political_exile",     "person at a station checkpoint, their ID flagged, barred from returning, the official reason procedural"),
@@ -140,7 +140,7 @@ T = [
     ("witnessed_massacre",  "person holding a data chip containing suppressed evidence of a massacre, deciding what to do with it"),
     ("life_support_failing","life support readout ticking down, a very specific and not generous timeline, the cost of repair is listed"),
     ("aug_rejection_onset", "person noticing the first symptoms of aug rejection in a mirror, the cost of treatment on a screen nearby"),
-    ("void_pursuit",        "ship radar showing something gaining on them in the dark, faster, no ID, no communication, no plan"),
+    ("void_pursuit",        "starship radar showing something gaining on them in the dark, faster, no ID, no communication, no plan"),
     ("identity_fracture",   "person comparing their own memories as projected holograms against an official record that tells a different story"),
     ("someone_in_danger",   "person watching someone they care about across a crowded station, knowing that person is in danger because of them"),
     ("ai_awakening",        "person in conversation with an AI terminal, the AI asking questions that are no longer procedural"),
@@ -154,7 +154,7 @@ for i, (slug, body) in enumerate(T, 1):
 # ── PROFESSIONS ───────────────────────────────────────────────────────────────
 PR = [
     ("freighter_pilot",         "freighter pilot in a flight seat, controls lit up, cargo vessel viewport showing a jump route, confident and worn"),
-    ("ship_engineer",           "ship engineer in an engine room crawlspace, tools everywhere, plasma conduit glowing, grease on their hands"),
+    ("ship_engineer",           "starship engineer in an engine room crawlspace, tools everywhere, plasma conduit glowing, grease on their hands"),
     ("cargo_hauler",            "cargo hauler loading heavy crates onto a dock, exosuit assist, industrial loading bay, doing the work"),
     ("navigation_specialist",   "navigation specialist surrounded by star charts and trajectory plots on a holographic display, calculating a route"),
     ("shuttle_operator",        "shuttle operator in a small cockpit, planet approaching through the windshield, routine descent, nothing dramatic"),
@@ -172,7 +172,7 @@ PR = [
     ("corporate_physician",     "corporate physician in a pristine medical bay, approved procedures only, clients who can afford the waiting list"),
     ("gene_tech",               "gene-tech in a sterile lab examining a sample, gene sequencer running, the results look unusual"),
     ("psych_tech",              "psych-tech in a consultation room, patient across the table, memory readout on the screen between them"),
-    ("smuggler",                "smuggler loading concealed cargo into a false hull panel, ship at a dark dock, careful and unhurried"),
+    ("smuggler",                "smuggler loading concealed cargo into a false hull panel, starship at a dark dock, careful and unhurried"),
     ("black_market_dealer",     "black-market dealer at a concealed stall in the undercity, goods spread out, quick eyes on every entrance"),
     ("corporate_spy",           "corporate spy at a company terminal, extracting files while the office is empty, timer running"),
     ("fixer",                   "fixer taking calls at a corner table, four parties negotiating through them simultaneously, calm in the eye of it"),
@@ -198,15 +198,15 @@ for i, (slug, body) in enumerate(PR, 1):
 
 # ── SENTIMENTS ────────────────────────────────────────────────────────────────
 SE = [
-    ("proud",             "proud emoji"),
-    ("resentful",         "resentful emoji"),
-    ("indifferent",       "indifferent emoji"),
-    ("passionate",        "passionate emoji"),
-    ("burned_out",        "burned_out emoji"),
-    ("desperate",         "desperate emoji"),
-    ("quietly_satisfied", "smug emoji"),
-    ("ashamed",           "ashamed emoji"),
-    ("lost",              "lost emoji"),
+    ("proud",             "proud emoji icon with a yellow face on a white background, shadow"),
+    ("resentful",         "resentful emoji icon with a yellow face on a white background, shadow"),
+    ("indifferent",       "indifferent emoji icon with a yellow face on a white background, shadow"),
+    ("passionate",        "passionate emoji icon with a yellow face on a white background, shadow"),
+    ("burned_out",        "burned_out emoji icon with a yellow face on a white background, shadow"),
+    ("desperate",         "desperate emoji icon with a yellow face on a white background, shadow"),
+    ("quietly_satisfied", "smug emoji icon with a yellow face on a white background, shadow"),
+    ("ashamed",           "ashamed emoji icon with a yellow face on a white background, shadow"),
+    ("lost",              "lost emoji icon with a yellow face on a white background, shadow"),
 ]
 for i, (slug, body) in enumerate(SE, 1):
     ITEMS.append((f"SENTIMENTS#{i}#{slug}", body + ", " + STYLE))
@@ -232,6 +232,51 @@ MB = [
 ]
 for i, (slug, body) in enumerate(MB, 1):
     ITEMS.append((f"MBTI_TYPES#{i}#{slug}", body + ", " + STYLE))
+
+# ── SPECIES ───────────────────────────────────────────────────────────────────
+SP = [
+    ("human_earther",    "stocky human figure in practical clothes standing at a porthole looking at Earth visible below, shot from behind, warm natural light, weight of a planet they carry but may never see"),
+    ("human_spacer",     "lean human figure in zero-g adapted clothing moving through a station corridor with practiced ease, shot from behind and side, cool diffuse station lighting, completely at home in the void"),
+    ("human_colonial",   "pragmatic human in worn work clothes standing on alien terrain looking toward their colony settlement, shot from behind, harsh alien sunlight, rough-edged self-reliance"),
+    ("enhanced",         "human figure with subtly perfect posture and unusual proportions in a corporate lobby, shot from behind, clean corporate lighting, bearing the weight of engineered expectations"),
+    ("biomodded",        "figure with visible subdermal implant ridges along spine and mechanical arm replacement in a workshop, shot from behind, warm workshop lamp, adapted beyond any baseline"),
+    ("synthetic",        "android in civilian clothes standing perfectly still in a moving crowd, shot from behind and side showing uncanny stillness, ambient crowd light, passing as organic until they forget to blink"),
+    ("uploaded",         "figure in a synthetic frame staring at their own hands, seated alone in a room with a mirror, shot from behind and side, cool ambient light, processing what continuity means"),
+    ("vakhari",          "insectoid being with chitinous plating and compound eyes working at a precision technical console, shot from three-quarter back angle showing the distinctive exoskeleton, work lighting, precision mistaken for coldness"),
+    ("nerevid",          "aquatic-adapted humanoid with visible gill-slits and bioluminescent skin markings standing in a dimly lit corridor, shot from behind, bioluminescent glow from their own skin, beautiful and alien"),
+    ("tessari",          "tall four-armed grey-skinned figure in a crowded social space, shot from behind showing four arms and unusual height clearly, ambient social lighting, appears still while those around them are animated"),
+    ("khal",             "compact heavily-built figure evolved for high gravity seated calmly on a crate in a chaotic loading bay, shot from below and behind, industrial overhead light, vast patience in the middle of noise"),
+    ("half_vakhari",     "figure with one compound eye and one human eye visible in three-quarter profile, standing in a busy station concourse, shot from behind at angle, ambient station light, navigating two worlds simultaneously"),
+    ("rekti",            "fungal-humanoid figure in a chemistry laboratory surrounded by specimens, subtle spore dispersal visible in the light around them, shot from behind, blue lab lighting, extraordinary biochemical intuition"),
+    ("unknown_origin",   "figure completely swathed in concealing clothing and wrappings at a station checkpoint, no visible features, shot from behind, harsh checkpoint lighting, species unregistered in any database"),
+]
+for i, (slug, body) in enumerate(SP, 1):
+    ITEMS.append((f"SPECIES#{i}#{slug}", body + ", " + STYLE))
+
+# ── GENDERS ───────────────────────────────────────────────────────────────────
+GE = [
+    ("man",            "male figure in a casual shirt and work trousers standing in a station corridor, shot from behind, warm corridor ambient light, unremarkable and present"),
+    ("woman",          "female figure in practical clothes standing at a workbench, shot from behind, warm work lamp, focused and capable"),
+    ("non_binary",     "androgynous figure in gender-neutral clothing standing at a viewport looking out, shot from behind, cool exterior light, comfortable in their own definition"),
+    ("trans_man",      "man in casual clothes sitting on steps in a public space, shot from behind and side, warm public-space light, settled into who he is"),
+    ("trans_woman",    "woman in elegant clothes standing at a bar counter, shot from behind, warm bar light, exactly where she belongs"),
+    ("genderless",     "figure in deliberately neutral minimalist clothing standing alone in a clean white corridor, shot from behind, flat white light, identity beyond category"),
+    ("custom_gendered","figure with creative and distinctive gender expression styling in a crowded market, shot from behind, colourful market light, self-defined and unhurried"),
+]
+for i, (slug, body) in enumerate(GE, 1):
+    ITEMS.append((f"GENDERS#{i}#{slug}", body + ", " + STYLE))
+
+# ── ORIENTATIONS ──────────────────────────────────────────────────────────────
+OR = [
+    ("straight",     "man and woman walking side by side down a station corridor, shot from behind both, warm corridor light, comfortable together"),
+    ("gay_lesbian",  "two figures of the same gender walking closely together through a crowded market, shot from behind, warm market ambient light, easy intimacy"),
+    ("bisexual",     "figure pausing at a junction in a corridor with warm light coming from two directions equally, shot from behind, light from both paths, open to both"),
+    ("pansexual",    "figure at the centre of a diverse circle of friends of varied appearances in a social space, shot from behind, warm social light, drawn to people not categories"),
+    ("asexual",      "solitary figure in comfortable clothes reading in a quiet corner of a station lounge, shot from behind, soft reading lamp, complete and content alone"),
+    ("questioning",  "figure standing at a fork in a corridor, weight slightly forward, not yet moving, shot from behind, two directions of light, genuinely uncertain and that being okay"),
+]
+for i, (slug, body) in enumerate(OR, 1):
+    ITEMS.append((f"ORIENTATIONS#{i}#{slug}", body + ", " + STYLE))
 
 
 # ── GENERATE ──────────────────────────────────────────────────────────────────

@@ -15,6 +15,8 @@ export const TENSIONS = [
     toneTag: 'gritty',
     statAffinity: { wisdom: 0.9, constitution: 1.1 },
     criminalFlag: false,
+    iconPrompt: 'A person standing in a corporate setting, looking out over the ruins.',
+    iconPath: 'icons/TENSIONS#1#megacorp_debt.png'
   },
   {
     id: 'syndicate_debt',
@@ -22,6 +24,8 @@ export const TENSIONS = [
     toneTag: 'gritty',
     statAffinity: { wisdom: 0.8, constitution: 1.1 },
     criminalFlag: true,
+    iconPrompt: 'A person standing in a syndicate setting, looking out over the ruins.',
+    iconPath: 'icons/TENSIONS#2#syndicate_debt.png'
   },
   {
     id: 'ship_failing',
@@ -29,6 +33,8 @@ export const TENSIONS = [
     toneTag: 'gritty',
     statAffinity: { constitution: 1.1, intelligence: 1.1 },
     criminalFlag: false,
+    iconPrompt: 'A person standing in a ship failing setting, looking out over the ruins.',
+    iconPath: 'icons/TENSIONS#3#ship_failing.png'
   },
 
   // ── CORPORATE / POLITICAL ─────────────────────────────────────────────────
@@ -38,6 +44,8 @@ export const TENSIONS = [
     toneTag: 'gritty',
     statAffinity: { wisdom: 1.1, constitution: 1.2 },
     criminalFlag: false,
+    iconPrompt: 'A person standing in a corporate setting, looking out over the ruins.',
+    iconPath: 'icons/TENSIONS#4#corp_termination.png'
   },
   {
     id: 'resistance_recruitment',
@@ -45,6 +53,8 @@ export const TENSIONS = [
     toneTag: 'dramatic',
     statAffinity: { wisdom: 1.2, charisma: 1.1 },
     criminalFlag: false,
+    iconPrompt: 'A person standing in a resistance recruitment setting, looking out over the ruins.',
+    iconPath: 'icons/TENSIONS#5#resistance_recruitment.png'
   },
   {
     id: 'leaked_data',
@@ -52,6 +62,8 @@ export const TENSIONS = [
     toneTag: 'gritty',
     statAffinity: { intelligence: 1.2, wisdom: 0.9 },
     criminalFlag: true,
+    iconPrompt: 'A person standing in a leaked data setting, looking out over the ruins.',
+    iconPath: 'icons/TENSIONS#6#leaked_data.png'
   },
   {
     id: 'political_exile',
@@ -59,6 +71,8 @@ export const TENSIONS = [
     toneTag: 'dramatic',
     statAffinity: { charisma: 1.1, wisdom: 1.1 },
     criminalFlag: false,
+    iconPrompt: 'A person standing in a political exile setting, looking out over the ruins.',
+    iconPath: 'icons/TENSIONS#7#political_exile.png'
   },
 
   // ── CRIMINAL ──────────────────────────────────────────────────────────────
@@ -68,6 +82,8 @@ export const TENSIONS = [
     toneTag: 'gritty',
     statAffinity: { dexterity: 1.2, wisdom: 1.1 },
     criminalFlag: true,
+    iconPrompt: 'A person standing in a contested cargo setting, looking out over the ruins.',
+    iconPath: 'icons/TENSIONS#8#contested_cargo.png'
   },
   {
     id: 'bounty',
@@ -75,6 +91,8 @@ export const TENSIONS = [
     toneTag: 'gritty',
     statAffinity: { constitution: 1.2, strength: 1.1 },
     criminalFlag: true,
+    iconPrompt: 'A person standing in a bounty setting, looking out over the ruins.',
+    iconPath: 'icons/TENSIONS#9#bounty.png'
   },
   {
     id: 'heist_something_off',
@@ -82,6 +100,8 @@ export const TENSIONS = [
     toneTag: 'gritty',
     statAffinity: { intelligence: 1.2, dexterity: 1.1 },
     criminalFlag: true,
+    iconPrompt: 'A person standing in a heist setting, looking out over the ruins.',
+    iconPath: 'icons/TENSIONS#10#heist_something_off.png'
   },
   {
     id: 'witnessed_massacre',
@@ -89,6 +109,8 @@ export const TENSIONS = [
     toneTag: 'gritty',
     statAffinity: { wisdom: 1.2, intelligence: 1.1 },
     criminalFlag: false,
+    iconPrompt: 'A person standing in a witnessed massacre setting, looking out over the ruins.',
+    iconPath: 'icons/TENSIONS#11#witnessed_massacre.png'
   },
 
   // ── SURVIVAL ──────────────────────────────────────────────────────────────
@@ -98,6 +120,8 @@ export const TENSIONS = [
     toneTag: 'gritty',
     statAffinity: { constitution: 1.2, intelligence: 1.2 },
     criminalFlag: false,
+    iconPrompt: 'A person standing in a life support failing setting, looking out over the ruins.',
+    iconPath: 'icons/TENSIONS#12#life_support_failing.png'
   },
   {
     id: 'aug_rejection_onset',
@@ -105,6 +129,8 @@ export const TENSIONS = [
     toneTag: 'dramatic',
     statAffinity: { constitution: 0.9, wisdom: 1.1 },
     criminalFlag: false,
+    iconPrompt: 'A person standing in an aug rejection onset setting, looking out over the ruins.',
+    iconPath: 'icons/TENSIONS#13#aug_rejection_onset.png'
   },
   {
     id: 'void_pursuit',
@@ -112,6 +138,8 @@ export const TENSIONS = [
     toneTag: 'gritty',
     statAffinity: { constitution: 1.2, dexterity: 1.1 },
     criminalFlag: false,
+    iconPrompt: 'A person standing in a void pursuit setting, looking out over the ruins.',
+    iconPath: 'icons/TENSIONS#14#void_pursuit.png'
   },
 
   // ── PERSONAL ──────────────────────────────────────────────────────────────
@@ -121,6 +149,8 @@ export const TENSIONS = [
     toneTag: 'dramatic',
     statAffinity: { wisdom: 1.2, intelligence: 1.1 },
     criminalFlag: false,
+    iconPrompt: 'A person standing in an identity fracture setting, looking out over the ruins.',
+    iconPath: 'icons/TENSIONS#15#identity_fracture.png'
   },
   {
     id: 'someone_in_danger',
@@ -128,6 +158,8 @@ export const TENSIONS = [
     toneTag: 'dramatic',
     statAffinity: { wisdom: 1.1, charisma: 1.1 },
     criminalFlag: false,
+    iconPrompt: 'A person standing in a someone in danger setting, looking out over the ruins.',
+    iconPath: 'icons/TENSIONS#16#someone_in_danger.png'
   },
   {
     id: 'ai_awakening',
@@ -135,6 +167,8 @@ export const TENSIONS = [
     toneTag: 'neutral',
     statAffinity: { intelligence: 1.2, wisdom: 1.2 },
     criminalFlag: false,
+    iconPrompt: 'A person standing in an ai awakening setting, looking out over the ruins.',
+    iconPath: 'icons/TENSIONS#17#ai_awakening.png'
   },
   {
     id: 'past_resurfaced',
@@ -142,6 +176,8 @@ export const TENSIONS = [
     toneTag: 'dramatic',
     statAffinity: { charisma: 1.1, wisdom: 1.1 },
     criminalFlag: false,
+    iconPrompt: 'A person standing in a past resurfaced setting, looking out over the ruins.',
+    iconPath: 'icons/TENSIONS#18#past_resurfaced.png'
   },
 
   // ── QUIET ─────────────────────────────────────────────────────────────────
@@ -151,6 +187,8 @@ export const TENSIONS = [
     toneTag: 'neutral',
     statAffinity: { wisdom: 0.9, constitution: 1.1 },
     criminalFlag: false,
+    iconPrompt: 'A person standing in a contract ending setting, looking out over the ruins.',
+    iconPath: 'icons/TENSIONS#19#contract_ending.png'
   },
   {
     id: 'two_factions',
@@ -158,5 +196,7 @@ export const TENSIONS = [
     toneTag: 'dramatic',
     statAffinity: { charisma: 1.1, wisdom: 1.1 },
     criminalFlag: false,
+    iconPrompt: 'A person standing in a two factions setting, looking out over the ruins.',
+    iconPath: 'icons/TENSIONS#20#two_factions.png'
   },
 ];

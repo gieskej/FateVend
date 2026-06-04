@@ -5,26 +5,7 @@
 //
 // No browser APIs. No Node-specific APIs. Pure JS.
 
-// ── MBTI TYPES ────────────────────────────────────────────────────────────
-
-export const MBTI_TYPES = [
-  { type: 'INTJ', label: 'The Architect'     },
-  { type: 'INTP', label: 'The Thinker'       },
-  { type: 'ENTJ', label: 'The Commander'     },
-  { type: 'ENTP', label: 'The Debater'       },
-  { type: 'INFJ', label: 'The Advocate'      },
-  { type: 'INFP', label: 'The Mediator'      },
-  { type: 'ENFJ', label: 'The Protagonist'   },
-  { type: 'ENFP', label: 'The Campaigner'    },
-  { type: 'ISTJ', label: 'The Logistician'   },
-  { type: 'ISFJ', label: 'The Defender'      },
-  { type: 'ESTJ', label: 'The Executive'     },
-  { type: 'ESFJ', label: 'The Consul'        },
-  { type: 'ISTP', label: 'The Virtuoso'      },
-  { type: 'ISFP', label: 'The Adventurer'    },
-  { type: 'ESTP', label: 'The Entrepreneur'  },
-  { type: 'ESFP', label: 'The Entertainer'   },
-];
+import { MBTI_TYPES } from './common/mbti.js';
 
 // ── STAT ROLLING ──────────────────────────────────────────────────────────
 
