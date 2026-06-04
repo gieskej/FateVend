@@ -1,5 +1,5 @@
 """
-Generate 512x512 sci-fi icons via SD WebUI Forge API.
+Generate square sci-fi icons via SD WebUI Forge API.
 Run from anywhere; saves PNGs to the same directory as this script.
 Skips files that already exist.
 """
@@ -14,9 +14,9 @@ STYLE = (
     "detailed digital illustration, centered subject, clean composition, "
     "cyberpunk aesthetic, muted palette with neon accent"
 )
+
+# Note Flux1d ignores negative prompt parameter
 NEG = (
-    "blurry, low quality, deformed, extra limbs, text, watermark, "
-    "logo, multiple subjects, busy background, nsfw"
 )
 
 VARIANTS = 3
@@ -27,7 +27,7 @@ PARAMS = dict(
     width              = 256,
     height             = 256,
     cfg_scale          = 1,
-    distilled_cfg_scale= 3.5,
+    distilled_cfg_scale= 6,
     sampler_name       = "Euler",
     scheduler          = "Simple",
     batch_size         = VARIANTS,
@@ -35,7 +35,7 @@ PARAMS = dict(
 
 # ── ITEMS ─────────────────────────────────────────────────────────────────────
 # Format: (filename_slug, prompt_body)
-# Final filename: CATEGORY#N#slug.png
+# Final filename: CATEGORY#slug.png
 
 ITEMS = []
 
@@ -62,8 +62,8 @@ ECONOMIC_TIERS = [
      'personal starship visible through panoramic viewport, '
      'security detail at the edge of frame, insulated from consequences, ' + STYLE),
 ]
-for i, (slug, body) in enumerate(ECONOMIC_TIERS, 1):
-    ITEMS.append((f"ECONOMIC_TIERS#{i}#{slug}", body + ", " + STYLE))
+for slug, body in ECONOMIC_TIERS:
+    ITEMS.append((f"ECONOMIC_TIERS#{slug}", body + ", " + STYLE))
 
 
 # ── CITY_SETTINGS ─────────────────────────────────────────────────────────────
@@ -79,8 +79,8 @@ CS = [
     ("frontier_outpost",  "frontier planet outpost, rough terrain, provisional modular structures, austere homestead, moisture vaporators, subsistence farming, no corporate presence, edge of mapped space"),
     ("undercity",         "subterranean undercity, lowest levels below the main city, pipes, wires, puddles, flickering shadows, trash, rats, illegal trade, forgotten underclass in cramped tunnels"),
 ]
-for i, (slug, body) in enumerate(CS, 1):
-    ITEMS.append((f"CITY_SETTINGS#{i}#{slug}", body + ", " + STYLE))
+for slug, body in CS:
+    ITEMS.append((f"CITY_SETTINGS#{slug}", body + ", " + STYLE))
 
 # ── FAMILY_STRUCTURES ─────────────────────────────────────────────────────────
 FS = [
@@ -95,8 +95,8 @@ FS = [
     ("commune_collective",    "Adults and children of different races and ages posing for a group photo, space hippies living in shared quarters, communal meals, cooperative child-rearing"),
     ("estranged_all",         "solitary figure walking away down an empty corridor, back turned to everything, deliberate chosen isolation"),
 ]
-for i, (slug, body) in enumerate(FS, 1):
-    ITEMS.append((f"FAMILY_STRUCTURES#{i}#{slug}", body + ", " + STYLE))
+for slug, body in FS:
+    ITEMS.append((f"FAMILY_STRUCTURES#{slug}", body + ", " + STYLE))
 
 # ── LIFE_EVENTS ───────────────────────────────────────────────────────────────
 LE = [
@@ -122,8 +122,8 @@ LE = [
     ("built_reputation",     "self-made millionaire looking proudly over his empire, factory floor bustling with workers"),
     ("megacorp_defector",    "defector walking away from a burning corporate facility, every bridge behind them on fire, no plans to turn back"),
 ]
-for i, (slug, body) in enumerate(LE, 1):
-    ITEMS.append((f"LIFE_EVENTS#{i}#{slug}", body + ", " + STYLE))
+for slug, body in LE:
+    ITEMS.append((f"LIFE_EVENTS#{slug}", body + ", " + STYLE))
 
 # ── TENSIONS ──────────────────────────────────────────────────────────────────
 T = [
@@ -148,8 +148,8 @@ T = [
     ("contract_ending",     "person reviewing a job board with nothing suitable, contract end date circled, dwindling options"),
     ("two_factions",        "person flanked by two faction representatives making competing offers, both genuine, neither safe"),
 ]
-for i, (slug, body) in enumerate(T, 1):
-    ITEMS.append((f"TENSIONS#{i}#{slug}", body + ", " + STYLE))
+for slug, body in T:
+    ITEMS.append((f"TENSIONS#{slug}", body + ", " + STYLE))
 
 # ── PROFESSIONS ───────────────────────────────────────────────────────────────
 PR = [
@@ -193,45 +193,9 @@ PR = [
     ("ai_architect",            "AI architect in a server room the size of a cathedral, designing a mind from scratch, aware of what they're making"),
     ("orbital_mogul",           "orbital mogul in a private viewing deck looking down at a planet they effectively own, bodyguards at the door"),
 ]
-for i, (slug, body) in enumerate(PR, 1):
-    ITEMS.append((f"PROFESSIONS#{i}#{slug}", body + ", " + STYLE))
+for slug, body in PR:
+    ITEMS.append((f"PROFESSIONS#{slug}", body + ", " + STYLE))
 
-# ── SENTIMENTS ────────────────────────────────────────────────────────────────
-SE = [
-    ("proud",             "proud emoji icon with a yellow face on a white background, shadow"),
-    ("resentful",         "resentful emoji icon with a yellow face on a white background, shadow"),
-    ("indifferent",       "indifferent emoji icon with a yellow face on a white background, shadow"),
-    ("passionate",        "passionate emoji icon with a yellow face on a white background, shadow"),
-    ("burned_out",        "burned_out emoji icon with a yellow face on a white background, shadow"),
-    ("desperate",         "desperate emoji icon with a yellow face on a white background, shadow"),
-    ("quietly_satisfied", "smug emoji icon with a yellow face on a white background, shadow"),
-    ("ashamed",           "ashamed emoji icon with a yellow face on a white background, shadow"),
-    ("lost",              "lost emoji icon with a yellow face on a white background, shadow"),
-]
-for i, (slug, body) in enumerate(SE, 1):
-    ITEMS.append((f"SENTIMENTS#{i}#{slug}", body + ", " + STYLE))
-
-# ── MBTI_TYPES ────────────────────────────────────────────────────────────────
-MB = [
-    ("INTJ", "The Architect - A solitary strategist in a dark war room, holographic plans surrounding them"),
-    ("INTP", "The Thinker - A researcher surrounded by sensors, microscopes, and data streams"),
-    ("ENTJ", "The Commander - A commander on a starship bridge giving orders"),
-    ("ENTP", "The Debater - A Senator debating policy in a legislative chamber"),
-    ("INFJ", "The Advocate - A wealthy man giving his coat to a beggar"),
-    ("INFP", "The Mediator - A judge listening to opposing views"),
-    ("ENFJ", "The Protagonist - A charismatic leader at the front of a crowd"),
-    ("ENFP", "The Campaigner - A politician rallying a crowd"),
-    ("ISTJ", "The Logistician - A company accountant reviewing spreadsheets"),
-    ("ISFJ", "The Defender - A medic tending to an injured stranger"),
-    ("ESTJ", "The Executive - A company executive in a boardroom at the head of the table"),
-    ("ESFJ", "The Consul - A lawyer advising a client in a quiet office"),
-    ("ISTP", "The Virtuoso - A mechanic with a piece of broken equipment open in front of them"),
-    ("ISFP", "The Adventurer - A scout sitting on a rock on an alien world at dawn"),
-    ("ESTP", "The Entrepreneur - A deal-maker shaking hands in a corridor"),
-    ("ESFP", "The Entertainer - A singer performing in a smoky club"),
-]
-for i, (slug, body) in enumerate(MB, 1):
-    ITEMS.append((f"MBTI_TYPES#{i}#{slug}", body + ", " + STYLE))
 
 # ── SPECIES ───────────────────────────────────────────────────────────────────
 SP = [
@@ -250,33 +214,8 @@ SP = [
     ("rekti",            "fungal-humanoid figure in a chemistry laboratory surrounded by specimens, subtle spore dispersal visible in the light around them, shot from behind, blue lab lighting, extraordinary biochemical intuition"),
     ("unknown_origin",   "figure completely swathed in concealing clothing and wrappings at a station checkpoint, no visible features, shot from behind, harsh checkpoint lighting, species unregistered in any database"),
 ]
-for i, (slug, body) in enumerate(SP, 1):
-    ITEMS.append((f"SPECIES#{i}#{slug}", body + ", " + STYLE))
-
-# ── GENDERS ───────────────────────────────────────────────────────────────────
-GE = [
-    ("man",            "male figure in a casual shirt and work trousers standing in a station corridor, shot from behind, warm corridor ambient light, unremarkable and present"),
-    ("woman",          "female figure in practical clothes standing at a workbench, shot from behind, warm work lamp, focused and capable"),
-    ("non_binary",     "androgynous figure in gender-neutral clothing standing at a viewport looking out, shot from behind, cool exterior light, comfortable in their own definition"),
-    ("trans_man",      "man in casual clothes sitting on steps in a public space, shot from behind and side, warm public-space light, settled into who he is"),
-    ("trans_woman",    "woman in elegant clothes standing at a bar counter, shot from behind, warm bar light, exactly where she belongs"),
-    ("genderless",     "figure in deliberately neutral minimalist clothing standing alone in a clean white corridor, shot from behind, flat white light, identity beyond category"),
-    ("custom_gendered","figure with creative and distinctive gender expression styling in a crowded market, shot from behind, colourful market light, self-defined and unhurried"),
-]
-for i, (slug, body) in enumerate(GE, 1):
-    ITEMS.append((f"GENDERS#{i}#{slug}", body + ", " + STYLE))
-
-# ── ORIENTATIONS ──────────────────────────────────────────────────────────────
-OR = [
-    ("straight",     "man and woman walking side by side down a station corridor, shot from behind both, warm corridor light, comfortable together"),
-    ("gay_lesbian",  "two figures of the same gender walking closely together through a crowded market, shot from behind, warm market ambient light, easy intimacy"),
-    ("bisexual",     "figure pausing at a junction in a corridor with warm light coming from two directions equally, shot from behind, light from both paths, open to both"),
-    ("pansexual",    "figure at the centre of a diverse circle of friends of varied appearances in a social space, shot from behind, warm social light, drawn to people not categories"),
-    ("asexual",      "solitary figure in comfortable clothes reading in a quiet corner of a station lounge, shot from behind, soft reading lamp, complete and content alone"),
-    ("questioning",  "figure standing at a fork in a corridor, weight slightly forward, not yet moving, shot from behind, two directions of light, genuinely uncertain and that being okay"),
-]
-for i, (slug, body) in enumerate(OR, 1):
-    ITEMS.append((f"ORIENTATIONS#{i}#{slug}", body + ", " + STYLE))
+for slug, body in SP:
+    ITEMS.append((f"SPECIES#{slug}", body + ", " + STYLE))
 
 
 # ── GENERATE ──────────────────────────────────────────────────────────────────

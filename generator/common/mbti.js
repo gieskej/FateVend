@@ -114,3 +114,22 @@ export const MBTI_TYPES = [
     iconPath: "generator/common/icons/MBTI_TYPES#ESFP.png",
   },
 ];
+
+// MB = [
+//     ("INTJ", "The Architect - A solitary strategist in a dark war room, holographic plans surrounding them"),
+//     ("INTP", "The Thinker - A researcher surrounded by sensors, microscopes, and data streams"),
+//     ("ENTJ", "The Commander - A commander on a starship bridge giving orders"),
+//     ("ENTP", "The Debater - A Senator debating policy in a legislative chamber"),
+//     ("INFJ", "The Advocate - A wealthy man giving his coat to a beggar"),
+//     ("INFP", "The Mediator - A judge listening to opposing views"),
+//     ("ENFJ", "The Protagonist - A charismatic leader at the front of a crowd"),
+//     ("ENFP", "The Campaigner - A politician rallying a crowd"),
+//     ("ISTJ", "The Logistician - A company accountant reviewing spreadsheets"),
+//     ("ISFJ", "The Defender - A medic tending to an injured stranger"),
+//     ("ESTJ", "The Executive - A company executive in a boardroom at the head of the table"),
+//     ("ESFJ", "The Consul - A lawyer advising a client in a quiet office"),
+//     ("ISTP", "The Virtuoso - A mechanic with a piece of broken equipment open in front of them"),
+//     ("ISFP", "The Adventurer - A scout sitting on a rock on an alien world at dawn"),
+//     ("ESTP", "The Entrepreneur - A deal-maker shaking hands in a corridor"),
+//     ("ESFP", "The Entertainer - A singer performing in a smoky club"),
+// ]
