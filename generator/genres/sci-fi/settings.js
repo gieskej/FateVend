@@ -20,7 +20,7 @@ export const ECONOMIC_TIERS = {
     housing: ['undercity stack bunk', 'abandoned maintenance corridor', 'grey-market capsule pod', 'substation squat'],
     transport: ['on foot', 'mag-rail with a borrowed pass', 'unreliable cargo bike'],
     iconPrompt: 'A person standing in a undercity setting, looking out over the ruins.',
-    iconPath: 'icons/ECONOMIC_TIERS#tier1-below-the-line.png'
+    iconPath: 'generator/genres/sci-fi/icons/ECONOMIC_TIERS#tier1-below-the-line.png'
   },
   2: {
     label: 'Wage-Serf',
@@ -34,7 +34,7 @@ export const ECONOMIC_TIERS = {
     housing: ['corp-assigned hab unit', 'shared worker block', 'station dormitory bay'],
     transport: ['public mag-rail', 'corp shuttle pass', 'beat-up personal skimmer'],
     iconPrompt: 'A person standing in a wage-serf setting, looking out over the ruins.',
-    iconPath: 'icons/ECONOMIC_TIERS#tier2-wage-serf.png'
+    iconPath: 'generator/genres/sci-fi/icons/ECONOMIC_TIERS#tier2-wage-serf.png'
   },
   3: {
     label: 'Independent Contractor',
@@ -48,7 +48,7 @@ export const ECONOMIC_TIERS = {
     housing: ['private hab unit', 'berth on their own ship', 'rented ring-sector apartment'],
     transport: ['own ship or share of a ship', 'reliable skimmer', 'station transit unrestricted'],
     iconPrompt: 'A person standing in a independent contractor setting, looking out over the ruins.',
-    iconPath: 'icons/ECONOMIC_TIERS#tier3-independent-contractor.png'
+    iconPath: 'generator/genres/sci-fi/icons/ECONOMIC_TIERS#tier3-independent-contractor.png'
   },
   4: {
     label: 'Corporate Citizen',
@@ -62,7 +62,7 @@ export const ECONOMIC_TIERS = {
     housing: ['corp-provided arcology apartment', 'mid-ring private residence', 'executive hab suite'],
     transport: ['corp vehicle with full systems', 'priority shuttle access', 'company cruiser clearance'],
     iconPrompt: 'A person standing in a corporate citizen setting, looking out over the ruins.',
-    iconPath: 'icons/ECONOMIC_TIERS#tier4-corporate-citizen.png'
+    iconPath: 'generator/genres/sci-fi/icons/ECONOMIC_TIERS#tier4-corporate-citizen.png'
   },
   5: {
     label: 'Elite / Exec',
@@ -76,7 +76,7 @@ export const ECONOMIC_TIERS = {
     housing: ['arcology penthouse', 'private orbital residence', 'multi-property portfolio'],
     transport: ['personal ship', 'private shuttle on demand', 'corp executive transport with escort'],
     iconPrompt: 'A person standing in a elite/exec setting, looking out over the ruins.',
-    iconPath: 'icons/ECONOMIC_TIERS#tier5-elite-exec.png'
+    iconPath: 'generator/genres/sci-fi/icons/ECONOMIC_TIERS#tier5-elite-exec.png'
   },
 };
 
@@ -92,7 +92,7 @@ export const CITY_SETTINGS = [
     toneTag: 'neutral',
     statAffinity: { intelligence: 1.2, dexterity: 1.1 },
     iconPrompt: 'A person standing in an orbital station setting, looking out over the ruins.',
-    iconPath: 'icons/CITY_SETTINGS#orbital_station.png'
+    iconPath: 'generator/genres/sci-fi/icons/CITY_SETTINGS#orbital_station.png'
   },
   {
     id: 'megacity_sprawl',
@@ -101,7 +101,7 @@ export const CITY_SETTINGS = [
     toneTag: 'gritty',
     statAffinity: { charisma: 1.1, constitution: 1.1 },
     iconPrompt: 'A person standing in a megacity sprawl setting, looking out over the ruins.',
-    iconPath: 'icons/CITY_SETTINGS#megacity_sprawl.png'
+    iconPath: 'generator/genres/sci-fi/icons/CITY_SETTINGS#megacity_sprawl.png'
   },
   {
     id: 'corp_arcology',
@@ -110,7 +110,7 @@ export const CITY_SETTINGS = [
     toneTag: 'neutral',
     statAffinity: { intelligence: 1.2, charisma: 1.1 },
     iconPrompt: 'A person standing in a corporate arcology setting, looking out over the ruins.',
-    iconPath: 'icons/CITY_SETTINGS#corp_arcology.png'
+    iconPath: 'generator/genres/sci-fi/icons/CITY_SETTINGS#corp_arcology.png'
   },
   {
     id: 'colony_world',
@@ -119,7 +119,7 @@ export const CITY_SETTINGS = [
     toneTag: 'neutral',
     statAffinity: { constitution: 1.3, strength: 1.1 },
     iconPrompt: 'A person standing in a colony world setting, looking out over the ruins.',
-    iconPath: 'icons/CITY_SETTINGS#colony_world.png'
+    iconPath: 'generator/genres/sci-fi/icons/CITY_SETTINGS#colony_world.png'
   },
   {
     id: 'mining_belt',
@@ -128,7 +128,7 @@ export const CITY_SETTINGS = [
     toneTag: 'gritty',
     statAffinity: { strength: 1.2, constitution: 1.3 },
     iconPrompt: 'A person standing in a mining belt installation setting, looking out over the ruins.',
-    iconPath: 'icons/CITY_SETTINGS#mining_belt.png'
+    iconPath: 'generator/genres/sci-fi/icons/CITY_SETTINGS#mining_belt.png'
   },
   {
     id: 'deep_space_outpost',
@@ -137,7 +137,7 @@ export const CITY_SETTINGS = [
     toneTag: 'gritty',
     statAffinity: { constitution: 1.3, wisdom: 1.2 },
     iconPrompt: 'A person standing in a deep-space outpost setting, looking out over the ruins.',
-    iconPath: 'icons/CITY_SETTINGS#deep_space_outpost.png'
+    iconPath: 'generator/genres/sci-fi/icons/CITY_SETTINGS#deep_space_outpost.png'
   },
   {
     id: 'generation_ship',
@@ -146,7 +146,7 @@ export const CITY_SETTINGS = [
     toneTag: 'dramatic',
     statAffinity: { wisdom: 1.2, charisma: 1.1 },
     iconPrompt: 'A person standing in a generation ship setting, looking out over the ruins.',
-    iconPath: 'icons/CITY_SETTINGS#generation_ship.png'
+    iconPath: 'generator/genres/sci-fi/icons/CITY_SETTINGS#generation_ship.png'
   },
   {
     id: 'post_collapse_ruins',
@@ -155,7 +155,7 @@ export const CITY_SETTINGS = [
     toneTag: 'gritty',
     statAffinity: { constitution: 1.2, wisdom: 1.1 },
     iconPrompt: 'A person standing in a post-collapse city ruins setting, looking out over the ruins.',
-    iconPath: 'icons/CITY_SETTINGS#post_collapse_ruins.png'
+    iconPath: 'generator/genres/sci-fi/icons/CITY_SETTINGS#post_collapse_ruins.png'
   },
   {
     id: 'frontier_outpost',
@@ -164,7 +164,7 @@ export const CITY_SETTINGS = [
     toneTag: 'neutral',
     statAffinity: { constitution: 1.2, wisdom: 1.1, charisma: 1.1 },
     iconPrompt: 'A person standing in a frontier outpost setting, looking out over the ruins.',
-    iconPath: 'icons/CITY_SETTINGS#frontier_outpost.png'
+    iconPath: 'generator/genres/sci-fi/icons/CITY_SETTINGS#frontier_outpost.png'
   },
   {
     id: 'undercity',
@@ -173,7 +173,7 @@ export const CITY_SETTINGS = [
     toneTag: 'gritty',
     statAffinity: { dexterity: 1.2, constitution: 1.2 },
     iconPrompt: 'A person standing in the undercity setting, looking out over the ruins.',
-    iconPath: 'icons/CITY_SETTINGS#undercity.png'
+    iconPath: 'generator/genres/sci-fi/icons/CITY_SETTINGS#undercity.png'
   },
 ];
 

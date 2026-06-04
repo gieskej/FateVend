@@ -24,7 +24,7 @@ export const RACES = [
     flavor: 'common folk, unremarkable features, built for endurance',
     weight: 30,
     iconPrompt: 'Fantasy RPG icon. A sturdy human with weathered hands and a tired but warm face, wearing simple practical clothes bearing the quiet marks of years of honest, unremarkable labor.',
-    iconPath: 'fantasy/icons/RACE#human_common.png'
+    iconPath: 'generator/genres/fantasy/icons/RACE#human_common.png'
   },
   {
     id: 'human_noble',
@@ -32,7 +32,7 @@ export const RACES = [
     flavor: 'finer features suggesting distant noble blood — probably means nothing',
     weight: 10,
     iconPrompt: 'Fantasy RPG icon. A human with refined angular features hinting at distant noble blood, wearing well-cut but not extravagant clothing, carrying the quiet confidence of someone who knows their lineage even if no one else cares.',
-    iconPath: 'fantasy/icons/RACE#human_noble.png'
+    iconPath: 'generator/genres/fantasy/icons/RACE#human_noble.png'
   },
   {
     id: 'human_frontier',
@@ -40,7 +40,7 @@ export const RACES = [
     flavor: 'frontier stock — weathered, practical, the kind who fixes things',
     weight: 10,
     iconPrompt: 'Fantasy RPG icon. A weathered frontier human with squinting eyes from years of open sky, calloused hands, and practical patched clothing — the kind of person who can fix anything with whatever is nearest to hand.',
-    iconPath: 'fantasy/icons/RACE#human_frontier.png'
+    iconPath: 'generator/genres/fantasy/icons/RACE#human_frontier.png'
   },
 
   // Elves
@@ -50,7 +50,7 @@ export const RACES = [
     flavor: 'high elf — angular features, silver or gold hair, moves like they know they\'re watched',
     weight: 6,
     iconPrompt: 'Fantasy RPG icon. A high elf with sharp angular features, silver-gold hair, and long pointed ears, wearing shimmering robes, moving with the deliberate unhurried grace of someone who has always assumed an audience.',
-    iconPath: 'fantasy/icons/RACE#elf_high.png'
+    iconPath: 'generator/genres/fantasy/icons/RACE#elf_high.png'
   },
   {
     id: 'elf_wood',
@@ -58,7 +58,7 @@ export const RACES = [
     flavor: 'wood elf — lean, earth-toned, more comfortable in trees than taverns',
     weight: 6,
     iconPrompt: 'Fantasy RPG icon. A lean wood elf with earth-toned skin and muted forest-green attire, pointed ears alert, far more at ease perched in a forest canopy than seated at any tavern table.',
-    iconPath: 'fantasy/icons/RACE#elf_wood.png'
+    iconPath: 'generator/genres/fantasy/icons/RACE#elf_wood.png'
   },
   {
     id: 'elf_dark',
@@ -66,7 +66,7 @@ export const RACES = [
     flavor: 'dark elf — obsidian skin, white hair, the kind of entrance that silences a room',
     weight: 4,
     iconPrompt: 'Fantasy RPG icon. A dark elf with obsidian skin and stark white hair, long pointed ears, dressed in dark fitted leathers, the kind of presence that silences a tavern before the door finishes opening.',
-    iconPath: 'fantasy/icons/RACE#elf_dark.png'
+    iconPath: 'generator/genres/fantasy/icons/RACE#elf_dark.png'
   },
   {
     id: 'half_elf',
@@ -74,7 +74,7 @@ export const RACES = [
     flavor: 'half-elf — caught between worlds, slightly pointed ears, perpetually underestimated',
     weight: 8,
     iconPrompt: 'Fantasy RPG icon. A half-elf with slightly pointed ears and features caught between two heritages, an expression shaped by a lifetime of belonging fully to neither world and being underestimated by both.',
-    iconPath: 'fantasy/icons/RACE#half_elf.png'
+    iconPath: 'generator/genres/fantasy/icons/RACE#half_elf.png'
   },
 
   // Dwarves
@@ -84,7 +84,7 @@ export const RACES = [
     flavor: 'hill dwarf — stocky, braided beard, smells faintly of forge smoke and ale',
     weight: 6,
     iconPrompt: 'Fantasy RPG icon. A stocky hill dwarf with an elaborately braided beard, wearing sturdy work clothes that carry the faint evidence of a forge fire and a satisfying evening in a well-stocked tavern.',
-    iconPath: 'fantasy/icons/RACE#dwarf_hill.png'
+    iconPath: 'generator/genres/fantasy/icons/RACE#dwarf_hill.png'
   },
   {
     id: 'dwarf_mountain',
@@ -92,7 +92,7 @@ export const RACES = [
     flavor: 'mountain dwarf — dense as granite, twice as stubborn, eyes that never miss a flaw',
     weight: 4,
     iconPrompt: 'Fantasy RPG icon. A mountain dwarf built like solid granite, wearing stone-carved plate and a scrutinizing expression that finds the flaw in anything, a manner that has never once been in a hurry.',
-    iconPath: 'fantasy/icons/RACE#dwarf_mountain.png'
+    iconPath: 'generator/genres/fantasy/icons/RACE#dwarf_mountain.png'
   },
 
   // Halflings
@@ -102,7 +102,7 @@ export const RACES = [
     flavor: 'halfling — barely reaches most people\'s chests, mistaken for a child once a week',
     weight: 5,
     iconPrompt: 'Fantasy RPG icon. A halfling standing barely chest-high to a human, with large expressive eyes and an easy grin, light on their feet and frequently mistaken for a child by people who will shortly regret it.',
-    iconPath: 'fantasy/icons/RACE#halfling.png'
+    iconPath: 'generator/genres/fantasy/icons/RACE#halfling.png'
   },
 
   // Orcs / Half-Orcs
@@ -112,7 +112,7 @@ export const RACES = [
     flavor: 'half-orc — grey-green skin, tusks they may or may not hide, stronger than they look',
     weight: 5,
     iconPrompt: 'Fantasy RPG icon. A half-orc with grey-green skin and small visible tusks, a powerful frame in functional worn gear, carrying the weight of a reputation that walks into every room several steps ahead of them.',
-    iconPath: 'fantasy/icons/RACE#half_orc.png'
+    iconPath: 'generator/genres/fantasy/icons/RACE#half_orc.png'
   },
   {
     id: 'orc',
@@ -120,7 +120,7 @@ export const RACES = [
     flavor: 'full orc — imposing, scarred, carries a reputation into every room before they do',
     weight: 3,
     iconPrompt: 'Fantasy RPG icon. A full orc with deep green skin and heavy battle scars, an imposing frame that fills a doorway, every scar a story, the kind of presence that quiets a room before they say a word.',
-    iconPath: 'fantasy/icons/RACE#orc.png'
+    iconPath: 'generator/genres/fantasy/icons/RACE#orc.png'
   },
 
   // Tiefling
@@ -130,7 +130,7 @@ export const RACES = [
     flavor: 'tiefling — small horns, unusual skin tone, tail they\'ve learned to tuck away or flaunt',
     weight: 4,
     iconPrompt: 'Fantasy RPG icon. A tiefling with small curved horns and a deep unusual skin tone, tail either tucked discreetly or displayed with deliberate flair, the choice between them saying everything about today\'s mood.',
-    iconPath: 'fantasy/icons/RACE#tiefling.png'
+    iconPath: 'generator/genres/fantasy/icons/RACE#tiefling.png'
   },
 
   // Dragonborn
@@ -140,7 +140,7 @@ export const RACES = [
     flavor: 'dragonborn — scaled, proud, occasionally breathes something alarming when startled',
     weight: 3,
     iconPrompt: 'Fantasy RPG icon. A dragonborn with iridescent scales and a proud bearing, ancestral dignity in every movement, and the faint suggestion of something alarming at the back of their throat when surprised.',
-    iconPath: 'fantasy/icons/RACE#dragonborn.png'
+    iconPath: 'generator/genres/fantasy/icons/RACE#dragonborn.png'
   },
 
   // Gnome
@@ -150,7 +150,7 @@ export const RACES = [
     flavor: 'gnome — small, bright-eyed, the most dangerous person in the room to underestimate',
     weight: 3,
     iconPrompt: 'Fantasy RPG icon. A gnome with bright curious eyes and a constantly animated expression, small enough to be overlooked and sharp enough to ensure that particular mistake is made only once.',
-    iconPath: 'fantasy/icons/RACE#gnome.png'
+    iconPath: 'generator/genres/fantasy/icons/RACE#gnome.png'
   },
 
   // Aasimar
@@ -160,7 +160,7 @@ export const RACES = [
     flavor: 'aasimar — faint luminescence, striking eyes, the weight of divine attention they didn\'t ask for',
     weight: 3,
     iconPrompt: 'Fantasy RPG icon. An aasimar with a faint luminescence along their skin and eyes like captured starlight, wearing the quiet weight of divine attention they never requested and cannot quite set down.',
-    iconPath: 'fantasy/icons/RACE#aasimar.png'
+    iconPath: 'generator/genres/fantasy/icons/RACE#aasimar.png'
   },
 ];
 

@@ -20,7 +20,7 @@ export const ECONOMIC_TIERS = {
     housing: ['couch-surfing', 'SRO hotel room', 'shelter', 'car'],
     transport: ['on foot', 'bus pass', 'borrowed bike'],
     iconPrompt: 'Modern RPG icon. A person sleeping on a pulled-out couch in someone else\'s apartment, a single bag of belongings by the door — the specific precarity of a life where the floor could drop out at any moment.',
-    iconPath: 'modern/icons/ECONOMIC_TIER#survival.png'
+    iconPath: 'generator/genres/modern/icons/ECONOMIC_TIER#survival.png'
   },
   2: {
     label: 'Working poor',
@@ -34,7 +34,7 @@ export const ECONOMIC_TIERS = {
     housing: ['studio apartment', 'shared house with roommates', 'basement unit', 'low-rent motel by the week'],
     transport: ['aging sedan', 'public transit', 'old motorcycle'],
     iconPrompt: 'Modern RPG icon. A small studio apartment late at night — shoes off at the door, takeout container on the counter, the exhausted posture of someone who worked two shifts today and has to be up early for the next.',
-    iconPath: 'modern/icons/ECONOMIC_TIER#working_poor.png'
+    iconPath: 'generator/genres/modern/icons/ECONOMIC_TIER#working_poor.png'
   },
   3: {
     label: 'Working / lower-middle class',
@@ -47,7 +47,7 @@ export const ECONOMIC_TIERS = {
     housing: ['one-bedroom apartment', 'rented house', 'condo with a mortgage that stresses them out'],
     transport: ['reliable mid-range car', 'public transit by choice'],
     iconPrompt: 'Modern RPG icon. A decent one-bedroom in a neighborhood getting more expensive — comfortable, bills paid, a small savings account they try not to think about too hard. Stable, for now.',
-    iconPath: 'modern/icons/ECONOMIC_TIER#working_lower_middle.png'
+    iconPath: 'generator/genres/modern/icons/ECONOMIC_TIER#working_lower_middle.png'
   },
   4: {
     label: 'Middle / upper-middle class',
@@ -61,7 +61,7 @@ export const ECONOMIC_TIERS = {
     housing: ['house in a good neighborhood', 'upscale apartment', 'townhouse'],
     transport: ['late-model car', 'two-car household'],
     iconPrompt: 'Modern RPG icon. A well-furnished house in a good neighborhood — a late-model car in the driveway, a vacation photo on the fridge — the material comfort that doesn\'t automatically mean everything is fine.',
-    iconPath: 'modern/icons/ECONOMIC_TIER#middle_upper_middle.png'
+    iconPath: 'generator/genres/modern/icons/ECONOMIC_TIER#middle_upper_middle.png'
   },
   5: {
     label: 'Wealthy / elite',
@@ -75,7 +75,7 @@ export const ECONOMIC_TIERS = {
     housing: ['penthouse', 'estate', 'multiple properties', 'gated community'],
     transport: ['luxury vehicle', 'driver', 'private car service'],
     iconPrompt: 'Modern RPG icon. A penthouse or private estate with city views — staff present in the background, a lifestyle insulated from consequences, power worn as comfortably as furniture.',
-    iconPath: 'modern/icons/ECONOMIC_TIER#wealthy_elite.png'
+    iconPath: 'generator/genres/modern/icons/ECONOMIC_TIER#wealthy_elite.png'
   },
 };
 
@@ -91,7 +91,7 @@ export const CITY_SETTINGS = [
     toneTag: 'gritty',
     statAffinity: { constitution: 1.2, strength: 1.1 },
     iconPrompt: 'Modern RPG icon. A Rust Belt city street at dusk — vacant factories beside still-occupied neighborhoods, proud architecture in need of work, a place that used to be something and is still deciding what it is.',
-    iconPath: 'modern/icons/CITY_SETTING#rust_belt_city.png'
+    iconPath: 'generator/genres/modern/icons/CITY_SETTING#rust_belt_city.png'
   },
   {
     id: 'coastal_metropolis',
@@ -100,7 +100,7 @@ export const CITY_SETTINGS = [
     toneTag: 'neutral',
     statAffinity: { charisma: 1.2, intelligence: 1.1 },
     iconPrompt: 'Modern RPG icon. A coastal metropolis from street level — glass towers, crowded sidewalks, ten languages in one block, the anonymous electric energy of a city where everyone is from somewhere else.',
-    iconPath: 'modern/icons/CITY_SETTING#coastal_metropolis.png'
+    iconPath: 'generator/genres/modern/icons/CITY_SETTING#coastal_metropolis.png'
   },
   {
     id: 'sunbelt_sprawl',
@@ -109,7 +109,7 @@ export const CITY_SETTINGS = [
     toneTag: 'neutral',
     statAffinity: { charisma: 1.1 },
     iconPrompt: 'Modern RPG icon. A sprawling Sunbelt city highway view — strip malls and new construction stretching to the horizon, the infrastructure of somewhere still figuring out what it actually is.',
-    iconPath: 'modern/icons/CITY_SETTING#sunbelt_sprawl.png'
+    iconPath: 'generator/genres/modern/icons/CITY_SETTING#sunbelt_sprawl.png'
   },
   {
     id: 'midwest_mid_sized',
@@ -118,7 +118,7 @@ export const CITY_SETTINGS = [
     toneTag: 'cozy',
     statAffinity: { wisdom: 1.1, constitution: 1.1 },
     iconPrompt: 'Modern RPG icon. A mid-sized Midwestern city on an ordinary afternoon — brick storefronts, residential streets with front porches, the working-class solidity of a place that doesn\'t appear in many movies and doesn\'t particularly need to.',
-    iconPath: 'modern/icons/CITY_SETTING#midwest_mid_sized.png'
+    iconPath: 'generator/genres/modern/icons/CITY_SETTING#midwest_mid_sized.png'
   },
   {
     id: 'southern_city',
@@ -127,7 +127,7 @@ export const CITY_SETTINGS = [
     toneTag: 'dramatic',
     statAffinity: { charisma: 1.2, wisdom: 1.1 },
     iconPrompt: 'Modern RPG icon. A Southern city neighborhood — old architecture beside new glass towers, the layered politeness of a place where history is always just below the surface and everyone knows it.',
-    iconPath: 'modern/icons/CITY_SETTING#southern_city.png'
+    iconPath: 'generator/genres/modern/icons/CITY_SETTING#southern_city.png'
   },
   {
     id: 'small_town',
@@ -136,7 +136,7 @@ export const CITY_SETTINGS = [
     toneTag: 'cozy',
     statAffinity: { wisdom: 1.2, charisma: 0.9 },
     iconPrompt: 'Modern RPG icon. A small-town main street on a weekday — a diner, a hardware store, people who know each other\'s business, the particular quiet of a place where everyone is always somewhat aware of being watched.',
-    iconPath: 'modern/icons/CITY_SETTING#small_town.png'
+    iconPath: 'generator/genres/modern/icons/CITY_SETTING#small_town.png'
   },
   {
     id: 'college_town',
@@ -145,7 +145,7 @@ export const CITY_SETTINGS = [
     toneTag: 'cozy',
     statAffinity: { intelligence: 1.2, charisma: 1.1 },
     iconPrompt: 'Modern RPG icon. A college town street at the edge of campus — bars and bookstores, students with strong opinions, permanent residents who remember when the buildings were different, two worlds never quite overlapping.',
-    iconPath: 'modern/icons/CITY_SETTING#college_town.png'
+    iconPath: 'generator/genres/modern/icons/CITY_SETTING#college_town.png'
   },
   {
     id: 'port_city',
@@ -154,7 +154,7 @@ export const CITY_SETTINGS = [
     toneTag: 'gritty',
     statAffinity: { strength: 1.1, charisma: 1.1, constitution: 1.1 },
     iconPrompt: 'Modern RPG icon. A port city waterfront — container ships in the distance, working docks below, a neighborhood built on the constant transient flow of goods and people, old criminal infrastructure just below the tourist surface.',
-    iconPath: 'modern/icons/CITY_SETTING#port_city.png'
+    iconPath: 'generator/genres/modern/icons/CITY_SETTING#port_city.png'
   },
   {
     id: 'tech_hub',
@@ -163,7 +163,7 @@ export const CITY_SETTINGS = [
     toneTag: 'neutral',
     statAffinity: { intelligence: 1.3, charisma: 1.1 },
     iconPrompt: 'Modern RPG icon. A tech hub neighborhood in visible transition — a Victorian building beside a glass startup office, a legacy diner beside a cold brew bar, old residents and new money in the same frame.',
-    iconPath: 'modern/icons/CITY_SETTING#tech_hub.png'
+    iconPath: 'generator/genres/modern/icons/CITY_SETTING#tech_hub.png'
   },
   {
     id: 'border_town',
@@ -172,7 +172,7 @@ export const CITY_SETTINGS = [
     toneTag: 'gritty',
     statAffinity: { wisdom: 1.1, strength: 1.1, constitution: 1.2 },
     iconPrompt: 'Modern RPG icon. A border town street — two national identities overlapping in the same block, an informal economy visible in every corner, a place where the law means different things on different sides of the same street.',
-    iconPath: 'modern/icons/CITY_SETTING#border_town.png'
+    iconPath: 'generator/genres/modern/icons/CITY_SETTING#border_town.png'
   },
 ];
 

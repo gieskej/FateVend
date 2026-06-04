@@ -22,7 +22,7 @@ export const PROFESSIONS = [
     statAffinity: { dexterity: 1.4, wisdom: 1.2 },
     sentiments: ['proud', 'quietly satisfied', 'burned out', 'indifferent'],
     iconPrompt: 'A seasoned freighter pilot navigating through asteroid fields, wearing a weathered flight suit and goggles.',
-    iconPath: 'icons/PROFESSIONS#freighter_pilot.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#freighter_pilot.png',
   },
   {
     title: 'Ship Engineer',
@@ -31,7 +31,7 @@ export const PROFESSIONS = [
     statAffinity: { intelligence: 1.3, dexterity: 1.3 },
     sentiments: ['proud', 'passionate', 'quietly satisfied', 'burned out'],
     iconPrompt: 'A ship engineer working on a spaceship engine, wearing a mechanic suit with tools.',
-    iconPath: 'icons/PROFESSIONS#ship_engineer.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#ship_engineer.png',
   },
   {
     title: 'Cargo Hauler',
@@ -40,7 +40,7 @@ export const PROFESSIONS = [
     statAffinity: { constitution: 1.3, strength: 1.2 },
     sentiments: ['resentful', 'indifferent', 'burned out', 'desperate'],
     iconPrompt: 'A cargo hauler loading goods onto a freighter, wearing a utilitarian work suit.',
-    iconPath: 'icons/PROFESSIONS#cargo_hauler.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#cargo_hauler.png',
   },
   {
     title: 'Navigation Specialist',
@@ -49,7 +49,7 @@ export const PROFESSIONS = [
     statAffinity: { intelligence: 1.4, wisdom: 1.2 },
     sentiments: ['proud', 'quietly satisfied', 'indifferent', 'passionate'],
     iconPrompt: 'A navigation specialist plotting a course through a star map, wearing a command uniform with a headset.',
-    iconPath: 'icons/PROFESSIONS#navigation_specialist.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#navigation_specialist.png',
   },
   {
     title: 'Shuttle Operator',
@@ -58,7 +58,7 @@ export const PROFESSIONS = [
     statAffinity: { dexterity: 1.2 },
     sentiments: ['indifferent', 'burned out', 'quietly satisfied', 'resentful'],
     iconPrompt: 'A shuttle operator guiding a small spacecraft through docking ports, wearing a transit uniform.',
-    iconPath: 'icons/PROFESSIONS#shuttle_operator.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#shuttle_operator.png',
   },
 
   // ── SECURITY & COMBAT ─────────────────────────────────────────────────────
@@ -69,7 +69,7 @@ export const PROFESSIONS = [
     statAffinity: { strength: 1.5, constitution: 1.3 },
     sentiments: ['proud', 'indifferent', 'resentful', 'burned out'],
     iconPrompt: 'A corporate mercenary in a tactical uniform, carrying a high-tech weapon.',
-    iconPath: 'icons/PROFESSIONS#corporate_mercenary.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#corporate_mercenary.png',
   },
   {
     title: 'Bounty Hunter',
@@ -78,7 +78,7 @@ export const PROFESSIONS = [
     statAffinity: { strength: 1.3, dexterity: 1.2, wisdom: 1.2 },
     sentiments: ['proud', 'indifferent', 'passionate', 'quietly satisfied'],
     iconPrompt: 'A bounty hunter in a rugged suit, holding a tracking device.',
-    iconPath: 'icons/PROFESSIONS#bounty_hunter.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#bounty_hunter.png',
   },
   {
     title: 'Station Security',
@@ -87,7 +87,7 @@ export const PROFESSIONS = [
     statAffinity: { strength: 1.2, constitution: 1.2 },
     sentiments: ['indifferent', 'burned out', 'resentful', 'quietly satisfied'],
     iconPrompt: 'A station security officer on patrol, wearing a standard security uniform with a radio.',
-    iconPath: 'icons/PROFESSIONS#station_security.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#station_security.png',
   },
   {
     title: 'Military Veteran',
@@ -96,7 +96,7 @@ export const PROFESSIONS = [
     statAffinity: { strength: 1.4, constitution: 1.3, wisdom: 1.1 },
     sentiments: ['lost', 'proud', 'resentful', 'burned out'],
     iconPrompt: 'A military veteran in a worn uniform, carrying a service medal.',
-    iconPath: 'icons/PROFESSIONS#military_veteran.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#military_veteran.png',
   },
   {
     title: 'Combat Medic',
@@ -105,7 +105,7 @@ export const PROFESSIONS = [
     statAffinity: { wisdom: 1.3, dexterity: 1.3, constitution: 1.2 },
     sentiments: ['proud', 'burned out', 'passionate', 'quietly satisfied'],
     iconPrompt: 'A combat medic in a medical uniform, tending to a wounded soldier.',
-    iconPath: 'icons/PROFESSIONS#combat_medic.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#combat_medic.png',
   },
 
   // ── TECH & DATA ───────────────────────────────────────────────────────────
@@ -116,7 +116,7 @@ export const PROFESSIONS = [
     statAffinity: { intelligence: 1.6, dexterity: 1.2 },
     sentiments: ['passionate', 'proud', 'indifferent', 'quietly satisfied'],
     iconPrompt: 'A hacker in a dark room, surrounded by screens and cables.',
-    iconPath: 'icons/PROFESSIONS#hacker_netrunner.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#hacker_netrunner.png',
   },
   {
     title: 'AI Technician',
@@ -125,7 +125,7 @@ export const PROFESSIONS = [
     statAffinity: { intelligence: 1.5, wisdom: 1.2 },
     sentiments: ['passionate', 'proud', 'indifferent', 'burned out'],
     iconPrompt: 'An AI technician working on a holographic interface, wearing a tech uniform.',
-    iconPath: 'icons/PROFESSIONS#ai_technician.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#ai_technician.png',
   },
   {
     title: 'Data Broker',
@@ -134,7 +134,7 @@ export const PROFESSIONS = [
     statAffinity: { intelligence: 1.4, charisma: 1.3, wisdom: 1.1 },
     sentiments: ['quietly satisfied', 'indifferent', 'proud', 'burned out'],
     iconPrompt: 'A data broker in a sleek office, surrounded by data streams.',
-    iconPath: 'icons/PROFESSIONS#data_broker.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#data_broker.png',
   },
   {
     title: 'Systems Analyst',
@@ -143,7 +143,7 @@ export const PROFESSIONS = [
     statAffinity: { intelligence: 1.4, dexterity: 1.1 },
     sentiments: ['indifferent', 'quietly satisfied', 'burned out', 'passionate'],
     iconPrompt: 'A systems analyst working at a console, reviewing data streams.',
-    iconPath: 'icons/PROFESSIONS#systems_analyst.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#systems_analyst.png',
   },
   {
     title: 'Comm Tech',
@@ -152,7 +152,7 @@ export const PROFESSIONS = [
     statAffinity: { intelligence: 1.2, dexterity: 1.2 },
     sentiments: ['indifferent', 'burned out', 'quietly satisfied', 'resentful'],
     iconPrompt: 'A comm tech working on communication equipment, wearing a tech uniform.',
-    iconPath: 'icons/PROFESSIONS#comm_tech.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#comm_tech.png',
   },
   {
     title: 'Pleasure Droid Maintenance Tech',
@@ -161,7 +161,7 @@ export const PROFESSIONS = [
     statAffinity: { intelligence: 1.1, dexterity: 1.2 },
     sentiments: ['indifferent', 'burned out', 'resentful', 'ashamed', 'desperate'],
     iconPrompt: 'A pleasure droid maintenance tech working on a droid, wearing a tech uniform.',
-    iconPath: 'icons/PROFESSIONS#pleasure_droid_tech.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#pleasure_droid_tech.png',
   },
 
   // ── MEDICAL ───────────────────────────────────────────────────────────────
@@ -172,7 +172,7 @@ export const PROFESSIONS = [
     statAffinity: { intelligence: 1.4, dexterity: 1.3, wisdom: 1.2 },
     sentiments: ['passionate', 'burned out', 'proud', 'resentful'],
     iconPrompt: 'A street doc working in a makeshift clinic, wearing a medical uniform.',
-    iconPath: 'icons/PROFESSIONS#street_doc.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#street_doc.png',
   },
   {
     title: 'Corporate Physician',
@@ -181,7 +181,7 @@ export const PROFESSIONS = [
     statAffinity: { intelligence: 1.4, wisdom: 1.3 },
     sentiments: ['indifferent', 'quietly satisfied', 'burned out', 'proud'],
     iconPrompt: 'A corporate physician in a sleek office, wearing a medical uniform.',
-    iconPath: 'icons/PROFESSIONS#corporate_physician.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#corporate_physician.png',
   },
   {
     title: 'Gene-Tech',
@@ -190,7 +190,7 @@ export const PROFESSIONS = [
     statAffinity: { intelligence: 1.5, dexterity: 1.2 },
     sentiments: ['passionate', 'proud', 'indifferent', 'quietly satisfied'],
     iconPrompt: 'A gene-tech working on genetic material, wearing a lab coat.',
-    iconPath: 'icons/PROFESSIONS#gene_tech.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#gene_tech.png',
   },
   {
     title: 'Psych-Tech',
@@ -199,7 +199,7 @@ export const PROFESSIONS = [
     statAffinity: { wisdom: 1.5, intelligence: 1.3 },
     sentiments: ['passionate', 'burned out', 'quietly satisfied', 'indifferent'],
     iconPrompt: 'A psych-tech working on a patient, wearing a medical uniform.',
-    iconPath: 'icons/PROFESSIONS#psych_tech.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#psych_tech.png',
   },
 
   // ── CRIMINAL ──────────────────────────────────────────────────────────────
@@ -210,7 +210,7 @@ export const PROFESSIONS = [
     statAffinity: { dexterity: 1.3, charisma: 1.2, wisdom: 1.1 },
     sentiments: ['proud', 'indifferent', 'quietly satisfied', 'desperate'],
     iconPrompt: 'A smuggler in a dark room, surrounded by cargo.',
-    iconPath: 'icons/PROFESSIONS#smuggler.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#smuggler.png',
   },
   {
     title: 'Black-Market Dealer',
@@ -219,7 +219,7 @@ export const PROFESSIONS = [
     statAffinity: { charisma: 1.4, intelligence: 1.2 },
     sentiments: ['proud', 'quietly satisfied', 'indifferent', 'desperate'],
     iconPrompt: 'A black-market dealer in a dark room, surrounded by goods.',
-    iconPath: 'icons/PROFESSIONS#black_market_dealer.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#black_market_dealer.png',
   },
   {
     title: 'Corporate Spy',
@@ -228,7 +228,7 @@ export const PROFESSIONS = [
     statAffinity: { charisma: 1.4, intelligence: 1.3, wisdom: 1.2 },
     sentiments: ['indifferent', 'quietly satisfied', 'burned out', 'proud'],
     iconPrompt: 'A corporate spy in a dark room, surrounded by documents.',
-    iconPath: 'icons/PROFESSIONS#corporate_spy.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#corporate_spy.png',
   },
   {
     title: 'Fixer',
@@ -237,7 +237,7 @@ export const PROFESSIONS = [
     statAffinity: { intelligence: 1.4, charisma: 1.4, wisdom: 1.2 },
     sentiments: ['proud', 'quietly satisfied', 'indifferent'],
     iconPrompt: 'A fixer in a dark room, surrounded by documents.',
-    iconPath: 'icons/PROFESSIONS#fixer.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#fixer.png',
   },
   {
     title: 'Augmentation Bootlegger',
@@ -246,7 +246,7 @@ export const PROFESSIONS = [
     statAffinity: { intelligence: 1.3, dexterity: 1.2 },
     sentiments: ['proud', 'passionate', 'indifferent', 'desperate'],
     iconPrompt: 'An augmentation bootlegger in a dark room, surrounded by augmented parts.',
-    iconPath: 'icons/PROFESSIONS#augmentation_bootlegger.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#augmentation_bootlegger.png',
   },
   {
     title: 'Memory Thief',
@@ -255,7 +255,7 @@ export const PROFESSIONS = [
     statAffinity: { dexterity: 1.4, intelligence: 1.3 },
     sentiments: ['indifferent', 'quietly satisfied', 'ashamed', 'proud'],
     iconPrompt: 'A memory thief in a dark room, surrounded by memory chips.',
-    iconPath: 'icons/PROFESSIONS#memory_thief.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#memory_thief.png',
   },
   {
     title: 'Undercity Enforcer',
@@ -264,7 +264,7 @@ export const PROFESSIONS = [
     statAffinity: { strength: 1.5, constitution: 1.3 },
     sentiments: ['proud', 'indifferent', 'resentful', 'ashamed'],
     iconPrompt: 'An undercity enforcer in a dark room, surrounded by criminals.',
-    iconPath: 'icons/PROFESSIONS#undercity_enforcer.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#undercity_enforcer.png',
   },
 
   // ── CORPORATE ─────────────────────────────────────────────────────────────
@@ -275,7 +275,7 @@ export const PROFESSIONS = [
     statAffinity: { charisma: 1.3, intelligence: 1.2 },
     sentiments: ['indifferent', 'burned out', 'quietly satisfied', 'resentful'],
     iconPrompt: 'A mid-level corporate suit in a dark room, surrounded by documents.',
-    iconPath: 'icons/PROFESSIONS#corporate_suit.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#corporate_suit.png',
   },
   {
     title: 'Compliance Officer',
@@ -284,7 +284,7 @@ export const PROFESSIONS = [
     statAffinity: { wisdom: 1.3, intelligence: 1.2 },
     sentiments: ['indifferent', 'burned out', 'quietly satisfied', 'ashamed'],
     iconPrompt: 'A compliance officer in a dark room, surrounded by documents.',
-    iconPath: 'icons/PROFESSIONS#compliance_officer.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#compliance_officer.png',
   },
   {
     title: 'Propaganda Specialist',
@@ -293,7 +293,7 @@ export const PROFESSIONS = [
     statAffinity: { charisma: 1.5, intelligence: 1.2 },
     sentiments: ['indifferent', 'ashamed', 'quietly satisfied', 'burned out'],
     iconPrompt: 'A propaganda specialist in a dark room, surrounded by propaganda materials.',
-    iconPath: 'icons/PROFESSIONS#propaganda_specialist.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#propaganda_specialist.png',
   },
 
   // ── SCIENCE ───────────────────────────────────────────────────────────────
@@ -304,7 +304,7 @@ export const PROFESSIONS = [
     statAffinity: { intelligence: 1.4, wisdom: 1.2, constitution: 1.1 },
     sentiments: ['passionate', 'proud', 'burned out', 'quietly satisfied'],
     iconPrompt: 'A terraforming engineer in a dark room, surrounded by engineering tools.',
-    iconPath: 'icons/PROFESSIONS#terraforming_engineer.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#terraforming_engineer.png',
   },
   {
     title: 'Xenobiologist',
@@ -313,7 +313,7 @@ export const PROFESSIONS = [
     statAffinity: { intelligence: 1.5, wisdom: 1.3 },
     sentiments: ['passionate', 'proud', 'indifferent', 'quietly satisfied'],
     iconPrompt: 'A xenobiologist in a dark room, surrounded by biological samples.',
-    iconPath: 'icons/PROFESSIONS#xenobiologist.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#xenobiologist.png',
   },
   {
     title: 'Deep-Space Scout',
@@ -322,7 +322,7 @@ export const PROFESSIONS = [
     statAffinity: { constitution: 1.3, wisdom: 1.2, dexterity: 1.1 },
     sentiments: ['passionate', 'proud', 'indifferent', 'burned out'],
     iconPrompt: 'A deep-space scout in a dark room, surrounded by exploration tools.',
-    iconPath: 'icons/PROFESSIONS#deep_space_scout.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#deep_space_scout.png',
   },
   {
     title: 'Colonist',
@@ -331,7 +331,7 @@ export const PROFESSIONS = [
     statAffinity: { constitution: 1.3, strength: 1.2, wisdom: 1.1 },
     sentiments: ['proud', 'desperate', 'quietly satisfied', 'resentful'],
     iconPrompt: 'A colonist in a dark room, surrounded by settlement tools.',
-    iconPath: 'icons/PROFESSIONS#colonist.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#colonist.png',
   },
   {
     title: 'Salvager',
@@ -340,7 +340,7 @@ export const PROFESSIONS = [
     statAffinity: { dexterity: 1.3, wisdom: 1.2, constitution: 1.1 },
     sentiments: ['indifferent', 'quietly satisfied', 'desperate', 'proud'],
     iconPrompt: 'A salvager in a dark room, surrounded by salvaged items.',
-    iconPath: 'icons/PROFESSIONS#salvager.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#salvager.png',
   },
 
   // ── ARTS ──────────────────────────────────────────────────────────────────
@@ -351,7 +351,7 @@ export const PROFESSIONS = [
     statAffinity: { intelligence: 1.3, charisma: 1.3 },
     sentiments: ['passionate', 'desperate', 'burned out', 'quietly satisfied'],
     iconPrompt: 'A netspace artist in a dark room, surrounded by digital art.',
-    iconPath: 'icons/PROFESSIONS#netspace_artist.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#netspace_artist.png',
   },
   {
     title: 'Underground Journalist',
@@ -360,7 +360,7 @@ export const PROFESSIONS = [
     statAffinity: { intelligence: 1.3, charisma: 1.2, wisdom: 1.2 },
     sentiments: ['passionate', 'resentful', 'burned out', 'proud'],
     iconPrompt: 'An underground journalist in a dark room, surrounded by documents.',
-    iconPath: 'icons/PROFESSIONS#underground_journalist.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#underground_journalist.png',
   },
 
   // ── ELITE ─────────────────────────────────────────────────────────────────
@@ -371,7 +371,7 @@ export const PROFESSIONS = [
     statAffinity: { charisma: 1.4, intelligence: 1.3, wisdom: 1.2 },
     sentiments: ['proud', 'indifferent', 'quietly satisfied', 'burned out'],
     iconPrompt: 'A megacorp executive in a dark room, surrounded by corporate documents.',
-    iconPath: 'icons/PROFESSIONS#megacorp_executive.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#megacorp_executive.png',
   },
   {
     title: 'AI Architect',
@@ -380,7 +380,7 @@ export const PROFESSIONS = [
     statAffinity: { intelligence: 1.6, wisdom: 1.2 },
     sentiments: ['passionate', 'proud', 'indifferent', 'quietly satisfied'],
     iconPrompt: 'An AI architect in a dark room, surrounded by AI components.',
-    iconPath: 'icons/PROFESSIONS#ai_architect.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#ai_architect.png',
   },
   {
     title: 'Orbital Mogul',
@@ -389,6 +389,6 @@ export const PROFESSIONS = [
     statAffinity: { charisma: 1.5, intelligence: 1.3 },
     sentiments: ['proud', 'indifferent', 'quietly satisfied'],
     iconPrompt: 'An orbital mogul in a dark room, surrounded by orbital structures.',
-    iconPath: 'icons/PROFESSIONS#orbital_mogul.png',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#orbital_mogul.png',
   },
 ];

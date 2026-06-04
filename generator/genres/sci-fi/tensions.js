@@ -16,7 +16,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 0.9, constitution: 1.1 },
     criminalFlag: false,
     iconPrompt: 'A person standing in a corporate setting, looking out over the ruins.',
-    iconPath: 'icons/TENSIONS#megacorp_debt.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#megacorp_debt.png'
   },
   {
     id: 'syndicate_debt',
@@ -25,7 +25,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 0.8, constitution: 1.1 },
     criminalFlag: true,
     iconPrompt: 'A person standing in a syndicate setting, looking out over the ruins.',
-    iconPath: 'icons/TENSIONS#syndicate_debt.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#syndicate_debt.png'
   },
   {
     id: 'ship_failing',
@@ -34,7 +34,7 @@ export const TENSIONS = [
     statAffinity: { constitution: 1.1, intelligence: 1.1 },
     criminalFlag: false,
     iconPrompt: 'A person standing in a ship failing setting, looking out over the ruins.',
-    iconPath: 'icons/TENSIONS#ship_failing.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#ship_failing.png'
   },
 
   // ── CORPORATE / POLITICAL ─────────────────────────────────────────────────
@@ -45,7 +45,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 1.1, constitution: 1.2 },
     criminalFlag: false,
     iconPrompt: 'A person standing in a corporate setting, looking out over the ruins.',
-    iconPath: 'icons/TENSIONS#corp_termination.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#corp_termination.png'
   },
   {
     id: 'resistance_recruitment',
@@ -54,7 +54,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 1.2, charisma: 1.1 },
     criminalFlag: false,
     iconPrompt: 'A person standing in a resistance recruitment setting, looking out over the ruins.',
-    iconPath: 'icons/TENSIONS#resistance_recruitment.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#resistance_recruitment.png'
   },
   {
     id: 'leaked_data',
@@ -63,7 +63,7 @@ export const TENSIONS = [
     statAffinity: { intelligence: 1.2, wisdom: 0.9 },
     criminalFlag: true,
     iconPrompt: 'A person standing in a leaked data setting, looking out over the ruins.',
-    iconPath: 'icons/TENSIONS#leaked_data.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#leaked_data.png'
   },
   {
     id: 'political_exile',
@@ -72,7 +72,7 @@ export const TENSIONS = [
     statAffinity: { charisma: 1.1, wisdom: 1.1 },
     criminalFlag: false,
     iconPrompt: 'A person standing in a political exile setting, looking out over the ruins.',
-    iconPath: 'icons/TENSIONS#political_exile.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#political_exile.png'
   },
 
   // ── CRIMINAL ──────────────────────────────────────────────────────────────
@@ -83,7 +83,7 @@ export const TENSIONS = [
     statAffinity: { dexterity: 1.2, wisdom: 1.1 },
     criminalFlag: true,
     iconPrompt: 'A person standing in a contested cargo setting, looking out over the ruins.',
-    iconPath: 'icons/TENSIONS#contested_cargo.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#contested_cargo.png'
   },
   {
     id: 'bounty',
@@ -92,7 +92,7 @@ export const TENSIONS = [
     statAffinity: { constitution: 1.2, strength: 1.1 },
     criminalFlag: true,
     iconPrompt: 'A person standing in a bounty setting, looking out over the ruins.',
-    iconPath: 'icons/TENSIONS#bounty.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#bounty.png'
   },
   {
     id: 'heist_something_off',
@@ -101,7 +101,7 @@ export const TENSIONS = [
     statAffinity: { intelligence: 1.2, dexterity: 1.1 },
     criminalFlag: true,
     iconPrompt: 'A person standing in a heist setting, looking out over the ruins.',
-    iconPath: 'icons/TENSIONS#heist_something_off.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#heist_something_off.png'
   },
   {
     id: 'witnessed_massacre',
@@ -110,7 +110,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 1.2, intelligence: 1.1 },
     criminalFlag: false,
     iconPrompt: 'A person standing in a witnessed massacre setting, looking out over the ruins.',
-    iconPath: 'icons/TENSIONS#witnessed_massacre.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#witnessed_massacre.png'
   },
 
   // ── SURVIVAL ──────────────────────────────────────────────────────────────
@@ -121,7 +121,7 @@ export const TENSIONS = [
     statAffinity: { constitution: 1.2, intelligence: 1.2 },
     criminalFlag: false,
     iconPrompt: 'A person standing in a life support failing setting, looking out over the ruins.',
-    iconPath: 'icons/TENSIONS#life_support_failing.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#life_support_failing.png'
   },
   {
     id: 'aug_rejection_onset',
@@ -130,7 +130,7 @@ export const TENSIONS = [
     statAffinity: { constitution: 0.9, wisdom: 1.1 },
     criminalFlag: false,
     iconPrompt: 'A person standing in an aug rejection onset setting, looking out over the ruins.',
-    iconPath: 'icons/TENSIONS#aug_rejection_onset.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#aug_rejection_onset.png'
   },
   {
     id: 'void_pursuit',
@@ -139,7 +139,7 @@ export const TENSIONS = [
     statAffinity: { constitution: 1.2, dexterity: 1.1 },
     criminalFlag: false,
     iconPrompt: 'A person standing in a void pursuit setting, looking out over the ruins.',
-    iconPath: 'icons/TENSIONS#void_pursuit.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#void_pursuit.png'
   },
 
   // ── PERSONAL ──────────────────────────────────────────────────────────────
@@ -150,7 +150,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 1.2, intelligence: 1.1 },
     criminalFlag: false,
     iconPrompt: 'A person standing in an identity fracture setting, looking out over the ruins.',
-    iconPath: 'icons/TENSIONS#identity_fracture.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#identity_fracture.png'
   },
   {
     id: 'someone_in_danger',
@@ -159,7 +159,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 1.1, charisma: 1.1 },
     criminalFlag: false,
     iconPrompt: 'A person standing in a someone in danger setting, looking out over the ruins.',
-    iconPath: 'icons/TENSIONS#someone_in_danger.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#someone_in_danger.png'
   },
   {
     id: 'ai_awakening',
@@ -168,7 +168,7 @@ export const TENSIONS = [
     statAffinity: { intelligence: 1.2, wisdom: 1.2 },
     criminalFlag: false,
     iconPrompt: 'A person standing in an ai awakening setting, looking out over the ruins.',
-    iconPath: 'icons/TENSIONS#ai_awakening.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#ai_awakening.png'
   },
   {
     id: 'past_resurfaced',
@@ -177,7 +177,7 @@ export const TENSIONS = [
     statAffinity: { charisma: 1.1, wisdom: 1.1 },
     criminalFlag: false,
     iconPrompt: 'A person standing in a past resurfaced setting, looking out over the ruins.',
-    iconPath: 'icons/TENSIONS#past_resurfaced.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#past_resurfaced.png'
   },
 
   // ── QUIET ─────────────────────────────────────────────────────────────────
@@ -188,7 +188,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 0.9, constitution: 1.1 },
     criminalFlag: false,
     iconPrompt: 'A person standing in a contract ending setting, looking out over the ruins.',
-    iconPath: 'icons/TENSIONS#contract_ending.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#contract_ending.png'
   },
   {
     id: 'two_factions',
@@ -197,6 +197,6 @@ export const TENSIONS = [
     statAffinity: { charisma: 1.1, wisdom: 1.1 },
     criminalFlag: false,
     iconPrompt: 'A person standing in a two factions setting, looking out over the ruins.',
-    iconPath: 'icons/TENSIONS#two_factions.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#two_factions.png'
   },
 ];
