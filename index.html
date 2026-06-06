@@ -1313,26 +1313,26 @@ const ORIENTATIONS = [
 ];
 
 const ETHNICITIES = [
-  { broad:'Black',flavor:'African American',weight:13 },
-  { broad:'Black',flavor:'Caribbean descent',weight:3 },
-  { broad:'Black',flavor:'African-born or first-generation',weight:3 },
-  { broad:'Latino',flavor:'Mexican or Mexican-American',weight:9 },
-  { broad:'Latino',flavor:'Puerto Rican',weight:3 },
-  { broad:'Latino',flavor:'Central American',weight:3 },
-  { broad:'Latino',flavor:'South American',weight:2 },
-  { broad:'White',flavor:'White American',weight:20 },
-  { broad:'White',flavor:'Eastern European',weight:3 },
-  { broad:'White',flavor:'Southern European',weight:2 },
-  { broad:'White',flavor:'Irish or Irish-American',weight:2 },
-  { broad:'Middle Eastern / North African',flavor:'Middle Eastern or North African',weight:3 },
-  { broad:'Asian',flavor:'Chinese or Chinese-American',weight:4 },
-  { broad:'Asian',flavor:'Korean or Korean-American',weight:2 },
-  { broad:'Asian',flavor:'Indian or Indian-American',weight:4 },
-  { broad:'Asian',flavor:'Southeast Asian',weight:3 },
-  { broad:'Indigenous / Native American',flavor:'Native American or Alaska Native',weight:1 },
-  { broad:'Multiracial',flavor:'Mixed Black and White heritage',weight:2 },
-  { broad:'Multiracial',flavor:'Mixed Asian and White heritage',weight:2 },
-  { broad:'Multiracial',flavor:'Mixed heritage',weight:2 },
+  { id:'black_american',           broad:'Black',                             flavor:'African American',weight:13 },
+  { id:'black_caribbean',          broad:'Black',                             flavor:'Caribbean descent',weight:3 },
+  { id:'black_african',            broad:'Black',                             flavor:'African-born or first-generation',weight:3 },
+  { id:'latino_mexican',           broad:'Latino',                            flavor:'Mexican or Mexican-American',weight:9 },
+  { id:'latino_puerto_rican',      broad:'Latino',                            flavor:'Puerto Rican',weight:3 },
+  { id:'latino_central_american',  broad:'Latino',                            flavor:'Central American',weight:3 },
+  { id:'latino_south_american',    broad:'Latino',                            flavor:'South American',weight:2 },
+  { id:'white_american',           broad:'White',                             flavor:'White American',weight:20 },
+  { id:'white_eastern_european',   broad:'White',                             flavor:'Eastern European',weight:3 },
+  { id:'white_southern_european',  broad:'White',                             flavor:'Southern European',weight:2 },
+  { id:'white_irish',              broad:'White',                             flavor:'Irish or Irish-American',weight:2 },
+  { id:'white_middle_eastern',     broad:'Middle Eastern / North African',    flavor:'Middle Eastern or North African',weight:3 },
+  { id:'asian_east_chinese',       broad:'Asian',                             flavor:'Chinese or Chinese-American',weight:4 },
+  { id:'asian_east_korean',        broad:'Asian',                             flavor:'Korean or Korean-American',weight:2 },
+  { id:'asian_south_indian',       broad:'Asian',                             flavor:'Indian or Indian-American',weight:4 },
+  { id:'asian_southeast',          broad:'Asian',                             flavor:'Southeast Asian',weight:3 },
+  { id:'native_american',          broad:'Indigenous / Native American',      flavor:'Native American or Alaska Native',weight:1 },
+  { id:'multiracial_black_white',  broad:'Multiracial',                       flavor:'Mixed Black and White heritage',weight:2 },
+  { id:'multiracial_asian_white',  broad:'Multiracial',                       flavor:'Mixed Asian and White heritage',weight:2 },
+  { id:'multiracial_other',        broad:'Multiracial',                       flavor:'Mixed heritage',weight:2 },
 ];
 
 const BUILDS = [
@@ -2444,15 +2444,15 @@ function buildSkeleton(stats, mbti, tables) {
     _slots: {
       species:   identity.id,
       gender:    gender.id,
-      orient:    resolveIconSlug('ORIENTATIONS', orientation.id),
+      orient:    orientation.id,
       mbti:      mbti.type,
       prof:      profSlug(profession.title),
       sentiment: sentiment.replace(/\s+/g, '_'),
-      econ:      `tier${tier}-${econ.label.toLowerCase().replace(/[\s/]+/g,'-').replace(/[^a-z0-9-]/g,'')}`,
+      econ:      `tier${tier}`,
       city:      city.id,
-      family:    resolveIconSlug('FAMILY_STRUCTURES', famStruct.id),
-      lifeEvent: resolveIconSlug('LIFE_EVENTS', lifeEvent.id),
-      tension:   resolveIconSlug('TENSIONS', tension.id),
+      family:    famStruct.id,
+      lifeEvent: lifeEvent.id,
+      tension:   tension.id,
     },
   };
 }
@@ -2745,174 +2745,178 @@ function attachCounter(textarea, limit, counterId) {
 // SLOT MACHINE
 // ═══════════════════════════════════════════════════════════════════════════
 
-const ICON_BASE = 'generator/genres/sci-fi/icons/';
+const COMMON_ICON_BASE = 'generator/common/icons/';
 
-// Each entry: [sequenceN, slug, displayLabel]
-const SLOT_CATALOG = {
-  SPECIES: [
-    [1,'human_earther','Human (Earther)'],[2,'human_spacer','Human (Spacer)'],[3,'human_colonial','Human (Colonial)'],
-    [4,'enhanced','Enhanced Human'],[5,'biomodded','Augmented Human'],[6,'synthetic','Synthetic'],
-    [7,'uploaded','Uploaded'],[8,'vakhari','Vakhari'],[9,'nerevid','Nerevid'],
-    [10,'tessari','Tessari'],[11,'khal','Khal'],[12,'half_vakhari','Half-Vakhari'],
-    [13,'rekti','Rekti'],[14,'unknown_origin','Unknown Origin'],
-  ],
-  GENDERS: [
-    [1,'man','Man'],[2,'woman','Woman'],[3,'non_binary','Non-binary'],
-    [4,'trans_man','Trans man'],[5,'trans_woman','Trans woman'],[6,'genderless','Genderless'],[7,'custom_gendered','Custom'],
-  ],
-  ORIENTATIONS: [
-    [1,'straight','Straight'],[2,'gay_lesbian','Gay / Lesbian'],[3,'bisexual','Bisexual'],
-    [4,'pansexual','Pansexual'],[5,'asexual','Asexual'],[6,'questioning','Questioning'],
-  ],
-  MBTI_TYPES: [
-    [1,'INTJ','INTJ'],[2,'INTP','INTP'],[3,'ENTJ','ENTJ'],[4,'ENTP','ENTP'],
-    [5,'INFJ','INFJ'],[6,'INFP','INFP'],[7,'ENFJ','ENFJ'],[8,'ENFP','ENFP'],
-    [9,'ISTJ','ISTJ'],[10,'ISFJ','ISFJ'],[11,'ESTJ','ESTJ'],[12,'ESFJ','ESFJ'],
-    [13,'ISTP','ISTP'],[14,'ISFP','ISFP'],[15,'ESTP','ESTP'],[16,'ESFP','ESFP'],
-  ],
-  PROFESSIONS: [
-    [1,'freighter_pilot','Freighter Pilot'],[2,'ship_engineer','Ship Engineer'],[3,'cargo_hauler','Cargo Hauler'],
-    [4,'navigation_specialist','Navigator'],[5,'shuttle_operator','Shuttle Operator'],[6,'corporate_mercenary','Corp Mercenary'],
-    [7,'bounty_hunter','Bounty Hunter'],[8,'station_security','Station Security'],[9,'military_veteran','Military Veteran'],
-    [10,'combat_medic','Combat Medic'],[11,'hacker_netrunner','Hacker/Netrunner'],[12,'ai_technician','AI Technician'],
-    [13,'data_broker','Data Broker'],[14,'systems_analyst','Systems Analyst'],[15,'comm_tech','Comm Tech'],
-    [16,'street_doc','Street Doc'],[17,'corporate_physician','Corp Physician'],[18,'gene_tech','Gene-Tech'],
-    [19,'psych_tech','Psych-Tech'],[20,'smuggler','Smuggler'],[21,'black_market_dealer','Black Market Dealer'],
-    [22,'corporate_spy','Corporate Spy'],[23,'fixer','Fixer'],[24,'augmentation_bootlegger','Aug Bootlegger'],
-    [25,'memory_thief','Memory Thief'],[26,'undercity_enforcer','Undercity Enforcer'],[27,'corporate_suit','Corporate Suit'],
-    [28,'compliance_officer','Compliance Officer'],[29,'propaganda_specialist','Propaganda Specialist'],
-    [30,'terraforming_engineer','Terraformer'],[31,'xenobiologist','Xenobiologist'],[32,'deep_space_scout','Deep-Space Scout'],
-    [33,'colonist','Colonist'],[34,'salvager','Salvager'],[35,'netspace_artist','Netspace Artist'],
-    [36,'underground_journalist','Underground Journalist'],[37,'megacorp_executive','Megacorp Exec'],
-    [38,'ai_architect','AI Architect'],[39,'orbital_mogul','Orbital Mogul'],
-  ],
-  SENTIMENTS: [
-    [1,'proud','Proud'],[2,'resentful','Resentful'],[3,'indifferent','Indifferent'],[4,'passionate','Passionate'],
-    [5,'burned_out','Burned Out'],[6,'desperate','Desperate'],[7,'quietly_satisfied','Quietly Satisfied'],
-    [8,'ashamed','Ashamed'],[9,'lost','Lost'],
-  ],
-  ECONOMIC_TIERS: [
-    [1,'tier1-below-the-line','Below the Line'],[2,'tier2-wage-serf','Wage-Serf'],
-    [3,'tier3-independent-contractor','Contractor'],[4,'tier4-corporate-citizen','Corp Citizen'],
-    [5,'tier5-elite-exec','Elite / Exec'],
-  ],
-  CITY_SETTINGS: [
-    [1,'orbital_station','Orbital Station'],[2,'megacity_sprawl','Megacity Sprawl'],
-    [3,'corp_arcology','Corp Arcology'],[4,'colony_world','Colony World'],
-    [5,'mining_belt','Mining Belt'],[6,'deep_space_outpost','Deep-Space Outpost'],
-    [7,'generation_ship','Generation Ship'],[8,'post_collapse_ruins','Post-Collapse Ruins'],
-    [9,'frontier_outpost','Frontier Outpost'],[10,'undercity','Undercity'],
-  ],
-  FAMILY_STRUCTURES: [
-    [1,'biological_intact','Intact Family'],[2,'single_parent','Single Parent'],
-    [3,'two_parent_one_deceased','One Parent Lost'],[4,'corp_foster','Corp Foster'],
-    [5,'orphan_station','Station Orphan'],[6,'vat_born','Vat-Born'],
-    [7,'crew_family','Crew Family'],[8,'multigenerational','Multigenerational'],
-    [9,'commune_collective','Commune'],[10,'estranged_all','Estranged'],
-  ],
-  LIFE_EVENTS: [
-    [1,'corp_proxy_war','Proxy War'],[2,'sole_survivor','Sole Survivor'],[3,'station_siege','Station Siege'],
-    [4,'corp_purge','Corp Purge'],[5,'corp_indentured','Indentured'],[6,'corp_pawn','Corp Pawn'],
-    [7,'void_incident','Void Incident'],[8,'aug_rejection','Aug Rejection'],[9,'memory_wipe','Memory Wipe'],
-    [10,'lost_partner','Lost Partner'],[11,'first_contact','First Contact'],[12,'derelict_discovery','Derelict Discovery'],
-    [13,'physics_violation','Physics Violation'],[14,'wrongful_prison','Wrongful Prison'],[15,'burned_informant','Burned Informant'],
-    [16,'heist_sideways','Heist Gone Wrong'],[17,'colony_collapse','Colony Collapse'],[18,'ship_failure','Ship Failure'],
-    [19,'mass_evacuation','Mass Evacuation'],[20,'built_reputation','Built Rep'],[21,'megacorp_defector','Corp Defector'],
-  ],
-  TENSIONS: [
-    [1,'megacorp_debt','Megacorp Debt'],[2,'syndicate_debt','Syndicate Debt'],[3,'ship_failing','Ship Failing'],
-    [4,'corp_termination','Corp Termination'],[5,'resistance_recruitment','Resistance Recruit'],[6,'leaked_data','Leaked Data'],
-    [7,'political_exile','Political Exile'],[8,'contested_cargo','Contested Cargo'],[9,'bounty','Bounty'],
-    [10,'heist_something_off','Heist'],[11,'witnessed_massacre','Witnessed Massacre'],[12,'life_support_failing','Life Support'],
-    [13,'aug_rejection_onset','Aug Rejection'],[14,'void_pursuit','Void Pursuit'],[15,'identity_fracture','Identity Fracture'],
-    [16,'someone_in_danger','Someone in Danger'],[17,'ai_awakening','AI Awakening'],[18,'past_resurfaced','Past Resurfaced'],
-    [19,'contract_ending','Contract Ending'],[20,'two_factions','Two Factions'],
-  ],
-};
-
-// Ordered slots to display (and their skeleton key mapping)
-const SLOT_DEFS = [
-  { key:'species',   header:'Species',    cat:'SPECIES'          },
-  { key:'gender',    header:'Gender',     cat:'GENDERS'          },
-  { key:'orient',    header:'Orientation',cat:'ORIENTATIONS'     },
-  { key:'mbti',      header:'Personality',cat:'MBTI_TYPES'       },
-  { key:'prof',      header:'Profession', cat:'PROFESSIONS'      },
-  { key:'sentiment', header:'Sentiment',  cat:'SENTIMENTS'       },
-  { key:'econ',      header:'Economy',    cat:'ECONOMIC_TIERS'   },
-  { key:'city',      header:'Setting',    cat:'CITY_SETTINGS'    },
-  { key:'family',    header:'Background', cat:'FAMILY_STRUCTURES'},
-  { key:'lifeEvent', header:'Life Event', cat:'LIFE_EVENTS'      },
-  { key:'tension',   header:'Tension',    cat:'TENSIONS'         },
-];
-
-// Maps data IDs (from skeleton) → icon slugs (as named in generate_icons.py)
-const ICON_SLUG_MAP = {
-  ORIENTATIONS: { gay: 'gay_lesbian' },
-  FAMILY_STRUCTURES: {
-    two_parent_intact:      'biological_intact',
-    two_parent_divorced:    'biological_intact',
-    two_parent_one_absent:  'single_parent',
-    corp_creche:            'corp_foster',
-    ship_crew_family:       'crew_family',
-    foster_corp:            'corp_foster',
-    orphaned_disaster:      'orphan_station',
-    large_family:           'multigenerational',
-    commune_habitat:        'commune_collective',
-    military_dependent:     'crew_family',
-    raised_by_grandparents: 'multigenerational',
-    only_child_wealthy:     'biological_intact',
-  },
-  TENSIONS: {
-    corp_debt:          'megacorp_debt',
-    bounty_active:      'bounty',
-    corp_hunt:          'corp_termination',
-    last_job:           'heist_something_off',
-    identity_problem:   'identity_fracture',
-    ai_following:       'ai_awakening',
-    divided_loyalties:  'two_factions',
-    something_following:'void_pursuit',
-    stateless:          'political_exile',
-    blackmailed:        'syndicate_debt',
-    wrong_people:       'syndicate_debt',
-    medical_debt:       'megacorp_debt',
-    witness:            'witnessed_massacre',
-    data_possession:    'leaked_data',
-  },
-  LIFE_EVENTS: {
-    ship_disaster:      'ship_failure',
-    station_collapse:   'station_siege',
-    corp_abandonment:   'corp_pawn',
-    war_veteran:        'corp_proxy_war',
-    refugee:            'colony_collapse',
-    corp_betrayal:      'burned_informant',
-    augment_failure:    'aug_rejection',
-    exile:              'corp_pawn',
-    colony_failure:     'colony_collapse',
-    crew_lost:          'sole_survivor',
-    wrongly_imprisoned: 'wrongful_prison',
-    found_something:    'derelict_discovery',
-    made_it_out:        'built_reputation',
-    bounty_cleared:     'burned_informant',
-    raised_shipside:    'sole_survivor',
-    ai_incident:        'physics_violation',
-    went_dark:          'megacorp_defector',
-    early_success:      'built_reputation',
-    caretaker:          'lost_partner',
-    prodigy:            'built_reputation',
-    long_haul:          'sole_survivor',
-  },
-};
-
-function resolveIconSlug(cat, dataId) {
-  return ICON_SLUG_MAP[cat]?.[dataId] ?? dataId;
+// Convert a profession title (or similar) to an icon filename slug
+function toIconSlug(str) {
+  return str.toLowerCase().replace(/\s*\/\s*/g,'_').replace(/[-\s]+/g,'_').replace(/[^a-z0-9_]/g,'');
 }
 
-function iconPath(cat, n, slug, variant=1) {
-  return `${ICON_BASE}${cat}#${n}#${slug}#${variant}.png`;
+// Convert a data id to a readable display label
+function idToLabel(id) {
+  return id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
 }
 
-function renderSlotMachine() {
-  const slots = SLOT_DEFS.map(d => `
+// Per-genre slot configuration.
+// Each catalog entry: [dataSlug, iconSlug, displayLabel]
+//   dataSlug  = value stored in skeleton._slots[key]
+//   iconSlug  = stem used in the icon filename (after CATEGORY#)
+//   label     = short display text for the slot label
+function getSlotConfig(genre) {
+  // Common categories shared across all genres (icons in generator/common/icons/)
+  const GENDERS_CAT = [
+    ['man','man','Man'],['woman','woman','Woman'],
+    ['non_binary','non-binary','Non-binary'],
+    ['trans_man','trans_man','Trans man'],['trans_woman','trans_woman','Trans woman'],
+    ['genderfluid','genderfluid','Genderfluid'],['genderless','genderless','Genderless'],
+    ['androgyne','androgyne','Androgyne'],['custom_gendered','man','Custom'],
+  ];
+  const ORIENT_CAT = [
+    ['straight','straight','Straight'],['gay','gay','Gay / Lesbian'],
+    ['bisexual','bisexual','Bisexual'],['pansexual','pansexual','Pansexual'],
+    ['asexual','asexual','Asexual'],['questioning','questioning','Questioning'],
+  ];
+  const MBTI_CAT = MBTI_TYPES.map(m => [m.type, m.type, m.type]);
+  // 'burned_out' → maps to 'burnt_out' filename; all others match
+  const SENT_CAT = [
+    ['proud','proud','Proud'],['resentful','resentful','Resentful'],
+    ['indifferent','indifferent','Indifferent'],['passionate','passionate','Passionate'],
+    ['burned_out','burnt_out','Burned Out'],['desperate','desperate','Desperate'],
+    ['quietly_satisfied','quietly_satisfied','Quietly Satisfied'],
+    ['ashamed','ashamed','Ashamed'],['lost','lost','Lost'],
+  ];
+
+  if (genre === 'sci-fi') {
+    return {
+      iconBase: 'generator/genres/sci-fi/icons/',
+      defs: [
+        { key:'species',   header:'Species',    cat:'SPECIES',           common:false },
+        { key:'gender',    header:'Gender',     cat:'GENDERS',           common:true  },
+        { key:'orient',    header:'Orientation',cat:'ORIENTATIONS',      common:true  },
+        { key:'mbti',      header:'Personality',cat:'MBTI_TYPES',        common:true  },
+        { key:'prof',      header:'Profession', cat:'PROFESSIONS',       common:false },
+        { key:'sentiment', header:'Sentiment',  cat:'SENTIMENTS',        common:true  },
+        { key:'econ',      header:'Economy',    cat:'ECONOMIC_TIERS',    common:false },
+        { key:'city',      header:'Setting',    cat:'CITY_SETTINGS',     common:false },
+        { key:'family',    header:'Background', cat:'FAMILY_STRUCTURES', common:false },
+        { key:'lifeEvent', header:'Life Event', cat:'LIFE_EVENTS',       common:false },
+        { key:'tension',   header:'Tension',    cat:'TENSIONS',          common:false },
+      ],
+      catalog: {
+        SPECIES:          SCIFI_SPECIES.map(s => [s.id, s.id, s.broad]),
+        GENDERS:          GENDERS_CAT,
+        ORIENTATIONS:     ORIENT_CAT,
+        MBTI_TYPES:       MBTI_CAT,
+        PROFESSIONS:      SCIFI_PROFESSIONS.map(p => { const sl=toIconSlug(p.title); return [sl,sl,p.title]; }),
+        SENTIMENTS:       SENT_CAT,
+        ECONOMIC_TIERS: [
+          ['tier1','tier1-below-the-line','Below the Line'],
+          ['tier2','tier2-wage-serf','Wage Serf'],
+          ['tier3','tier3-independent-contractor','Contractor'],
+          ['tier4','tier4-corporate-citizen','Corp Citizen'],
+          ['tier5','tier5-elite-exec','Elite Exec'],
+        ],
+        CITY_SETTINGS:    SCIFI_CITY_SETTINGS.map(c => [c.id, c.id, c.label]),
+        FAMILY_STRUCTURES:SCIFI_FAMILY_STRUCTURES.map(f => [f.id, f.id, f.label]),
+        LIFE_EVENTS:      SCIFI_LIFE_EVENTS.map(e => [e.id, e.id, idToLabel(e.id)]),
+        TENSIONS:         SCIFI_TENSIONS.map(t => [t.id, t.id, idToLabel(t.id)]),
+      },
+    };
+  }
+
+  if (genre === 'fantasy') {
+    return {
+      iconBase: 'generator/genres/fantasy/icons/',
+      defs: [
+        { key:'species',   header:'Race',       cat:'RACE',          common:false },
+        { key:'gender',    header:'Gender',     cat:'GENDERS',       common:true  },
+        { key:'orient',    header:'Orientation',cat:'ORIENTATIONS',  common:true  },
+        { key:'mbti',      header:'Personality',cat:'MBTI_TYPES',    common:true  },
+        { key:'prof',      header:'Profession', cat:'PROFESSION',    common:false },
+        { key:'sentiment', header:'Sentiment',  cat:'SENTIMENTS',    common:true  },
+        { key:'econ',      header:'Economy',    cat:'ECONOMIC_TIER', common:false },
+        { key:'city',      header:'Setting',    cat:'CITY_SETTING',  common:false },
+        { key:'family',    header:'Background', cat:'FAMILY',        common:false },
+        { key:'lifeEvent', header:'Life Event', cat:'LIFE_EVENT',    common:false },
+        { key:'tension',   header:'Tension',    cat:'TENSION',       common:false },
+      ],
+      catalog: {
+        RACE:         FANTASY_RACES.map(r => [r.id, r.id, r.broad]),
+        GENDERS:      GENDERS_CAT.filter(([id]) => FANTASY_GENDERS.some(g => g.id === id)),
+        ORIENTATIONS: ORIENT_CAT.filter(([id]) => FANTASY_ORIENTATIONS.some(o => o.id === id)),
+        MBTI_TYPES:   MBTI_CAT,
+        PROFESSION:   FANTASY_PROFESSIONS.map(p => { const sl=toIconSlug(p.title); return [sl,sl,p.title]; }),
+        SENTIMENTS:   SENT_CAT,
+        ECONOMIC_TIER: [
+          ['tier1','destitute','Destitute'],
+          ['tier2','common_folk','Common Folk'],
+          ['tier3','skilled_journeyman','Skilled'],
+          ['tier4','prosperous','Prosperous'],
+          ['tier5','wealthy_noble','Wealthy'],
+        ],
+        CITY_SETTING: FANTASY_CITY_SETTINGS.map(c => [c.id, c.id, c.label]),
+        FAMILY:       FANTASY_FAMILY_STRUCTURES.map(f => [f.id, f.id, f.label]),
+        LIFE_EVENT:   FANTASY_LIFE_EVENTS.map(e => [e.id, e.id, idToLabel(e.id)]),
+        TENSION:      FANTASY_TENSIONS.map(t => [t.id, t.id, idToLabel(t.id)]),
+      },
+    };
+  }
+
+  // Modern (default)
+  return {
+    iconBase: 'generator/genres/modern/icons/',
+    defs: [
+      { key:'species',   header:'Ethnicity',  cat:'ETHNICITY',        common:false },
+      { key:'gender',    header:'Gender',     cat:'GENDERS',          common:true  },
+      { key:'orient',    header:'Orientation',cat:'ORIENTATIONS',     common:true  },
+      { key:'mbti',      header:'Personality',cat:'MBTI_TYPES',       common:true  },
+      { key:'prof',      header:'Profession', cat:'PROFESSION',       common:false },
+      { key:'sentiment', header:'Sentiment',  cat:'SENTIMENTS',       common:true  },
+      { key:'econ',      header:'Economy',    cat:'ECONOMIC_TIER',    common:false },
+      { key:'city',      header:'Setting',    cat:'CITY_SETTING',     common:false },
+      { key:'family',    header:'Background', cat:'FAMILY_STRUCTURE', common:false },
+      { key:'lifeEvent', header:'Life Event', cat:'LIFE_EVENT',       common:false },
+      { key:'tension',   header:'Tension',    cat:'TENSION',          common:false },
+    ],
+    catalog: {
+      ETHNICITY:      ETHNICITIES.map(e => [e.id, e.id, e.broad]),
+      GENDERS:        GENDERS_CAT.filter(([id]) => GENDERS.some(g => g.id === id)),
+      ORIENTATIONS:   ORIENT_CAT.filter(([id]) => ORIENTATIONS.some(o => o.id === id)),
+      MBTI_TYPES:     MBTI_CAT,
+      PROFESSION:     PROFESSIONS.map(p => { const sl=toIconSlug(p.title); return [sl,sl,p.title]; }),
+      SENTIMENTS:     SENT_CAT,
+      ECONOMIC_TIER: [
+        ['tier1','survival','Survival'],
+        ['tier2','working_poor','Working Poor'],
+        ['tier3','working_lower_middle','Working Class'],
+        ['tier4','middle_upper_middle','Middle Class'],
+        ['tier5','wealthy_elite','Wealthy / Elite'],
+      ],
+      CITY_SETTING: [
+        ['rust_belt','rust_belt_city','Rust Belt City'],
+        ['coastal','coastal_metropolis','Coastal Metro'],
+        ['sunbelt','sunbelt_sprawl','Sunbelt Sprawl'],
+        ['midwest','midwest_mid_sized','Midwest City'],
+        ['southern','southern_city','Southern City'],
+        ['small_town','small_town','Small Town'],
+        ['port','port_city','Port City'],
+        ['tech_hub','tech_hub','Tech Hub'],
+        ['border','border_town','Border Town'],
+      ],
+      FAMILY_STRUCTURE: FAMILY_STRUCTURES.map(f => [f.id, f.id, f.label]),
+      LIFE_EVENT:       LIFE_EVENTS.map(e => [e.id, e.id, idToLabel(e.id)]),
+      TENSION:          TENSIONS.map(t => [t.id, t.id, idToLabel(t.id)]),
+    },
+  };
+}
+
+function iconPath(base, cat, slug) {
+  return `${base}${cat}%23${slug}.png`;
+}
+
+function renderSlotMachine(genre) {
+  const cfg = getSlotConfig(genre);
+  const slots = cfg.defs.map(d => `
     <div class="slot rolling" id="slot-${d.key}">
       <div class="slot-header">${d.header}</div>
       <div class="slot-window">
@@ -2924,26 +2928,26 @@ function renderSlotMachine() {
   return `<div class="slot-machine" id="slot-machine">${slots}</div>`;
 }
 
-async function animateSlots(skeleton) {
-  if (currentGenre !== 'sci-fi') return;
+async function animateSlots(skeleton, genre) {
+  const cfg  = getSlotConfig(genre);
   const slots = skeleton._slots;
   if (!slots) return;
 
-  // For each slot, preload the entries and start cycling
   const intervals = {};
-  const indices = {};
+  const indices   = {};
 
-  SLOT_DEFS.forEach(def => {
-    const entries = SLOT_CATALOG[def.cat] ?? [];
+  cfg.defs.forEach(def => {
+    const entries = cfg.catalog[def.cat] ?? [];
     if (!entries.length) return;
     indices[def.key] = Math.floor(Math.random() * entries.length);
 
-    const img = document.getElementById(`slot-img-${def.key}`);
+    const img  = document.getElementById(`slot-img-${def.key}`);
     if (!img) return;
 
+    const base = def.common ? COMMON_ICON_BASE : cfg.iconBase;
     const showFrame = () => {
-      const [n, slug] = entries[indices[def.key]];
-      img.src = iconPath(def.cat, n, slug);
+      const [, iconSlug] = entries[indices[def.key]];
+      img.src = iconPath(base, def.cat, iconSlug);
     };
     showFrame();
 
@@ -2954,29 +2958,28 @@ async function animateSlots(skeleton) {
   });
 
   // Land each slot with a stagger
-  for (let i = 0; i < SLOT_DEFS.length; i++) {
+  for (let i = 0; i < cfg.defs.length; i++) {
     await sleep(i === 0 ? 600 : 150);
 
-    const def = SLOT_DEFS[i];
+    const def      = cfg.defs[i];
     clearInterval(intervals[def.key]);
 
-    const entries   = SLOT_CATALOG[def.cat] ?? [];
-    const targetSlug = slots[def.key];
-    const entry     = entries.find(e => e[1] === targetSlug);
+    const entries  = cfg.catalog[def.cat] ?? [];
+    const dataSlug = slots[def.key];
+    const entry    = entries.find(e => e[0] === dataSlug);
 
     const img    = document.getElementById(`slot-img-${def.key}`);
     const lblEl  = document.getElementById(`slot-lbl-${def.key}`);
     const slotEl = document.getElementById(`slot-${def.key}`);
 
+    const base = def.common ? COMMON_ICON_BASE : cfg.iconBase;
     if (entry) {
-      const [n, slug, label] = entry;
-      const variant = Math.ceil(Math.random() * 3);
-      if (img) img.src = iconPath(def.cat, n, slug, variant);
+      const [, iconSlug, label] = entry;
+      if (img) img.src = iconPath(base, def.cat, iconSlug);
       if (lblEl) lblEl.textContent = label;
     } else {
-      // No matching icon — show gear placeholder and the raw id
       if (img) img.closest('.slot-window').innerHTML = '<div class="slot-placeholder">⚙</div>';
-      if (lblEl) lblEl.textContent = (targetSlug ?? '').replace(/_/g, ' ');
+      if (lblEl) lblEl.textContent = (dataSlug ?? '').replace(/_/g,' ');
     }
 
     if (slotEl) { slotEl.classList.remove('rolling'); slotEl.classList.add('landed'); }
@@ -3384,18 +3387,14 @@ async function runGenerate() {
 
     const outputArea = document.getElementById('output-area');
 
-    if (currentGenre === 'sci-fi') {
-      // ── Slot machine phase ───────────────────────────────────────────
-      setStatus('The fates are deciding…');
-      outputArea.innerHTML = renderSlotMachine();
-      await animateSlots(skeleton);           // ~2s staggered animation
-      await sleep(200);
+    // ── Slot machine phase ─────────────────────────────────────────────
+    setStatus('The fates are deciding…');
+    outputArea.innerHTML = renderSlotMachine(currentGenre);
+    await animateSlots(skeleton, currentGenre);   // ~2s staggered animation
+    await sleep(200);
 
-      // Skeleton cards appear below the (now locked) slot machine
-      outputArea.insertAdjacentHTML('beforeend', renderSkeleton(skeleton));
-    } else {
-      outputArea.innerHTML = renderSkeleton(skeleton);
-    }
+    // Skeleton cards appear below the (now locked) slot machine
+    outputArea.insertAdjacentHTML('beforeend', renderSkeleton(skeleton));
 
     await sleep(50);
     document.querySelectorAll('.card').forEach((c, i) => {
