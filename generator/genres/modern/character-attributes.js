@@ -14,10 +14,11 @@
 // ── GENDER ────────────────────────────────────────────────────────────────
 // weight: relative probability of selection (total need not sum to 100)
 
-import { GENDERS } from '../../common/genders.js';
-import { ORIENTATIONS } from '../../common/orientations.js';
-import { RACES } from './races.js';
-import { BUILDS } from '../../common/build.js';
+export { GENDERS } from '../../common/genders.js';
+export { ORIENTATIONS } from '../../common/orientations.js';
+export { RACES as ETHNICITIES } from './races.js';
+export { BUILDS } from '../../common/build.js';
+export { HAIR } from '../../common/hair.js';
 
 
 export const DISTINGUISHING_FEATURES = [

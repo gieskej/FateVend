@@ -12,10 +12,11 @@
 //     Claude assembles these into prose.
 //   - One quirk per character — picked from a pool, weighted by stats.
 
-import { GENDERS } from '../../common/genders.js';
-import { ORIENTATIONS } from '../../common/orientations.js';
-import { RACES } from './races.js';
-import { BUILDS } from '../../common/build.js';
+export { GENDERS } from '../../common/genders.js';
+export { ORIENTATIONS } from '../../common/orientations.js';
+export { BUILDS } from '../../common/build.js';
+export { RACES as SPECIES } from './races.js';
+
 import { HAIR as HAIR_COMMON } from '../../common/hair.js';
 
 // ── HAIR ─────────────────────────────────────────────────────────────────

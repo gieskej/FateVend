@@ -3,8 +3,8 @@
 // These are used to ground the character Entry and scenario Opening
 // in specific, vivid details rather than abstractions.
 
-import { CITY_SETTINGS } from './city-settings.js';
-import { ECONOMIC_TIERS } from './economic-tiers.js';
+export { CITY_SETTINGS } from './city-settings.js';
+export { ECONOMIC_TIERS } from './economic-tiers.js';
 
 // ── SCENARIO TAGS ────────────────────────────────────────────────────────
 // Up to 10 tags per scenario. These are drawn from the pools below

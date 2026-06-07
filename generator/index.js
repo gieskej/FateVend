@@ -25,6 +25,7 @@ import { FAMILY_STRUCTURES as M_FAMILY_STRUCTURES } from './genres/modern/family
 import { TENSIONS as M_TENSIONS } from './genres/modern/tensions.js';
 import { SECRETS as M_SECRETS } from './genres/modern/secrets.js';
 import { ECONOMIC_TIERS as M_ECONOMIC_TIERS, CITY_SETTINGS as M_CITY_SETTINGS, TAG_POOLS as M_TAG_POOLS } from './genres/modern/settings.js';
+import { NAME_POOLS as M_NAME_POOLS } from './genres/modern/names.js';
 
 // ── FANTASY TABLES ────────────────────────────────────────────────────────
 import { GENDERS as F_GENDERS, ORIENTATIONS as F_ORIENTATIONS, RACES, BUILDS as F_BUILDS, HAIR as F_HAIR, DISTINGUISHING_FEATURES as F_DISTINGUISHING_FEATURES, QUIRKS as F_QUIRKS } from './genres/fantasy/character-attributes.js';
@@ -45,16 +46,6 @@ import { TENSIONS as SF_TENSIONS } from './genres/sci-fi/tensions.js';
 import { SECRETS as SF_SECRETS } from './genres/sci-fi/secrets.js';
 import { ECONOMIC_TIERS as SF_ECONOMIC_TIERS, CITY_SETTINGS as SF_CITY_SETTINGS, TAG_POOLS as SF_TAG_POOLS } from './genres/sci-fi/settings.js';
 import { NAME_POOLS as SF_NAME_POOLS } from './genres/sci-fi/names.js';
-
-// ── MODERN: name pools are embedded in character-attributes (ETHNICITIES.broad) ──
-// Modern uses a different pattern — names come from an external source.
-// Until a modern names.js is added, fall back to a minimal pool.
-const M_NAME_POOLS = { default: {
-  masc:    ['James','Michael','Robert','David','William','Richard','Joseph','Thomas','Charles','Christopher','Daniel','Matthew','Anthony','Mark','Donald','Steven','Paul','Andrew','Joshua','Kenneth'],
-  fem:     ['Mary','Patricia','Jennifer','Linda','Barbara','Elizabeth','Susan','Jessica','Sarah','Karen','Lisa','Nancy','Betty','Margaret','Sandra','Ashley','Dorothy','Kimberly','Emily','Donna'],
-  neutral: ['Alex','Jordan','Taylor','Morgan','Casey','Riley','Avery','Jesse','Cameron','Quinn'],
-  last:    ['Smith','Johnson','Williams','Brown','Jones','Garcia','Miller','Davis','Martinez','Hernandez','Lopez','Gonzalez','Wilson','Anderson','Thomas','Taylor','Moore','Jackson','Martin','Lee'],
-}};
 
 // ── GENRE TABLES REGISTRY ─────────────────────────────────────────────────
 // skeleton-builder expects the key RACES_OR_ETHNICITIES — it handles both.

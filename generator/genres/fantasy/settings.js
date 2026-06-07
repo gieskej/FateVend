@@ -1,7 +1,7 @@
 // genres/fantasy/settings.js
 
-import { ECONOMIC_TIERS } from './economic-tiers.js';
-import { CITY_SETTINGS } from './city-settings.js';
+export { ECONOMIC_TIERS } from './economic-tiers.js';
+export { CITY_SETTINGS } from './city-settings.js';
 
 export const TAG_POOLS = {
   always: ['fantasy', 'character-driven'],

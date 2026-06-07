@@ -8,11 +8,11 @@
 //     but with a few fantasy-specific additions
 //   - Gender and orientation carry over unchanged
 
-import { GENDERS } from '../../common/genders.js';
-import { ORIENTATIONS } from '../../common/icons/orientations.js';
-import { RACES } from './races.js';
-import { BUILDS } from '../../common/build.js';
-import { HAIR } from '../../common/hair.js';
+export { GENDERS } from '../../common/genders.js';
+export { ORIENTATIONS } from '../../common/orientations.js';
+export { BUILDS } from '../../common/build.js';
+export { HAIR } from '../../common/hair.js';
+export { RACES } from './races.js';
 
 
 // ── DISTINGUISHING FEATURES ───────────────────────────────────────────────
