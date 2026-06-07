@@ -51,7 +51,7 @@ Orientation: ${sk.orientation}
 Appearance: ${appearanceParts}
 Quirk: ${sk.quirk}
 Profession: ${sk.profession} (${sk.industry}) — feels ${sk.sentiment} about it
-Stats: STR ${sk.stats.strength} | INT ${sk.stats.intelligence} | WIS ${sk.stats.wisdom} | CHA ${sk.stats.charisma} | DEX ${sk.stats.dexterity} | CON ${sk.stats.constitution}
+Stats: STR ${sk.stats.strength} (${sk.statLabels.strength}) | INT ${sk.stats.intelligence} (${sk.statLabels.intelligence}) | WIS ${sk.stats.wisdom} (${sk.statLabels.wisdom}) | CHA ${sk.stats.charisma} (${sk.statLabels.charisma}) | DEX ${sk.stats.dexterity} (${sk.statLabels.dexterity}) | CON ${sk.stats.constitution} (${sk.statLabels.constitution})
 Personality: ${sk.mbti} — ${sk.mbtiLabel}
 Economic status: ${sk.economicLabel} — ${sk.economicMarkers.join('; ')}
 Housing: ${sk.housing} | Transport: ${sk.transport}

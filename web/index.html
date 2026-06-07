@@ -126,10 +126,11 @@ import {
   SCIFI_PROFESSIONS, SCIFI_LIFE_EVENTS, SCIFI_TENSIONS, SCIFI_SECRETS,
   SCIFI_NAME_POOLS, SCIFI_PARENT_STATUSES, SCIFI_SIBLING_DYNAMICS, SCIFI_FAMILY_STRUCTURES,
   // Shared
+  STAT_ADJECTIVES, statAdjective,
   MBTI_TYPES,
   NPC_TRAITS, FRIEND_DYNAMICS, PARENT_DYNAMICS_ALIVE, FOIL_ROLES,
   NEUTRAL_FIRST_MASC, NEUTRAL_FIRST_FEM, NEUTRAL_LAST,
-} from './generator/ui-data.js';
+} from '../generator/ui-data.js';
 
 // ── Genre routing ─────────────────────────────────────────────────────────
 function getGenreTables(genre) {
@@ -764,7 +765,7 @@ function attachCounter(textarea, limit, counterId) {
 // SLOT MACHINE
 // ═══════════════════════════════════════════════════════════════════════════
 
-const COMMON_ICON_BASE = 'generator/common/icons/';
+const COMMON_ICON_BASE = '../generator/common/icons/';
 
 // Convert a profession title (or similar) to an icon filename slug
 function toIconSlug(str) {
@@ -807,7 +808,7 @@ function getSlotConfig(genre) {
 
   if (genre === 'sci-fi') {
     return {
-      iconBase: 'generator/genres/sci-fi/icons/',
+      iconBase: '../generator/genres/sci-fi/icons/',
       defs: [
         { key:'species',   header:'Species',    cat:'SPECIES',           common:false },
         { key:'gender',    header:'Gender',     cat:'GENDERS',           common:true  },
@@ -845,7 +846,7 @@ function getSlotConfig(genre) {
 
   if (genre === 'fantasy') {
     return {
-      iconBase: 'generator/genres/fantasy/icons/',
+      iconBase: '../generator/genres/fantasy/icons/',
       defs: [
         { key:'species',   header:'Race',       cat:'RACE',          common:false },
         { key:'gender',    header:'Gender',     cat:'GENDERS',       common:true  },
@@ -883,7 +884,7 @@ function getSlotConfig(genre) {
 
   // Modern (default)
   return {
-    iconBase: 'generator/genres/modern/icons/',
+    iconBase: '../generator/genres/modern/icons/',
     defs: [
       { key:'species',   header:'Ethnicity',  cat:'ETHNICITY',        common:false },
       { key:'gender',    header:'Gender',     cat:'GENDERS',          common:true  },
@@ -999,20 +1000,6 @@ async function animateSlots(skeleton, genre) {
 // RENDER
 // ═══════════════════════════════════════════════════════════════════════════
 
-const STAT_ADJECTIVES = {
-  strength:     ['feeble',    'weak',      'average',    'strong',     'mighty'    ],
-  intelligence: ['dim',       'slow',      'capable',    'sharp',      'brilliant' ],
-  wisdom:       ['reckless',  'naive',     'grounded',   'perceptive', 'sage'      ],
-  charisma:     ['repellent', 'awkward',   'personable', 'charming',   'magnetic'  ],
-  dexterity:    ['clumsy',    'sluggish',  'nimble',     'agile',      'acrobatic' ],
-  constitution: ['frail',     'sickly',    'hardy',      'tough',      'resilient' ],
-};
-
-function statAdjective(stat, value) {
-  const tiers = STAT_ADJECTIVES[stat];
-  if (!tiers) return '';
-  return tiers[Math.min(4, Math.floor((value - 1) / 20))];
-}
 
 const CON_APPEARANCE_NOTES = ['chronically run-down look','looks worn, running on less','','healthy, clear-eyed','visibly robust, built to last'];
 const CHA_APPEARANCE_NOTES = ['unkempt, indifferent to appearances','rough-edged','','well-groomed, easy confidence','striking — the room notices'];

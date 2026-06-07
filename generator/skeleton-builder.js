@@ -7,6 +7,7 @@
 
 import { statWeightedPick, statAndWeightPick, uniformPick, randomInt } from './selector.js';
 import { buildCast } from './cast-builder.js';
+import { buildStatLabels } from './stat-adjectives.js';
 
 // ── NAME POOL HELPERS ─────────────────────────────────────────────────────
 // Used by both buildSkeleton and cast-builder.
@@ -167,6 +168,7 @@ export function buildSkeleton(stats, mbti, tables) {
 
   return {
     name, age,
+    statLabels:      buildStatLabels(stats),
     gender:          gender.label,
     pronouns:        gender.pronouns,
     orientation:     orientation.label,

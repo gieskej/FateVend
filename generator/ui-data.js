@@ -76,6 +76,9 @@ export {
   FAMILY_STRUCTURES as SCIFI_FAMILY_STRUCTURES,
 } from './genres/sci-fi/family-structures.js';
 
+// ── STAT ADJECTIVES ─────────────────────────────────────────────────────────
+export { STAT_ADJECTIVES, statAdjective } from './stat-adjectives.js';
+
 // ── MBTI — shared across all genres ────────────────────────────────────────
 export const MBTI_TYPES = [
   { type:'INTJ', label:'The Architect'    }, { type:'INTP', label:'The Thinker'      },
