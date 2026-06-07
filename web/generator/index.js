@@ -170,11 +170,11 @@ export async function generateCharacter({
  * @param {import('./types.js').StatBlock} currentStats
  * @param {'strength'|'intelligence'|'wisdom'|'charisma'|'dexterity'|'constitution'} statName
  * @returns {import('./types.js').StatBlock}
- */
 export function rerollStat(currentStats, statName) {
   const fresh = rollStats();
   return { ...currentStats, [statName]: fresh[statName] };
 }
+*/
 
 /**
  * Regenerates just the skeleton from existing stats (no API call).

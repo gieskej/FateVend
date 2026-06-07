@@ -39,26 +39,26 @@
       <input id="img-api-key" class="api-input" type="password"
         placeholder="sk-..." autocomplete="off" spellcheck="false">
     </div>
-
-    <!-- GENRE SELECTOR -->
-    <div style="text-align:center;margin-bottom:1.25rem;">
-      <div style="font-family:var(--font-display);font-size:0.62rem;letter-spacing:0.16em;color:var(--brass-light);text-transform:uppercase;margin-bottom:0.6rem;">Genre</div>
-      <div style="display:inline-flex;gap:0;border:1px solid var(--brass-dark);border-radius:var(--radius);overflow:hidden;">
-        <button id="genre-modern" onclick="setGenre('modern')"
-          style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:var(--brass);color:var(--ink);transition:background 0.15s,color 0.15s;">
-          Modern
-        </button>
-        <button id="genre-fantasy" onclick="setGenre('fantasy')"
-          style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s;">
-          Fantasy
-        </button>
-        <button id="genre-scifi" onclick="setGenre('sci-fi')"
-          style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s;">
-          Sci-Fi
-        </button>
-      </div>
-    </div>
   </details>
+
+  <!-- GENRE SELECTOR -->
+  <div style="text-align:center;margin-bottom:1.25rem;">
+    <div style="font-family:var(--font-display);font-size:0.62rem;letter-spacing:0.16em;color:var(--brass-light);text-transform:uppercase;margin-bottom:0.6rem;">Genre</div>
+    <div style="display:inline-flex;gap:0;border:1px solid var(--brass-dark);border-radius:var(--radius);overflow:hidden;">
+      <button id="genre-modern" onclick="setGenre('modern')"
+        style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:var(--brass);color:var(--ink);transition:background 0.15s,color 0.15s;">
+        Modern
+      </button>
+      <button id="genre-fantasy" onclick="setGenre('fantasy')"
+        style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s;">
+        Fantasy
+      </button>
+      <button id="genre-scifi" onclick="setGenre('sci-fi')"
+        style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s;">
+        Sci-Fi
+      </button>
+    </div>
+  </div>
 
   <!-- GENERATE BUTTON -->
   <div class="generate-wrap">
@@ -1033,15 +1033,14 @@ function renderSkeleton(sk) {
 
       <!-- Stats -->
       <div style="margin-bottom:1.25rem;">
-        <div style="font-family:var(--font-display);font-size:0.62rem;letter-spacing:0.16em;color:var(--brass-dark);text-transform:uppercase;margin-bottom:0.5rem;">Stats <span style="font-size:0.55rem;color:var(--ink-faint)">(click to reroll)</span></div>
+        <div style="font-family:var(--font-display);font-size:0.62rem;letter-spacing:0.16em;color:var(--brass-dark);text-transform:uppercase;margin-bottom:0.5rem;">Stats</div>
         <div class="stat-grid" id="stat-grid">
           ${['strength','intelligence','wisdom','charisma','dexterity','constitution'].map(stat => `
-          <div class="stat-cell" onclick="rerollStat('${stat}')" title="Reroll ${stat}">
+          <div class="stat-cell">
             <span class="stat-name">${stat.slice(0,3).toUpperCase()}</span>
             <span class="stat-value" id="stat-${stat}">${sk.stats[stat]}</span>
             <span class="stat-adj" id="adj-${stat}">${statAdjective(stat, sk.stats[stat])}</span>
             <div class="stat-bar"><div class="stat-bar-fill" id="bar-${stat}" style="width:${sk.stats[stat]}%"></div></div>
-            <span class="stat-reroll-hint">reroll</span>
           </div>`).join('')}
         </div>
       </div>
@@ -1313,33 +1312,6 @@ function copySkeletonText(btn) {
   copyToClipboard(text);
 }
 
-async function rerollStat(statName) {
-  if (isGenerating || !currentSkeleton) return;
-  const newVal = Math.min(100, Math.max(1, Math.round((Math.random()*100+1 + Math.random()*100+1)/2)));
-  currentSkeleton.stats[statName] = newVal;
-
-  const valEl = document.getElementById(`stat-${statName}`);
-  const adjEl = document.getElementById(`adj-${statName}`);
-  const barEl = document.getElementById(`bar-${statName}`);
-  const appEl = document.getElementById('appearance-val');
-  if (valEl) {
-    valEl.textContent = newVal;
-    valEl.closest('.stat-cell').classList.add('rolling');
-    setTimeout(() => valEl.closest('.stat-cell')?.classList.remove('rolling'), 700);
-  }
-  if (adjEl) adjEl.textContent = statAdjective(statName, newVal);
-  if (barEl) barEl.style.width = `${newVal}%`;
-  if (appEl && currentSkeleton) {
-    currentSkeleton.appearance.statNotes = appearanceStatNotes(currentSkeleton.stats);
-    const parts = [
-      currentSkeleton.appearance.build,
-      currentSkeleton.appearance.hair,
-      currentSkeleton.appearance.distinguishingFeature,
-      ...currentSkeleton.appearance.statNotes,
-    ].filter(Boolean).join('; ');
-    appEl.textContent = parts || '—';
-  }
-}
 
 // ═══════════════════════════════════════════════════════════════════════════
 // MAIN GENERATE FLOW
@@ -1530,18 +1502,20 @@ async function generatePortrait(btn) {
   try {
     let src;
     if (sdUrl) {
-      // ── Local Stable Diffusion WebUI (Forge / A1111) ──────────────────
+      // ── Local Stable Diffusion WebUI (Forge / A1111) with Flux1-dev model ──────────────────
       const res = await fetch(`${sdUrl}/sdapi/v1/txt2img`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           prompt:           promptEl.value.trim(),
           negative_prompt:  'low quality, blurry, duplicate, deformed, bad anatomy, extra limbs, text, watermark, logo',
-          steps:            25,
+          steps:            30,
           width:            512,
           height:           768,
           cfg_scale:        1,
+          distilled_cfg_scale: 6,
           sampler_name:     'Euler',
+          scheduler:        'Simple',
         }),
       });
       if (!res.ok) { const t = await res.text().catch(()=>''); throw new Error(`SD API ${res.status}: ${t}`); }
@@ -1577,29 +1551,34 @@ async function generatePortrait(btn) {
   }
 }
 
-// ── .env loader ───────────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', async () => {
-  document.getElementById('empty-state')?.style && (document.getElementById('output-area').style.minHeight = '200px');
+// ── Key persistence (localStorage) ────────────────────────────────────────
+const KEY_FIELDS = [
+  { id: 'api-key',     store: 'gof_api_key'     },
+  { id: 'sd-url',      store: 'gof_sd_url'       },
+  { id: 'img-api-key', store: 'gof_img_api_key'  },
+];
 
-  try {
-    const text = await fetch('.env').then(r => r.ok ? r.text() : '');
-    const env = {};
-    text.split('\n').forEach(line => {
-      const m = line.match(/^\s*([^#=\s]+)\s*=\s*(.*?)\s*$/);
-      if (m) env[m[1]] = m[2].replace(/^["']|["']$/g, '');
+document.addEventListener('DOMContentLoaded', () => {
+  // Restore saved values
+  KEY_FIELDS.forEach(({ id, store }) => {
+    const saved = localStorage.getItem(store);
+    if (saved) document.getElementById(id).value = saved;
+  });
+
+  // Save on every change
+  KEY_FIELDS.forEach(({ id, store }) => {
+    document.getElementById(id).addEventListener('input', e => {
+      const v = e.target.value.trim();
+      if (v) localStorage.setItem(store, v);
+      else   localStorage.removeItem(store);
     });
-    if (env.ANTHROPIC_API_KEY) document.getElementById('api-key').value     = env.ANTHROPIC_API_KEY;
-    if (env.STABILITY_API_KEY) document.getElementById('img-api-key').value = env.STABILITY_API_KEY;
-    if (env.SD_URL)             document.getElementById('sd-url').value      = env.SD_URL;
-  } catch (_) {
-    // .env not accessible — user fills in fields manually
-  }
+  });
 });
 
 // Expose module functions to inline HTML event handlers
 Object.assign(window, {
   runGenerate, runAIPhase, setGenre,
-  rerollStat, copyField, copyAll, copySkeletonText, copyTags,
+  copyField, copyAll, copySkeletonText, copyTags,
   generatePortrait, updateCount,
 });
 </script>
