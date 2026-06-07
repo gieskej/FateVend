@@ -810,8 +810,8 @@ function getSlotConfig(genre) {
     return {
       iconBase: './generator/genres/sci-fi/icons/',
       defs: [
-        { key:'species',   header:'Species',    cat:'SPECIES',           common:false },
         { key:'gender',    header:'Gender',     cat:'GENDERS',           common:true  },
+        { key:'species',   header:'Species',    cat:'SPECIES',           common:false },
         { key:'orient',    header:'Orientation',cat:'ORIENTATIONS',      common:true  },
         { key:'mbti',      header:'Personality',cat:'MBTI_TYPES',        common:true  },
         { key:'prof',      header:'Profession', cat:'PROFESSIONS',       common:false },
@@ -848,8 +848,8 @@ function getSlotConfig(genre) {
     return {
       iconBase: './generator/genres/fantasy/icons/',
       defs: [
-        { key:'species',   header:'Race',       cat:'RACE',          common:false },
         { key:'gender',    header:'Gender',     cat:'GENDERS',       common:true  },
+        { key:'species',   header:'Race',       cat:'RACE',          common:false },
         { key:'orient',    header:'Orientation',cat:'ORIENTATIONS',  common:true  },
         { key:'mbti',      header:'Personality',cat:'MBTI_TYPES',    common:true  },
         { key:'prof',      header:'Profession', cat:'PROFESSION',    common:false },
@@ -886,8 +886,8 @@ function getSlotConfig(genre) {
   return {
     iconBase: './generator/genres/modern/icons/',
     defs: [
-      { key:'species',   header:'Ethnicity',  cat:'ETHNICITY',        common:false },
       { key:'gender',    header:'Gender',     cat:'GENDERS',          common:true  },
+      { key:'species',   header:'Ethnicity',  cat:'ETHNICITY',        common:false },
       { key:'orient',    header:'Orientation',cat:'ORIENTATIONS',     common:true  },
       { key:'mbti',      header:'Personality',cat:'MBTI_TYPES',       common:true  },
       { key:'prof',      header:'Profession', cat:'PROFESSION',       common:false },
@@ -937,6 +937,8 @@ function renderSlotMachine(genre) {
     </div>`).join('');
   return `<div class="slot-machine" id="slot-machine">${slots}</div>`;
 }
+
+const _bellSfx = new Audio('audio/u_omspjqprot-bell-222490.mp3');
 
 async function animateSlots(skeleton, genre) {
   const cfg  = getSlotConfig(genre);
@@ -993,6 +995,11 @@ async function animateSlots(skeleton, genre) {
     }
 
     if (slotEl) { slotEl.classList.remove('rolling'); slotEl.classList.add('landed'); }
+
+    if (i === 0) {
+      _bellSfx.currentTime = 0;
+      _bellSfx.play().catch(() => {});
+    }
   }
 }
 
