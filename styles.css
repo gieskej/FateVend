@@ -125,6 +125,37 @@ body::before {
   background: linear-gradient(90deg, transparent, var(--brass-dark), transparent);
 }
 
+/* ── SETTINGS PANEL ────────────────────────────────────────────────── */
+#settings-panel { margin-bottom: 0; }
+
+.settings-summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  margin-bottom: 1.25rem;
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brass-light);
+  user-select: none;
+  border-radius: var(--radius);
+  transition: color 0.15s;
+}
+.settings-summary::-webkit-details-marker { display: none; }
+.settings-summary::after {
+  content: '▲';
+  font-size: 0.55rem;
+  transition: transform 0.2s;
+  display: inline-block;
+}
+#settings-panel:not([open]) .settings-summary::after { transform: rotate(180deg); }
+.settings-summary:hover { color: var(--brass); }
+
 /* ── API KEY INPUT ─────────────────────────────────────────────────── */
 .api-section {
   background: rgba(26,18,8,0.7);

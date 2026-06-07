@@ -19,41 +19,46 @@
 
   <div class="divider">⚙ ⚙ ⚙</div>
 
-  <!-- API KEYS -->
-  <div class="api-section">
-    <label for="api-key">Anthropic API Key</label>
-    <input id="api-key" class="api-input" type="password"
-      placeholder="sk-ant-..." autocomplete="off" spellcheck="false">
-  </div>
-  <div class="api-section">
-    <label for="sd-url">Local SD URL <span style="font-style:italic;font-size:0.65rem;color:var(--ink-faint);text-transform:none;letter-spacing:0">(portraits — takes priority)</span></label>
-    <input id="sd-url" class="api-input" type="text"
-      placeholder="http://bonobo.local:7860" autocomplete="off" spellcheck="false">
-  </div>
-  <div class="api-section">
-    <label for="img-api-key">Stability AI Key <span style="font-style:italic;font-size:0.65rem;color:var(--ink-faint);text-transform:none;letter-spacing:0">(portraits — fallback)</span></label>
-    <input id="img-api-key" class="api-input" type="password"
-      placeholder="sk-..." autocomplete="off" spellcheck="false">
-  </div>
+  <!-- SETTINGS PANEL (collapses after first generation) -->
+  <details id="settings-panel" open>
+    <summary class="settings-summary">⚙ Settings</summary>
 
-  <!-- GENRE SELECTOR -->
-  <div style="text-align:center;margin-bottom:1.25rem;">
-    <div style="font-family:var(--font-display);font-size:0.62rem;letter-spacing:0.16em;color:var(--brass-light);text-transform:uppercase;margin-bottom:0.6rem;">Genre</div>
-    <div style="display:inline-flex;gap:0;border:1px solid var(--brass-dark);border-radius:var(--radius);overflow:hidden;">
-      <button id="genre-modern" onclick="setGenre('modern')"
-        style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:var(--brass);color:var(--ink);transition:background 0.15s,color 0.15s;">
-        Modern
-      </button>
-      <button id="genre-fantasy" onclick="setGenre('fantasy')"
-        style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s;">
-        Fantasy
-      </button>
-      <button id="genre-scifi" onclick="setGenre('sci-fi')"
-        style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s;">
-        Sci-Fi
-      </button>
+    <!-- API KEYS -->
+    <div class="api-section">
+      <label for="api-key">Anthropic API Key</label>
+      <input id="api-key" class="api-input" type="password"
+        placeholder="sk-ant-..." autocomplete="off" spellcheck="false">
     </div>
-  </div>
+    <div class="api-section">
+      <label for="sd-url">Local SD URL <span style="font-style:italic;font-size:0.65rem;color:var(--ink-faint);text-transform:none;letter-spacing:0">(portraits — takes priority)</span></label>
+      <input id="sd-url" class="api-input" type="text"
+        placeholder="http://bonobo.local:7860" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="api-section">
+      <label for="img-api-key">Stability AI Key <span style="font-style:italic;font-size:0.65rem;color:var(--ink-faint);text-transform:none;letter-spacing:0">(portraits — fallback)</span></label>
+      <input id="img-api-key" class="api-input" type="password"
+        placeholder="sk-..." autocomplete="off" spellcheck="false">
+    </div>
+
+    <!-- GENRE SELECTOR -->
+    <div style="text-align:center;margin-bottom:1.25rem;">
+      <div style="font-family:var(--font-display);font-size:0.62rem;letter-spacing:0.16em;color:var(--brass-light);text-transform:uppercase;margin-bottom:0.6rem;">Genre</div>
+      <div style="display:inline-flex;gap:0;border:1px solid var(--brass-dark);border-radius:var(--radius);overflow:hidden;">
+        <button id="genre-modern" onclick="setGenre('modern')"
+          style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:var(--brass);color:var(--ink);transition:background 0.15s,color 0.15s;">
+          Modern
+        </button>
+        <button id="genre-fantasy" onclick="setGenre('fantasy')"
+          style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s;">
+          Fantasy
+        </button>
+        <button id="genre-scifi" onclick="setGenre('sci-fi')"
+          style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s;">
+          Sci-Fi
+        </button>
+      </div>
+    </div>
+  </details>
 
   <!-- GENERATE BUTTON -->
   <div class="generate-wrap">
@@ -1361,6 +1366,7 @@ async function runGenerate() {
   isGenerating = true;
   currentOutput = null;
   showError('');
+  document.getElementById('settings-panel').open = false;
   const btn = document.getElementById('btn-generate');
   btn.disabled = true;
   btn.classList.add('spinning');
