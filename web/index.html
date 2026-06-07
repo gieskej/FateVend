@@ -1272,8 +1272,11 @@ async function copyTags(btn) {
 
 async function copyAll(btn) {
   if (!currentOutput || !currentSkeleton) return;
+  const annotatedStats = Object.fromEntries(
+    Object.entries(currentSkeleton.stats).map(([k, v]) => [k, `${v} (${statAdjective(k, v)})`])
+  );
   const payload = {
-    skeleton: currentSkeleton,
+    skeleton: { ...currentSkeleton, stats: annotatedStats },
     scenario: {
       title:           currentOutput.title,
       description:     currentOutput.description,
