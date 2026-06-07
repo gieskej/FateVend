@@ -8,7 +8,7 @@
 //   ANTHROPIC_API_KEY=sk-ant-... node cli/index.js --skeleton-only
 //   ANTHROPIC_API_KEY=sk-ant-... node cli/index.js --json
 
-import { generateCharacter } from '../generator/index.js';
+import { generateCharacter } from '../web/generator/index.js';
 
 const args       = process.argv.slice(2);
 const skeletonOnly = args.includes('--skeleton-only');
