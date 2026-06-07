@@ -26,6 +26,29 @@ function neutralName() {
   return `${first} ${uniformPick(NEUTRAL_LAST)}`;
 }
 
+function neutralNameForGender(genderId) {
+  const isMasc = genderId === 'man' || genderId === 'trans_man';
+  const first  = isMasc ? uniformPick(NEUTRAL_FIRST_MASC) : uniformPick(NEUTRAL_FIRST_FEM);
+  return `${first} ${uniformPick(NEUTRAL_LAST)}`;
+}
+
+// Returns 'man' or 'woman' for the love interest based on protagonist orientation+gender.
+function loveInterestGenderId(protagonistGenderId, protagonistOrientation) {
+  const isMasc = protagonistGenderId === 'man'   || protagonistGenderId === 'trans_man';
+  const isFem  = protagonistGenderId === 'woman' || protagonistGenderId === 'trans_woman';
+  const orient = (protagonistOrientation ?? '').toLowerCase();
+
+  if (orient.includes('straight')) {
+    if (isMasc) return 'woman';
+    if (isFem)  return 'man';
+  } else if (orient.includes('gay') || orient.includes('lesbian')) {
+    if (isMasc) return 'man';
+    if (isFem)  return 'woman';
+  }
+  // bisexual, pansexual, asexual, questioning, non-binary — any gender
+  return Math.random() < 0.5 ? 'man' : 'woman';
+}
+
 // ── NPC TRAIT POOLS ───────────────────────────────────────────────────────
 // Mix of light, dark, and comedic traits — weighted so not every NPC
 // is "quietly broken" or "bitter". Playable characters need people
@@ -238,10 +261,17 @@ function buildFriend(protName) {
 
 // ── FOIL BUILDER ──────────────────────────────────────────────────────────
 
-function buildFoil(protName) {
+function buildFoil(protName, protagonistGenderId, protagonistOrientation) {
   const foilType = uniformPick(FOIL_ROLES);
+  let name;
+  if (foilType.role === 'love interest' && protagonistGenderId && protagonistOrientation) {
+    const liGender = loveInterestGenderId(protagonistGenderId, protagonistOrientation);
+    name = neutralNameForGender(liGender);
+  } else {
+    name = neutralName();
+  }
   return {
-    name:    neutralName(),
+    name,
     role:    foilType.role,
     status:  'present',
     traits:  pickTraits(2),
@@ -259,13 +289,16 @@ function pickTraits(n) { return uniformPickN(NPC_TRAITS, n); }
 /**
  * Builds the full supporting cast for a protagonist.
  *
- * @param {string} protagonistName   Full name e.g. "Maya Reyes"
- * @param {string} protagonistLast   Last name only e.g. "Reyes" — shared with family
- * @param {string} ethnicityBroad    e.g. "Latino" — used for family first name pools
- * @param {object} familyStructure   Resolved FAMILY_STRUCTURES entry
+ * @param {string} protagonistName         Full name e.g. "Maya Reyes"
+ * @param {string} protagonistLast         Last name only e.g. "Reyes" — shared with family
+ * @param {string} ethnicityBroad          e.g. "Latino" — used for family first name pools
+ * @param {object} familyStructure         Resolved FAMILY_STRUCTURES entry
+ * @param {object} [namePools]             Genre NAME_POOLS (threaded for consistency)
+ * @param {string} [protagonistGenderId]   e.g. "man", "woman", "non_binary"
+ * @param {string} [protagonistOrientation] e.g. "Straight", "Gay / Lesbian"
  * @returns {import('./types.js').NPCSkeleton[]}
  */
-export function buildCast(protagonistName, protagonistLast, ethnicityBroad, familyStructure) {
+export function buildCast(protagonistName, protagonistLast, ethnicityBroad, familyStructure, namePools, protagonistGenderId, protagonistOrientation) {
   const cast = [];
   const MAX  = 7;
 
@@ -300,7 +333,7 @@ export function buildCast(protagonistName, protagonistLast, ethnicityBroad, fami
   }
 
   // ── DRAMATIC FOIL ─────────────────────────────────────────────────────
-  if (cast.length < MAX) cast.push(buildFoil(protagonistName));
+  if (cast.length < MAX) cast.push(buildFoil(protagonistName, protagonistGenderId, protagonistOrientation));
 
   return cast;
 }
