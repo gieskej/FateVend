@@ -10,6 +10,7 @@ for file in *; do
         echo "  $target"
         echo "with"
         echo "  $file"
+	echo
 
         mv -f -- "$file" "$target"
     fi

@@ -1,5 +1,6 @@
 key.txt
 .env
 web/.env
+web/generator/config.js
 old
 *.bak

@@ -12,7 +12,7 @@ export const RACES = [
     broad: 'Human',
     flavor: 'Earther — born gravity-side, stockier bone density, carries a particular wariness toward anyone who has never needed to worry about weather',
     weight: 15,
-    iconPrompt: 'A person with a stockier bone density and a particular wariness toward anyone who has never needed to worry about weather',
+    iconPrompt: 'sci-fi rpg icon, space transit hub, stocky weathered human in practical layered work clothing, alert scanning crowd expression, industrial background, overhead transit lighting, medium shot, digital concept art',
     iconPath: 'generator/genres/sci-fi/icons/SPECIES#human_earther.png'
   },
   {
@@ -20,7 +20,7 @@ export const RACES = [
     broad: 'Human',
     flavor: 'Colonist — raised on a settled world not Earth, adapted to local gravity and light, pragmatic in ways that confuse people who grew up with safety nets',
     weight: 12,
-    iconPrompt: 'A person raised on a settled world not Earth, adapted to local gravity and light, pragmatic in ways that confuse people who grew up with safety nets',
+    iconPrompt: 'sci-fi rpg icon, colony world habitat edge, lean human in functional field gear, confident pragmatic posture, bright adapted-world daylight, open frontier background, medium shot, digital concept art',
     iconPath: 'generator/genres/sci-fi/icons/SPECIES#human_colonist.png'
   },
   {
@@ -28,7 +28,7 @@ export const RACES = [
     broad: 'Human',
     flavor: 'Spacer — born or raised aboard ships or stations, lean frame from variable-g, skin that\'s never quite seen enough real light, reads pressure changes in a room the way others read faces',
     weight: 8,
-    iconPrompt: 'A person born or raised aboard ships or stations, lean frame from variable-g, skin that\'s never quite seen enough real light, reads pressure changes in a room the way others read faces',
+    iconPrompt: 'sci-fi rpg icon, ship corridor, lean pale human in worn flight suit with hollow alert eyes, hyperaware scanning posture, hand resting on bulkhead, low corridor lighting, medium close-up, digital concept art',
     iconPath: 'generator/genres/sci-fi/icons/SPECIES#human_spacer.png'
   },
   {
@@ -36,7 +36,7 @@ export const RACES = [
     broad: 'Human',
     flavor: 'Corp citizen — raised inside a megacorporate arcology, good teeth, filtered air their whole life, a slightly uncanny social ease that comes from being managed since birth',
     weight: 8,
-    iconPrompt: 'A person raised inside a megacorporate arcology, good teeth, filtered air their whole life, a slightly uncanny social ease that comes from being managed since birth',
+    iconPrompt: 'sci-fi rpg icon, corporate arcology corridor, well-groomed human in crisp corp-standard uniform, polished practiced social expression, glass and steel interior, bright filtered lighting, medium shot, digital concept art',
     iconPath: 'generator/genres/sci-fi/icons/SPECIES#human_corp.png'
   },
 
@@ -46,7 +46,7 @@ export const RACES = [
     broad: 'Cyborg',
     flavor: 'Lightly augmented — one or two integrated systems, subdermal ports or a replacement limb, biological baseline mostly intact but the seams are visible if you look',
     weight: 12,
-    iconPrompt: 'A person with one or two integrated systems, subdermal ports or a replacement limb, biological baseline mostly intact but the seams are visible if you look',
+    iconPrompt: 'sci-fi rpg icon, cyborg  man with mechanical eye, portrait, digital concept art',
     iconPath: 'generator/genres/sci-fi/icons/SPECIES#cyborg_light.png'
   },
   {
@@ -54,7 +54,7 @@ export const RACES = [
     broad: 'Cyborg',
     flavor: 'Heavily augmented — more synthetic than biological now, the remaining organic parts feel almost decorative, moves with a precision that unsettles people who aren\'t used to it',
     weight: 5,
-    iconPrompt: 'A person who is more synthetic than biological now, the remaining organic parts feel almost decorative, moves with a precision that unsettles people who aren\'t used to it',
+    iconPrompt: 'sci-fi rpg icon, cyborg man with mechanical body, portrait, digital concept art',
     iconPath: 'generator/genres/sci-fi/icons/SPECIES#cyborg_heavy.png'
   },
 
@@ -64,7 +64,7 @@ export const RACES = [
     broad: 'Android',
     flavor: 'Android — fully synthetic, designed to pass at conversational distance, gets clocked by medscans and anyone who has been looking long enough; the question of personhood is legally unsettled and they are aware of this',
     weight: 6,
-    iconPrompt: 'A fully synthetic being designed to pass at conversational distance, gets clocked by medscans and anyone who has been looking long enough; the question of personhood is legally unsettled and they are aware of this',
+    iconPrompt: 'sci-fi rpg icon, public transit space, android in neutral service attire standing in crowd, near-human appearance, slightly too still, faint uncanny quality in posture, medium shot, digital concept art',
     iconPath: 'generator/genres/sci-fi/icons/SPECIES#android.png'
   },
 
@@ -74,7 +74,7 @@ export const RACES = [
     broad: 'Uplifted',
     flavor: 'Uplifted primate — enhanced cognition and fine motor precision from a corps-funded programme that\'s since been shut down, navigates a world built for a species that still isn\'t sure how to treat them',
     weight: 4,
-    iconPrompt: 'An uplifted primate with enhanced cognition and fine motor precision from a corps-funded programme that\'s since been shut down, navigates a world built for a species that still isn\'t sure how to treat them',
+    iconPrompt: 'sci-fi rpg icon, laboratory or tech corridor, uplifted primate bipedal figure in lab coveralls, fine motor work with tools, sapient focused expression, corp lab environment, overhead lab lighting, medium shot, digital concept art',
     iconPath: 'generator/genres/sci-fi/icons/SPECIES#uplift_primate.png'
   },
   {
@@ -82,7 +82,7 @@ export const RACES = [
     broad: 'Uplifted',
     flavor: 'Uplifted feline — heightened reflexes and senses, bipedal and fully sapient, the ears and tail are real, the patience for human inefficiency is synthetic',
     weight: 3,
-    iconPrompt: 'An uplifted feline with heightened reflexes and senses, bipedal and fully sapient, the ears and tail are real, the patience for human inefficiency is synthetic',
+    iconPrompt: 'sci-fi rpg icon, transit concourse, bipedal uplifted feline in tactical clothing, ears independently tracking, tail visible, sharp alert eyes, neon transit lighting, medium shot, digital concept art',
     iconPath: 'generator/genres/sci-fi/icons/SPECIES#uplift_feline.png'
   },
 
@@ -92,7 +92,7 @@ export const RACES = [
     broad: 'Clone',
     flavor: 'Clone — baseline print, no notable deviations from the source template, grown and decanted like product; the paperwork says they have rights and the paperwork is technically accurate',
     weight: 5,
-    iconPrompt: 'A clone with a baseline print, no notable deviations from the source template, grown and decanted like product; the paperwork says they have rights and the paperwork is technically accurate',
+    iconPrompt: 'sci-fi rpg icon, corp work environment, 3girls, identical faces, identical uniforms, face like grace park, careful neutral expression, fluorescent corp lighting, medium shot, digital concept art',
     iconPath: 'generator/genres/sci-fi/icons/SPECIES#clone_baseline.png'
   },
   {
@@ -100,7 +100,7 @@ export const RACES = [
     broad: 'Clone',
     flavor: 'Clone — divergent from baseline, whether by design, incident, or the slow drift of living; they may share a face with someone they have never met and would rather not',
     weight: 2,
-    iconPrompt: 'A clone divergent from baseline, whether by design, incident, or the slow drift of living; they may share a face with someone they have never met and would rather not',
+    iconPrompt: 'sci-fi rpg icon, corp work environment, 3girls, identical faces, identical uniforms, face like Angelina Jolie, plastic skin, careful neutral expression, fluorescent corp lighting, medium shot, digital concept art',
     iconPath: 'generator/genres/sci-fi/icons/SPECIES#clone_notable.png'
   },
 
@@ -110,7 +110,7 @@ export const RACES = [
     broad: 'Mutant',
     flavor: 'Mutant — radiation, unregulated biotech, or something in the water; whatever the cause the changes are real and unasked-for, and they have learned which ones to hide',
     weight: 5,
-    iconPrompt: 'A mutant with radiation, unregulated biotech, or something in the water; whatever the cause the changes are real and unasked-for, and they have learned which ones to hide',
+    iconPrompt: 'sci-fi rpg icon, woman with dark blue skin, scales and very large eyes, low-corp district alley or corridor, warm lighting, medium shot, digital concept art',
     iconPath: 'generator/genres/sci-fi/icons/SPECIES#mutant.png'
   },
 
@@ -120,7 +120,7 @@ export const RACES = [
     broad: 'Alien',
     flavor: 'Humanoid alien — bipedal, bilaterally symmetrical, close enough to pass in a crowd until they don\'t; first contact was a generation ago and the social infrastructure for integration is still catching up',
     weight: 6,
-    iconPrompt: 'A humanoid alien — bipedal, bilaterally symmetrical, close enough to pass in a crowd until they don\'t; first contact was a generation ago and the social infrastructure for integration is still catching up',
+    iconPrompt: 'sci-fi rpg icon, station checkpoint, humanoid alien with distinctive alien features or coloring in neutral transit clothing, integration documents in hand, resigned expression, overhead checkpoint lighting, medium shot, digital concept art',
     iconPath: 'generator/genres/sci-fi/icons/SPECIES#alien_humanoid.png'
   },
   {
@@ -128,8 +128,7 @@ export const RACES = [
     broad: 'Alien',
     flavor: 'Non-humanoid alien — the interface between their natural form and human-built space requires ongoing adaptation in both directions; they have opinions about the chair situation',
     weight: 2,
-    iconPrompt: 'A non-humanoid alien — the interface between their natural form and human-built space requires ongoing adaptation in both directions; they have opinions about the chair situation',
+    iconPrompt: 'sci-fi rpg icon, giant slug alien slithering down a ship corridor, antennae, eyepods, snail trail, rearing up, navel, overhead station lighting, wide shot, digital concept art',
     iconPath: 'generator/genres/sci-fi/icons/SPECIES#alien_nonhumanoid.png'
   },
 ];
-

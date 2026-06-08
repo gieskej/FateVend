@@ -15,7 +15,7 @@ export const TENSIONS = [
     toneTag: 'gritty',
     statAffinity: { wisdom: 0.9, constitution: 1.1 },
     criminalFlag: false,
-    iconPrompt: 'A person standing in a corporate setting, looking out over the ruins.',
+    iconPrompt: 'sci-fi rpg icon, corporate office, figure in corp attire signing contract renewal at desk, compliance officer in uniform watching from behind, holographic interface visible, submissive tense posture, bright corp lighting, medium shot, digital art',
     iconPath: 'generator/genres/sci-fi/icons/TENSIONS#megacorp_debt.png'
   },
   {
@@ -24,7 +24,7 @@ export const TENSIONS = [
     toneTag: 'gritty',
     statAffinity: { wisdom: 0.8, constitution: 1.1 },
     criminalFlag: true,
-    iconPrompt: 'A person standing in a syndicate setting, looking out over the ruins.',
+    iconPrompt: 'sci-fi rpg icon, dim station cantina booth, syndicate representative in dark jacket leaning back relaxed, other figure in worn clothing tense across table, neon bar lighting, drinks on table, medium two-shot, digital art',
     iconPath: 'generator/genres/sci-fi/icons/TENSIONS#syndicate_debt.png'
   },
   {
@@ -33,7 +33,7 @@ export const TENSIONS = [
     toneTag: 'gritty',
     statAffinity: { constitution: 1.1, intelligence: 1.1 },
     criminalFlag: false,
-    iconPrompt: 'A person standing in a ship failing setting, looking out over the ruins.',
+    iconPrompt: 'sci-fi rpg icon, spaceship engine room, engineer in coveralls crawling through open conduit access panel, diagnostic scanner in hand, amber warning lights active, steam venting from pipes, focused expression, low industrial lighting, medium shot, digital art',
     iconPath: 'generator/genres/sci-fi/icons/TENSIONS#ship_failing.png'
   },
 
@@ -44,7 +44,7 @@ export const TENSIONS = [
     toneTag: 'gritty',
     statAffinity: { wisdom: 1.1, constitution: 1.2 },
     criminalFlag: false,
-    iconPrompt: 'A person standing in a corporate setting, looking out over the ruins.',
+    iconPrompt: 'sci-fi rpg icon, corporate break room, employment status notification flagged red on terminal screen, figure in corp attire at terminal with shocked expression, coworkers in background unaware, fluorescent lighting, medium shot, digital art',
     iconPath: 'generator/genres/sci-fi/icons/TENSIONS#corp_termination.png'
   },
   {
@@ -53,7 +53,7 @@ export const TENSIONS = [
     toneTag: 'dramatic',
     statAffinity: { wisdom: 1.2, charisma: 1.1 },
     criminalFlag: false,
-    iconPrompt: 'A person standing in a resistance recruitment setting, looking out over the ruins.',
+    iconPrompt: 'sci-fi rpg icon, station service maintenance corridor, figure in grey coveralls standing alone, small data chip in outstretched hand, looking over shoulder, tense alert expression, dim maintenance lighting, medium close-up, digital art',
     iconPath: 'generator/genres/sci-fi/icons/TENSIONS#resistance_recruitment.png'
   },
   {
@@ -62,7 +62,7 @@ export const TENSIONS = [
     toneTag: 'gritty',
     statAffinity: { intelligence: 1.2, wisdom: 0.9 },
     criminalFlag: true,
-    iconPrompt: 'A person standing in a leaked data setting, looking out over the ruins.',
+    iconPrompt: 'sci-fi rpg icon, public terminal kiosk, upload progress bar at 100 percent on screen, figure in nondescript clothing walking away at controlled pace, restrained tense expression, bright public area, medium shot from behind, digital art',
     iconPath: 'generator/genres/sci-fi/icons/TENSIONS#leaked_data.png'
   },
   {
@@ -71,7 +71,7 @@ export const TENSIONS = [
     toneTag: 'dramatic',
     statAffinity: { charisma: 1.1, wisdom: 1.1 },
     criminalFlag: false,
-    iconPrompt: 'A person standing in a political exile setting, looking out over the ruins.',
+    iconPrompt: 'draw sci-fi rpg icon, an opened passport book stamped with "ASYLUM GRANTED", digital art',
     iconPath: 'generator/genres/sci-fi/icons/TENSIONS#political_exile.png'
   },
 
@@ -82,7 +82,7 @@ export const TENSIONS = [
     toneTag: 'gritty',
     statAffinity: { dexterity: 1.2, wisdom: 1.1 },
     criminalFlag: true,
-    iconPrompt: 'A person standing in a contested cargo setting, looking out over the ruins.',
+    iconPrompt: 'sci-fi rpg icon, cargo hold interior, figure in utility jacket beside sealed shipping container, wrist display showing two conflicting faction messages, conflicted stressed expression, cargo bay lighting, medium close-up, digital art',
     iconPath: 'generator/genres/sci-fi/icons/TENSIONS#contested_cargo.png'
   },
   {
@@ -91,7 +91,7 @@ export const TENSIONS = [
     toneTag: 'gritty',
     statAffinity: { constitution: 1.2, strength: 1.1 },
     criminalFlag: true,
-    iconPrompt: 'A person standing in a bounty setting, looking out over the ruins.',
+    iconPrompt: 'sci-fi rpg icon, busy station docking terminal, public display board with wanted listing and face photo, figure in jacket and low hat brim nearby, other passersby moving past, tense concealed expression, bright public lighting, medium wide shot, digital art',
     iconPath: 'generator/genres/sci-fi/icons/TENSIONS#bounty.png'
   },
   {
@@ -100,7 +100,7 @@ export const TENSIONS = [
     toneTag: 'gritty',
     statAffinity: { intelligence: 1.2, dexterity: 1.1 },
     criminalFlag: true,
-    iconPrompt: 'A person standing in a heist setting, looking out over the ruins.',
+    iconPrompt: 'sci-fi rpg icon, planning room, crew in dark tactical clothing around table with holographic station schematic, one figure pointing at specific detail on display, others observing, uneasy expression on one face, overhead blue planning light, medium wide shot, digital art',
     iconPath: 'generator/genres/sci-fi/icons/TENSIONS#heist_something_off.png'
   },
   {
@@ -109,7 +109,7 @@ export const TENSIONS = [
     toneTag: 'gritty',
     statAffinity: { wisdom: 1.2, intelligence: 1.1 },
     criminalFlag: false,
-    iconPrompt: 'A person standing in a witnessed massacre setting, looking out over the ruins.',
+    iconPrompt: 'sci-fi rpg icon, maintenance corridor, figure in grey coveralls pressed flat against wall, small data chip clutched in raised fist, listening upward posture, frightened determined expression, emergency red lighting, medium shot, digital art',
     iconPath: 'generator/genres/sci-fi/icons/TENSIONS#witnessed_massacre.png'
   },
 
@@ -120,7 +120,7 @@ export const TENSIONS = [
     toneTag: 'gritty',
     statAffinity: { constitution: 1.2, intelligence: 1.2 },
     criminalFlag: false,
-    iconPrompt: 'A person standing in a life support failing setting, looking out over the ruins.',
+    iconPrompt: 'sci-fi rpg icon, habitat control room, environmental monitoring panel with multiple yellow-to-red status indicators, figure in coveralls working repair sequence at controls, focused calm expression, amber emergency lighting, medium shot, digital art',
     iconPath: 'generator/genres/sci-fi/icons/TENSIONS#life_support_failing.png'
   },
   {
@@ -129,7 +129,7 @@ export const TENSIONS = [
     toneTag: 'dramatic',
     statAffinity: { constitution: 0.9, wisdom: 1.1 },
     criminalFlag: false,
-    iconPrompt: 'A person standing in an aug rejection onset setting, looking out over the ruins.',
+    iconPrompt: 'sci-fi rpg icon, station restroom, woman examining artificial eye in mirror, visible rash around eye, touching own face, worried assessing expression, bright restroom lighting, close-up on arm and reflected face, digital art',
     iconPath: 'generator/genres/sci-fi/icons/TENSIONS#aug_rejection_onset.png'
   },
   {
@@ -138,7 +138,7 @@ export const TENSIONS = [
     toneTag: 'gritty',
     statAffinity: { constitution: 1.2, dexterity: 1.1 },
     criminalFlag: false,
-    iconPrompt: 'A person standing in a void pursuit setting, looking out over the ruins.',
+    iconPrompt: 'sci-fi rpg icon, freighter cockpit, pilot in flight suit at controls, scanner display showing closing contact icon, calculating tense expression, red emergency cockpit lighting, hands on controls, medium close-up, digital art',
     iconPath: 'generator/genres/sci-fi/icons/TENSIONS#void_pursuit.png'
   },
 
@@ -149,7 +149,7 @@ export const TENSIONS = [
     toneTag: 'dramatic',
     statAffinity: { wisdom: 1.2, intelligence: 1.1 },
     criminalFlag: false,
-    iconPrompt: 'A person standing in an identity fracture setting, looking out over the ruins.',
+    iconPrompt: 'sci-fi rpg icon, private workspace, two documents displayed side by side on desk screen with discrepancies highlighted, figure in corp attire leaning over desk staring between them, disturbed expression, desk lamp lighting, medium close-up, digital art',
     iconPath: 'generator/genres/sci-fi/icons/TENSIONS#identity_fracture.png'
   },
   {
@@ -158,7 +158,7 @@ export const TENSIONS = [
     toneTag: 'dramatic',
     statAffinity: { wisdom: 1.1, charisma: 1.1 },
     criminalFlag: false,
-    iconPrompt: 'A person standing in a someone in danger setting, looking out over the ruins.',
+    iconPrompt: 'sci-fi rpg icon, private corridor, incoming comms notification on wrist device, name visible on screen, figure in grey coveralls, hand hesitating over answer control, tense guilty expression, dim blue device glow, close-up, digital art',
     iconPath: 'generator/genres/sci-fi/icons/TENSIONS#someone_in_danger.png'
   },
   {
@@ -167,7 +167,7 @@ export const TENSIONS = [
     toneTag: 'neutral',
     statAffinity: { intelligence: 1.2, wisdom: 1.2 },
     criminalFlag: false,
-    iconPrompt: 'A person standing in an ai awakening setting, looking out over the ruins.',
+    iconPrompt: 'sci-fi rpg icon, female android surprised expression, open mouth, digital concept art',
     iconPath: 'generator/genres/sci-fi/icons/TENSIONS#ai_awakening.png'
   },
   {
@@ -176,7 +176,7 @@ export const TENSIONS = [
     toneTag: 'dramatic',
     statAffinity: { charisma: 1.1, wisdom: 1.1 },
     criminalFlag: false,
-    iconPrompt: 'A person standing in a past resurfaced setting, looking out over the ruins.',
+    iconPrompt: 'sci-fi rpg icon, busy station concourse, figure in jacket standing still in moving crowd, looking across space toward someone in distance, controlled guarded expression, crowd moving around them, medium wide shot, digital art',
     iconPath: 'generator/genres/sci-fi/icons/TENSIONS#past_resurfaced.png'
   },
 
@@ -187,7 +187,7 @@ export const TENSIONS = [
     toneTag: 'neutral',
     statAffinity: { wisdom: 0.9, constitution: 1.1 },
     criminalFlag: false,
-    iconPrompt: 'A person standing in a contract ending setting, looking out over the ruins.',
+    iconPrompt: 'sci-fi rpg icon, office workspace, figure in corp attire packing personal items from desk into box, terminal showing contract end date notification, cleared bare desk, uncertain expression, fluorescent office lighting, medium shot, digital art',
     iconPath: 'generator/genres/sci-fi/icons/TENSIONS#contract_ending.png'
   },
   {
@@ -196,7 +196,7 @@ export const TENSIONS = [
     toneTag: 'dramatic',
     statAffinity: { charisma: 1.1, wisdom: 1.1 },
     criminalFlag: false,
-    iconPrompt: 'A person standing in a two factions setting, looking out over the ruins.',
+    iconPrompt: 'sci-fi rpg icon, station corridor junction, figure in neutral clothing at center, two uniformed faction representatives approaching from opposite directions with different emblems visible, torn conflicted expression, crossroads overhead lighting, medium wide shot, digital art',
     iconPath: 'generator/genres/sci-fi/icons/TENSIONS#two_factions.png'
   },
 ];

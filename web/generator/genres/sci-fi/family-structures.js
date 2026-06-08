@@ -8,141 +8,141 @@
 //   economicHint (optional), notes, iconPrompt, iconPath
 
 export const PARENT_STATUSES = [
-  { 
+  {
     id: 'present_close',
     label: 'present and close',
     toneTag: 'cozy',
-    iconPrompt: 'A parent and child in a cozy home, sharing a moment together.',
-    iconPath: 'generator/genres/sci-fi/icons/PARENT_STATUSES#present_close.png' 
+    iconPrompt: 'sci-fi rpg icon, small hab unit interior, parent and grown child at meal table, comm devices set aside, relaxed warm expressions, practical near-future decor, warm overhead lighting, medium two-shot, digital art',
+    iconPath: 'generator/genres/sci-fi/icons/PARENT_STATUSES#present_close.png'
   },
-  { 
+  {
     id: 'present_distant',
     label: 'present but emotionally distant',
     toneTag: 'neutral',
-    iconPrompt: 'A parent and child eating dinner looking down at their phones.',
-    iconPath: 'generator/genres/sci-fi/icons/PARENT_STATUSES#present_distant.png' 
+    iconPrompt: 'sci-fi rpg icon, hab unit living space, parent focused on wall screen, grown child staring at ceiling, both on same couch, cold distance between them, blue screen glow, uncomfortable postures, medium shot, digital art',
+    iconPath: 'generator/genres/sci-fi/icons/PARENT_STATUSES#present_distant.png'
   },
-  { 
+  {
     id: 'present_difficult',
     label: 'present but a source of tension',
     toneTag: 'dramatic',
-    iconPrompt: 'A mother and daughter arguing in a tense home moment.',
-    iconPath: 'generator/genres/sci-fi/icons/PARENT_STATUSES#present_difficult.png' 
+    iconPrompt: 'sci-fi rpg icon, hab corridor or living space, parent and grown child in coveralls facing each other, tense arguing posture, pointing gestures, frustrated expressions, neutral corp lighting, medium two-shot, digital art',
+    iconPath: 'generator/genres/sci-fi/icons/PARENT_STATUSES#present_difficult.png'
   },
-  { 
+  {
     id: 'estranged',
     label: 'estranged — no contact',
     toneTag: 'dramatic',
-    iconPrompt: 'A lonely man on sidewalk staring at a house from across the street.',
-    iconPath: 'generator/genres/sci-fi/icons/PARENT_STATUSES#estranged.png' 
+    iconPrompt: 'sci-fi rpg icon, station corridor, figure in worn jumpsuit standing before closed hab door panel, arm at side not raised to knock, hesitant posture, sterile corridor lighting, close-up on figure at door, digital art',
+    iconPath: 'generator/genres/sci-fi/icons/PARENT_STATUSES#estranged.png'
   },
-  { 
+  {
     id: 'deceased_recent',
     label: 'recently deceased',
     toneTag: 'dramatic',
-    iconPrompt: 'A cardboard box of used men\'s shoes sitting by the door.',
-    iconPath: 'generator/genres/sci-fi/icons/PARENT_STATUSES#deceased_recent.png' 
+    iconPrompt: 'sci-fi rpg icon, fresh grave, tombstone for "FATHER" in a cemetery, dirt, digital art',
+    iconPath: 'generator/genres/sci-fi/icons/PARENT_STATUSES#deceased_recent.png'
   },
-  { 
+  {
     id: 'deceased_long',
     label: 'died when the character was young',
     toneTag: 'gritty',
-    iconPrompt: 'A black and white photo of a father in a frame with a black ribbon tied around it.',
-    iconPath: 'generator/genres/sci-fi/icons/PARENT_STATUSES#deceased_long.png' 
+    iconPrompt: 'sci-fi rpg icon, moss covered tombstone for "FATHER" in a cemetery, unkempt, digital art',
+    iconPath: 'generator/genres/sci-fi/icons/PARENT_STATUSES#deceased_long.png'
   },
-  { 
+  {
     id: 'absent_unknown',
     label: 'absent — never knew them',
     toneTag: 'gritty',
-    iconPrompt: 'A torn blurry photo of a man holding a baby.',
-    iconPath: 'generator/genres/sci-fi/icons/PARENT_STATUSES#absent_unknown.png' 
+    iconPrompt: 'sci-fi rpg icon, portrait of family with two children, one parent is faceless, digital art',
+    iconPath: 'generator/genres/sci-fi/icons/PARENT_STATUSES#absent_unknown.png'
   },
-  { 
+  {
     id: 'corp_detained',
     label: 'detained by a megacorporation',
     toneTag: 'gritty',
-    iconPrompt: 'A man in a prison cell.',
-    iconPath: 'generator/genres/sci-fi/icons/PARENT_STATUSES#corp_detained.png' 
+    iconPrompt: 'draw sci-fi rpg icon, prison visit, adult man in gray prison uniform separated from woman behind glass wall, touching glass wall, tears, clinical white fluorescent lighting, medium two-shot, digital art',
+    iconPath: 'generator/genres/sci-fi/icons/PARENT_STATUSES#corp_detained.png'
   },
-  { 
+  {
     id: 'missing',
     label: 'missing — no confirmed status',
     toneTag: 'dramatic',
-    iconPrompt: 'A lost person poster with a photo of a man.',
-    iconPath: 'generator/genres/sci-fi/icons/PARENT_STATUSES#missing.png' 
+    iconPrompt: 'sci-fi rpg icon, public network terminal, missing person case file on screen, photo and case ID visible, status open, figure reading screen, concerned expression, blue screen glow on face, medium close-up, digital art',
+    iconPath: 'generator/genres/sci-fi/icons/PARENT_STATUSES#missing.png'
   },
 ];
 
 export const SIBLING_DYNAMICS = [
-  { 
+  {
     id: 'protective_older',
     label: 'protective older sibling',
     toneTag: 'cozy',
-    iconPrompt: 'A protective older sibling hugging a younger sibling.',
-    iconPath: 'generator/genres/sci-fi/icons/SIBLING_DYNAMICS#protective_older.png' 
+    iconPrompt: 'sci-fi rpg icon, space station corridor, older sibling in tactical vest arm out blocking younger sibling behind them, confrontational stance toward off-frame threat, protective posture, neon corridor lighting, medium shot, digital art',
+    iconPath: 'generator/genres/sci-fi/icons/SIBLING_DYNAMICS#protective_older.png'
   },
-  { 
+  {
     id: 'rivalry',
     label: 'long-running rivalry',
     toneTag: 'dramatic',
-    iconPrompt: 'Two siblings arguing in a tense moment.',
-    iconPath: 'generator/genres/sci-fi/icons/SIBLING_DYNAMICS#rivalry.png' 
+    iconPrompt: 'sci-fi rpg icon, narrow station corridor, two siblings in corp uniforms facing each other, one with promotion badge, other with arms crossed, competitive tense expressions, fluorescent lighting, medium two-shot, digital art',
+    iconPath: 'generator/genres/sci-fi/icons/SIBLING_DYNAMICS#rivalry.png'
   },
-  { 
+  {
     id: 'estranged',
     label: 'estranged — fell out years ago',
     toneTag: 'dramatic',
-    iconPrompt: 'Two estranged siblings standing awkwardly in a room.',
-    iconPath: 'generator/genres/sci-fi/icons/SIBLING_DYNAMICS#estranged.png' 
+    iconPrompt: 'sci-fi rpg icon, private hab room, figure in grey coveralls holding comms device, sibling contact name on screen, finger hovering over call button, hesitant expression, blue device glow, close-up on face and device, digital art',
+    iconPath: 'generator/genres/sci-fi/icons/SIBLING_DYNAMICS#estranged.png'
   },
-  { 
+  {
     id: 'close_ally',
     label: 'closest friend and confidant',
     toneTag: 'cozy',
-    iconPrompt: 'Two siblings sharing a moment of trust and support.',
-    iconPath: 'generator/genres/sci-fi/icons/SIBLING_DYNAMICS#close_ally.png' 
+    iconPrompt: 'sci-fi rpg icon, split-screen video call, two siblings in different settings, relaxed happy expressions, casual animated conversation, warm screen light on each face, medium two-shot split-screen, digital art',
+    iconPath: 'generator/genres/sci-fi/icons/SIBLING_DYNAMICS#close_ally.png'
   },
-  { 
+  {
     id: 'troubled',
-    label: 'deep in corp debt or running from something',
+    label: 'you two never saw eye to eye',
     toneTag: 'gritty',
-    iconPrompt: 'A troubled sibling looking worried while talking to another sibling.',
-    iconPath: 'generator/genres/sci-fi/icons/SIBLING_DYNAMICS#troubled.png' 
+    iconPrompt: 'sci-fi rpg icon, hab unit bedroom, two child fighting, frustrated expressions, corridor lighting, close two-shot, realistic, digital art',
+    iconPath: 'generator/genres/sci-fi/icons/SIBLING_DYNAMICS#troubled.png'
   },
-  { 
+  {
     id: 'golden_child',
     label: 'the family\'s golden child — hard to live up to',
     toneTag: 'dramatic',
-    iconPrompt: 'A golden child sibling standing apart from others, feeling pressure.',
-    iconPath: 'generator/genres/sci-fi/icons/SIBLING_DYNAMICS#golden_child.png' 
+    iconPrompt: 'family photo with two parents and two children.  One child circled in red ink with "favorite child" written above. sci-fi rpg icon, digital art',
+    iconPath: 'generator/genres/sci-fi/icons/SIBLING_DYNAMICS#golden_child.png'
   },
-  { 
+  {
     id: 'lost_touch',
     label: 'drifted apart, rarely speak',
     toneTag: 'neutral',
-    iconPrompt: 'Two siblings standing at a distance from each other, not speaking.',
-    iconPath: 'generator/genres/sci-fi/icons/SIBLING_DYNAMICS#lost_touch.png' 
+    iconPrompt: 'A fake phone screenshot of a text message app showing "Hey bro, you still alive?", sci-fi rpg icon, digital art',
+    iconPath: 'generator/genres/sci-fi/icons/SIBLING_DYNAMICS#lost_touch.png'
   },
-  { 
+  {
     id: 'deceased',
     label: 'deceased',
     toneTag: 'gritty',
-    iconPrompt: 'A black and white photo of a sibling in a frame with a black ribbon tied around it.',
-    iconPath: 'generator/genres/sci-fi/icons/SIBLING_DYNAMICS#deceased.png' 
+    iconPrompt: 'sci-fi rpg icon, fresh grave, tombstone for "SISTER" in a cemetery, dirt',
+    iconPath: 'generator/genres/sci-fi/icons/SIBLING_DYNAMICS#deceased.png'
   },
-  { 
+  {
     id: 'younger_dependent',
     label: 'younger and still depends on the character',
     toneTag: 'neutral',
-    iconPrompt: 'A younger sibling looking up to an older sibling for support.',
-    iconPath: 'generator/genres/sci-fi/icons/SIBLING_DYNAMICS#younger_dependent.png' 
+    iconPrompt: 'sci-fi rpg icon, hab unit or office, comms device showing request message from sibling, figure in corp attire reading it, patient attentive expression, neutral interior lighting, close-up on device and face, digital art',
+    iconPath: 'generator/genres/sci-fi/icons/SIBLING_DYNAMICS#younger_dependent.png'
   },
-  { 
+  {
     id: 'reconnecting',
     label: 'recently reconnected after years apart',
     toneTag: 'neutral',
-    iconPrompt: 'Two siblings embracing after a long time apart.',
-    iconPath: 'generator/genres/sci-fi/icons/SIBLING_DYNAMICS#reconnecting.png' 
+    iconPrompt: 'sci-fi rpg icon, station café or cantina, two siblings in utilitarian clothing at small table, cautious hopeful expressions, drinks between them, leaning toward each other, warm ambient light, medium two-shot, digital art',
+    iconPath: 'generator/genres/sci-fi/icons/SIBLING_DYNAMICS#reconnecting.png'
   },
 ];
 
