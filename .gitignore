@@ -4,3 +4,4 @@ web/.env
 web/generator/config.js
 old
 *.bak
+bad-icons.txt

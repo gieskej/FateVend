@@ -33,7 +33,7 @@ export const PARENT_STATUSES = [
     id: 'estranged',
     label: 'estranged — no contact',
     toneTag: 'dramatic',
-    iconPrompt: 'sci-fi rpg icon, station corridor, figure in worn jumpsuit standing before closed hab door panel, arm at side not raised to knock, hesitant posture, sterile corridor lighting, close-up on figure at door, digital art',
+    iconPrompt: 'sci-fi rpg icon, old man sitting in private hab room holding a faded photo of a boy, digital art',
     iconPath: 'generator/genres/sci-fi/icons/PARENT_STATUSES#estranged.png'
   },
   {
@@ -92,7 +92,7 @@ export const SIBLING_DYNAMICS = [
     id: 'estranged',
     label: 'estranged — fell out years ago',
     toneTag: 'dramatic',
-    iconPrompt: 'sci-fi rpg icon, private hab room, figure in grey coveralls holding comms device, sibling contact name on screen, finger hovering over call button, hesitant expression, blue device glow, close-up on face and device, digital art',
+    iconPrompt: 'sci-fi rpg icon, man sitting in private hab room holding a faded photo of two boys, digital art',
     iconPath: 'generator/genres/sci-fi/icons/SIBLING_DYNAMICS#estranged.png'
   },
   {
@@ -134,7 +134,7 @@ export const SIBLING_DYNAMICS = [
     id: 'younger_dependent',
     label: 'younger and still depends on the character',
     toneTag: 'neutral',
-    iconPrompt: 'sci-fi rpg icon, hab unit or office, comms device showing request message from sibling, figure in corp attire reading it, patient attentive expression, neutral interior lighting, close-up on device and face, digital art',
+    iconPrompt: 'teenager pouring water into a child\'s cup, star field visible through window in background, realistic, sci-fi rpg icon, hab unit,  digital art',
     iconPath: 'generator/genres/sci-fi/icons/SIBLING_DYNAMICS#younger_dependent.png'
   },
   {

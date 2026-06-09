@@ -39,13 +39,13 @@ export const TENSIONS = [
 
   // ── CORPORATE / POLITICAL ─────────────────────────────────────────────────
   {
-    id: 'corp_termination',
-    description: 'A megacorporation has flagged them for "termination" — the legal euphemism is technically accurate',
+    id: 'corp_layoff',
+    description: 'A megacorporation has flagged them for layoff',
     toneTag: 'gritty',
     statAffinity: { wisdom: 1.1, constitution: 1.2 },
     criminalFlag: false,
-    iconPrompt: 'sci-fi rpg icon, corporate break room, employment status notification flagged red on terminal screen, figure in corp attire at terminal with shocked expression, coworkers in background unaware, fluorescent lighting, medium shot, digital art',
-    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#corp_termination.png'
+    iconPrompt: 'sci-fi rpg icon, layoff notice paper, digital art',
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#corp_layoff.png'
   },
   {
     id: 'resistance_recruitment',
@@ -109,7 +109,7 @@ export const TENSIONS = [
     toneTag: 'gritty',
     statAffinity: { wisdom: 1.2, intelligence: 1.1 },
     criminalFlag: false,
-    iconPrompt: 'sci-fi rpg icon, maintenance corridor, figure in grey coveralls pressed flat against wall, small data chip clutched in raised fist, listening upward posture, frightened determined expression, emergency red lighting, medium shot, digital art',
+    iconPrompt: 'sci-fi rpg icon, a reporter with a camera hiding behind a wall, photographing a massacre, digital art',
     iconPath: 'generator/genres/sci-fi/icons/TENSIONS#witnessed_massacre.png'
   },
 
@@ -158,7 +158,7 @@ export const TENSIONS = [
     toneTag: 'dramatic',
     statAffinity: { wisdom: 1.1, charisma: 1.1 },
     criminalFlag: false,
-    iconPrompt: 'sci-fi rpg icon, private corridor, incoming comms notification on wrist device, name visible on screen, figure in grey coveralls, hand hesitating over answer control, tense guilty expression, dim blue device glow, close-up, digital art',
+    iconPrompt: 'sci-fi rpg icon, a man in a crowd, seen through a sniper scope, digital art',
     iconPath: 'generator/genres/sci-fi/icons/TENSIONS#someone_in_danger.png'
   },
   {
@@ -181,15 +181,6 @@ export const TENSIONS = [
   },
 
   // ── QUIET ─────────────────────────────────────────────────────────────────
-  {
-    id: 'contract_ending',
-    description: 'Current contract ends soon; next one isn\'t lined up, and the available options aren\'t good',
-    toneTag: 'neutral',
-    statAffinity: { wisdom: 0.9, constitution: 1.1 },
-    criminalFlag: false,
-    iconPrompt: 'sci-fi rpg icon, office workspace, figure in corp attire packing personal items from desk into box, terminal showing contract end date notification, cleared bare desk, uncertain expression, fluorescent office lighting, medium shot, digital art',
-    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#contract_ending.png'
-  },
   {
     id: 'two_factions',
     description: 'Two factions are competing for their loyalty — both offers are genuinely good; neither faction is trustworthy',

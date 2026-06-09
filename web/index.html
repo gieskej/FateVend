@@ -1184,7 +1184,7 @@ function renderOutput(sk, output) {
         </div>
         <textarea class="field-textarea" id="field-appearance" rows="3"
           oninput="updateCount(this,'cc-appearance',500)">${escHtml(output.appearancePrompt)}</textarea>
-        <button class="btn-gen-portrait" onclick="generatePortrait(this)">⚙ Generate Portrait</button>
+        <button class="btn-gen-portrait" id="btn-gen-portrait" onclick="generatePortrait(this)">⚙ Generate Portrait</button>
         <div class="portrait-wrap" id="portrait-wrap"></div>
       </div>` : ''}
 
@@ -1451,7 +1451,9 @@ async function runAIPhase() {
       </div>
     `);
 
+    console.time('claude-api');
     const output = await callClaude(currentSkeleton, apiKey, currentGenre);
+    console.timeEnd('claude-api');
     currentOutput = output;
 
     document.getElementById('ai-placeholder')?.remove();
@@ -1504,12 +1506,14 @@ async function generatePortrait(btn) {
   const promptEl = document.getElementById('field-appearance');
   if (!promptEl || !promptEl.value.trim()) return;
 
+  const portraitBtn = btn ?? document.getElementById('btn-gen-portrait');
   const wrapEl = document.getElementById('portrait-wrap');
-  if (btn) { btn.disabled = true; btn.innerHTML = '<span class="loading-gear">⚙</span> Rendering…'; }
+  if (portraitBtn) { portraitBtn.disabled = true; portraitBtn.innerHTML = '<span class="loading-gear">⚙</span> Rendering…'; }
   wrapEl.innerHTML = `<div style="color:var(--brass-light);font-style:italic;font-size:0.9rem;margin-top:0.4rem;">Painting the portrait…</div>`;
 
   try {
     let src;
+    console.time('portrait-render');
     if (sdUrl) {
       // ── Local Stable Diffusion WebUI (Forge / A1111) with Flux1-dev model ──────────────────
       const res = await fetch(`${sdUrl}/sdapi/v1/txt2img`, {
@@ -1545,6 +1549,7 @@ async function generatePortrait(btn) {
       const data = await res.json();
       src = `data:image/png;base64,${data.image}`;
     }
+    console.timeEnd('portrait-render');
 
     const filename = `${(currentSkeleton?.name ?? 'portrait').replace(/\s+/g, '-')}.png`;
     wrapEl.innerHTML = `
@@ -1554,9 +1559,10 @@ async function generatePortrait(btn) {
         <button class="btn-gen-portrait" onclick="generatePortrait(this)">⚙ Regenerate</button>
       </div>`;
   } catch (err) {
+    console.timeEnd('portrait-render');
     wrapEl.innerHTML = `<div class="portrait-error">Portrait failed: ${err.message}</div>`;
   } finally {
-    if (btn) { btn.disabled = false; btn.innerHTML = '⚙ Generate Portrait'; }
+    if (portraitBtn) { portraitBtn.disabled = false; portraitBtn.innerHTML = '⚙ Generate Portrait'; }
   }
 }
 

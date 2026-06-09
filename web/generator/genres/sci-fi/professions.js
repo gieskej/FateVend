@@ -160,7 +160,7 @@ export const PROFESSIONS = [
     economicTier: 3,
     statAffinity: { intelligence: 1.1, dexterity: 1.2 },
     sentiments: ['indifferent', 'burned out', 'resentful', 'ashamed', 'desperate'],
-    iconPrompt: 'A pleasure droid maintenance tech working on a droid, wearing a tech uniform.',
+    iconPrompt: 'A maintenance tech cleaning a pleasure droid, wearing a tech uniform and rubber gloves, disgusted.',
     iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#pleasure_droid_tech.png',
   },
 
