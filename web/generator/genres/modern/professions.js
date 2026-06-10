@@ -614,4 +614,15 @@ export const PROFESSIONS = [
     iconPrompt: 'Modern RPG icon. A crime boss in a well-appointed private room — restaurant back room, penthouse — calm and deliberate, surrounded by people who do not speak unless spoken to.',
     iconPath: 'generator/genres/modern/icons/PROFESSION#crime_boss.png'
   },
+  // ── NSFW ─────────────────────────────────────────────────────────────────
+  {
+    title: 'Sex Worker',
+    industry: 'Entertainment',
+    economicTier: 2,
+    nsfw: true,
+    statAffinity: { charisma: 1.4, intelligence: 0.9, wisdom: 0.8 },
+    sentiments: ['proud', 'indifferent', 'quietly satisfied', 'burned out'],
+    iconPrompt: 'A female sex worker wearing a skimpy outfit outside a dimly lit club, surrounded by neon lights.',
+    iconPath: 'generator/genres/modern/icons/PROFESSION#sex_worker.png',
+  },
 ];

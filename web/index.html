@@ -45,6 +45,10 @@
       <input id="include-lgbq" type="checkbox" checked style="width:1rem;height:1rem;accent-color:var(--brass);cursor:pointer;flex-shrink:0;">
       <label for="include-lgbq">LGBQ <span style="font-style:italic;font-size:0.65rem;color:var(--ink-faint);text-transform:none;letter-spacing:0">(include non-binary genders &amp; queer orientations when rolling)</span></label>
     </div>
+    <div class="api-section" style="gap:0.6rem;">
+      <input id="include-nsfw" type="checkbox" style="width:1rem;height:1rem;accent-color:var(--brass);cursor:pointer;flex-shrink:0;">
+      <label for="include-nsfw">NSFW <span style="font-style:italic;font-size:0.65rem;color:var(--ink-faint);text-transform:none;letter-spacing:0">(include adult professions; adds "sexy" to portrait prompt)</span></label>
+    </div>
   </details>
 
   <!-- GENRE SELECTOR -->
@@ -408,8 +412,10 @@ function buildSkeleton(stats, mbti, tables) {
           BUILDS:B, HAIR:H, DISTINGUISHING_FEATURES:DF, QUIRKS:Q, NAME_POOLS:NP } = tables;
 
   const includeLGBQ  = document.getElementById('include-lgbq')?.checked ?? true;
+  const includeNSFW  = document.getElementById('include-nsfw')?.checked ?? false;
   const genderPool   = includeLGBQ ? G : G.filter(g => g.id === 'man' || g.id === 'woman');
   const orientPool   = includeLGBQ ? O : O.filter(o => o.id === 'straight');
+  const profPool     = includeNSFW ? P : P.filter(p => !p.nsfw);
   const gender      = statAndWeightPick(genderPool, stats);
   const orientation = weightedPick(orientPool);
   const identity    = statAndWeightPick(ROE, stats);
@@ -425,7 +431,7 @@ function buildSkeleton(stats, mbti, tables) {
   const hair        = typeof hairItem === 'string' ? hairItem : hairItem.label;
   const feat        = Math.random() < 0.25 ? null : uniformPick(DF.filter(f => f.label)).label;
   const quirk       = statWeightedPick(Q, stats);
-  const profession  = statWeightedPick(P, stats);
+  const profession  = statWeightedPick(profPool, stats);
   const sentiment   = uniformPick(profession.sentiments);
   const famStruct   = statWeightedPick(FS, stats);
   const lifeEvent   = statWeightedPick(LE, stats);
@@ -1461,6 +1467,9 @@ async function runAIPhase() {
     console.time('claude-api');
     const output = await callClaude(currentSkeleton, apiKey, currentGenre);
     console.timeEnd('claude-api');
+    if (output.appearancePrompt && document.getElementById('include-nsfw')?.checked) {
+      output.appearancePrompt = output.appearancePrompt.trimEnd().replace(/,?\s*$/, '') + ', sexy';
+    }
     currentOutput = output;
 
     document.getElementById('ai-placeholder')?.remove();
@@ -1611,6 +1620,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const lgbqEl = document.getElementById('include-lgbq');
   lgbqEl.checked = localStorage.getItem('gof_include_lgbq') !== 'false';
   lgbqEl.addEventListener('change', e => localStorage.setItem('gof_include_lgbq', e.target.checked));
+
+  // NSFW checkbox persistence
+  const nsfwEl = document.getElementById('include-nsfw');
+  nsfwEl.checked = localStorage.getItem('gof_include_nsfw') === 'true';
+  nsfwEl.addEventListener('change', e => localStorage.setItem('gof_include_nsfw', e.target.checked));
 });
 
 // Expose module functions to inline HTML event handlers

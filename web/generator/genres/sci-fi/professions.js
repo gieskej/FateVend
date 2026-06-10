@@ -391,4 +391,16 @@ export const PROFESSIONS = [
     iconPrompt: 'An orbital mogul in a dark room, surrounded by orbital structures.',
     iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#orbital_mogul.png',
   },
+  // ── NSFW ─────────────────────────────────────────────────────────────────
+  {
+    title: 'Sex Worker',
+    industry: 'Entertainment',
+    economicTier: 2,
+    nsfw: true,
+    statAffinity: { charisma: 1.4, intelligence: 0.9, wisdom: 0.8 },
+    sentiments: ['proud', 'indifferent', 'quietly satisfied', 'burned out'],
+    iconPrompt: 'A female sex worker wearing a skimpy outfit outside a dimly lit club, surrounded by neon lights.',
+    iconPath: 'generator/genres/sci-fi/icons/PROFESSIONS#sex_worker.png',
+  },
+
 ];

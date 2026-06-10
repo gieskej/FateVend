@@ -546,4 +546,15 @@ export const PROFESSIONS = [
     iconPrompt: 'Fantasy RPG icon. A wandering monk on a dusty road with a simple staff, a single small pack on their back, pausing to help a stranger at the roadside, carrying nothing that cannot be carried alone.',
     iconPath: 'generator/genres/fantasy/icons/PROFESSION#wandering_monk.png',
   },
+  // ── NSFW ─────────────────────────────────────────────────────────────────
+  {
+    title: 'Sex Worker',
+    industry: 'Entertainment',
+    economicTier: 2,
+    nsfw: true,
+    statAffinity: { charisma: 1.4, intelligence: 0.9, wisdom: 0.8 },
+    sentiments: ['proud', 'indifferent', 'quietly satisfied', 'burned out'],
+    iconPrompt: 'Fantasy RPG icon. A female sex worker wearing a skimpy outfit outside a dimly lit tavern.',
+    iconPath: 'generator/genres/fantasy/icons/PROFESSION#sex_worker.png',
+  },
 ];
