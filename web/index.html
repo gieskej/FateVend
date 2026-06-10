@@ -41,6 +41,10 @@
       <input id="img-api-key" class="api-input" type="password"
         placeholder="sk-..." autocomplete="off" spellcheck="false">
     </div>
+    <div class="api-section" style="gap:0.6rem;">
+      <input id="include-lgbq" type="checkbox" checked style="width:1rem;height:1rem;accent-color:var(--brass);cursor:pointer;flex-shrink:0;">
+      <label for="include-lgbq">LGBQ <span style="font-style:italic;font-size:0.65rem;color:var(--ink-faint);text-transform:none;letter-spacing:0">(include non-binary genders &amp; queer orientations when rolling)</span></label>
+    </div>
   </details>
 
   <!-- GENRE SELECTOR -->
@@ -403,8 +407,11 @@ function buildSkeleton(stats, mbti, tables) {
           RACES_OR_ETHNICITIES:ROE, GENDERS:G, ORIENTATIONS:O,
           BUILDS:B, HAIR:H, DISTINGUISHING_FEATURES:DF, QUIRKS:Q, NAME_POOLS:NP } = tables;
 
-  const gender      = statAndWeightPick(G, stats);
-  const orientation = weightedPick(O);
+  const includeLGBQ  = document.getElementById('include-lgbq')?.checked ?? true;
+  const genderPool   = includeLGBQ ? G : G.filter(g => g.id === 'man' || g.id === 'woman');
+  const orientPool   = includeLGBQ ? O : O.filter(o => o.id === 'straight');
+  const gender      = statAndWeightPick(genderPool, stats);
+  const orientation = weightedPick(orientPool);
   const identity    = statAndWeightPick(ROE, stats);
   const namePool    = NP[identity.broad] ?? NP['default'];
   const nameResult  = protoName(gender.id, namePool);
@@ -1599,6 +1606,11 @@ document.addEventListener('DOMContentLoaded', () => {
       else   localStorage.removeItem(store);
     });
   });
+
+  // LGBQ checkbox persistence
+  const lgbqEl = document.getElementById('include-lgbq');
+  lgbqEl.checked = localStorage.getItem('gof_include_lgbq') !== 'false';
+  lgbqEl.addEventListener('change', e => localStorage.setItem('gof_include_lgbq', e.target.checked));
 });
 
 // Expose module functions to inline HTML event handlers
