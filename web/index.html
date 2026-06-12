@@ -48,7 +48,7 @@
     </div>
     <div class="api-section" style="gap:0.6rem;">
       <input id="include-nsfw" type="checkbox" style="width:1rem;height:1rem;accent-color:var(--brass);cursor:pointer;flex-shrink:0;">
-      <label for="include-nsfw">NSFW <span style="font-style:italic;font-size:0.65rem;color:var(--ink-faint);text-transform:none;letter-spacing:0">(include adult professions; adds "sexy" to portrait prompt)</span></label>
+      <label for="include-nsfw">NSFW <span style="font-style:italic;font-size:0.65rem;color:var(--ink-faint);text-transform:none;letter-spacing:0">(include adult professions; alters portrait prompt)</span></label>
     </div>
   </details>
 
@@ -458,7 +458,9 @@ function buildSkeleton(stats, mbti, tables) {
   const quirk       = statWeightedPick(Q, stats);
   const profession  = statWeightedPick(profPool, stats);
   const sentiment   = uniformPick(profession.sentiments);
-  const famStruct   = statWeightedPick(FS, stats);
+  const famStruct   = identity.broad === 'Android'
+    ? (FS.find(f => f.id === 'android_origin') ?? { id: 'android_origin', label: 'N/A — synthetic construct', parentCount: 0, siblingCount: [0, 0], toneTag: 'neutral' })
+    : statWeightedPick(FS, stats);
   const lifeEvent   = statWeightedPick(LE, stats);
   let tier = profession.economicTier + (lifeEvent.economicHint ?? 0) + (famStruct.economicHint ?? 0);
   tier = Math.min(5, Math.max(1, Math.round(tier)));
@@ -982,7 +984,7 @@ function renderSlotMachine(genre) {
 const _bellSfx    = new Audio('audio/u_omspjqprot-bell-222490.mp3');
 const _overtureSfx = new Audio('audio/overture_dark.mid.mp3');
 
-function fadeOutAudio(audio, duration = 2000) {
+function fadeOutAudio(audio, duration = 5000) {
   if (audio.paused) return;
   const steps    = 40;
   const decrement = audio.volume / steps;
@@ -1096,7 +1098,7 @@ function renderSkeleton(sk) {
       <!-- Name + Identity -->
       <div style="margin-bottom:1rem;">
         <div style="font-family:var(--font-display);font-size:1.5rem;font-weight:700;color:var(--brass-dark);margin-bottom:0.1rem;">${sk.name}</div>
-        <div style="font-style:italic;color:var(--ink-faint);font-size:0.95rem;">${sk.age} · ${sk.gender} (${sk.pronouns}) · ${sk.ethnicityBroad}</div>
+        <div style="font-style:italic;color:var(--ink-faint);font-size:0.95rem;">${sk.age} · ${sk.gender} (${sk.pronouns}) · ${sk.ethnicityBroad} — ${sk.ethnicityFlavor.split(' — ')[0].trim()}</div>
       </div>
 
       <!-- Stats -->
@@ -1597,7 +1599,8 @@ async function runAIPhase() {
     const output = await callClaude(currentSkeleton, apiKey, currentGenre);
     console.timeEnd('claude-api');
     if (output.appearancePrompt && document.getElementById('include-nsfw')?.checked) {
-      output.appearancePrompt = output.appearancePrompt.trimEnd().replace(/,?\s*$/, '') + ', sexy';
+      output.appearancePrompt = output.appearancePrompt.trimEnd().replace(/,?\s*$/, '') 
+        + ', sexy, navel, skimpy clothing,  <lora:Flux-uncensored:0.85> nsfw';
     }
     currentOutput      = output;
     currentGeneratedAt = new Date();

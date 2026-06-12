@@ -140,7 +140,11 @@ export function buildSkeleton(stats, mbti, tables) {
   const sentiment  = uniformPick(profession.sentiments);
 
   // ── FAMILY STRUCTURE ──────────────────────────────────────────────────
-  const famStructure = statWeightedPick(FAMILY_STRUCTURES, stats);
+  // Androids have no biological family — use the synthetic-origin N/A entry.
+  const famStructure = identity.broad === 'Android'
+    ? FAMILY_STRUCTURES.find(f => f.id === 'android_origin')
+        ?? { id: 'android_origin', label: 'N/A — synthetic construct', parentCount: 0, siblingCount: [0, 0], toneTag: 'neutral' }
+    : statWeightedPick(FAMILY_STRUCTURES, stats);
 
   // ── LIFE EVENT ────────────────────────────────────────────────────────
   const lifeEvent = statWeightedPick(LIFE_EVENTS, stats);

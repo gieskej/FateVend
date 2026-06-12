@@ -78,7 +78,7 @@ Attributes seeded from static curated tables before the AI call. Tables are weig
 
 **Optional settings (user-configurable):**
 - **LGBQ:** toggles inclusion of non-binary genders and queer orientations in rolls (on by default)
-- **NSFW:** toggles inclusion of adult professions and adds "sexy" to portrait prompt (off by default)
+- **NSFW:** toggles inclusion of adult professions and alters portrait prompt (off by default)
 
 ---
 

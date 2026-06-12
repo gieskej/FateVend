@@ -9,6 +9,13 @@
 
 export const PARENT_STATUSES = [
   {
+    id: 'na',
+    label: 'N/A — synthetic origin',
+    toneTag: 'neutral',
+    iconPrompt: 'sci-fi rpg icon, android chassis on a factory assembly line, no family, no parents, manufactured not born, cold industrial lighting, wide shot, digital art',
+    iconPath: 'generator/genres/sci-fi/icons/PARENT_STATUSES#na.png'
+  },
+  {
     id: 'present_close',
     label: 'present and close',
     toneTag: 'cozy',
@@ -74,6 +81,13 @@ export const PARENT_STATUSES = [
 ];
 
 export const SIBLING_DYNAMICS = [
+  {
+    id: 'na',
+    label: 'N/A — no biological siblings',
+    toneTag: 'neutral',
+    iconPrompt: 'sci-fi rpg icon, single android unit standing alone in an empty factory bay, no companions, manufactured alone, cold industrial lighting, wide shot, digital art',
+    iconPath: 'generator/genres/sci-fi/icons/SIBLING_DYNAMICS#na.png'
+  },
   {
     id: 'protective_older',
     label: 'protective older sibling',
@@ -150,6 +164,18 @@ export const SIBLING_DYNAMICS = [
 // siblingCount: [min, max] — resolved at generation time.
 // parentCount: 0, 1, or 2 — determines which parent slots are filled.
 export const FAMILY_STRUCTURES = [
+
+  // ── SYNTHETIC ORIGIN (android species only) ───────────────────────────────
+  {
+    id: 'android_origin',
+    label: 'N/A — synthetic construct',
+    parentCount: 0,
+    siblingCount: [0, 0],
+    toneTag: 'neutral',
+    notes: 'Manufactured, not born. No biological family. No parents. No siblings. The concept does not apply.',
+    iconPrompt: 'sci-fi rpg icon, android emerging from a manufacturing pod, factory floor, no family present, cold blue industrial lighting, medium shot, digital art',
+    iconPath: 'generator/genres/sci-fi/icons/FAMILY_STRUCTURES#android_origin.png'
+  },
 
   // ── STANDARD HOUSEHOLDS ───────────────────────────────────────────────────
   {
