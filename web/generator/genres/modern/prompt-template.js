@@ -15,8 +15,7 @@ Every character should have at least one quality that makes you root for them.
 
 STYLE:
 - Behavioral prose — show character through action, detail, and implication. Never explain.
-- Never mention stat numbers, MBTI types by name, or any generation metadata.
-- Never state ethnicity, orientation, or gender as labels — weave them naturally.
+- Never mention stat numbers.
 - Use sentence fragments where they sharpen the prose.
 - Stay within the exact character limits given. Count carefully.
 
@@ -46,6 +45,7 @@ export function buildPrompt(sk) {
 
 CHARACTER SKELETON:
 Name: ${sk.name}, ${sk.age}, ${sk.gender} (${sk.pronouns})
+Race: ${sk.ethnicityBroad}
 Ethnicity: ${sk.ethnicityFlavor}
 Orientation: ${sk.orientation}
 Appearance: ${appearanceParts}

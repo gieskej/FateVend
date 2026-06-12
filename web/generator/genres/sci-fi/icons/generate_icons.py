@@ -105,16 +105,15 @@ OUTDIR.mkdir(parents=True, exist_ok=True)
 # placeholder, meaning it was already generated with real content.
 # Without --missing: any existing file causes the slug to be skipped.
 existing_slugs = set()
-for p in ICON_DIR.rglob("*.png"):
-    if OUTDIR not in p.parents:
-        if missing_bytes is not None and p.read_bytes() == missing_bytes:
-            continue   # placeholder — allow regeneration
-        # Strip trailing #N only when the last component is a numeric variant
-        # suffix (e.g. "SLUG#name#1" → "SLUG#name").  Root icon files have the
-        # form "SLUG#name.png" with no numeric suffix; stripping would corrupt
-        # the slug to just "SLUG".
-        parts = p.stem.rsplit("#", 1)
-        existing_slugs.add(parts[0] if len(parts) == 2 and parts[1].isdigit() else p.stem)
+for p in ICON_DIR.glob("*.png"):
+    if missing_bytes is not None and p.read_bytes() == missing_bytes:
+        continue   # placeholder — allow regeneration
+    # Strip trailing #N only when the last component is a numeric variant
+    # suffix (e.g. "SLUG#name#1" → "SLUG#name").  Root icon files have the
+    # form "SLUG#name.png" with no numeric suffix; stripping would corrupt
+    # the slug to just "SLUG".
+    parts = p.stem.rsplit("#", 1)
+    existing_slugs.add(parts[0] if len(parts) == 2 and parts[1].isdigit() else p.stem)
 
 # ── GENERATE ──────────────────────────────────────────────────────────────────
 

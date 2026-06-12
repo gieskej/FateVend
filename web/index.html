@@ -479,6 +479,7 @@ function buildSkeleton(stats, mbti, tables) {
     cast,
     _slots: {
       species:   identity.id,
+      race:      identity.flavor.split(' — ')[0].trim(),
       gender:    gender.id,
       orient:    orientation.id,
       mbti:      mbti.type,
@@ -508,8 +509,7 @@ Every character should have at least one quality that makes you root for them.
 
 STYLE:
 - Behavioral prose — show character through action, detail, and implication. Never explain.
-- Never mention stat numbers, MBTI types by name, or any generation metadata.
-- Never state ethnicity, orientation, or gender as labels — weave them naturally.
+- Never mention stat numbers.
 - Use sentence fragments where they sharpen the prose.
 - Stay within the exact character limits given. Count carefully.
 
@@ -600,7 +600,7 @@ Suffering is a seasoning, not the whole dish. Every character should have at lea
 
 STYLE:
 - Behavioral prose — show character through action, detail, and implication. Never explain.
-- Never mention stat numbers, MBTI types, race labels, or generation metadata as clinical labels.
+- Never mention stat numbers.
 - Weave race, appearance, and quirk naturally into behavior and description.
 - Ground descriptions in sensory detail — smells of forge smoke, the weight of armor, the sound of a crowded tavern.
 - Stay within the exact character limits given.
@@ -622,8 +622,7 @@ Every character should have at least one quality that makes you root for them.
 
 STYLE:
 - Behavioral prose — show character through action, detail, and implication. Never explain.
-- Never mention stat numbers, MBTI types by name, or any generation metadata.
-- Never state species, orientation, or augmentation level as clinical labels — weave them naturally into behavior and description.
+- Never mention stat numbers.
 - Ground descriptions in sensory sci-fi detail: the hum of recycled air, the weight of aug hardware, the static of a distant comms signal, the particular smell of a station that's been sealed too long.
 - Use sentence fragments where they sharpen the prose.
 - Stay within the exact character limits given.
@@ -866,7 +865,7 @@ function getSlotConfig(genre) {
       iconBase: './generator/genres/fantasy/icons/',
       defs: [
         { key:'gender',    header:'Gender',     cat:'GENDERS',       common:true  },
-        { key:'species',   header:'Race',       cat:'RACE',          common:false },
+        { key:'species',   header:'Species',    cat:'RACE',          common:false },
         { key:'orient',    header:'Orientation',cat:'ORIENTATIONS',  common:true  },
         { key:'mbti',      header:'Personality',cat:'MBTI_TYPES',    common:true  },
         { key:'prof',      header:'Profession', cat:'PROFESSION',    common:false },
@@ -904,7 +903,7 @@ function getSlotConfig(genre) {
     iconBase: './generator/genres/modern/icons/',
     defs: [
       { key:'gender',    header:'Gender',     cat:'GENDERS',          common:true  },
-      { key:'species',   header:'Ethnicity',  cat:'ETHNICITY',        common:false },
+      { key:'species',   header:'Race',       cat:'ETHNICITY',        common:false },
       { key:'orient',    header:'Orientation',cat:'ORIENTATIONS',     common:true  },
       { key:'mbti',      header:'Personality',cat:'MBTI_TYPES',       common:true  },
       { key:'prof',      header:'Profession', cat:'PROFESSION',       common:false },
@@ -951,6 +950,7 @@ function renderSlotMachine(genre) {
           onerror="this.onerror=null;this.closest('.slot-window').innerHTML='<div class=slot-placeholder>⚙</div>'">
       </div>
       <div class="slot-label" id="slot-lbl-${d.key}"></div>
+      <div class="slot-sublabel" id="slot-sublbl-${d.key}"></div>
     </div>`).join('');
   return `<div class="slot-machine" id="slot-machine">${slots}</div>`;
 }
@@ -1002,6 +1002,7 @@ async function animateSlots(skeleton, genre) {
     const slotEl = document.getElementById(`slot-${def.key}`);
 
     const base = def.common ? COMMON_ICON_BASE : cfg.iconBase;
+    const sublblEl = document.getElementById(`slot-sublbl-${def.key}`);
     if (entry) {
       const [, iconSlug, label] = entry;
       if (img) img.src = iconPath(base, def.cat, iconSlug);
@@ -1010,6 +1011,7 @@ async function animateSlots(skeleton, genre) {
       if (img) img.closest('.slot-window').innerHTML = '<div class="slot-placeholder">⚙</div>';
       if (lblEl) lblEl.textContent = (dataSlug ?? '').replace(/_/g,' ');
     }
+    if (sublblEl && def.key === 'species') sublblEl.textContent = slots.race ?? '';
 
     if (slotEl) { slotEl.classList.remove('rolling'); slotEl.classList.add('landed'); }
 

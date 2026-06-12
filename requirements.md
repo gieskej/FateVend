@@ -124,10 +124,10 @@ Each generated protagonist comes with a full supporting cast. Each NPC is genera
 
 ## Character Entry — Prompt Engineering
 
-The 1,000 character limit requires maximum density. The Claude-generated entry must convey stats and personality through *behavioral description*, never by stating numbers or labels.
+The 1,000 character limit requires maximum density. The Claude-generated entry must convey stats and personality through *behavioral description*, never by stating numbers.
 
 **Principles:**
-- Never mention stat numbers, MBTI type name, orientation label, or ethnicity label
+- Never mention stat numbers
 - Weave appearance and quirk into behavior — show, don't list
 - Use sentence fragments where possible
 - Lead with identity: name, age, role in one line
@@ -140,7 +140,7 @@ The 1,000 character limit requires maximum density. The Claude-generated entry m
 **Claude prompt input (the skeleton passed to the API):**
 ```
 Write a terse AI Dungeon character entry. Max 1000 chars.
-No labels, no stat numbers, no MBTI mention. Pure behavioral prose.
+No stat numbers. Pure behavioral prose.
 
 Character:
 - Name, age, gender (pronouns)

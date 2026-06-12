@@ -60,12 +60,36 @@ export const RACES = [
 
   // ── ANDROID ───────────────────────────────────────────────────────────
   {
-    id: 'android',
+    id: 'android_synth',
     broad: 'Android',
-    flavor: 'Android — fully synthetic, designed to pass at conversational distance, gets clocked by medscans and anyone who has been looking long enough; the question of personhood is legally unsettled and they are aware of this',
+    flavor: 'Biomechanical — nearly human, fully synthetic, designed to pass all but deep medscans; the question of personhood is legally unsettled and they are aware of this',
     weight: 6,
-    iconPrompt: 'sci-fi rpg icon, public transit space, android in neutral service attire standing in crowd, near-human appearance, slightly too still, faint uncanny quality in posture, medium shot, digital concept art',
-    iconPath: 'generator/genres/sci-fi/icons/SPECIES#android.png'
+    iconPrompt: 'sci-fi rpg icon, beautiful woman with blue bobcut hair and blue eyes, flawless skin, face of a fashion model, covered shoulders, medium shot, digital concept art',
+    iconPath: 'generator/genres/sci-fi/icons/SPECIES#android_synth.png'
+  },
+  {
+    id: 'android_standard',
+    broad: 'Android',
+    flavor: 'Mechanical Android — Sorta human-like caricature, but obviously synthetic, designed to perform routine tasks in public spaces',
+    weight: 6,
+    iconPrompt: 'sci-fi rpg icon, public transit space, a cute plastic android in neutral service attire standing in crowd, medium shot, digital concept art',
+    iconPath: 'generator/genres/sci-fi/icons/SPECIES#android_standard.png'
+  },
+  {
+    id: 'android_industrial',
+    broad: 'Android',
+    flavor: 'Industrial Android — Purpose built mechanical androids designed for heavy labor and industrial work, with little regard for aesthetics or social integration',
+    weight: 6,
+    iconPrompt: 'sci-fi rpg icon, a bipedal heavy loader android with large pinchers at a construction site, medium shot, digital concept art',
+    iconPath: 'generator/genres/sci-fi/icons/SPECIES#android_industrial.png'
+  },
+  {
+    id: 'android_combat',
+    broad: 'Android',
+    flavor: 'Combat Android — Purpose built mechanical androids designed for combat and military operations, with advanced weaponry and armor',
+    weight: 6,
+    iconPrompt: 'sci-fi rpg icon, a combat android with exposed joints, holding laser rifle, wearing powered armor, rocket pack, multiple eyes, medium shot, digital concept art',
+    iconPath: 'generator/genres/sci-fi/icons/SPECIES#android_combat.png'
   },
 
   // ── UPLIFTED ──────────────────────────────────────────────────────────
@@ -80,10 +104,27 @@ export const RACES = [
   {
     id: 'uplift_feline',
     broad: 'Uplifted',
-    flavor: 'Uplifted feline — heightened reflexes and senses, bipedal and fully sapient, the ears and tail are real, the patience for human inefficiency is synthetic',
+    flavor: 'Uplifted feline — heightened reflexes and senses, bipedal and fully sapient, the ears, paws and tail are real, the patience for human inefficiency is synthetic',
     weight: 3,
-    iconPrompt: 'sci-fi rpg icon, transit concourse, bipedal uplifted feline in tactical clothing, ears independently tracking, tail visible, sharp alert eyes, neon transit lighting, medium shot, digital concept art',
+    iconPrompt: 'sci-fi rpg icon, transit concourse, bipedal uplifted feline in tactical clothing, cat ears, paws, tail visible, yellow cat eyes with vertical slit pupils, neon transit lighting, medium shot, digital concept art',
     iconPath: 'generator/genres/sci-fi/icons/SPECIES#uplift_feline.png'
+  },
+  // ── HYBRID ─────────────────────────────────────────────────────────────
+  {
+    id: 'hybrid_hare',
+    broad: 'Hybrid',
+    flavor: 'Hybrid hare — Human-like, except for the bunny ears, tail, and harelip. Heightened reflexes and senses, bipedal and fully sapient, the ears and tail are real',
+    weight: 3,
+    iconPrompt: 'sci-fi rpg icon, a cute bunny girl with ears and tail, medium shot, digital concept art',
+    iconPath: 'generator/genres/sci-fi/icons/SPECIES#hybrid_hare.png'
+  },
+  {
+    id: 'hybrid_feline',
+    broad: 'Hybrid',
+    flavor: 'Hybrid feline — Human-like, except for the cat ears, tail, and whiskers. Heightened reflexes and senses, bipedal and fully sapient, the ears and tail are real',
+    weight: 3,
+    iconPrompt: 'sci-fi rpg icon, a cute cat girl with cat ears, yellow cat eyes with vertical slit pupils, and tail, medium shot, digital concept art',
+    iconPath: 'generator/genres/sci-fi/icons/SPECIES#hybrid_feline.png'
   },
 
   // ── CLONE ─────────────────────────────────────────────────────────────

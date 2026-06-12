@@ -15,8 +15,7 @@ Every character should have at least one quality that makes you root for them.
 
 STYLE:
 - Behavioral prose — show character through action, detail, and implication. Never explain.
-- Never mention stat numbers, MBTI types by name, or any generation metadata.
-- Never state species, orientation, or augmentation level as clinical labels — weave them naturally into behavior and description.
+- Never mention stat numbers.
 - Ground descriptions in sensory sci-fi detail: the hum of recycled air, the weight of aug hardware, the static of a distant comms signal, the particular smell of a station that's been sealed too long.
 - Use sentence fragments where they sharpen the prose.
 - Stay within the exact character limits given. Count carefully.
@@ -47,7 +46,8 @@ export function buildPrompt(sk) {
 
 CHARACTER SKELETON:
 Name: ${sk.name}, ${sk.age}, ${sk.gender} (${sk.pronouns})
-Species: ${sk.ethnicityFlavor}
+Species: ${sk.ethnicityBroad}
+Race/Origin: ${sk.ethnicityFlavor}
 Orientation: ${sk.orientation}
 Appearance: ${appearanceParts}
 Quirk: ${sk.quirk}

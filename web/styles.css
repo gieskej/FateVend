@@ -583,6 +583,19 @@ body::before {
   word-break: break-word;
 }
 .slot.landed .slot-label { opacity: 1; }
+.slot-sublabel {
+  font-size: 0.5rem;
+  text-align: center;
+  color: var(--ink-faint);
+  max-width: 80px;
+  line-height: 1.2;
+  min-height: 1.2em;
+  opacity: 0;
+  transition: opacity 0.5s;
+  word-break: break-word;
+  font-style: italic;
+}
+.slot.landed .slot-sublabel { opacity: 1; }
 
 .stat-bar {
   height: 3px;

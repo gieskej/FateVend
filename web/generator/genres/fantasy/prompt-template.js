@@ -14,8 +14,7 @@ Every character should have at least one quality that makes you want to spend ti
 
 STYLE:
 - Behavioral prose — show character through action, detail, and implication. Never explain.
-- Never mention stat numbers, MBTI types, race labels, or any generation metadata directly as clinical labels.
-- Weave race, appearance, and quirk naturally into behavior and description.
+- Never mention stat numbers.
 - Use sentence fragments where they sharpen the prose.
 - Fantasy-specific: ground descriptions in sensory detail — smells of forge smoke, the weight of armor, the sound of a crowded tavern.
 - Stay within the exact character limits given. Count carefully.
@@ -44,6 +43,7 @@ export function buildPrompt(sk) {
 
 CHARACTER SKELETON:
 Name: ${sk.name}, ${sk.age}, ${sk.gender} (${sk.pronouns})
+Species: ${sk.ethnicityBroad}
 Race: ${sk.ethnicityFlavor}
 Orientation: ${sk.orientation}
 Appearance: ${appearanceParts}

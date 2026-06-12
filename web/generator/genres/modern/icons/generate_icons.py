@@ -72,9 +72,8 @@ OUTDIR    = ICON_DIR / TIMESTAMP
 OUTDIR.mkdir(parents=True, exist_ok=True)
 
 existing_slugs = set()
-for p in ICON_DIR.rglob("*.png"):
-    if OUTDIR not in p.parents:
-        existing_slugs.add(p.stem.rsplit("#", 1)[0])
+for p in ICON_DIR.glob("*.png"):
+    existing_slugs.add(p.stem.rsplit("#", 1)[0])
 
 # ── GENERATE ──────────────────────────────────────────────────────────────────
 
