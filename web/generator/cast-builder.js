@@ -21,15 +21,26 @@ const NEUTRAL_FIRST_MASC = ['Marcus','Ray','Eli','Nate','Omar','Silas','Calvin',
 const NEUTRAL_FIRST_FEM  = ['Diana','Cassie','Renee','Angie','Becca','Simone','Tamara','Rosa','Leila','Claudia','Priya','Nadia','Ashley','Morgan','Keisha','Lauren','Amber','Shannon','Tanya','Jade'];
 const NEUTRAL_LAST       = ['Vega','Tran','Kelly','Osei','Park','Walsh','Grant','Patel','Cruz','Flynn','Moss','Shaw','Reed','Kim','Boyd','Hayes','Leon','Moran','Russo','Diaz'];
 
-function neutralName() {
-  const first = Math.random() < 0.5 ? uniformPick(NEUTRAL_FIRST_MASC) : uniformPick(NEUTRAL_FIRST_FEM);
-  return `${first} ${uniformPick(NEUTRAL_LAST)}`;
-}
+// Broad race labels for neutrally-named NPCs — diverse by design
+const NEUTRAL_RACES = ['Black','Latino','White','East Asian','South Asian','Middle Eastern','Indigenous','Mixed'];
+
+// Gender id → display label (mirrors common/genders.js without the import)
+const GENDER_LABELS = {
+  man: 'Man', trans_man: 'Trans man', woman: 'Woman',
+  trans_woman: 'Trans woman', non_binary: 'Non-binary', genderfluid: 'Genderfluid',
+};
 
 function neutralNameForGender(genderId) {
   const isMasc = genderId === 'man' || genderId === 'trans_man';
-  const first  = isMasc ? uniformPick(NEUTRAL_FIRST_MASC) : uniformPick(NEUTRAL_FIRST_FEM);
-  return `${first} ${uniformPick(NEUTRAL_LAST)}`;
+  const isNB   = genderId === 'non_binary' || genderId === 'genderfluid';
+  const pool   = isNB ? (Math.random() < 0.5 ? NEUTRAL_FIRST_MASC : NEUTRAL_FIRST_FEM)
+               : isMasc ? NEUTRAL_FIRST_MASC : NEUTRAL_FIRST_FEM;
+  return `${uniformPick(pool)} ${uniformPick(NEUTRAL_LAST)}`;
+}
+
+function neutralGenderId() {
+  const r = Math.random();
+  return r < 0.45 ? 'man' : r < 0.90 ? 'woman' : 'non_binary';
 }
 
 // Returns 'man' or 'woman' for the love interest based on protagonist orientation+gender.
@@ -172,17 +183,16 @@ const PARENT_DYNAMIC_DECEASED = n =>
 //   Exception: absent/unknown parent — gets a different last name (unknown origin)
 // Siblings: always same last name as protagonist
 
-function familyLastName(protagonistLast, forceNew = false, ethnicityBroad = 'default') {
+function familyLastName(protagonistLast, forceNew, ethnicityBroad, namePools) {
   if (!forceNew) return protagonistLast;
-  // Generate a different last name from the same ethnicity pool
-  const pool = poolFor(ethnicityBroad).last;
+  const pool = poolFor(namePools, ethnicityBroad).last;
   const options = pool.filter(n => n !== protagonistLast);
   return uniformPick(options.length ? options : pool);
 }
 
 // ── PARENT BUILDER ────────────────────────────────────────────────────────
 
-function buildParent(role, structure, protName, protLast, ethnicityBroad) {
+function buildParent(role, structure, protName, protLast, ethnicityBroad, namePools) {
   const pool = PARENT_STATUSES;
   let status;
   const id = structure.id;
@@ -205,14 +215,14 @@ function buildParent(role, structure, protName, protLast, ethnicityBroad) {
   const isAbsent    = status.id === 'absent_unknown';
   const isDivorced  = id === 'two_parent_divorced' || id === 'two_parent_blended';
   const isMother    = role === 'mother';
-  const nameGender  = isMother ? 'fem' : 'masc';
+  const genderId    = isMother ? 'woman' : 'man';
 
   // Divorced mothers may have reverted to maiden name; absent parents have different surname
   const useDifferentLast = isAbsent || (isDivorced && isMother && Math.random() < 0.5);
-  const last = familyLastName(protLast, useDifferentLast, ethnicityBroad);
+  const last = familyLastName(protLast, useDifferentLast, ethnicityBroad, namePools);
 
-  const namePool  = poolFor(ethnicityBroad);
-  const firstName = pickFirstName(nameGender === 'fem' ? 'woman' : 'man', namePool);
+  const namePool  = poolFor(namePools, ethnicityBroad);
+  const firstName = pickFirstName(genderId, namePool);
 
   const dynamic = isDeceased
     ? PARENT_DYNAMIC_DECEASED(protName)
@@ -222,6 +232,8 @@ function buildParent(role, structure, protName, protLast, ethnicityBroad) {
     name:    `${firstName} ${last}`,
     role:    isMother ? 'mother' : 'father',
     status:  status.label,
+    gender:  GENDER_LABELS[genderId],
+    race:    ethnicityBroad,
     traits:  pickTraits(2),
     dynamic,
   };
@@ -229,10 +241,10 @@ function buildParent(role, structure, protName, protLast, ethnicityBroad) {
 
 // ── SIBLING BUILDER ───────────────────────────────────────────────────────
 
-function buildSibling(protName, protLast, ethnicityBroad) {
+function buildSibling(protName, protLast, ethnicityBroad, namePools) {
   const dyn         = uniformPick(SIBLING_DYNAMICS);
   const genderId    = Math.random() < 0.5 ? 'man' : 'woman';
-  const namePool    = poolFor(ethnicityBroad);
+  const namePool    = poolFor(namePools, ethnicityBroad);
   const firstName   = pickFirstName(genderId, namePool);
   const isOlder     = ['protective_older','golden_child'].includes(dyn.id);
   const isYounger   = dyn.id === 'younger_dependent';
@@ -242,6 +254,8 @@ function buildSibling(protName, protLast, ethnicityBroad) {
     name:    `${firstName} ${protLast}`,   // always shares family surname
     role,
     status:  dyn.id === 'deceased' ? 'deceased' : dyn.label,
+    gender:  GENDER_LABELS[genderId],
+    race:    ethnicityBroad,
     traits:  pickTraits(2),
     dynamic: (SIBLING_MAP[dyn.id] ?? (n => `Part of ${n}'s story in ways that are hard to untangle`))(protName),
   };
@@ -250,10 +264,13 @@ function buildSibling(protName, protLast, ethnicityBroad) {
 // ── FRIEND BUILDER ────────────────────────────────────────────────────────
 
 function buildFriend(protName) {
+  const genderId = neutralGenderId();
   return {
-    name:    neutralName(),
+    name:    neutralNameForGender(genderId),
     role:    'best friend',
     status:  'present and close',
+    gender:  GENDER_LABELS[genderId],
+    race:    uniformPick(NEUTRAL_RACES),
     traits:  pickTraits(3),
     dynamic: fillD(uniformPick(FRIEND_DYNAMICS), protName),
   };
@@ -263,17 +280,18 @@ function buildFriend(protName) {
 
 function buildFoil(protName, protagonistGenderId, protagonistOrientation) {
   const foilType = uniformPick(FOIL_ROLES);
-  let name;
+  let genderId;
   if (foilType.role === 'love interest' && protagonistGenderId && protagonistOrientation) {
-    const liGender = loveInterestGenderId(protagonistGenderId, protagonistOrientation);
-    name = neutralNameForGender(liGender);
+    genderId = loveInterestGenderId(protagonistGenderId, protagonistOrientation);
   } else {
-    name = neutralName();
+    genderId = neutralGenderId();
   }
   return {
-    name,
+    name:    neutralNameForGender(genderId),
     role:    foilType.role,
     status:  'present',
+    gender:  GENDER_LABELS[genderId],
+    race:    uniformPick(NEUTRAL_RACES),
     traits:  pickTraits(2),
     dynamic: fillD(uniformPick(foilType.dynamics), protName),
   };
@@ -312,18 +330,18 @@ export function buildCast(protagonistName, protagonistLast, ethnicityBroad, fami
                 : isOneAbsent   ? (Math.random()<0.5?'absent':'present') : 'present';
     const fRole = isOneDeceased ? (mRole==='deceased'?'surviving':'deceased')
                 : isOneAbsent   ? (mRole==='absent'?'present':'absent') : 'present';
-    cast.push(buildParent('mother', {...familyStructure, _r:mRole}, protagonistName, protagonistLast, ethnicityBroad));
-    cast.push(buildParent('father', {...familyStructure, _r:fRole}, protagonistName, protagonistLast, ethnicityBroad));
+    cast.push(buildParent('mother', {...familyStructure, _r:mRole}, protagonistName, protagonistLast, ethnicityBroad, namePools));
+    cast.push(buildParent('father', {...familyStructure, _r:fRole}, protagonistName, protagonistLast, ethnicityBroad, namePools));
   } else if (pc === 1) {
     const g = familyStructure.parentGender ?? (Math.random()<0.5?'mother':'father');
-    cast.push(buildParent(g, familyStructure, protagonistName, protagonistLast, ethnicityBroad));
+    cast.push(buildParent(g, familyStructure, protagonistName, protagonistLast, ethnicityBroad, namePools));
   }
 
   // ── SIBLINGS ──────────────────────────────────────────────────────────
   const [minS, maxS] = familyStructure.siblingCount ?? [0, 0];
   const sibSlots = Math.min(randomInt(minS, maxS), 2, MAX - cast.length - 2);
   for (let i = 0; i < sibSlots; i++) {
-    cast.push(buildSibling(protagonistName, protagonistLast, ethnicityBroad));
+    cast.push(buildSibling(protagonistName, protagonistLast, ethnicityBroad, namePools));
   }
 
   // ── BEST FRIENDS ──────────────────────────────────────────────────────

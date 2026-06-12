@@ -29,7 +29,7 @@ Output only the JSON structure requested. No preamble, no commentary, no markdow
 export function buildPrompt(sk) {
   const castLines = sk.cast
     .map(npc =>
-      `  - ${npc.name} (${npc.role}, ${npc.status}): ${npc.traits.join(', ')}. ${npc.dynamic}`
+      `  - ${npc.name} (${npc.role}, ${npc.status}, ${npc.gender}, ${npc.race}): ${npc.traits.join(', ')}. ${npc.dynamic}`
     )
     .join('\n');
 

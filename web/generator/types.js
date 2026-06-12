@@ -31,6 +31,8 @@
  * @property {string}   name
  * @property {string}   role      e.g. 'best friend', 'older sibling', 'mother', 'rival'
  * @property {string}   status    e.g. 'present and close', 'estranged', 'deceased'
+ * @property {string}   gender    e.g. 'Man', 'Woman', 'Non-binary'
+ * @property {string}   race      broad identity label e.g. 'Latino', 'Black', 'Elf', 'Human'
  * @property {string[]} traits    2–3 short trait descriptors
  * @property {string}   dynamic   one-line relationship dynamic to protagonist
  */

@@ -183,7 +183,7 @@ function getGenreTables(genre) {
       GENDERS:                 SCIFI_GENDERS,
       ORIENTATIONS:            SCIFI_ORIENTATIONS,
       BUILDS:                  SCIFI_BUILDS,
-      HAIR:                    SCIFI_HAIR.map(h => ({ label: h })),
+      HAIR:                    SCIFI_HAIR.map(h => ({ label: typeof h === 'string' ? h : h.label })),
       DISTINGUISHING_FEATURES: SCIFI_DISTINGUISHING_FEATURES,
       QUIRKS:                  SCIFI_QUIRKS,
       NAME_POOLS:              SCIFI_NAME_POOLS,
@@ -205,7 +205,7 @@ function getGenreTables(genre) {
     GENDERS,
     ORIENTATIONS,
     BUILDS,
-    HAIR: HAIR.map(h => ({ label: h })),
+    HAIR: HAIR.map(h => ({ label: typeof h === 'string' ? h : h.label })),
     DISTINGUISHING_FEATURES,
     QUIRKS,
     NAME_POOLS,
@@ -328,7 +328,7 @@ function buildCast(protName, protLast, ethnicityBroad, familyStructure, tables) 
     const dynamic = isDeceased
       ? `${protName} still catches themselves thinking "I should call" before remembering`
       : fillD(uniformPick(PARENT_DYNAMICS_ALIVE), protName);
-    return { name:`${firstName} ${lastName}`, role:isMother?'mother':'father', status:status.label, traits:pickTraits(2), dynamic };
+    return { name:`${firstName} ${lastName}`, role:isMother?'mother':'father', status:status.label, gender:isMother?'Woman':'Man', race:ethnicityBroad, traits:pickTraits(2), dynamic };
   }
 
   if (pc === 2) {
@@ -358,6 +358,8 @@ function buildCast(protName, protLast, ethnicityBroad, familyStructure, tables) 
       name: `${firstName} ${protLast}`,
       role: isOlder ? 'older sibling' : isYounger ? 'younger sibling' : 'sibling',
       status: dyn.id === 'deceased' ? 'deceased' : dyn.label,
+      gender: GENDER_LABELS[genderId],
+      race: ethnicityBroad,
       traits: pickTraits(2),
       dynamic: (SIBLING_MAP[dyn.id] ?? (n => `Part of ${n}'s story in ways that are hard to untangle`))(protName),
     });
@@ -365,12 +367,14 @@ function buildCast(protName, protLast, ethnicityBroad, familyStructure, tables) 
 
   const friendSlots = Math.min(randomInt(1,2), MAX - cast.length - 1);
   for (let i = 0; i < friendSlots; i++) {
-    cast.push({ name:neutralName(), role:'best friend', status:'present and close', traits:pickTraits(3), dynamic:fillD(uniformPick(FRIEND_DYNAMICS), protName) });
+    const fGid = neutralGenderId();
+    cast.push({ name:neutralNameForGender(fGid), role:'best friend', status:'present and close', gender:GENDER_LABELS[fGid], race:uniformPick(NEUTRAL_RACES), traits:pickTraits(3), dynamic:fillD(uniformPick(FRIEND_DYNAMICS), protName) });
   }
 
   if (cast.length < MAX) {
     const foilType = uniformPick(FOIL_ROLES);
-    cast.push({ name:neutralName(), role:foilType.role, status:'present', traits:pickTraits(2), dynamic:fillD(uniformPick(foilType.dynamics), protName) });
+    const foilGid = neutralGenderId();
+    cast.push({ name:neutralNameForGender(foilGid), role:foilType.role, status:'present', gender:GENDER_LABELS[foilGid], race:uniformPick(NEUTRAL_RACES), traits:pickTraits(2), dynamic:fillD(uniformPick(foilType.dynamics), protName) });
   }
   return cast;
 }
@@ -391,9 +395,25 @@ function protoName(genderId, pool) {
   return { first, last, full: `${first} ${last}` };
 }
 
+const NEUTRAL_RACES = ['Black','Latino','White','East Asian','South Asian','Middle Eastern','Indigenous','Mixed'];
+const GENDER_LABELS = { man:'Man', trans_man:'Trans man', woman:'Woman', trans_woman:'Trans woman', non_binary:'Non-binary', genderfluid:'Genderfluid' };
+
+function neutralGenderId() {
+  const r = Math.random();
+  return r < 0.45 ? 'man' : r < 0.90 ? 'woman' : 'non_binary';
+}
+
 function neutralName() {
   const first = Math.random() < 0.5 ? uniformPick(NEUTRAL_FIRST_MASC) : uniformPick(NEUTRAL_FIRST_FEM);
   return `${first} ${uniformPick(NEUTRAL_LAST)}`;
+}
+
+function neutralNameForGender(gId) {
+  const isNB   = gId === 'non_binary' || gId === 'genderfluid';
+  const isMasc = gId === 'man' || gId === 'trans_man';
+  const pool   = isNB ? (Math.random() < 0.5 ? NEUTRAL_FIRST_MASC : NEUTRAL_FIRST_FEM)
+               : isMasc ? NEUTRAL_FIRST_MASC : NEUTRAL_FIRST_FEM;
+  return `${uniformPick(pool)} ${uniformPick(NEUTRAL_LAST)}`;
 }
 
 function familyFirst(genderId, ethnicityBroad) {
@@ -1133,6 +1153,10 @@ function renderSkeleton(sk) {
           <div class="cast-name">${npc.name}</div>
           <div class="cast-role">${npc.role}</div>
           <div class="cast-status-badge">${npc.status}</div>
+          <div class="cast-identity">
+            <span class="cast-identity-badge">${npc.gender}</span>
+            <span class="cast-identity-badge">${npc.race}</span>
+          </div>
           <div class="cast-traits">${npc.traits.join(' · ')}</div>
           <div class="cast-dynamic">${npc.dynamic}</div>
         </div>`).join('')}
@@ -1145,10 +1169,18 @@ function renderSkeleton(sk) {
 function renderOutput(sk, output) {
   const tagHTML = output.tags.map(t => `<span class="tag-pill">${t}</span>`).join('');
 
-  const npcEntriesHTML = Object.entries(output.npcEntries).map(([name, entry]) => `
+  const castByName = Object.fromEntries(sk.cast.map(n => [n.name, n]));
+
+  const npcEntriesHTML = Object.entries(output.npcEntries).map(([name, entry]) => {
+    const npc  = castByName[name];
+    const meta = npc ? `<div class="npc-entry-meta">${npc.gender} · ${npc.race}</div>` : '';
+    return `
     <div class="npc-section">
       <div class="field-header">
-        <span class="npc-section-name">${name}</span>
+        <div>
+          <span class="npc-section-name">${name}</span>
+          ${meta}
+        </div>
         <div class="field-meta">
           <span class="char-count" id="cc-npc-${name.replace(/\s+/g,'_')}">${entry.length} / 1000</span>
           <button class="btn-copy" onclick="copyField('npc-entry-${name.replace(/\s+/g,'_')}', this)">Copy</button>
@@ -1157,7 +1189,7 @@ function renderOutput(sk, output) {
       <textarea class="field-textarea" id="npc-entry-${name.replace(/\s+/g,'_')}" rows="4"
         oninput="updateCount(this,'cc-npc-${name.replace(/\s+/g,'_')}',1000)">${entry}</textarea>
     </div>
-  `).join('');
+  `}).join('');
 
   return `
   <!-- SCENARIO OUTPUT -->
@@ -1241,7 +1273,10 @@ function renderOutput(sk, output) {
 
       <div class="npc-section" style="margin-bottom:1.5rem;">
         <div class="field-header">
-          <span class="npc-section-name" style="font-size:0.85rem;">${sk.name} — Protagonist</span>
+          <div>
+            <span class="npc-section-name" style="font-size:0.85rem;">${sk.name} — Protagonist</span>
+            <div class="npc-entry-meta">${sk.gender} · ${sk.ethnicityBroad}</div>
+          </div>
           <div class="field-meta">
             <span class="char-count" id="cc-protagonist">${output.characterEntry.length} / 1000</span>
             <button class="btn-copy" onclick="copyField('field-protagonist',this)">Copy</button>

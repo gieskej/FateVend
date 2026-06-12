@@ -5,3 +5,4 @@ web/generator/config.js
 old
 *.bak
 bad-icons.txt
+node_modules
