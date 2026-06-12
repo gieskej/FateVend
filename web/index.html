@@ -979,7 +979,25 @@ function renderSlotMachine(genre) {
   return `<div class="slot-machine" id="slot-machine">${slots}</div>`;
 }
 
-const _bellSfx = new Audio('audio/u_omspjqprot-bell-222490.mp3');
+const _bellSfx    = new Audio('audio/u_omspjqprot-bell-222490.mp3');
+const _overtureSfx = new Audio('audio/overture_dark.mid.mp3');
+
+function fadeOutAudio(audio, duration = 2000) {
+  if (audio.paused) return;
+  const steps    = 40;
+  const decrement = audio.volume / steps;
+  const timer = setInterval(() => {
+    if (audio.volume > decrement) {
+      audio.volume -= decrement;
+    } else {
+      audio.volume = 0;
+      audio.pause();
+      audio.currentTime = 0;
+      audio.volume = 1;
+      clearInterval(timer);
+    }
+  }, duration / steps);
+}
 
 async function animateSlots(skeleton, genre) {
   const cfg  = getSlotConfig(genre);
@@ -1542,6 +1560,9 @@ async function runAIPhase() {
   isGenerating = true;
   showError('');
 
+  _overtureSfx.currentTime = 0;
+  _overtureSfx.play().catch(() => {});
+
   const continueBtn = document.getElementById('btn-continue');
   const generateBtn = document.getElementById('btn-generate');
   if (continueBtn) { continueBtn.disabled = true; continueBtn.classList.add('spinning'); }
@@ -1617,6 +1638,7 @@ async function runAIPhase() {
     isGenerating = false;
     generateBtn.disabled = false;
     generateBtn.classList.remove('spinning');
+    fadeOutAudio(_overtureSfx);
   }
 }
 

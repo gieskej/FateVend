@@ -1,65 +1,86 @@
 # Gears of Fate — RPG Character Generator
 
-A personality-first RPG character generator for AI Dungeon scenarios.
+A personality-first RPG character generator for AI Dungeon scenarios. Rolls stats, seeds a full character skeleton from curated tables, then calls the Claude API to generate terse behavioral prose — character entries, a scenario description, opening, and tags — ready to copy-paste into AI Dungeon.
+
+Three genres: **Modern**, **Fantasy**, **Sci-Fi**.
 
 ## Quick start
 
-Open `index.html` in a browser. Enter your Anthropic API key and click **Turn the Gears**.
+```bash
+cd web
+bash serve.sh        # writes config.js from .env, starts Python HTTP server on :8080
+```
+
+Open `http://localhost:8080/` in a browser. Enter your Anthropic API key in Settings and click **Turn the Gears**.
+
+Alternatively, open `web/index.html` directly in a browser and enter the API key manually.
 
 ## Project structure
 
 ```
-index.html                        ← Single-file web UI (self-contained)
-requirements.md                   ← Full project requirements
+web/
+  index.html                    ← Single-page UI (self-contained; generator logic inlined)
+  styles.css
+  serve.sh                      ← Dev server: writes config.js, serves on :8080
 
-generator/                        ← Core library (no UI dependencies)
-  index.js                        ← Public API: generateCharacter()
-  roller.js                       ← Stat rolling + MBTI weighting
-  selector.js                     ← Weighted table selection
-  skeleton-builder.js             ← Assembles CharacterSkeleton from tables
-  cast-builder.js                 ← Builds supporting cast
-  api-client.js                   ← Anthropic API call + response parsing
-  types.js                        ← JSDoc type definitions
+  generator/                    ← Core library (no UI or Node dependencies)
+    index.js                    ← Public API: generateCharacter()
+    roller.js                   ← Stat rolling (Box-Muller bell curve) + MBTI weighting
+    selector.js                 ← Weighted table selection
+    skeleton-builder.js         ← Assembles CharacterSkeleton from genre tables
+    cast-builder.js             ← Builds supporting cast (family, friends, foils)
+    api-client.js               ← Anthropic API call + response parsing
+    stat-adjectives.js          ← Stat-to-label mapping
+    ui-data.js                  ← Re-exports all genre tables for the web UI
+    types.js                    ← JSDoc type definitions
 
-  genres/
-    modern/                       ← Modern genre tables
-      professions.js
-      life-events.js
-      family-structures.js
-      tensions.js
-      secrets.js
-      settings.js
-      character-attributes.js
-      prompt-template.js
+    common/                     ← Shared attributes across genres
+      genders.js
+      orientations.js
+      mbti.js
+      build.js
+      hair.js
+      sentiments.js
+      icons/
 
-    fantasy/                      ← Fantasy genre tables
-      professions.js
-      life-events.js
-      family-structures.js
-      tensions.js
-      secrets.js
-      settings.js
-      character-attributes.js
-      names.js
-      prompt-template.js
+    genres/
+      modern/                   ← Contemporary setting (ethnicities)
+      fantasy/                  ← Medieval/magical setting (races)
+      sci-fi/                   ← Futuristic setting (species)
 
-    sci-fi/                       ← Placeholder for v2
+      Each genre contains:
+        character-attributes.js   (builds, hair, distinguishing features, quirks)
+        races.js                  (ethnicity / race / species tables)
+        professions.js
+        life-events.js
+        family-structures.js
+        tensions.js
+        secrets.js
+        economic-tiers.js
+        city-settings.js
+        settings.js               (tag pools)
+        names.js                  (name pools keyed by broad identity)
+        prompt-template.js        (genre-specific Claude prompt)
+        icons/
+
+  audio/                        ← Bell SFX for slot machine animation
+  tools/
+    aidungeon-importer.user.js  ← Tampermonkey script (experimental)
 
 cli/
-  index.js                        ← CLI wrapper
-
+  index.js                      ← Thin CLI wrapper around the generator library
 ```
 
 ## CLI usage
 
 ```bash
-# Full generation
+# Full generation (modern genre by default)
 ANTHROPIC_API_KEY=sk-ant-... node cli/index.js
 
-# Skeleton only (no API call)
+# Skeleton only — no API call
 ANTHROPIC_API_KEY=sk-ant-... node cli/index.js --skeleton-only
 
-# JSON output
+# Machine-readable JSON output
 ANTHROPIC_API_KEY=sk-ant-... node cli/index.js --json
 ```
 
@@ -68,8 +89,9 @@ ANTHROPIC_API_KEY=sk-ant-... node cli/index.js --json
 ```js
 import { generateCharacter } from './generator/index.js';
 
+// Full generation
 const { skeleton, output } = await generateCharacter({
-  genre: 'modern',   // or 'fantasy'
+  genre: 'modern',   // 'modern' | 'fantasy' | 'sci-fi'
   apiKey: 'sk-ant-...',
 });
 
@@ -82,6 +104,7 @@ const { skeleton } = await generateCharacter({
 
 ## Adding a new genre
 
-1. Create `generator/genres/<name>/` with the same file structure as `modern/`
-2. Add the genre's tables to `getGenreTables()` in `index.html`
-3. Add a button to the genre selector in the UI
+1. Create `generator/genres/<name>/` with the same file structure as an existing genre
+2. Export the new tables from `generator/ui-data.js`
+3. Add the genre's table bundle to `getGenreTables()` in `index.html`
+4. Add a genre button to the selector in the UI

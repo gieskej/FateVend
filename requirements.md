@@ -1,36 +1,29 @@
-# RPG Character Generator — Requirements
+# Gears of Fate — Requirements & Design
 
 ## Overview
 
-A richly-detailed, personality-first RPG character generator for use in AI Dungeon's modern-genre scenarios. The core generator is a portable, framework-agnostic JavaScript library that can be consumed by a web UI, a CLI, or embedded directly in an AI Dungeon script. The primary output is a fully-populated AI Dungeon scenario template plus a cast of character templates, ready to copy-paste.
+A richly-detailed, personality-first RPG character generator for AI Dungeon scenarios. The core generator is a portable, framework-agnostic JavaScript library consumed by a web UI and a CLI. The primary output is a fully-populated AI Dungeon scenario template plus a cast of NPC character entries, ready to copy-paste or download as a ZIP.
 
----
-
-## MVP Scope
-
-- **Genre: Modern only.** Architecture must support adding genres in future versions without refactoring the core engine.
-- **Core generator is UI-agnostic.** The generation logic is a standalone library with no dependency on any UI framework, browser APIs, or Node.js-specific modules. It must run in a web browser (via bundler), Node.js, and AI Dungeon's scripted JS environment.
-- **No backend.** All generation runs client-side via the Anthropic API.
-- **No persistence.** Stateless — each visit starts fresh.
-- **No login or user accounts.**
+Three genres are fully implemented: **Modern**, **Fantasy**, **Sci-Fi**.
 
 ---
 
 ## User Flow
 
-1. User lands on the page and hits **Generate**
-2. Stats are rolled (1–100 per stat)
+1. User selects a genre (Modern / Fantasy / Sci-Fi) and clicks **Turn the Gears**
+2. Stats are rolled via a bell-curve distribution (1–100 per stat)
 3. MBTI type is assigned, weighted by stats
-4. Character skeleton is seeded from curated tables, filtered by stats
-5. Claude API call generates all narrative text fields
-6. Full output is displayed — character sheet + scenario templates
-7. User reviews, optionally tweaks fields, then copies to clipboard
+4. Character skeleton is seeded from curated tables, filtered/weighted by stats
+5. A slot machine animation reveals each skeleton attribute in sequence
+6. User optionally clicks **Continue** to call the Claude API for narrative generation
+7. Full output is displayed — character sheet, scenario fields, NPC entries, portrait prompt
+8. User reviews, edits fields in-place, copies to clipboard, or downloads a ZIP
 
 ---
 
 ## Character — Stats
 
-Six classic RPG stats, each rolled randomly in the range **1–100**.
+Six classic RPG stats, each rolled in the range **1–100** using a **Box-Muller normal distribution** (mean 50, stddev 15). This produces a genuine bell curve: ~68% of rolls land between 35–65, with extreme values (below 20 or above 80) being genuinely rare.
 
 | Stat | Narrative influence |
 |---|---|
@@ -41,170 +34,156 @@ Six classic RPG stats, each rolled randomly in the range **1–100**.
 | Dexterity | Grace vs. clumsiness, physical hobbies, certain professions |
 | Constitution | Health, stamina, vices, resilience under pressure |
 
-- Stats are **shown to the user** as part of the character sheet output.
-- Stats **weight the MBTI assignment** and **filter curated tables** (e.g. low Wisdom + high Charisma skews toward con artist or salesperson professions).
+Stats are shown to the user and drive both MBTI weighting and curated table selection.
+
+---
+
+## Character — Age
+
+Age is rolled using a **Box-Muller normal distribution** (mean 25, stddev 8), clamped to **[15, 75]**. This produces a young-skewed population — most protagonists are in their late teens to mid-thirties — with a gradual tail allowing for middle-aged and older characters.
 
 ---
 
 ## Character — Personality (MBTI)
 
-- One of 16 MBTI types assigned per character.
-- **Not purely random** — weighted by stat values:
-  - High Charisma + High Strength → skews Extrovert
-  - High Intelligence + Low Wisdom → skews Intuitive + Thinking
-  - Low Constitution + High Wisdom → skews Feeling + Judging
-  - etc.
-- MBTI type influences the character's speech style, relationship dynamics, goals, fears, and secrets in the generated narrative.
-- **MBTI type name is never written into the AI Dungeon output** — it is translated into behavioral prose only.
+- One of 16 MBTI types assigned per character, weighted by stat values:
+  - High Charisma + Strength → skews Extrovert
+  - High Intelligence + Wisdom → skews Intuitive, Thinking, Introverted
+  - High Wisdom + Constitution → skews Judging
+  - High Charisma + Dexterity → skews Perceiving
+- MBTI type influences speech style, relationship dynamics, goals, and secrets in generated prose
+- **MBTI type name is never written into AI Dungeon output** — translated to behavioral prose only
 
 ---
 
 ## Character — Skeleton (Curated Tables)
 
-The following attributes are seeded from static curated tables before the AI call. Tables are weighted/filtered by stats.
+Attributes seeded from static curated tables before the AI call. Tables are weighted/filtered by stats.
 
-- **Identity:** gender (with pronouns), sexual orientation, race/ethnicity (broad category + flavor detail)
-- **Appearance:** build, hair, distinguishing feature — assembled into prose by Claude, never as a list
-- **Quirk:** one behavioral or physical tell, stat-weighted, woven into the character entry naturally
-- **Profession** (job title, industry, tenure, how they feel about it)
-- **Economic status** (wealth tier, how they got there, visible markers)
-- **Family structure** (randomized: composition, living status, presence/absence, relationship quality)
+- **Identity:** gender (with pronouns), sexual orientation, race/ethnicity/species (broad + flavor)
+- **Appearance:** build, hair, distinguishing feature — assembled into prose by Claude
+- **Quirk:** one behavioral or physical tell, stat-weighted
+- **Profession** (job title, industry, sentiment toward it)
+- **Economic status** (wealth tier, visible markers, housing, transport)
+- **Family structure** (composition, living status, relationship quality)
 - **Formative life event** (one defining past moment)
-- **Current tension** (the inciting situation the character is in right now)
-- **Core secret** (something hidden that the AI can use for dramatic tension)
-- **Goals and motivations**
+- **Current tension** (the inciting situation)
+- **Core secret** (hidden information for dramatic tension)
+- **City/setting** (location flavor, tone)
 
 **Identity attribute rules:**
-- Gender, race/ethnicity, and orientation carry **no stat affinities** — identity is not correlated with capability in this system
-- Ethnicity flavor detail informs Claude's appearance prose but is **never stated as a label** in any output field
-- Orientation is **never explicitly named** in the character entry — it surfaces only through relationship prose if relevant
+- Gender, race/ethnicity/species, and orientation carry **no stat affinities** — identity is not correlated with capability
+- Race/ethnicity flavor informs Claude's appearance prose but is never stated as a label in output
+- Orientation is never explicitly named in the character entry — surfaces only through relationship prose
+
+**Optional settings (user-configurable):**
+- **LGBQ:** toggles inclusion of non-binary genders and queer orientations in rolls (on by default)
+- **NSFW:** toggles inclusion of adult professions and adds "sexy" to portrait prompt (off by default)
 
 ---
 
 ## Character — Supporting Cast
 
-Each generated protagonist comes with a full supporting cast. Each NPC is generated as a separate AI Dungeon character entry.
+Each protagonist comes with a supporting cast of 4–7 NPCs.
 
-**Cast composition (randomized within bounds):**
+**Cast composition (family-structure dependent):**
+- Parents: 0–2 (may be deceased, absent, estranged, or present)
+- Siblings: 0–2
 - Best friend(s): 1–2
-- Sibling(s): 0–2 (family structure dependent)
-- Parents: 0–2 (family structure dependent; may be deceased, absent, or estranged)
-- Dramatic foil: 1 (rival, antagonist, or love interest)
+- Dramatic foil: 1 (rival, antagonist, love interest, or estranged former ally)
 
-**Hard cap: 6–8 total characters** (protagonist included).
+**Hard cap: 7 NPCs maximum.**
 
-**NPC depth — light profile only:**
-- Relationship dynamic to protagonist
+**Each NPC profile includes:**
+- Name (family members share the protagonist's surname; friends/foils use culturally neutral names)
+- Role (e.g. mother, older sibling, best friend, rival)
+- Status (e.g. present and close, estranged, deceased)
+- **Gender** (e.g. Man, Woman, Non-binary, Trans man)
+- **Race** (broad identity label — inherits protagonist's for family; diverse neutral pool for friends/foils)
 - 2–3 defining personality traits
-- No recursive cast generation (NPCs do not get their own friends/family)
+- One-line relationship dynamic to the protagonist
 
-**NPC entries reference the protagonist by name** to maintain coherence in AI Dungeon's context.
+NPC entries reference the protagonist by name. No recursive cast generation.
 
 ---
 
 ## AI Dungeon Output — Field Specifications
 
-### Scenario template
+### Scenario fields
 
 | Field | Limit | Notes |
 |---|---|---|
 | Title | 70 chars | Hooks the player immediately |
 | Description | 5,000 chars | Tone, setting, who the player is, what's at stake |
-| Tags | 10 tags max | Genre-relevant (e.g. modern, crime, drama, redemption) |
+| Tags | 10 tags max | Genre-appropriate lowercase strings |
 | Opening | 4,000 chars | In-world narrative that drops the player into the scene |
 
-### Character template (one per character)
+### Character entries (one per character)
 
 | Field | Limit | Notes |
 |---|---|---|
-| Name | 80 chars | |
-| Entry | 1,000 chars | AI context — terse behavioral prose (see below) |
+| Entry | 1,000 chars | Terse behavioral prose — no stat numbers, show don't tell |
+
+### Portrait
+
+A comma-separated image generation prompt (≤500 chars) is produced for each character, suitable for Flux1dev / Stable Diffusion with danbooru-style tags. The UI supports generation via a local Stable Diffusion endpoint or the Stability AI API.
 
 ---
 
-## Character Entry — Prompt Engineering
+## Character Entry — Style
 
-The 1,000 character limit requires maximum density. The Claude-generated entry must convey stats and personality through *behavioral description*, never by stating numbers.
+The 1,000-character limit requires maximum density. Generated entries convey stats and personality through behavioral description.
 
 **Principles:**
 - Never mention stat numbers
 - Weave appearance and quirk into behavior — show, don't list
 - Use sentence fragments where possible
-- Lead with identity: name, age, role in one line
-- Fold relationships in — reference key NPCs by name and dynamic
+- Lead with name, age, role in one line
+- Reference key NPCs by name and dynamic
 - End on tension — one line that gives the AI something to pull on
-
-**Example of correct style:**
-> "John Mara. Dock worker, mid-30s. Built like a wall, moves like he owns the room. Talks first, thinks later — if at all. Fiercely loyal to his sister Rosa and his crew; treats strangers like a test he hasn't decided to pass yet. Owes money to the wrong people and knows it."
-
-**Claude prompt input (the skeleton passed to the API):**
-```
-Write a terse AI Dungeon character entry. Max 1000 chars.
-No stat numbers. Pure behavioral prose.
-
-Character:
-- Name, age, gender (pronouns)
-- Ethnicity flavor, orientation
-- Appearance: build, hair, distinguishing feature
-- Quirk
-- Profession (tier, sentiment)
-- Stats: Strength, Intelligence, Wisdom, Charisma, Dexterity, Constitution
-- MBTI type
-- Economic status
-- Key relationships (name + dynamic)
-- Core secret
-- Current tension
-```
-
-The Description and Opening scenario fields (5,000 and 4,000 chars respectively) carry the richer narrative — the Entry is context only.
 
 ---
 
-## Functional Requirements
+## Functional Features
 
-- **Single-click generate** — one button produces the full output
-- **Regenerate individual fields** — re-roll a single stat, profession, or NPC without losing the rest
+- **Single-click generate** — one button produces the full skeleton and (optionally) narrative output
+- **Two-phase flow** — skeleton appears immediately after rolling; AI narrative requires a second click (allows previewing before spending API tokens)
 - **Editable fields** — all generated text is editable in-place before copying
-- **Character count indicators** — live counters on every field, showing remaining characters against AI Dungeon limits
-- **Copy to clipboard** — per-field copy buttons plus a "Copy all" for the full scenario
-- **Coherent cast** — NPC entries reference the protagonist; the scenario Description and Opening reference the full cast by name
+- **Character count indicators** — live counters on every field against AI Dungeon limits
+- **Copy to clipboard** — per-field copy buttons plus a "Copy Full Scenario Package" button
+- **Download ZIP** — exports the full scenario package as a timestamped `.zip` (scenario.json + portrait if generated)
+- **Portrait generation** — generates a character portrait via local Stable Diffusion or Stability AI API
+- **Slot machine animation** — reveals each skeleton attribute with a staggered rolling animation and bell SFX
+- **Genre selector** — switches between Modern, Fantasy, and Sci-Fi with full table swap
 
 ---
 
 ## Technical Architecture
 
-### Separation of concerns — core requirement
+### Core principle
 
-The generator must be a **pure, portable JavaScript library** fully decoupled from any UI or runtime environment. This enables three deployment targets from one codebase:
-
-| Consumer | How it uses the generator |
-|---|---|
-| **Web UI** | Imports generator; handles rendering, copy buttons, animations |
-| **CLI** | Thin wrapper — calls generator, prints JSON or formatted text to stdout |
-| **AI Dungeon script** | Imports generator directly; hooks into AI Dungeon's `modifier` / `onOutput` scripting API |
+The generator is a **pure, portable JavaScript library** fully decoupled from any UI or runtime. Same code runs in browser, Node.js, and AI Dungeon's scripted JS environment.
 
 **Constraints on the generator module:**
-- No `window`, `document`, or any browser globals
-- No UI framework imports (no React, Vue, etc.)
-- No Node.js-specific APIs (`fs`, `path`, `process`, etc.)
-- All side effects (API calls) are async and explicitly invoked — nothing fires on import
-- Must run in: browser (via bundler), Node.js, and AI Dungeon's restricted scripted JS environment
-- AI Dungeon scripts have `fetch` available — the generator uses only `fetch` for API calls
+- No `window`, `document`, or browser globals
+- No UI framework imports
+- No Node.js-specific APIs (`fs`, `path`, `process`)
+- All side effects are async and explicitly invoked — nothing fires on import
+- Only uses `fetch` for API calls (available in all three targets)
 
-### Public API surface
+### Public API
 
 ```js
 import { generateCharacter } from './generator/index.js';
 
-// Full generation — rolls stats, seeds skeleton, calls Claude API
-const character = await generateCharacter({
-  genre: 'modern',
+const { skeleton, output } = await generateCharacter({
+  genre: 'modern',   // 'modern' | 'fantasy' | 'sci-fi'
   apiKey: 'sk-...',
 });
 
-// Skeleton only — no API call, useful for previewing or testing
-const skeleton = await generateCharacter({
-  genre: 'modern',
+// Skeleton only — no API call
+const { skeleton } = await generateCharacter({
+  genre: 'fantasy',
   skipAI: true,
 });
 ```
@@ -212,76 +191,46 @@ const skeleton = await generateCharacter({
 ### Generation pipeline
 
 ```
-Roll stats (1–100)
+Roll stats (Box-Muller bell curve, 1–100)
     ↓
 Assign MBTI (weighted by stats)
     ↓
-Seed skeleton (curated tables, filtered by stats + MBTI)
+Seed skeleton (curated genre tables, filtered/weighted by stats)
     ↓
-Claude API call → character entries + scenario fields
+Build supporting cast (family-structure-aware, ethnicity-matched names)
+    ↓
+[Optional] Claude API call → character entries + scenario fields + portrait prompt
     ↓
 Return fully resolved character object
-    ↓
-Consumer renders / formats / outputs
 ```
 
 ### Folder structure
 
 ```
-/generator
-  index.js                  ← public API surface
-  roller.js                 ← stat rolling, MBTI weighting
-  selector.js               ← weighted table selection logic
-  cast-builder.js           ← NPC assembly
-  skeleton-builder.js       ← assembles full CharacterSkeleton
-  api-client.js             ← Anthropic API call + response parsing
-  /genres
-    /modern
-      professions.js
-      life-events.js
-      family-structures.js
-      tensions.js
-      secrets.js
-      settings.js
-      character-attributes.js
-      prompt-template.js
-    /fantasy                ← empty, ready for v2
-    /sci-fi                 ← empty, ready for v2
+web/generator/
+  index.js              ← public API
+  roller.js             ← stat rolling (Box-Muller), age rolling, MBTI weighting
+  selector.js           ← weighted/stat-weighted table selection
+  skeleton-builder.js   ← assembles CharacterSkeleton from genre tables
+  cast-builder.js       ← NPC assembly (family, friends, foils)
+  api-client.js         ← Anthropic API call + response parsing
+  stat-adjectives.js    ← stat-to-label mapping
+  ui-data.js            ← re-exports all genre tables for the web UI
+  types.js              ← JSDoc types (StatBlock, CharacterSkeleton, NPCSkeleton, …)
 
-/ui                         ← web app (imports from /generator)
+  common/               ← shared across all genres
+    genders.js, orientations.js, mbti.js, build.js, hair.js, sentiments.js
 
-/cli
-  index.js                  ← thin CLI wrapper (imports from /generator)
+  genres/               ← one folder per genre, identical structure
+    modern/             ← ethnicities, contemporary professions/tensions/secrets
+    fantasy/            ← races, medieval/magical professions/tensions/secrets
+    sci-fi/             ← species, futuristic professions/tensions/secrets
+
+    Each genre:
+      character-attributes.js   races.js   professions.js   life-events.js
+      family-structures.js      tensions.js   secrets.js    economic-tiers.js
+      city-settings.js          settings.js   names.js      prompt-template.js
+
+cli/
+  index.js              ← thin wrapper: calls generateCharacter(), prints to stdout
 ```
-
----
-
-## UI — V1 (Functional)
-
-- Clean, readable character sheet layout
-- Stats displayed as a visible block
-- MBTI type shown with a brief descriptor
-- All AI Dungeon fields displayed with character count indicators
-- Copy buttons per field and copy-all
-- Mobile-friendly
-
-## UI — V2 (Clockwork Gears of Fate)
-
-A visual skin over the same generation engine:
-
-- **Reveal sequence:** stats roll first → MBTI locks in → skeleton seeds → narrative unfolds
-- **Gear states:** spinning (generating), locking (value assigned), idle (complete)
-- **Per-stat gears** that spin and snap to a value; clicking a gear re-rolls that stat
-- **Aesthetic:** brass/copper tones, aged metal, serif or Roman numeral stat values, parchment-feel text areas
-- Each generation phase animates independently
-
----
-
-## Out of Scope (V1)
-
-- Multiple genre support
-- User accounts or saved characters
-- Character portraits or image generation
-- Export to file (PDF, JSON)
-- Direct AI Dungeon API integration
-- MBTI or stat editing by the user before generation
