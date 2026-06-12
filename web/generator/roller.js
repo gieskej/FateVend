@@ -10,15 +10,16 @@ import { MBTI_TYPES } from './common/mbti.js';
 // ── STAT ROLLING ──────────────────────────────────────────────────────────
 
 /**
- * Rolls a single stat in range 1–100.
- * Uses a slight bell curve: average of two random rolls, scaled back to 1–100.
- * This produces more mid-range values and fewer extreme outliers.
+ * Rolls a single stat in range 1–100 using a normal distribution.
+ * Box-Muller transform: mean=50, stddev=15.
+ * ~68% of rolls land between 35–65; extremes are rare and clamped.
  * @returns {number}
  */
 function rollStat() {
-  const a = Math.random() * 100 + 1;
-  const b = Math.random() * 100 + 1;
-  return Math.min(100, Math.max(1, Math.round((a + b) / 2)));
+  const u1 = Math.random() || 1e-10;  // guard against log(0)
+  const u2 = Math.random();
+  const z  = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+  return Math.min(100, Math.max(1, Math.round(50 + 15 * z)));
 }
 
 /**

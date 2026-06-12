@@ -5,7 +5,7 @@
 //
 // No browser APIs. No Node-specific APIs. Pure JS.
 
-import { statWeightedPick, statAndWeightPick, uniformPick, randomInt } from './selector.js';
+import { statWeightedPick, statAndWeightPick, uniformPick } from './selector.js';
 import { buildCast } from './cast-builder.js';
 import { buildStatLabels } from './stat-adjectives.js';
 
@@ -98,11 +98,10 @@ export function buildSkeleton(stats, mbti, tables) {
   const name      = `${firstName} ${lastName}`;
 
   // ── AGE ───────────────────────────────────────────────────────────────
-  const ageRoll = Math.random();
-  const age = ageRoll < 0.1  ? randomInt(19, 24)
-            : ageRoll < 0.75 ? randomInt(25, 45)
-            : ageRoll < 0.95 ? randomInt(46, 58)
-            :                  randomInt(59, 70);
+  // Box-Muller normal distribution: mean=25, stddev=8, clamped to [15, 75]
+  const _au1 = Math.random() || 1e-10;
+  const _az  = Math.sqrt(-2 * Math.log(_au1)) * Math.cos(2 * Math.PI * Math.random());
+  const age  = Math.min(75, Math.max(15, Math.round(25 + 8 * _az)));
 
   // ── APPEARANCE ────────────────────────────────────────────────────────
   // Filter builds to those compatible with actual STR before weighted pick,
