@@ -437,9 +437,13 @@ function buildSkeleton(stats, mbti, tables) {
 
   const includeLGBQ  = document.getElementById('include-lgbq')?.checked ?? true;
   const includeNSFW  = document.getElementById('include-nsfw')?.checked ?? false;
+  const _au1 = Math.random() || 1e-10;
+  const _az  = Math.sqrt(-2 * Math.log(_au1)) * Math.cos(2 * Math.PI * Math.random());
+  const age  = Math.min(75, Math.max(15, Math.round(25 + 8 * _az)));
+  const allowNSFW    = includeNSFW && age >= 18;
   const genderPool   = includeLGBQ ? G : G.filter(g => g.id === 'man' || g.id === 'woman');
   const orientPool   = includeLGBQ ? O : O.filter(o => o.id === 'straight');
-  const profPool     = includeNSFW ? P : P.filter(p => !p.nsfw);
+  const profPool     = allowNSFW ? P : P.filter(p => !p.nsfw);
   const gender      = statAndWeightPick(genderPool, stats);
   const orientation = weightedPick(orientPool);
   const identity    = statAndWeightPick(ROE, stats);
@@ -447,9 +451,6 @@ function buildSkeleton(stats, mbti, tables) {
   const nameResult  = protoName(gender.id, namePool);
   const name        = nameResult.full;
   const lastName    = nameResult.last;
-  const _au1 = Math.random() || 1e-10;
-  const _az  = Math.sqrt(-2 * Math.log(_au1)) * Math.cos(2 * Math.PI * Math.random());
-  const age  = Math.min(75, Math.max(15, Math.round(25 + 8 * _az)));
   const compatBuilds = B.filter(b => { const sa = b.statAffinity?.strength ?? 1.0; if (sa >= 1.4 && stats.strength < 55) return false; if (sa >= 1.2 && stats.strength < 35) return false; if (sa <= 0.75 && stats.strength > 65) return false; return true; });
   const build       = statWeightedPick(compatBuilds.length >= 2 ? compatBuilds : B, stats);
   const hairItem    = uniformPick(H);
@@ -1598,8 +1599,8 @@ async function runAIPhase() {
     console.time('claude-api');
     const output = await callClaude(currentSkeleton, apiKey, currentGenre);
     console.timeEnd('claude-api');
-    if (output.appearancePrompt && document.getElementById('include-nsfw')?.checked) {
-      output.appearancePrompt = output.appearancePrompt.trimEnd().replace(/,?\s*$/, '') 
+    if (output.appearancePrompt && document.getElementById('include-nsfw')?.checked && currentSkeleton.age >= 18) {
+      output.appearancePrompt = output.appearancePrompt.trimEnd().replace(/,?\s*$/, '')
         + ', sexy, navel, skimpy clothing,  <lora:Flux-uncensored:0.85> nsfw';
     }
     currentOutput      = output;
