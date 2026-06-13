@@ -26,6 +26,51 @@ const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
 const MODEL             = 'claude-sonnet-4-5';
 const MAX_TOKENS        = 4096;
 
+// ── OUTPUT LIMITS ─────────────────────────────────────────────────────────
+// AI Dungeon field limits: https://help.aidungeon.com
+const LIMITS = {
+  characterEntry:   1000,
+  title:              70,
+  description:      5000,
+  opening:          4000,
+  appearancePrompt:  500,
+  npcEntry:         1000,
+  tags:               10,
+};
+
+function smartTruncate(text, maxLen) {
+  if (!text || text.length <= maxLen) return text;
+  const sub = text.slice(0, maxLen);
+  if (maxLen >= 200) {
+    const sentEnd = Math.max(
+      sub.lastIndexOf('. '), sub.lastIndexOf('! '), sub.lastIndexOf('? '),
+      sub.lastIndexOf('.\n'), sub.lastIndexOf('!\n'), sub.lastIndexOf('?\n')
+    );
+    if (sentEnd > maxLen * 0.7) return text.slice(0, sentEnd + 1).trimEnd();
+  }
+  const wordEnd = sub.lastIndexOf(' ');
+  if (wordEnd > maxLen * 0.5) return text.slice(0, wordEnd).trimEnd() + '…';
+  return sub.trimEnd() + '…';
+}
+
+function enforceOutputLimits(output) {
+  if (!output) return output;
+  const npcEntries = {};
+  for (const [k, v] of Object.entries(output.npcEntries ?? {})) {
+    npcEntries[k] = smartTruncate(String(v), LIMITS.npcEntry);
+  }
+  return {
+    ...output,
+    characterEntry:   smartTruncate(output.characterEntry,   LIMITS.characterEntry),
+    title:            smartTruncate(output.title,            LIMITS.title),
+    description:      smartTruncate(output.description,      LIMITS.description),
+    opening:          smartTruncate(output.opening,          LIMITS.opening),
+    appearancePrompt: smartTruncate(output.appearancePrompt, LIMITS.appearancePrompt),
+    tags:             (output.tags ?? []).slice(0, LIMITS.tags),
+    npcEntries,
+  };
+}
+
 // ── PROMPT TEMPLATE REGISTRY ──────────────────────────────────────────────
 
 const PROMPT_TEMPLATES = {
@@ -104,5 +149,5 @@ export async function callClaudeAPI(skeleton, apiKey, genre = 'modern') {
     throw new Error('Failed to parse Claude response as JSON');
   }
 
-  return parsed;
+  return enforceOutputLimits(parsed);
 }

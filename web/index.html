@@ -604,11 +604,37 @@ OUTPUT RULES:
 "appearancePrompt": MAX 500 chars. ${appearanceNote}`;
 }
 
+// Truncate to maxLen, preferring sentence boundaries for long fields, word boundaries for short.
+function smartTruncate(text, maxLen) {
+  if (!text || text.length <= maxLen) return text;
+  const sub = text.slice(0, maxLen);
+  if (maxLen >= 200) {
+    const sentEnd = Math.max(
+      sub.lastIndexOf('. '), sub.lastIndexOf('! '), sub.lastIndexOf('? '),
+      sub.lastIndexOf('.\n'), sub.lastIndexOf('!\n'), sub.lastIndexOf('?\n')
+    );
+    if (sentEnd > maxLen * 0.7) return text.slice(0, sentEnd + 1).trimEnd();
+  }
+  const wordEnd = sub.lastIndexOf(' ');
+  if (wordEnd > maxLen * 0.5) return text.slice(0, wordEnd).trimEnd() + '…';
+  return sub.trimEnd() + '…';
+}
+
 function parseResponse(raw) {
   try {
     const clean = raw.replace(/^```json\s*/i,'').replace(/^```\s*/i,'').replace(/```\s*$/i,'').trim();
     const p = JSON.parse(clean);
-    return { characterEntry: p.characterEntry??'', npcEntries: p.npcEntries??{}, title: p.title??'', description: p.description??'', tags: p.tags??[], opening: p.opening??'', appearancePrompt: p.appearancePrompt??'' };
+    const npcEntries = {};
+    for (const [k, v] of Object.entries(p.npcEntries ?? {})) npcEntries[k] = smartTruncate(String(v), 1000);
+    return {
+      characterEntry:   smartTruncate(p.characterEntry   ?? '', 1000),
+      npcEntries,
+      title:            smartTruncate(p.title            ?? '',   70),
+      description:      smartTruncate(p.description      ?? '', 5000),
+      tags:             (p.tags ?? []).slice(0, 10),
+      opening:          smartTruncate(p.opening          ?? '', 4000),
+      appearancePrompt: smartTruncate(p.appearancePrompt ?? '',  500),
+    };
   } catch(e) { return null; }
 }
 
