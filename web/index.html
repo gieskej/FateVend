@@ -28,9 +28,14 @@
 
     <!-- API KEYS -->
     <div class="api-section">
-      <label for="api-key">Anthropic API Key</label>
+      <label for="api-key">Anthropic API Key <span style="font-style:italic;font-size:0.65rem;color:var(--ink-faint);text-transform:none;letter-spacing:0">(Claude — takes priority)</span></label>
       <input id="api-key" class="api-input" type="password"
         placeholder="sk-ant-..." autocomplete="off" spellcheck="false">
+    </div>
+    <div class="api-section">
+      <label for="gemini-api-key">Google Gemini Key <span style="font-style:italic;font-size:0.65rem;color:var(--ink-faint);text-transform:none;letter-spacing:0">(fallback when no Anthropic key)</span></label>
+      <input id="gemini-api-key" class="api-input" type="password"
+        placeholder="AIza..." autocomplete="off" spellcheck="false">
     </div>
     <div class="api-section">
       <label for="sd-url">Local SD URL <span style="font-style:italic;font-size:0.65rem;color:var(--ink-faint);text-transform:none;letter-spacing:0">(portraits — takes priority)</span></label>
@@ -50,7 +55,82 @@
       <input id="include-nsfw" type="checkbox" style="width:1rem;height:1rem;accent-color:var(--brass);cursor:pointer;flex-shrink:0;">
       <label for="include-nsfw">NSFW <span style="font-style:italic;font-size:0.65rem;color:var(--ink-faint);text-transform:none;letter-spacing:0">(include adult professions; alters portrait prompt)</span></label>
     </div>
+    <button class="btn-help" onclick="toggleHelp(true)">? Getting API Keys</button>
   </details>
+
+  <!-- HELP MODAL -->
+  <div id="help-overlay" class="help-overlay" onclick="if(event.target===this)toggleHelp(false)">
+    <div class="help-panel">
+      <div class="help-panel-header">
+        <span class="help-panel-title">⚙ Getting API Keys &amp; Setup</span>
+        <button class="help-close" onclick="toggleHelp(false)" aria-label="Close">✕</button>
+      </div>
+      <div class="help-body">
+
+        <div class="help-section">
+          <div class="help-section-title">Anthropic — Claude (Text Generation)</div>
+          <p>Claude is the primary text generation provider. It writes the character entries, scenario description, opening, and NPC entries.</p>
+          <ol class="help-steps">
+            <li>Go to <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a> and sign in or create an account.</li>
+            <li>In the left sidebar, click <strong>API Keys</strong>.</li>
+            <li>Click <strong>Create Key</strong>, give it a name, and copy the key immediately — it won't be shown again.</li>
+            <li>Paste it into the <strong>Anthropic API Key</strong> field above. Keys start with <code>sk-ant-</code>.</li>
+          </ol>
+          <p>New accounts include free credits. Paid usage is billed per token — a typical generation costs a few cents.</p>
+        </div>
+
+        <div class="help-section">
+          <div class="help-section-title">Google Gemini (Text Generation — Fallback)</div>
+          <p>Gemini is used when no Anthropic key is configured. The Text Provider selector above the genre picker lets you switch between them if both keys are set.</p>
+          <ol class="help-steps">
+            <li>Go to <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">aistudio.google.com/app/apikey</a> and sign in with your Google account.</li>
+            <li>Click <strong>Create API key</strong> and choose or create a project.</li>
+            <li>Copy the key and paste it into the <strong>Google Gemini Key</strong> field above. Keys start with <code>AIza</code>.</li>
+          </ol>
+          <p>Gemini has a free tier with generous daily limits. Paid tiers are available for higher usage.</p>
+        </div>
+
+        <div class="help-section">
+          <div class="help-section-title">Local Stable Diffusion (Portraits — Priority)</div>
+          <p>A local Stable Diffusion instance is used for portrait generation and takes priority over the Stability AI cloud service. Generates portraits on your own hardware with no per-image cost.</p>
+          <ol class="help-steps">
+            <li>Install <a href="https://github.com/AUTOMATIC1111/stable-diffusion-webui" target="_blank" rel="noopener">AUTOMATIC1111 WebUI</a> or <a href="https://github.com/comfyanonymous/ComfyUI" target="_blank" rel="noopener">ComfyUI</a>.</li>
+            <li>Launch with the <code>--api</code> flag enabled: add <code>--api</code> to your launch arguments or <code>webui-user.bat</code>.</li>
+            <li>The default URL is <code>http://localhost:7860</code>. If running on another machine, use its IP address, e.g. <code>http://192.168.1.50:7860</code>.</li>
+            <li>Paste the URL into the <strong>Local SD URL</strong> field above. The app calls the <code>/sdapi/v1/txt2img</code> endpoint (AUTOMATIC1111 format).</li>
+          </ol>
+          <p>Install a Flux1-dev or SDXL model for best results. The portrait prompts are optimised for Flux1-dev with danbooru-style tags.</p>
+        </div>
+
+        <div class="help-section">
+          <div class="help-section-title">Stability AI (Portraits — Cloud Fallback)</div>
+          <p>Used for portrait generation when no local SD instance is reachable. Requires a paid Stability AI account.</p>
+          <ol class="help-steps">
+            <li>Go to <a href="https://platform.stability.ai" target="_blank" rel="noopener">platform.stability.ai</a> and sign in or create an account.</li>
+            <li>Click your profile in the top right, then <strong>API Keys</strong>.</li>
+            <li>Click <strong>Create API Key</strong>, copy it, and paste into the <strong>Stability AI Key</strong> field above. Keys start with <code>sk-</code>.</li>
+          </ol>
+          <p>Image generation costs credits. New accounts receive a small free allocation.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- TEXT PROVIDER SELECTOR (hidden until at least one key is configured) -->
+  <div id="provider-selector" style="text-align:center;margin-bottom:1.25rem;display:none;">
+    <div style="font-family:var(--font-display);font-size:0.62rem;letter-spacing:0.16em;color:var(--brass-light);text-transform:uppercase;margin-bottom:0.6rem;">Text Provider</div>
+    <div style="display:inline-flex;gap:0;border:1px solid var(--brass-dark);border-radius:var(--radius);overflow:hidden;">
+      <button id="provider-claude" onclick="setProvider('claude')"
+        style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:var(--brass);color:var(--ink);transition:background 0.15s,color 0.15s,opacity 0.15s;">
+        Claude
+      </button>
+      <button id="provider-gemini" onclick="setProvider('gemini')"
+        style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s,opacity 0.15s;">
+        Gemini
+      </button>
+    </div>
+  </div>
 
   <!-- GENRE SELECTOR -->
   <div style="text-align:center;margin-bottom:1.25rem;">
@@ -710,6 +790,75 @@ async function callClaude(skeleton, apiKey, genre) {
   return parsed;
 }
 
+async function callGemini(skeleton, apiKey, genre) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      systemInstruction: { parts: [{ text: getSystemPrompt(genre) }] },
+      contents: [{ role: 'user', parts: [{ text: buildPrompt(skeleton, genre) }] }],
+      generationConfig: { maxOutputTokens: 4096, temperature: 0.9 },
+    }),
+  });
+  if (!res.ok) { const t = await res.text().catch(() => ''); throw new Error(`Gemini API error ${res.status}: ${t}`); }
+  const data = await res.json();
+  const raw = data.candidates?.[0]?.content?.parts?.map(p => p.text).join('') ?? '';
+  if (!raw) throw new Error('Empty response from Gemini API');
+  const parsed = parseResponse(raw);
+  if (!parsed) throw new Error('Failed to parse Gemini response as JSON');
+  return parsed;
+}
+
+// ── Provider selector ─────────────────────────────────────────────────────
+
+async function callAI(skeleton, genre) {
+  const anthropicKey = document.getElementById('api-key').value.trim();
+  const geminiKey    = document.getElementById('gemini-api-key').value.trim();
+  if (currentProvider === 'claude' && anthropicKey) return callClaude(skeleton, anthropicKey, genre);
+  if (currentProvider === 'gemini' && geminiKey)    return callGemini(skeleton, geminiKey, genre);
+  // Fallback in case selected provider lost its key mid-session
+  if (anthropicKey) return callClaude(skeleton, anthropicKey, genre);
+  if (geminiKey)    return callGemini(skeleton, geminiKey, genre);
+  throw new Error('No AI API key configured. Enter an Anthropic or Gemini key in Settings.');
+}
+
+function setProvider(p) {
+  currentProvider = p;
+  const ids = { claude: 'provider-claude', gemini: 'provider-gemini' };
+  for (const [key, id] of Object.entries(ids)) {
+    const btn = document.getElementById(id);
+    if (!btn) continue;
+    const active = key === p;
+    btn.style.background = active ? 'var(--brass)' : 'rgba(26,18,8,0.6)';
+    btn.style.color      = active ? 'var(--ink)'   : 'var(--brass-light)';
+  }
+}
+
+function updateProviderSelector() {
+  const hasAnthropic = !!document.getElementById('api-key')?.value.trim();
+  const hasGemini    = !!document.getElementById('gemini-api-key')?.value.trim();
+  const selector     = document.getElementById('provider-selector');
+  const claudeBtn    = document.getElementById('provider-claude');
+  const geminiBtn    = document.getElementById('provider-gemini');
+
+  if (!selector) return;
+  selector.style.display = (hasAnthropic || hasGemini) ? 'block' : 'none';
+
+  claudeBtn.disabled     = !hasAnthropic;
+  claudeBtn.style.opacity  = hasAnthropic ? '1' : '0.3';
+  claudeBtn.style.cursor   = hasAnthropic ? 'pointer' : 'not-allowed';
+
+  geminiBtn.disabled     = !hasGemini;
+  geminiBtn.style.opacity  = hasGemini ? '1' : '0.3';
+  geminiBtn.style.cursor   = hasGemini ? 'pointer' : 'not-allowed';
+
+  // Auto-switch if the currently selected provider no longer has a key
+  if (currentProvider === 'claude' && !hasAnthropic && hasGemini) setProvider('gemini');
+  else if (currentProvider === 'gemini' && !hasGemini && hasAnthropic) setProvider('claude');
+  else setProvider(currentProvider);
+}
+
 // ═══════════════════════════════════════════════════════════════════════════
 // UI STATE
 // ═══════════════════════════════════════════════════════════════════════════
@@ -718,6 +867,7 @@ let currentOutput      = null;
 let currentGeneratedAt = null;
 let isGenerating    = false;
 let currentGenre    = 'modern';
+let currentProvider = 'claude';
 
 function setGenre(genre) {
   currentGenre = genre;
@@ -766,10 +916,32 @@ function setStatus(msg) {
   el.classList.toggle('visible', !!msg);
 }
 
+function playErrorSound() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(220, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(110, ctx.currentTime + 0.25);
+    gain.gain.setValueAtTime(0.18, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.3);
+    osc.onended = () => ctx.close();
+  } catch (_) {}
+}
+
 function showError(msg) {
   const el = document.getElementById('error-box');
   el.textContent = msg;
   el.classList.toggle('visible', !!msg);
+  if (msg) {
+    playErrorSound();
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
 }
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
@@ -1349,6 +1521,12 @@ function renderOutput(sk, output) {
     <button class="btn-copy-all" onclick="downloadPackage(this)" style="margin-top:0.5rem;">
       ↓ Download Package (.zip)
     </button>
+    <div class="bottom-actions">
+      <button class="btn-go-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Go to Top</button>
+      <button class="btn-generate btn-generate-secondary" onclick="runGenerate()">
+        <span class="gear-icon">⚙</span> Turn the Gears
+      </button>
+    </div>
   </div>
   `;
 }
@@ -1496,9 +1674,10 @@ function copySkeletonText(btn) {
 
 async function runGenerate() {
   if (isGenerating) return;
-  const apiKey = document.getElementById('api-key').value.trim();
-  if (!apiKey) {
-    showError('Please enter your Anthropic API key to generate narrative content. (You can find it at console.anthropic.com)');
+  const anthropicKey = document.getElementById('api-key').value.trim();
+  const geminiKey    = document.getElementById('gemini-api-key').value.trim();
+  if (!anthropicKey && !geminiKey) {
+    showError('Please enter an Anthropic or Gemini API key in Settings to generate narrative content.');
     return;
   }
 
@@ -1580,9 +1759,10 @@ async function runGenerate() {
 
 async function runAIPhase() {
   if (isGenerating || !currentSkeleton) return;
-  const apiKey = document.getElementById('api-key').value.trim();
-  if (!apiKey) {
-    showError('Please enter your Anthropic API key.');
+  const anthropicKey = document.getElementById('api-key').value.trim();
+  const geminiKey    = document.getElementById('gemini-api-key').value.trim();
+  if (!anthropicKey && !geminiKey) {
+    showError('Please enter an Anthropic or Gemini API key in Settings.');
     return;
   }
 
@@ -1622,9 +1802,9 @@ async function runAIPhase() {
       </div>
     `);
 
-    console.time('claude-api');
-    const output = await callClaude(currentSkeleton, apiKey, currentGenre);
-    console.timeEnd('claude-api');
+    console.time('ai-api');
+    const output = await callAI(currentSkeleton, currentGenre);
+    console.timeEnd('ai-api');
     if (output.appearancePrompt && document.getElementById('include-nsfw')?.checked && currentSkeleton.age >= 18) {
       output.appearancePrompt = output.appearancePrompt.trimEnd().replace(/,?\s*$/, '')
         + ', sexy, navel, skimpy clothing,  <lora:Flux-uncensored:0.85> nsfw';
@@ -1745,18 +1925,20 @@ async function generatePortrait(btn) {
 
 // ── Key persistence (localStorage) ────────────────────────────────────────
 const KEY_FIELDS = [
-  { id: 'api-key',     store: 'gof_api_key'     },
-  { id: 'sd-url',      store: 'gof_sd_url'       },
-  { id: 'img-api-key', store: 'gof_img_api_key'  },
+  { id: 'api-key',        store: 'gof_api_key'        },
+  { id: 'gemini-api-key', store: 'gof_gemini_api_key' },
+  { id: 'sd-url',         store: 'gof_sd_url'         },
+  { id: 'img-api-key',    store: 'gof_img_api_key'    },
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
   // Seed fields from serve.sh-generated config.js (takes priority — always
   // reflects the current .env key), then fall back to localStorage.
   const CONFIG_MAP = {
-    'api-key':     window.__ANTHROPIC_KEY,
-    'sd-url':      window.__SD_URL,
-    'img-api-key': window.__STABILITY_KEY,
+    'api-key':        window.__ANTHROPIC_KEY,
+    'gemini-api-key': window.__GEMINI_KEY,
+    'sd-url':         window.__SD_URL,
+    'img-api-key':    window.__STABILITY_KEY,
   };
   KEY_FIELDS.forEach(({ id, store }) => {
     const fromConfig = CONFIG_MAP[id];
@@ -1768,14 +1950,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Save on every change
+  // Save on every change; update provider selector when AI keys change
   KEY_FIELDS.forEach(({ id, store }) => {
     document.getElementById(id).addEventListener('input', e => {
       const v = e.target.value.trim();
       if (v) localStorage.setItem(store, v);
       else   localStorage.removeItem(store);
+      if (id === 'api-key' || id === 'gemini-api-key') updateProviderSelector();
     });
   });
+
+  // Init provider selector state now that keys are loaded
+  updateProviderSelector();
 
   // LGBQ checkbox persistence
   const lgbqEl = document.getElementById('include-lgbq');
@@ -1788,9 +1974,13 @@ document.addEventListener('DOMContentLoaded', () => {
   nsfwEl.addEventListener('change', e => localStorage.setItem('gof_include_nsfw', e.target.checked));
 });
 
+function toggleHelp(show) {
+  document.getElementById('help-overlay')?.classList.toggle('open', show);
+}
+
 // Expose module functions to inline HTML event handlers
 Object.assign(window, {
-  runGenerate, runAIPhase, setGenre,
+  runGenerate, runAIPhase, setGenre, setProvider, toggleHelp,
   copyField, copyAll, copySkeletonText, copyTags,
   generatePortrait, updateCount, downloadPackage,
 });

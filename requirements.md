@@ -10,14 +10,16 @@ Three genres are fully implemented: **Modern**, **Fantasy**, **Sci-Fi**.
 
 ## User Flow
 
-1. User selects a genre (Modern / Fantasy / Sci-Fi) and clicks **Turn the Gears**
-2. Stats are rolled via a bell-curve distribution (1–100 per stat)
-3. MBTI type is assigned, weighted by stats
-4. Character skeleton is seeded from curated tables, filtered/weighted by stats
-5. A slot machine animation reveals each skeleton attribute in sequence
-6. User optionally clicks **Continue** to call the Claude API for narrative generation
-7. Full output is displayed — character sheet, scenario fields, NPC entries, portrait prompt
-8. User reviews, edits fields in-place, copies to clipboard, or downloads a ZIP
+1. User selects a text provider (Claude / Gemini) and genre (Modern / Fantasy / Sci-Fi)
+2. User clicks **Turn the Gears**
+3. Stats are rolled via a bell-curve distribution (1–100 per stat)
+4. MBTI type is assigned, weighted by stats
+5. Character skeleton is seeded from curated tables, filtered/weighted by stats
+6. A slot machine animation reveals each skeleton attribute in sequence
+7. User optionally clicks **Generate Scenario** to call the AI API for narrative generation
+8. Full output is displayed — character sheet, scenario fields, NPC entries, portrait prompt
+9. User reviews, edits fields in-place, copies to clipboard, or downloads a ZIP
+10. Bottom of page offers **↑ Go to Top** and a secondary **Turn the Gears** button to regenerate
 
 ---
 
@@ -78,7 +80,12 @@ Attributes seeded from static curated tables before the AI call. Tables are weig
 
 **Optional settings (user-configurable):**
 - **LGBQ:** toggles inclusion of non-binary genders and queer orientations in rolls (on by default)
-- **NSFW:** toggles inclusion of adult professions and alters portrait prompt (off by default)
+- **NSFW:** toggles inclusion of adult professions and alters portrait prompt (off by default); automatically suppressed when rolled age < 18 regardless of the toggle
+
+**Android / synthetic species:**
+- Family structure is always set to the `android_origin` entry (N/A — synthetic construct)
+- `parent_status` and `sibling_dynamics` are set to N/A entries
+- No parents or siblings are included in the supporting cast
 
 ---
 
@@ -148,13 +155,18 @@ The 1,000-character limit requires maximum density. Generated entries convey sta
 
 - **Single-click generate** — one button produces the full skeleton and (optionally) narrative output
 - **Two-phase flow** — skeleton appears immediately after rolling; AI narrative requires a second click (allows previewing before spending API tokens)
+- **Dual AI providers** — Claude (`claude-sonnet-4-5`) and Gemini (`gemini-2.5-flash`); text provider selector shown above the genre picker when both keys are configured; auto-switches if the active provider's key is cleared
+- **Output truncation** — all AI-generated fields are clamped to AI Dungeon limits at the API response layer (`smartTruncate` prefers sentence boundaries, falls back to word boundaries with `…`)
 - **Editable fields** — all generated text is editable in-place before copying
 - **Character count indicators** — live counters on every field against AI Dungeon limits
 - **Copy to clipboard** — per-field copy buttons plus a "Copy Full Scenario Package" button
 - **Download ZIP** — exports the full scenario package as a timestamped `.zip` (scenario.json + portrait if generated)
-- **Portrait generation** — generates a character portrait via local Stable Diffusion or Stability AI API
+- **Portrait generation** — generates a character portrait via local Stable Diffusion (priority) or Stability AI API (cloud fallback)
 - **Slot machine animation** — reveals each skeleton attribute with a staggered rolling animation and bell SFX
 - **Genre selector** — switches between Modern, Fantasy, and Sci-Fi with full table swap
+- **Bottom action bar** — after generation, a **↑ Go to Top** button (smooth scroll) and a secondary **⚙ Turn the Gears** button appear below the output
+- **Error feedback** — errors trigger an audio cue (sawtooth tone, Web Audio API) and auto-scroll to the error box
+- **Help modal** — **? Getting API Keys** button (bottom of Settings panel) opens a panel with step-by-step setup instructions for all four providers/services
 
 ---
 
@@ -176,9 +188,16 @@ The generator is a **pure, portable JavaScript library** fully decoupled from an
 ```js
 import { generateCharacter } from './generator/index.js';
 
+// Claude
 const { skeleton, output } = await generateCharacter({
   genre: 'modern',   // 'modern' | 'fantasy' | 'sci-fi'
-  apiKey: 'sk-...',
+  apiKey: 'sk-ant-...',
+});
+
+// Gemini
+const { skeleton, output } = await generateCharacter({
+  genre: 'sci-fi',
+  geminiKey: 'AIza...',
 });
 
 // Skeleton only — no API call
@@ -199,7 +218,9 @@ Seed skeleton (curated genre tables, filtered/weighted by stats)
     ↓
 Build supporting cast (family-structure-aware, ethnicity-matched names)
     ↓
-[Optional] Claude API call → character entries + scenario fields + portrait prompt
+[Optional] Claude or Gemini API call → character entries + scenario fields + portrait prompt
+    ↓
+Enforce output limits (smartTruncate per-field at API response layer)
     ↓
 Return fully resolved character object
 ```
@@ -213,7 +234,7 @@ web/generator/
   selector.js           ← weighted/stat-weighted table selection
   skeleton-builder.js   ← assembles CharacterSkeleton from genre tables
   cast-builder.js       ← NPC assembly (family, friends, foils)
-  api-client.js         ← Anthropic API call + response parsing
+  api-client.js         ← Claude + Gemini API calls, smartTruncate, output limit enforcement
   stat-adjectives.js    ← stat-to-label mapping
   ui-data.js            ← re-exports all genre tables for the web UI
   types.js              ← JSDoc types (StatBlock, CharacterSkeleton, NPCSkeleton, …)

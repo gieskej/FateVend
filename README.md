@@ -1,6 +1,6 @@
 # Gears of Fate — RPG Character Generator
 
-A personality-first RPG character generator for AI Dungeon scenarios. Rolls stats, seeds a full character skeleton from curated tables, then calls the Claude API to generate terse behavioral prose — character entries, a scenario description, opening, and tags — ready to copy-paste into AI Dungeon.
+A personality-first RPG character generator for AI Dungeon scenarios. Rolls stats, seeds a full character skeleton from curated tables, then calls an AI API (Claude or Gemini) to generate terse behavioral prose — character entries, a scenario description, opening, and tags — ready to copy-paste into AI Dungeon.
 
 Three genres: **Modern**, **Fantasy**, **Sci-Fi**.
 
@@ -11,9 +11,20 @@ cd web
 bash serve.sh        # writes config.js from .env, starts Python HTTP server on :8080
 ```
 
-Open `http://localhost:8080/` in a browser. Enter your Anthropic API key in Settings and click **Turn the Gears**.
+Open `http://localhost:8080/` in a browser. Enter at least one text AI key (Anthropic or Gemini) in Settings and click **Turn the Gears**.
 
-Alternatively, open `web/index.html` directly in a browser and enter the API key manually.
+Alternatively, open `web/index.html` directly in a browser and enter keys manually.
+
+### API keys
+
+| Key | Provider | Used for | Starts with |
+|-----|----------|----------|-------------|
+| `ANTHROPIC_API_KEY` | [console.anthropic.com](https://console.anthropic.com) | Text generation (Claude) | `sk-ant-` |
+| `GEMINI_API_KEY` | [aistudio.google.com](https://aistudio.google.com/app/apikey) | Text generation (Gemini) | `AIza` |
+| `STABILITY_API_KEY` | [platform.stability.ai](https://platform.stability.ai) | Portrait generation (cloud) | `sk-` |
+| `SD_URL` | Local AUTOMATIC1111 instance | Portrait generation (local, priority) | `http://` |
+
+In-app: click **? Getting API Keys** (bottom of the Settings panel) for step-by-step instructions.
 
 ## Project structure
 
@@ -29,7 +40,7 @@ web/
     selector.js                 ← Weighted table selection
     skeleton-builder.js         ← Assembles CharacterSkeleton from genre tables
     cast-builder.js             ← Builds supporting cast (family, friends, foils)
-    api-client.js               ← Anthropic API call + response parsing
+    api-client.js               ← Claude + Gemini API calls, output truncation
     stat-adjectives.js          ← Stat-to-label mapping
     ui-data.js                  ← Re-exports all genre tables for the web UI
     types.js                    ← JSDoc type definitions
@@ -89,10 +100,16 @@ ANTHROPIC_API_KEY=sk-ant-... node cli/index.js --json
 ```js
 import { generateCharacter } from './generator/index.js';
 
-// Full generation
+// Full generation — Claude
 const { skeleton, output } = await generateCharacter({
   genre: 'modern',   // 'modern' | 'fantasy' | 'sci-fi'
   apiKey: 'sk-ant-...',
+});
+
+// Full generation — Gemini
+const { skeleton, output } = await generateCharacter({
+  genre: 'sci-fi',
+  geminiKey: 'AIza...',
 });
 
 // Skeleton only (no API call)

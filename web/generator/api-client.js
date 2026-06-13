@@ -151,3 +151,48 @@ export async function callClaudeAPI(skeleton, apiKey, genre = 'modern') {
 
   return enforceOutputLimits(parsed);
 }
+
+const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
+
+/**
+ * Calls the Google Gemini API with the assembled character skeleton.
+ *
+ * @param {import('./types.js').CharacterSkeleton} skeleton
+ * @param {string} apiKey   Google Gemini API key (AIza...)
+ * @param {string} [genre='modern']
+ * @returns {Promise<import('./types.js').GeneratedOutput>}
+ * @throws {Error} on HTTP error or parse failure
+ */
+export async function callGeminiAPI(skeleton, apiKey, genre = 'modern') {
+  const template = PROMPT_TEMPLATES[genre] ?? PROMPT_TEMPLATES.modern;
+
+  const response = await fetch(`${GEMINI_API_URL}?key=${encodeURIComponent(apiKey)}`, {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      systemInstruction: { parts: [{ text: template.systemPrompt }] },
+      contents: [{ role: 'user', parts: [{ text: template.buildPrompt(skeleton) }] }],
+      generationConfig: { maxOutputTokens: MAX_TOKENS, temperature: 0.9 },
+    }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text().catch(() => '(no body)');
+    throw new Error(`Gemini API error ${response.status}: ${errorText}`);
+  }
+
+  const data = await response.json();
+  const rawText = data.candidates?.[0]?.content?.parts?.map(p => p.text).join('') ?? '';
+
+  if (!rawText) {
+    throw new Error('Gemini API returned an empty response');
+  }
+
+  const parsed = template.parseResponse(rawText);
+
+  if (!parsed) {
+    throw new Error('Failed to parse Gemini response as JSON');
+  }
+
+  return enforceOutputLimits(parsed);
+}
