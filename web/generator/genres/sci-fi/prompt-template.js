@@ -68,7 +68,7 @@ OUTPUT RULES:
 
 "characterEntry": MAX 1000 chars. Terse behavioral prose. Lead with name, age, role. Weave in species and augmentation level through behavior — show don't state. Ground in sensory sci-fi detail. Use sentence fragments. Reference key cast members by name. End on something that creates forward momentum — a tension, an itch, a thing they want. Make the reader want to be this person, at least for an evening. Specific, alive, a little fun.
 
-"npcEntries": Object keyed by NPC name. Each value MAX 1000 chars. Same style. Reference protagonist by name. Show the relationship through behavior. These people should feel like people worth knowing.
+"npcEntries": An object where every key is an NPC name and every value is a PLAIN STRING (not a nested object). Each string ~1000 chars — use the full length. Open with physical presence: age, build, species traits, visible augmentations, how they occupy space. Then personality through behavior — speech patterns, habits, tells. Reference the protagonist by name and show the relationship in action, not summary. These people should feel real enough to trust in a firefight — or not.
 
 "title": MAX 70 chars. Hook the player. Specific and evocative. Can be darkly funny if it fits.
 
@@ -86,17 +86,28 @@ OUTPUT RULES:
  * @param {string} rawText
  * @returns {{ characterEntry, npcEntries, title, description, tags, opening, appearancePrompt } | null}
  */
+function coerceEntry(v) {
+  if (typeof v === 'string') return v;
+  if (typeof v !== 'object' || v === null) return String(v);
+  for (const key of ['entry', 'description', 'bio', 'text', 'content', 'characterEntry']) {
+    if (typeof v[key] === 'string' && v[key].length > 10) return v[key];
+  }
+  return Object.values(v).filter(x => typeof x === 'string').join(' ').trim() || JSON.stringify(v);
+}
+
 export function parseResponse(rawText) {
   try {
-    const cleaned = rawText
-      .replace(/^```json\s*/i, '')
-      .replace(/^```\s*/i, '')
-      .replace(/```\s*$/i, '')
-      .trim();
-    const parsed = JSON.parse(cleaned);
+    const fence = rawText.match(/```(?:json)?\s*([\s\S]*?)```/i);
+    let json = fence ? fence[1].trim()
+      : rawText.indexOf('{') !== -1
+        ? rawText.slice(rawText.indexOf('{'), rawText.lastIndexOf('}') + 1)
+        : rawText.trim();
+    const parsed = JSON.parse(json);
+    const npcEntries = {};
+    for (const [k, v] of Object.entries(parsed.npcEntries ?? {})) npcEntries[k] = coerceEntry(v);
     return {
       characterEntry:   parsed.characterEntry   ?? '',
-      npcEntries:       parsed.npcEntries       ?? {},
+      npcEntries,
       title:            parsed.title            ?? '',
       description:      parsed.description      ?? '',
       tags:             parsed.tags             ?? [],

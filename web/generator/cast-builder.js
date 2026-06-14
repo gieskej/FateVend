@@ -318,7 +318,7 @@ function pickTraits(n) { return uniformPickN(NPC_TRAITS, n); }
  */
 export function buildCast(protagonistName, protagonistLast, ethnicityBroad, familyStructure, namePools, protagonistGenderId, protagonistOrientation) {
   const cast = [];
-  const MAX  = 7;
+  const MAX  = 5;
 
   // ── PARENTS ──────────────────────────────────────────────────────────
   const pc = familyStructure.parentCount ?? 0;

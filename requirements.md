@@ -99,7 +99,7 @@ Each protagonist comes with a supporting cast of 4–7 NPCs.
 - Best friend(s): 1–2
 - Dramatic foil: 1 (rival, antagonist, love interest, or estranged former ally)
 
-**Hard cap: 7 NPCs maximum.**
+**Hard cap: 5 NPCs maximum.**
 
 **Each NPC profile includes:**
 - Name (family members share the protagonist's surname; friends/foils use culturally neutral names)

@@ -24,7 +24,7 @@ import {
 
 const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
 const MODEL             = 'claude-sonnet-4-5';
-const MAX_TOKENS        = 4096;
+const MAX_TOKENS        = 8192;
 
 // ── OUTPUT LIMITS ─────────────────────────────────────────────────────────
 // AI Dungeon field limits: https://help.aidungeon.com
@@ -171,8 +171,8 @@ export async function callGeminiAPI(skeleton, apiKey, genre = 'modern') {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       systemInstruction: { parts: [{ text: template.systemPrompt }] },
-      contents: [{ role: 'user', parts: [{ text: template.buildPrompt(skeleton) }] }],
-      generationConfig: { maxOutputTokens: MAX_TOKENS, temperature: 0.9 },
+      contents: [{ role: 'user', parts: [{ text: 'Return raw JSON only — no markdown, no code fences, no commentary.\n\n' + template.buildPrompt(skeleton) }] }],
+      generationConfig: { maxOutputTokens: MAX_TOKENS, temperature: 0.9, responseMimeType: 'application/json' },
     }),
   });
 
@@ -191,7 +191,7 @@ export async function callGeminiAPI(skeleton, apiKey, genre = 'modern') {
   const parsed = template.parseResponse(rawText);
 
   if (!parsed) {
-    throw new Error('Failed to parse Gemini response as JSON');
+    throw new Error(`Failed to parse Gemini response as JSON. Response started: ${rawText.slice(0, 120)}`);
   }
 
   return enforceOutputLimits(parsed);
