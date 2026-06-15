@@ -141,7 +141,11 @@ export function buildSkeleton(stats, mbti, tables) {
   const clanProfPool = identity.allowedIndustries
     ? PROFESSIONS.filter(p => identity.allowedIndustries.includes(p.industry))
     : PROFESSIONS;
-  const profession = statWeightedPick(clanProfPool.length > 0 ? clanProfPool : PROFESSIONS, stats);
+  const isNBGender = gender.id === 'non_binary' || gender.id === 'genderfluid';
+  const genderProfPool = clanProfPool.filter(p =>
+    !p.allowedGenders || isNBGender || p.allowedGenders.includes(gender.id)
+  );
+  const profession = statWeightedPick(genderProfPool.length > 0 ? genderProfPool : clanProfPool, stats);
   const sentiment  = uniformPick(profession.sentiments);
 
   // ── FAMILY STRUCTURE ──────────────────────────────────────────────────

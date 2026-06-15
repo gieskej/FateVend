@@ -111,6 +111,7 @@ export const PROFESSIONS = [
     id: 'miko',
     title: 'Miko (Shrine Maiden / Spirit Medium)',
     industry: 'Religion',
+    allowedGenders: ['woman', 'trans_woman'],
     economicTier: 3,
     nsfw: false,
     statAffinity: { charisma: 1.3, wisdom: 1.4 },

@@ -7,6 +7,7 @@ export const PROFESSIONS = [
   {
     title: 'Scholar-Official',
     industry: 'Civil Administration',
+    allowedGenders: ['man', 'trans_man'],
     economicTier: 5,
     statAffinity: { intelligence: 1.4, wisdom: 1.2, charisma: 1.1 },
     sentiments: ['Deeply believes in rule through virtue', 'Suspicious of military power', 'Obsessed with precedent and protocol'],
@@ -16,6 +17,7 @@ export const PROFESSIONS = [
   {
     title: 'Local Magistrate',
     industry: 'Civil Administration',
+    allowedGenders: ['man', 'trans_man'],
     economicTier: 4,
     statAffinity: { wisdom: 1.3, charisma: 1.2, strength: 1.0 },
     sentiments: ['Proud of maintaining order', 'Constantly navigating petitions from below and pressure from above', 'Knows every local clan grudge'],
@@ -25,6 +27,7 @@ export const PROFESSIONS = [
   {
     title: "Magistrate's Aide",
     industry: 'Civil Administration',
+    allowedGenders: ['man', 'trans_man'],
     economicTier: 3,
     statAffinity: { intelligence: 1.2, dexterity: 1.1, wisdom: 1.1 },
     sentiments: ['Keeps the actual wheels turning', 'Has leverage he will never admit to', 'Knows exactly which registers have been falsified'],
@@ -44,6 +47,7 @@ export const PROFESSIONS = [
   {
     title: 'Royal Guard',
     industry: 'Military',
+    allowedGenders: ['man', 'trans_man'],
     economicTier: 4,
     statAffinity: { strength: 1.3, constitution: 1.2, dexterity: 1.1 },
     sentiments: ['Loyalty above politics', 'Has seen what palace factions do to good men', 'Trusts only what he can verify with his eyes'],
@@ -53,6 +57,7 @@ export const PROFESSIONS = [
   {
     title: 'Cavalry Officer',
     industry: 'Military',
+    allowedGenders: ['man', 'trans_man'],
     economicTier: 4,
     statAffinity: { strength: 1.3, dexterity: 1.2, constitution: 1.1 },
     sentiments: ['Contemptuous of scholars who have never bled', 'Fiercely loyal to unit over king', 'Haunted by one specific battle'],
@@ -62,6 +67,7 @@ export const PROFESSIONS = [
   {
     title: 'Fortress Soldier',
     industry: 'Military',
+    allowedGenders: ['man', 'trans_man'],
     economicTier: 2,
     statAffinity: { strength: 1.2, constitution: 1.3, dexterity: 1.0 },
     sentiments: ['Resigned to being forgotten', 'Fiercely protective of the men beside him', 'Counts the days to rotation leave'],
@@ -72,6 +78,7 @@ export const PROFESSIONS = [
   {
     title: 'Sungkyunkwan Scholar',
     industry: 'Arts & Learning',
+    allowedGenders: ['man', 'trans_man'],
     economicTier: 4,
     statAffinity: { intelligence: 1.4, wisdom: 1.2, charisma: 1.0 },
     sentiments: ['Burning ambition dressed in studied calm', 'Grades every conversation like an examination', 'Has memorized eight times the texts actually required'],
@@ -90,6 +97,7 @@ export const PROFESSIONS = [
   {
     title: 'Court Historian',
     industry: 'Arts & Learning',
+    allowedGenders: ['man', 'trans_man'],
     economicTier: 4,
     statAffinity: { intelligence: 1.3, wisdom: 1.3, charisma: 0.9 },
     sentiments: ['Terrified of what he has already written down', 'Knows the difference between what happened and what the record says', 'Refuses to falsify; has survived this far by ambiguity'],
@@ -128,6 +136,7 @@ export const PROFESSIONS = [
   {
     title: 'Buddhist Monk',
     industry: 'Spiritual',
+    allowedGenders: ['man', 'trans_man'],
     economicTier: 2,
     statAffinity: { wisdom: 1.4, constitution: 1.1, intelligence: 1.2 },
     sentiments: ['Outside the social order, which is both prison and sanctuary', 'Holds centuries of knowledge the court would prefer to forget', 'Feeds the exiled and the desperate without asking why they are here'],
@@ -137,6 +146,7 @@ export const PROFESSIONS = [
   {
     title: 'Mudang (Shaman)',
     industry: 'Spiritual',
+    allowedGenders: ['woman', 'trans_woman'],
     economicTier: 2,
     statAffinity: { charisma: 1.3, wisdom: 1.2, constitution: 1.1 },
     sentiments: ['Despised by the Confucian order; indispensable to the families of that order', 'Hears what people do not say to priests or officials', 'The ritual is real, whatever the scholars think'],
@@ -166,6 +176,7 @@ export const PROFESSIONS = [
   {
     title: 'Palace Court Lady',
     industry: 'Service',
+    allowedGenders: ['woman', 'trans_woman'],
     economicTier: 3,
     statAffinity: { charisma: 1.2, wisdom: 1.2, intelligence: 1.1 },
     sentiments: ['Trained to be invisible and indispensable simultaneously', 'Carries information that would shake the throne', 'Has learned to want very small things very precisely'],
@@ -185,6 +196,7 @@ export const PROFESSIONS = [
   {
     title: 'Gisaeng Madam',
     industry: 'Gisaeng Arts',
+    allowedGenders: ['woman', 'trans_woman'],
     economicTier: 4,
     statAffinity: { charisma: 1.4, intelligence: 1.3, wisdom: 1.2 },
     sentiments: ['Runs the most sophisticated information network in the province', 'Has buried two magistrates and outlasted four governors', 'Sentiment is a luxury; discretion is a business model'],
@@ -194,6 +206,7 @@ export const PROFESSIONS = [
   {
     title: 'Gisaeng (Entertainer-Courtesan)',
     industry: 'Gisaeng Arts',
+    allowedGenders: ['woman', 'trans_woman'],
     economicTier: 3,
     nsfw: true,
     statAffinity: { charisma: 1.4, dexterity: 1.2, intelligence: 1.2 },

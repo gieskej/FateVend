@@ -124,6 +124,7 @@ export const PROFESSIONS = [
   {
     title: 'Midwife',
     industry: 'Ritual',
+    allowedGenders: ['woman', 'trans_woman'],
     economicTier: 4,
     statAffinity: { wisdom: 1.4, constitution: 1.2, charisma: 1.1 },
     sentiments: ['passionate', 'quietly satisfied', 'burned out', 'proud'],
