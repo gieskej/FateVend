@@ -40,6 +40,12 @@ import {
   parseResponse as joseonParseResponse,
 } from './genres/historical-korea-joseon-dynasty/prompt-template.js';
 
+import {
+  SYSTEM_PROMPT as NIHONGI_SYSTEM_PROMPT,
+  buildPrompt   as nihongiBuildPrompt,
+  parseResponse as nihongiParseResponse,
+} from './genres/nihongi/prompt-template.js';
+
 const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
 const MODEL             = 'claude-sonnet-4-5';
 const MAX_TOKENS        = 8192;
@@ -123,6 +129,11 @@ const PROMPT_TEMPLATES = {
     systemPrompt:  JOSEON_SYSTEM_PROMPT,
     buildPrompt:   joseonBuildPrompt,
     parseResponse: joseonParseResponse,
+  },
+  nihongi: {
+    systemPrompt:  NIHONGI_SYSTEM_PROMPT,
+    buildPrompt:   nihongiBuildPrompt,
+    parseResponse: nihongiParseResponse,
   },
 };
 

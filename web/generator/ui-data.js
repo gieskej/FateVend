@@ -160,6 +160,34 @@ export {
   FAMILY_STRUCTURES as JOSEON_FAMILY_STRUCTURES,
 } from './genres/historical-korea-joseon-dynasty/family-structures.js';
 
+// ── NIHONGI (ANCIENT JAPAN) ────────────────────────────────────────────────
+export {
+  GENDERS          as NIHONGI_GENDERS,
+  ORIENTATIONS     as NIHONGI_ORIENTATIONS,
+  BUILDS           as NIHONGI_BUILDS,
+  HAIR             as NIHONGI_HAIR,
+  RACES            as NIHONGI_RACES,
+  DISTINGUISHING_FEATURES as NIHONGI_DISTINGUISHING_FEATURES,
+  QUIRKS           as NIHONGI_QUIRKS,
+} from './genres/nihongi/character-attributes.js';
+
+export {
+  ECONOMIC_TIERS   as NIHONGI_ECONOMIC_TIERS,
+  CITY_SETTINGS    as NIHONGI_CITY_SETTINGS,
+  TAG_POOLS        as NIHONGI_TAG_POOLS,
+} from './genres/nihongi/settings.js';
+
+export { PROFESSIONS as NIHONGI_PROFESSIONS } from './genres/nihongi/professions.js';
+export { LIFE_EVENTS as NIHONGI_LIFE_EVENTS } from './genres/nihongi/life-events.js';
+export { TENSIONS    as NIHONGI_TENSIONS    } from './genres/nihongi/tensions.js';
+export { SECRETS     as NIHONGI_SECRETS     } from './genres/nihongi/secrets.js';
+export { NAME_POOLS  as NIHONGI_NAME_POOLS  } from './genres/nihongi/names.js';
+export {
+  PARENT_STATUSES  as NIHONGI_PARENT_STATUSES,
+  SIBLING_DYNAMICS as NIHONGI_SIBLING_DYNAMICS,
+  FAMILY_STRUCTURES as NIHONGI_FAMILY_STRUCTURES,
+} from './genres/nihongi/family-structures.js';
+
 // ── COMMON ──────────────────────────────────────────────────────────────────
 export { RELATIONSHIP_STATUSES } from './common/relationship-statuses.js';
 export { COMMON_PLOT_ARCHETYPES } from './common/plot-archetypes.js';
@@ -169,6 +197,7 @@ export { SCIFI_PLOT_ARCHETYPES } from './genres/sci-fi/plot-archetypes.js';
 export { PALEOLITHIC_PLOT_ARCHETYPES } from './genres/paleolithic/plot-archetypes.js';
 export { MANGA_HS_PLOT_ARCHETYPES }   from './genres/manga-osaka-highschool1987/plot-archetypes.js';
 export { JOSEON_PLOT_ARCHETYPES }     from './genres/historical-korea-joseon-dynasty/plot-archetypes.js';
+export { NIHONGI_PLOT_ARCHETYPES }   from './genres/nihongi/plot-archetypes.js';
 
 // ── STAT ADJECTIVES ─────────────────────────────────────────────────────────
 export { STAT_ADJECTIVES, statAdjective } from './stat-adjectives.js';

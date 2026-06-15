@@ -24,6 +24,7 @@ import { SCIFI_PLOT_ARCHETYPES }  from './genres/sci-fi/plot-archetypes.js';
 import { PALEOLITHIC_PLOT_ARCHETYPES } from './genres/paleolithic/plot-archetypes.js';
 import { MANGA_HS_PLOT_ARCHETYPES }   from './genres/manga-osaka-highschool1987/plot-archetypes.js';
 import { JOSEON_PLOT_ARCHETYPES }     from './genres/historical-korea-joseon-dynasty/plot-archetypes.js';
+import { NIHONGI_PLOT_ARCHETYPES }   from './genres/nihongi/plot-archetypes.js';
 
 // ── MODERN TABLES ─────────────────────────────────────────────────────────
 import { GENDERS as M_GENDERS, ORIENTATIONS as M_ORIENTATIONS, ETHNICITIES, BUILDS as M_BUILDS, HAIR as M_HAIR, DISTINGUISHING_FEATURES as M_DISTINGUISHING_FEATURES, QUIRKS as M_QUIRKS } from './genres/modern/character-attributes.js';
@@ -84,6 +85,16 @@ import { TENSIONS as JS_TENSIONS } from './genres/historical-korea-joseon-dynast
 import { SECRETS as JS_SECRETS } from './genres/historical-korea-joseon-dynasty/secrets.js';
 import { ECONOMIC_TIERS as JS_ECONOMIC_TIERS, CITY_SETTINGS as JS_CITY_SETTINGS, TAG_POOLS as JS_TAG_POOLS } from './genres/historical-korea-joseon-dynasty/settings.js';
 import { NAME_POOLS as JS_NAME_POOLS } from './genres/historical-korea-joseon-dynasty/names.js';
+
+// ── NIHONGI TABLES ────────────────────────────────────────────────────────
+import { GENDERS as NI_GENDERS, ORIENTATIONS as NI_ORIENTATIONS, RACES as NIHONGI_RACES, BUILDS as NI_BUILDS, HAIR as NI_HAIR, DISTINGUISHING_FEATURES as NI_DISTINGUISHING_FEATURES, QUIRKS as NI_QUIRKS } from './genres/nihongi/character-attributes.js';
+import { PROFESSIONS as NI_PROFESSIONS } from './genres/nihongi/professions.js';
+import { LIFE_EVENTS as NI_LIFE_EVENTS } from './genres/nihongi/life-events.js';
+import { FAMILY_STRUCTURES as NI_FAMILY_STRUCTURES } from './genres/nihongi/family-structures.js';
+import { TENSIONS as NI_TENSIONS } from './genres/nihongi/tensions.js';
+import { SECRETS as NI_SECRETS } from './genres/nihongi/secrets.js';
+import { ECONOMIC_TIERS as NI_ECONOMIC_TIERS, CITY_SETTINGS as NI_CITY_SETTINGS, TAG_POOLS as NI_TAG_POOLS } from './genres/nihongi/settings.js';
+import { NAME_POOLS as NI_NAME_POOLS } from './genres/nihongi/names.js';
 
 // ── GENRE TABLES REGISTRY ─────────────────────────────────────────────────
 // skeleton-builder expects the key RACES_OR_ETHNICITIES — it handles both.
@@ -208,6 +219,26 @@ const GENRE_TABLES = {
     NAME_POOLS:             JS_NAME_POOLS,
     RELATIONSHIP_STATUSES,
     PLOT_ARCHETYPES:        [...COMMON_PLOT_ARCHETYPES, ...JOSEON_PLOT_ARCHETYPES],
+  },
+  nihongi: {
+    GENDERS:                NI_GENDERS,
+    ORIENTATIONS:           NI_ORIENTATIONS,
+    RACES_OR_ETHNICITIES:   NIHONGI_RACES,
+    BUILDS:                 NI_BUILDS,
+    HAIR:                   NI_HAIR,
+    DISTINGUISHING_FEATURES:NI_DISTINGUISHING_FEATURES,
+    QUIRKS:                 NI_QUIRKS,
+    PROFESSIONS:            NI_PROFESSIONS,
+    LIFE_EVENTS:            NI_LIFE_EVENTS,
+    FAMILY_STRUCTURES:      NI_FAMILY_STRUCTURES,
+    TENSIONS:               NI_TENSIONS,
+    SECRETS:                NI_SECRETS,
+    ECONOMIC_TIERS:         NI_ECONOMIC_TIERS,
+    CITY_SETTINGS:          NI_CITY_SETTINGS,
+    TAG_POOLS:              NI_TAG_POOLS,
+    NAME_POOLS:             NI_NAME_POOLS,
+    RELATIONSHIP_STATUSES,
+    PLOT_ARCHETYPES:        [...COMMON_PLOT_ARCHETYPES, ...NIHONGI_PLOT_ARCHETYPES],
   },
 };
 
