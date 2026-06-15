@@ -100,10 +100,16 @@ export function buildSkeleton(stats, mbti, tables) {
   const name      = `${firstName} ${lastName}`;
 
   // ── AGE ───────────────────────────────────────────────────────────────
-  // Box-Muller normal distribution: mean=25, stddev=8, clamped to [15, 75]
-  const _au1 = Math.random() || 1e-10;
-  const _az  = Math.sqrt(-2 * Math.log(_au1)) * Math.cos(2 * Math.PI * Math.random());
-  const age  = Math.min(75, Math.max(15, Math.round(25 + 8 * _az)));
+  let age;
+  if (tables.AGE_RANGE) {
+    const [ageMin, ageMax] = tables.AGE_RANGE;
+    age = Math.floor(Math.random() * (ageMax - ageMin + 1)) + ageMin;
+  } else {
+    // Box-Muller normal distribution: mean=25, stddev=8, clamped to [15, 75]
+    const _au1 = Math.random() || 1e-10;
+    const _az  = Math.sqrt(-2 * Math.log(_au1)) * Math.cos(2 * Math.PI * Math.random());
+    age = Math.min(75, Math.max(15, Math.round(25 + 8 * _az)));
+  }
 
   // ── APPEARANCE ────────────────────────────────────────────────────────
   // Filter builds to those compatible with actual STR before weighted pick,

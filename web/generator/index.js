@@ -177,7 +177,8 @@ const GENRE_TABLES = {
     CITY_SETTINGS:          MH_CITY_SETTINGS,
     TAG_POOLS:              MH_TAG_POOLS,
     NAME_POOLS:             MH_NAME_POOLS,
-    RELATIONSHIP_STATUSES,
+    AGE_RANGE:              [15, 18],
+    RELATIONSHIP_STATUSES:  RELATIONSHIP_STATUSES.filter(r => ['single','dating','complicated'].includes(r.id)),
     PLOT_ARCHETYPES:        [...COMMON_PLOT_ARCHETYPES, ...MANGA_HS_PLOT_ARCHETYPES],
   },
   paleolithic: {
