@@ -172,7 +172,7 @@ export function buildSkeleton(stats, mbti, tables) {
   const tags = assembleTags(profession, tension, city, secret.severity, TAG_POOLS);
 
   // ── SUPPORTING CAST ───────────────────────────────────────────────────
-  const cast = buildCast(name, lastName, identity.broad, famStructure, NAME_POOLS, gender.id, orientation.label);
+  const cast = buildCast(name, lastName, identity.broad, famStructure, NAME_POOLS, gender.id, orientation.label, relationshipStatus.id);
 
   return {
     name, age,

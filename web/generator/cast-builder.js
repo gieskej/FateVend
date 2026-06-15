@@ -150,6 +150,73 @@ const FOIL_ROLES = [
   },
 ];
 
+// ── PARTNER DATA ──────────────────────────────────────────────────────────
+
+const PARTNER_ROLE = {
+  dating:      'partner',
+  engaged:     'fiancé(e)',
+  married:     'spouse',
+  separated:   'separated spouse',
+  divorced:    'ex-spouse',
+  widowed:     'late spouse',
+  complicated: 'complicated relationship',
+};
+
+const PARTNER_STATUS = {
+  dating:      'present — dating',
+  engaged:     'present — engaged',
+  married:     'present — married',
+  separated:   'separated — still legally married',
+  divorced:    'divorced',
+  widowed:     'deceased',
+  complicated: 'present — status unclear',
+};
+
+const PARTNER_DYNAMICS = {
+  dating: [
+    'Things are good — probably. {n} keeps waiting for the catch.',
+    'More serious than {n} is ready to admit, even to themselves',
+    'The person {n} is currently trying to be good for, with mixed success',
+    'They met at the worst possible moment. Still here.',
+  ],
+  engaged: [
+    'The wedding is set. {n} has feelings about this they are actively not examining.',
+    'Has rearranged their entire sense of the future to include {n}',
+    'The person who knows exactly what they\'re getting into — and said yes anyway',
+    '{n} proposed impulsively and has since become quietly convinced it was the right call',
+  ],
+  married: [
+    'Knows exactly when {n} is lying — and which lies are worth calling out',
+    'Has built something real with {n}, one argument and one quiet evening at a time',
+    'The person who still surprises {n}, after everything',
+    'The marriage is good. The current situation is putting pressure on "good".',
+    'Has covered for {n} more times than {n} remembers — and fewer than they do',
+  ],
+  separated: [
+    'Still technically {n}\'s spouse. The "technically" is doing a lot of work there.',
+    'It hasn\'t been filed yet. {n} keeps telling themselves it\'s just not the right moment.',
+    'Lives separately now. Still shows up in {n}\'s life in ways that complicate everything.',
+  ],
+  divorced: [
+    'They\'re civil. It took a while to get here.',
+    'The split was {n}\'s fault, their fault, nobody\'s fault — depends who you ask.',
+    'Back in {n}\'s orbit in a professional context, which is either fine or a disaster.',
+    '{n} ran into them recently. Stranger than expected. Still not sure what to make of it.',
+  ],
+  widowed: [
+    '{n} still reaches for their phone to send them something, before remembering.',
+    'The grief is old enough that {n} can function. That\'s the word they use: function.',
+    'Would have known exactly what to say about the current situation. {n} thinks about that constantly.',
+    'The chair is still where they left it. {n} hasn\'t moved it.',
+  ],
+  complicated: [
+    '"Complicated" does not fully capture the texture of what this actually is.',
+    'Both of them agree on nothing — including whether this is a relationship.',
+    '{n} would not call it healthy. {n} would also not call it finished.',
+    'They have history. The history has opinions about the present.',
+  ],
+};
+
 // ── SIBLING DYNAMICS ──────────────────────────────────────────────────────
 const SIBLING_MAP = {
   protective_older:   n => `Stepped up for ${n} when no one else did — a habit they haven't broken`,
@@ -278,8 +345,9 @@ function buildFriend(protName) {
 
 // ── FOIL BUILDER ──────────────────────────────────────────────────────────
 
-function buildFoil(protName, protagonistGenderId, protagonistOrientation) {
-  const foilType = uniformPick(FOIL_ROLES);
+function buildFoil(protName, protagonistGenderId, protagonistOrientation, excludeLoveInterest) {
+  const pool     = excludeLoveInterest ? FOIL_ROLES.filter(f => f.role !== 'love interest') : FOIL_ROLES;
+  const foilType = uniformPick(pool.length ? pool : FOIL_ROLES);
   let genderId;
   if (foilType.role === 'love interest' && protagonistGenderId && protagonistOrientation) {
     genderId = loveInterestGenderId(protagonistGenderId, protagonistOrientation);
@@ -302,6 +370,28 @@ function buildFoil(protName, protagonistGenderId, protagonistOrientation) {
 function fillD(t, n) { return t.replace(/\{n\}/g, n); }
 function pickTraits(n) { return uniformPickN(NPC_TRAITS, n); }
 
+// ── PARTNER BUILDER ───────────────────────────────────────────────────────
+
+const PARTNER_HAS_NPC = new Set(['dating','engaged','married','separated','divorced','widowed','complicated']);
+
+function buildPartner(relStatusId, protName, protLast, ethnicityBroad, namePools, protagonistGenderId, protagonistOrientation) {
+  const genderId = loveInterestGenderId(protagonistGenderId, protagonistOrientation);
+  const namePool = poolFor(namePools, ethnicityBroad);
+  const firstName = pickFirstName(genderId, namePool);
+  const lastOpts  = namePool.last.filter(n => n !== protLast);
+  const lastName  = uniformPick(lastOpts.length ? lastOpts : namePool.last);
+  const dynamics  = PARTNER_DYNAMICS[relStatusId] ?? PARTNER_DYNAMICS.complicated;
+  return {
+    name:    `${firstName} ${lastName}`,
+    role:    PARTNER_ROLE[relStatusId]   ?? 'partner',
+    status:  PARTNER_STATUS[relStatusId] ?? 'present',
+    gender:  GENDER_LABELS[genderId],
+    race:    ethnicityBroad,
+    traits:  pickTraits(3),
+    dynamic: fillD(uniformPick(dynamics), protName),
+  };
+}
+
 // ── MAIN CAST BUILDER ─────────────────────────────────────────────────────
 
 /**
@@ -314,11 +404,12 @@ function pickTraits(n) { return uniformPickN(NPC_TRAITS, n); }
  * @param {object} [namePools]             Genre NAME_POOLS (threaded for consistency)
  * @param {string} [protagonistGenderId]   e.g. "man", "woman", "non_binary"
  * @param {string} [protagonistOrientation] e.g. "Straight", "Gay / Lesbian"
+ * @param {string} [relationshipStatusId]  e.g. "married", "single", "widowed"
  * @returns {import('./types.js').NPCSkeleton[]}
  */
-export function buildCast(protagonistName, protagonistLast, ethnicityBroad, familyStructure, namePools, protagonistGenderId, protagonistOrientation) {
+export function buildCast(protagonistName, protagonistLast, ethnicityBroad, familyStructure, namePools, protagonistGenderId, protagonistOrientation, relationshipStatusId) {
   const cast = [];
-  const MAX  = 5;
+  const MAX  = 6;
 
   // ── PARENTS ──────────────────────────────────────────────────────────
   const pc = familyStructure.parentCount ?? 0;
@@ -337,6 +428,11 @@ export function buildCast(protagonistName, protagonistLast, ethnicityBroad, fami
     cast.push(buildParent(g, familyStructure, protagonistName, protagonistLast, ethnicityBroad, namePools));
   }
 
+  // ── PARTNER ───────────────────────────────────────────────────────────
+  if (relationshipStatusId && PARTNER_HAS_NPC.has(relationshipStatusId) && cast.length < MAX) {
+    cast.push(buildPartner(relationshipStatusId, protagonistName, protagonistLast, ethnicityBroad, namePools, protagonistGenderId, protagonistOrientation));
+  }
+
   // ── SIBLINGS ──────────────────────────────────────────────────────────
   const [minS, maxS] = familyStructure.siblingCount ?? [0, 0];
   const sibSlots = Math.min(randomInt(minS, maxS), 2, MAX - cast.length - 2);
@@ -351,7 +447,8 @@ export function buildCast(protagonistName, protagonistLast, ethnicityBroad, fami
   }
 
   // ── DRAMATIC FOIL ─────────────────────────────────────────────────────
-  if (cast.length < MAX) cast.push(buildFoil(protagonistName, protagonistGenderId, protagonistOrientation));
+  const hasPartner = relationshipStatusId && PARTNER_HAS_NPC.has(relationshipStatusId);
+  if (cast.length < MAX) cast.push(buildFoil(protagonistName, protagonistGenderId, protagonistOrientation, hasPartner));
 
   return cast;
 }
