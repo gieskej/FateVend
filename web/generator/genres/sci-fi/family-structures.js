@@ -174,7 +174,7 @@ export const FAMILY_STRUCTURES = [
     toneTag: 'neutral',
     notes: 'Manufactured, not born. No biological family. No parents. No siblings. The concept does not apply.',
     iconPrompt: 'sci-fi rpg icon, android emerging from a manufacturing pod, factory floor, no family present, cold blue industrial lighting, medium shot, digital art',
-    iconPath: 'generator/genres/sci-fi/icons/FAMILY_STRUCTURES#android_origin.png'
+    iconPath: 'generator/genres/sci-fi/icons/FAMILY_STRUCTURES#vat_born.png'
   },
 
   // ── STANDARD HOUSEHOLDS ───────────────────────────────────────────────────

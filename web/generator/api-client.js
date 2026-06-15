@@ -182,7 +182,7 @@ export async function callGeminiAPI(skeleton, apiKey, genre = 'modern') {
   }
 
   const data = await response.json();
-  const rawText = data.candidates?.[0]?.content?.parts?.map(p => p.text).join('') ?? '';
+  const rawText = data.candidates?.[0]?.content?.parts?.filter(p => !p.thought).map(p => p.text).join('') ?? '';
 
   if (!rawText) {
     throw new Error('Gemini API returned an empty response');

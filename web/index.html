@@ -17,7 +17,7 @@
   <!-- HEADER -->
   <header class="site-header">
     <h1 class="site-title">Gears of Fate</h1>
-    <p class="site-subtitle">RPG Character Generator for AI Dungeon</p>
+    <p class="site-subtitle">RPG Character Generator for <a target="_blank" href="https://play.aidungeon.com/" style="color:#c9a84c">AI Dungeon</a></p>
   </header>
 
   <div class="divider">⚙ ⚙ ⚙</div>
@@ -829,7 +829,7 @@ async function callGemini(skeleton, apiKey, genre) {
   });
   if (!res.ok) { const t = await res.text().catch(() => ''); throw new Error(`Gemini API error ${res.status}: ${t}`); }
   const data = await res.json();
-  const raw = data.candidates?.[0]?.content?.parts?.map(p => p.text).join('') ?? '';
+  const raw = data.candidates?.[0]?.content?.parts?.filter(p => !p.thought).map(p => p.text).join('') ?? '';
   if (!raw) throw new Error('Empty response from Gemini API');
   const parsed = parseResponse(raw);
   if (!parsed) throw new Error(`Failed to parse Gemini response as JSON. Response started: ${raw.slice(0, 120)}`);
@@ -924,6 +924,7 @@ function setGenre(genre) {
       btn.style.color      = 'var(--brass-light)';
     }
   }
+  preloadGenreIcons(genre);
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -1050,10 +1051,29 @@ const COMMON_ICON_BASE = './generator/common/icons/';
 function toIconSlug(str) {
   return str.toLowerCase().replace(/\s*\/\s*/g,'_').replace(/[-\s]+/g,'_').replace(/[^a-z0-9_]/g,'');
 }
+// Extract icon slug from an explicit iconPath field (e.g. "PROFESSIONS#foo.png" → "foo")
+function iconSlugFrom(item, fallback) {
+  const m = item.iconPath?.match(/#([^.]+)\.png$/i);
+  return m ? m[1] : fallback;
+}
 
 // Convert a data id to a readable display label
 function idToLabel(id) {
   return id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+}
+
+// Preload all icon images for a genre into the browser cache so the slot
+// animation doesn't hammer the server with concurrent requests.
+function preloadGenreIcons(genre) {
+  const cfg = getSlotConfig(genre);
+  cfg.defs.forEach(def => {
+    const entries = cfg.catalog[def.cat] ?? [];
+    const base    = def.common ? COMMON_ICON_BASE : cfg.iconBase;
+    entries.forEach(([, iconSlug]) => {
+      const img = new Image();
+      img.src = iconPath(base, def.cat, iconSlug);
+    });
+  });
 }
 
 // Per-genre slot configuration.
@@ -1106,7 +1126,7 @@ function getSlotConfig(genre) {
         GENDERS:          GENDERS_CAT,
         ORIENTATIONS:     ORIENT_CAT,
         MBTI_TYPES:       MBTI_CAT,
-        PROFESSIONS:      SCIFI_PROFESSIONS.map(p => { const sl=toIconSlug(p.title); return [sl,sl,p.title]; }),
+        PROFESSIONS:      SCIFI_PROFESSIONS.map(p => { const ds=toIconSlug(p.title); return [ds, iconSlugFrom(p,ds), p.title]; }),
         SENTIMENTS:       SENT_CAT,
         ECONOMIC_TIERS: [
           ['tier1','tier1-below-the-line','Below the Line'],
@@ -1116,7 +1136,7 @@ function getSlotConfig(genre) {
           ['tier5','tier5-elite-exec','Elite Exec'],
         ],
         CITY_SETTINGS:    SCIFI_CITY_SETTINGS.map(c => [c.id, c.id, c.label]),
-        FAMILY_STRUCTURES:SCIFI_FAMILY_STRUCTURES.map(f => [f.id, f.id, f.label]),
+        FAMILY_STRUCTURES:SCIFI_FAMILY_STRUCTURES.map(f => [f.id, iconSlugFrom(f, f.id), f.label]),
         LIFE_EVENTS:      SCIFI_LIFE_EVENTS.map(e => [e.id, e.id, idToLabel(e.id)]),
         TENSIONS:         SCIFI_TENSIONS.map(t => [t.id, t.id, idToLabel(t.id)]),
       },
@@ -1144,7 +1164,7 @@ function getSlotConfig(genre) {
         GENDERS:      GENDERS_CAT.filter(([id]) => FANTASY_GENDERS.some(g => g.id === id)),
         ORIENTATIONS: ORIENT_CAT.filter(([id]) => FANTASY_ORIENTATIONS.some(o => o.id === id)),
         MBTI_TYPES:   MBTI_CAT,
-        PROFESSION:   FANTASY_PROFESSIONS.map(p => { const sl=toIconSlug(p.title); return [sl,sl,p.title]; }),
+        PROFESSION:   FANTASY_PROFESSIONS.map(p => { const ds=toIconSlug(p.title); return [ds, iconSlugFrom(p,ds), p.title]; }),
         SENTIMENTS:   SENT_CAT,
         ECONOMIC_TIER: [
           ['tier1','destitute','Destitute'],
@@ -1182,7 +1202,7 @@ function getSlotConfig(genre) {
       GENDERS:        GENDERS_CAT.filter(([id]) => GENDERS.some(g => g.id === id)),
       ORIENTATIONS:   ORIENT_CAT.filter(([id]) => ORIENTATIONS.some(o => o.id === id)),
       MBTI_TYPES:     MBTI_CAT,
-      PROFESSION:     PROFESSIONS.map(p => { const sl=toIconSlug(p.title); return [sl,sl,p.title]; }),
+      PROFESSION:     PROFESSIONS.map(p => { const ds=toIconSlug(p.title); return [ds, iconSlugFrom(p,ds), p.title]; }),
       SENTIMENTS:     SENT_CAT,
       ECONOMIC_TIER: [
         ['tier1','survival','Survival'],
@@ -1218,8 +1238,9 @@ function renderSlotMachine(genre) {
   return `<div class="slot-machine" id="slot-machine">${slots}</div>`;
 }
 
-const _bellSfx    = new Audio('audio/u_omspjqprot-bell-222490.mp3');
-const _overtureSfx = new Audio('audio/overture_dark.mid.mp3');
+const _bellSfx       = new Audio('audio/u_omspjqprot-bell-222490.mp3');
+const _overtureSfx   = new Audio('audio/overture_dark.mid.mp3');
+const _slotMachineSfx = new Audio('audio/slot_machine.mp3');
 
 function fadeOutAudio(audio, duration = 5000) {
   if (audio.paused) return;
@@ -1242,6 +1263,9 @@ async function animateSlots(skeleton, genre) {
   const cfg  = getSlotConfig(genre);
   const slots = skeleton._slots;
   if (!slots) return;
+
+  _slotMachineSfx.currentTime = 0;
+  _slotMachineSfx.play().catch(() => {});
 
   const intervals = {};
   const indices   = {};
@@ -1269,7 +1293,7 @@ async function animateSlots(skeleton, genre) {
 
   // Land each slot with a stagger
   for (let i = 0; i < cfg.defs.length; i++) {
-    await sleep(i === 0 ? 600 : 150);
+    await sleep(i === 0 ? 1000 : 300);
 
     const def      = cfg.defs[i];
     clearInterval(intervals[def.key]);
@@ -1327,7 +1351,7 @@ function renderSkeleton(sk) {
   <!-- CHARACTER SHEET -->
   <div class="card" id="card-sheet">
     <div class="card-header">
-      <span class="card-title">⚙ Character Sheet</span>
+      <span class="card-title">⚙ Rolled Character Sheet</span>
       <button class="btn-copy" onclick="copySkeletonText(this)">Copy</button>
     </div>
     <div class="card-body">
@@ -1405,7 +1429,7 @@ function renderSkeleton(sk) {
   <!-- CAST -->
   <div class="card" id="card-cast">
     <div class="card-header">
-      <span class="card-title">⚙ Supporting Cast</span>
+      <span class="card-title">⚙ Rolled Supporting Cast</span>
     </div>
     <div class="card-body">
       <div class="cast-grid">
@@ -1456,7 +1480,7 @@ function renderOutput(sk, output) {
   <!-- SCENARIO OUTPUT -->
   <div class="card" id="card-scenario">
     <div class="card-header">
-      <span class="card-title">⚙ AI Dungeon — Scenario</span>
+      <span class="card-title">⚙ AI Generated Scenario</span>
     </div>
     <div class="card-body">
 
@@ -1528,7 +1552,7 @@ function renderOutput(sk, output) {
   <!-- CHARACTER ENTRIES -->
   <div class="card" id="card-entries">
     <div class="card-header">
-      <span class="card-title">⚙ AI Dungeon — Character Entries</span>
+      <span class="card-title">⚙ AI Generated Character Entries</span>
     </div>
     <div class="card-body">
 
@@ -1757,8 +1781,8 @@ async function runGenerate() {
     // ── Slot machine phase ─────────────────────────────────────────────
     setStatus('The fates are deciding…');
     outputArea.innerHTML = renderSlotMachine(currentGenre);
-    await animateSlots(skeleton, currentGenre);   // ~2s staggered animation
-    await sleep(200);
+    await animateSlots(skeleton, currentGenre);
+    await sleep(1200);
 
     // Skeleton cards appear below the (now locked) slot machine
     outputArea.insertAdjacentHTML('beforeend', renderSkeleton(skeleton));
@@ -1828,7 +1852,7 @@ async function runAIPhase() {
     outputArea.insertAdjacentHTML('beforeend', `
       <div id="ai-placeholder" class="card ai-loading-placeholder revealed">
         <div class="card-header">
-          <span class="card-title"><span class="loading-gear">⚙</span> Generating Scenario…</span>
+          <span class="card-title"><span class="loading-gear">⚙</span> AI Generating Scenario…</span>
         </div>
         <div class="card-body" style="padding:1.25rem 1.5rem;">
           <div class="shimmer-line" style="width:88%"></div>
@@ -2010,6 +2034,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Init provider selector state now that keys are loaded
   updateProviderSelector();
+
+  // Preload icons for the default genre so the slot animation has them cached
+  preloadGenreIcons(currentGenre);
 
   // LGBQ checkbox persistence
   const lgbqEl = document.getElementById('include-lgbq');
