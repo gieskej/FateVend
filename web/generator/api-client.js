@@ -22,6 +22,12 @@ import {
   parseResponse as scifiParseResponse,
 } from './genres/sci-fi/prompt-template.js';
 
+import {
+  SYSTEM_PROMPT as PALEO_SYSTEM_PROMPT,
+  buildPrompt   as paleoBuildPrompt,
+  parseResponse as paleoParseResponse,
+} from './genres/paleolithic/prompt-template.js';
+
 const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
 const MODEL             = 'claude-sonnet-4-5';
 const MAX_TOKENS        = 8192;
@@ -90,6 +96,11 @@ const PROMPT_TEMPLATES = {
     systemPrompt:  SCIFI_SYSTEM_PROMPT,
     buildPrompt:   scifiBuildPrompt,
     parseResponse: scifiParseResponse,
+  },
+  paleolithic: {
+    systemPrompt:  PALEO_SYSTEM_PROMPT,
+    buildPrompt:   paleoBuildPrompt,
+    parseResponse: paleoParseResponse,
   },
 };
 

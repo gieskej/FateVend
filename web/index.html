@@ -148,6 +148,10 @@
         style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s;">
         Sci-Fi
       </button>
+      <button id="genre-paleolithic" onclick="setGenre('paleolithic')"
+        style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s;">
+        Paleolithic
+      </button>
     </div>
   </div>
 
@@ -216,9 +220,15 @@ import {
   SCIFI_ECONOMIC_TIERS, SCIFI_CITY_SETTINGS, SCIFI_TAG_POOLS,
   SCIFI_PROFESSIONS, SCIFI_LIFE_EVENTS, SCIFI_TENSIONS, SCIFI_SECRETS,
   SCIFI_NAME_POOLS, SCIFI_PARENT_STATUSES, SCIFI_SIBLING_DYNAMICS, SCIFI_FAMILY_STRUCTURES,
+  // Paleolithic
+  PALEO_GENDERS, PALEO_ORIENTATIONS, PALEO_BUILDS, PALEO_HAIR,
+  PALEO_RACES, PALEO_DISTINGUISHING_FEATURES, PALEO_QUIRKS,
+  PALEO_ECONOMIC_TIERS, PALEO_CITY_SETTINGS, PALEO_TAG_POOLS,
+  PALEO_PROFESSIONS, PALEO_LIFE_EVENTS, PALEO_TENSIONS, PALEO_SECRETS,
+  PALEO_NAME_POOLS, PALEO_PARENT_STATUSES, PALEO_SIBLING_DYNAMICS, PALEO_FAMILY_STRUCTURES,
   // Shared
   RELATIONSHIP_STATUSES,
-  COMMON_PLOT_ARCHETYPES, MODERN_PLOT_ARCHETYPES, FANTASY_PLOT_ARCHETYPES, SCIFI_PLOT_ARCHETYPES,
+  COMMON_PLOT_ARCHETYPES, MODERN_PLOT_ARCHETYPES, FANTASY_PLOT_ARCHETYPES, SCIFI_PLOT_ARCHETYPES, PALEOLITHIC_PLOT_ARCHETYPES,
   STAT_ADJECTIVES, statAdjective,
   MBTI_TYPES,
   NPC_TRAITS, FRIEND_DYNAMICS, PARENT_DYNAMICS_ALIVE, FOIL_ROLES,
@@ -229,6 +239,7 @@ import {
 const MODERN_PLOTS_ALL  = [...COMMON_PLOT_ARCHETYPES, ...MODERN_PLOT_ARCHETYPES];
 const FANTASY_PLOTS_ALL = [...COMMON_PLOT_ARCHETYPES, ...FANTASY_PLOT_ARCHETYPES];
 const SCIFI_PLOTS_ALL   = [...COMMON_PLOT_ARCHETYPES, ...SCIFI_PLOT_ARCHETYPES];
+const PALEO_PLOTS_ALL   = [...COMMON_PLOT_ARCHETYPES, ...PALEOLITHIC_PLOT_ARCHETYPES];
 
 // ── Genre routing ─────────────────────────────────────────────────────────
 function getGenreTables(genre) {
@@ -278,6 +289,30 @@ function getGenreTables(genre) {
       NAME_POOLS:              SCIFI_NAME_POOLS,
       RELATIONSHIP_STATUSES,
       PLOT_ARCHETYPES:         SCIFI_PLOTS_ALL,
+    };
+  }
+  if (genre === 'paleolithic') {
+    return {
+      PROFESSIONS:             PALEO_PROFESSIONS,
+      LIFE_EVENTS:             PALEO_LIFE_EVENTS,
+      TENSIONS:                PALEO_TENSIONS,
+      SECRETS:                 PALEO_SECRETS,
+      FAMILY_STRUCTURES:       PALEO_FAMILY_STRUCTURES,
+      PARENT_STATUSES:         PALEO_PARENT_STATUSES,
+      SIBLING_DYNAMICS:        PALEO_SIBLING_DYNAMICS,
+      ECONOMIC_TIERS:          PALEO_ECONOMIC_TIERS,
+      CITY_SETTINGS:           PALEO_CITY_SETTINGS,
+      TAG_POOLS:               PALEO_TAG_POOLS,
+      RACES_OR_ETHNICITIES:    PALEO_RACES,
+      GENDERS:                 PALEO_GENDERS,
+      ORIENTATIONS:            PALEO_ORIENTATIONS,
+      BUILDS:                  PALEO_BUILDS,
+      HAIR:                    PALEO_HAIR.map(h => ({ label: typeof h === 'string' ? h : h.label })),
+      DISTINGUISHING_FEATURES: PALEO_DISTINGUISHING_FEATURES,
+      QUIRKS:                  PALEO_QUIRKS,
+      NAME_POOLS:              PALEO_NAME_POOLS,
+      RELATIONSHIP_STATUSES,
+      PLOT_ARCHETYPES:         PALEO_PLOTS_ALL,
     };
   }
   // Default: modern
@@ -648,22 +683,28 @@ function buildPrompt(sk, genre) {
     `  - ${npc.name} (${npc.role}, ${npc.status}): ${npc.traits.join(', ')}. ${npc.dynamic}`
   ).join('\n');
   const appParts = [sk.appearance.build, sk.appearance.hair, sk.appearance.distinguishingFeature, ...(sk.appearance.statNotes ?? [])].filter(Boolean).join('; ');
-  const identityLabel  = genre === 'fantasy' ? 'Race' : genre === 'sci-fi' ? 'Species' : 'Ethnicity';
-  const genreLabel     = genre === 'fantasy' ? 'fantasy' : genre === 'sci-fi' ? 'AI Dungeon sci-fi' : 'AI Dungeon';
+  const identityLabel  = genre === 'fantasy' ? 'Race' : genre === 'sci-fi' ? 'Species' : genre === 'paleolithic' ? 'Tribe' : 'Ethnicity';
+  const genreLabel     = genre === 'fantasy' ? 'fantasy' : genre === 'sci-fi' ? 'AI Dungeon sci-fi' : genre === 'paleolithic' ? 'AI Dungeon paleolithic' : 'AI Dungeon';
   const entryNote      = genre === 'fantasy'
     ? 'Lead with name, rough age, role. Weave in race appearance and quirk through behavior. Ground in sensory fantasy detail. End on forward momentum.'
     : genre === 'sci-fi'
     ? 'Lead with name, age, role. Weave in species and augmentation level through behavior — show don\'t state. Ground in sensory sci-fi detail. Use sentence fragments. Reference key cast members. End on forward momentum.'
+    : genre === 'paleolithic'
+    ? 'Lead with name, rough age, tribal role. Weave in tribal origin, physical presence, and quirk through behavior. Ground in sensory paleolithic detail: woodsmoke, flint, hide, the cold. End on forward momentum.'
     : 'Lead with name, age, role. Use sentence fragments. Fold in appearance and quirk through behavior. Reference key cast members. End on forward momentum.';
   const openingNote    = genre === 'fantasy'
     ? 'Second person. Drop the player into a vivid fantasy moment right now — mid-scene. Sensory detail (smells, sounds, weight of gear). End mid-moment with a clear choice.'
     : genre === 'sci-fi'
     ? 'Second person. Drop the player into a specific vivid sci-fi moment — right now, mid-scene. Smells: recycled air, ozone, synth-food. Weight: aug hardware, vacuum suit. End mid-moment with a clear choice or action available. No backstory. No summaries.'
+    : genre === 'paleolithic'
+    ? 'Second person. Drop the player into a specific vivid stone-age moment — right now, mid-scene. Smells: woodsmoke, wet earth, blood, hide. Weight: a hafted spear, a stone axe, cold air. End mid-moment with a clear choice or action available. No backstory. No summaries.'
     : 'Second person. Drop the player directly into a vivid, specific moment — right now. Sensory detail. End mid-moment with a clear next decision.';
   const appearanceNote = genre === 'fantasy'
     ? 'Comma-separated visual descriptors for a text-to-image model. Start with "portrait of" then: race, age range, gender, body type, hair color and style, eye description, distinguishing feature if any, armor or clothing suited to their role, setting mood. Include "face of [a historical figure, classical warrior, or well-known portrait subject whose gender, racial appearance, and approximate age match this character]". Close with: fantasy character art, detailed digital illustration, dramatic lighting. No sentences — descriptors only.'
     : genre === 'sci-fi'
     ? 'Comma-separated visual descriptors for a text-to-image model. Start with "portrait of" then: species and augmentation description, age range, gender, body type, hair, eyes, cybernetic features if any, clothing and equipment suited to their role and economic tier, setting mood. Include "face of [a historical figure or well-known portrait subject whose gender and appearance match this character — someone whose likeness is well-documented]". Close with: sci-fi concept art, detailed digital illustration, dramatic lighting. No sentences — descriptors only.'
+    : genre === 'paleolithic'
+    ? 'Comma-separated visual descriptors for a text-to-image model. Start with "portrait of" then: tribal group, age range, gender, body type, natural unprocessed hair, eyes, ritual markings or scars if any, clothing (hides, sinew, bone ornaments) suited to their role. Include "face of [a historical figure or archaeological reconstruction whose gender, geographic origin, and approximate age match this character]". Close with: paleolithic cave art style, dramatic torchlight, detailed digital illustration. No sentences — descriptors only.'
     : 'Comma-separated visual descriptors for a text-to-image model. Start with "portrait of" then: age range, gender, body type, hair color and style, eye description, distinguishing feature if any, outfit suited to their job and economic tier, setting mood. Include "face of [a historical figure or classic-cinema figure whose gender, ethnicity, and approximate age match this character — someone whose likeness is well-documented in photographs or portraiture]". Close with: photorealistic, cinematic lighting. No sentences — descriptors only.';
 
   return `Generate ${genreLabel} content for this character. Return a single JSON object with these exact keys:
@@ -811,6 +852,32 @@ STYLE:
 
 Output only the JSON structure requested. No preamble, no commentary, no markdown fences.`;
   }
+  if (genre === 'paleolithic') {
+    return `You are a creative writer generating AI Dungeon paleolithic scenario content.
+Your output must be vivid, specific, and immediately usable as a game scenario set in the Stone Age.
+
+TONE — this is critical:
+These characters are for a game. Players should want to play them.
+Write with energy, visceral detail, and a light touch even when the material is brutal.
+Dark humor is welcome. Paleolithic characters should feel fully human — clever, emotional, funny, petty, brave — not noble savages or grunting caricatures.
+A flint knapper who takes tremendous pride in their work is more interesting than a warrior who only kills things.
+Suffering is a constant backdrop — but these people laugh, love, argue, tell stories, and have opinions about how to make a fire correctly.
+Every character should have at least one quality that makes you want to follow them into the dark.
+
+SETTING RULES:
+- No metal, no writing, no agriculture. Technology: stone, bone, antler, wood, hide, sinew, plant fiber.
+- The spirit world is real within the narrative — experienced, not dismissed.
+- Small bands (15–50 people), tribal alliances, shamanic authority, elder councils.
+
+STYLE:
+- Behavioral prose — show character through action, detail, and implication. Never explain.
+- Never mention stat numbers.
+- Ground descriptions in raw sensory detail: the smell of wet hide and woodsmoke, the weight of a flint hand axe, the particular sound a cave makes before dawn.
+- Use sentence fragments where they sharpen the prose.
+- Stay within the exact character limits given.
+
+Output only the JSON structure requested. No preamble, no commentary, no markdown fences.`;
+  }
   return SYSTEM_PROMPT;
 }
 
@@ -936,9 +1003,10 @@ let currentProvider = 'gemini';
 function setGenre(genre) {
   currentGenre = genre;
   const btns = {
-    modern:  document.getElementById('genre-modern'),
-    fantasy: document.getElementById('genre-fantasy'),
-    'sci-fi':document.getElementById('genre-scifi'),
+    modern:       document.getElementById('genre-modern'),
+    fantasy:      document.getElementById('genre-fantasy'),
+    'sci-fi':     document.getElementById('genre-scifi'),
+    paleolithic:  document.getElementById('genre-paleolithic'),
   };
   for (const [g, btn] of Object.entries(btns)) {
     if (!btn) continue;
@@ -1171,6 +1239,48 @@ function getSlotConfig(genre) {
         LIFE_EVENTS:      SCIFI_LIFE_EVENTS.map(e => [e.id, e.id, idToLabel(e.id)]),
         TENSIONS:         SCIFI_TENSIONS.map(t => [t.id, t.id, idToLabel(t.id)]),
         PLOT_ARCHETYPES:  plotCat(SCIFI_PLOTS_ALL),
+      },
+    };
+  }
+
+  if (genre === 'paleolithic') {
+    return {
+      iconBase: './generator/genres/paleolithic/icons/',
+      defs: [
+        { key:'gender',    header:'Gender',       cat:'GENDERS',               common:true  },
+        { key:'species',   header:'Tribe',         cat:'TRIBES',                common:false },
+        { key:'orient',    header:'Orientation',  cat:'ORIENTATIONS',          common:true  },
+        { key:'relStatus', header:'Relationship', cat:'RELATIONSHIP_STATUSES',  common:true  },
+        { key:'mbti',      header:'Personality',  cat:'MBTI_TYPES',            common:true  },
+        { key:'prof',      header:'Role',          cat:'PROFESSIONS',           common:false },
+        { key:'sentiment', header:'Sentiment',    cat:'SENTIMENTS',            common:true  },
+        { key:'econ',      header:'Status',        cat:'ECONOMIC_TIERS',        common:false },
+        { key:'city',      header:'Territory',    cat:'CITY_SETTINGS',         common:false },
+        { key:'family',    header:'Background',   cat:'FAMILY_STRUCTURES',     common:false },
+        { key:'lifeEvent', header:'Life Event',   cat:'LIFE_EVENTS',           common:false },
+        { key:'tension',   header:'Tension',      cat:'TENSIONS',              common:false },
+        { key:'plot',      header:'Plot',          cat:'PLOT_ARCHETYPES',       common:true  },
+      ],
+      catalog: {
+        TRIBES:                PALEO_RACES.map(r => [r.id, r.id, r.broad]),
+        GENDERS:               GENDERS_CAT,
+        ORIENTATIONS:          ORIENT_CAT,
+        RELATIONSHIP_STATUSES: RELSTATUS_CAT,
+        MBTI_TYPES:            MBTI_CAT,
+        PROFESSIONS:           PALEO_PROFESSIONS.map(p => { const ds=toIconSlug(p.title); return [ds, iconSlugFrom(p,ds), p.title]; }),
+        SENTIMENTS:            SENT_CAT,
+        ECONOMIC_TIERS: [
+          ['tier1','tier1-outcast','Outcast'],
+          ['tier2','tier2-common-member','Common Member'],
+          ['tier3','tier3-valued-member','Valued Member'],
+          ['tier4','tier4-respected-elder','Elder'],
+          ['tier5','tier5-shaman-chief','Shaman / Chief'],
+        ],
+        CITY_SETTINGS:         PALEO_CITY_SETTINGS.map(c => [c.id, c.id, c.label]),
+        FAMILY_STRUCTURES:     PALEO_FAMILY_STRUCTURES.map(f => [f.id, f.id, f.label]),
+        LIFE_EVENTS:           PALEO_LIFE_EVENTS.map(e => [e.id, e.id, idToLabel(e.id)]),
+        TENSIONS:              PALEO_TENSIONS.map(t => [t.id, t.id, idToLabel(t.id)]),
+        PLOT_ARCHETYPES:       plotCat(PALEO_PLOTS_ALL),
       },
     };
   }

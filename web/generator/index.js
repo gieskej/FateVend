@@ -21,6 +21,7 @@ import { COMMON_PLOT_ARCHETYPES } from './common/plot-archetypes.js';
 import { MODERN_PLOT_ARCHETYPES } from './genres/modern/plot-archetypes.js';
 import { FANTASY_PLOT_ARCHETYPES } from './genres/fantasy/plot-archetypes.js';
 import { SCIFI_PLOT_ARCHETYPES }  from './genres/sci-fi/plot-archetypes.js';
+import { PALEOLITHIC_PLOT_ARCHETYPES } from './genres/paleolithic/plot-archetypes.js';
 
 // ── MODERN TABLES ─────────────────────────────────────────────────────────
 import { GENDERS as M_GENDERS, ORIENTATIONS as M_ORIENTATIONS, ETHNICITIES, BUILDS as M_BUILDS, HAIR as M_HAIR, DISTINGUISHING_FEATURES as M_DISTINGUISHING_FEATURES, QUIRKS as M_QUIRKS } from './genres/modern/character-attributes.js';
@@ -51,6 +52,16 @@ import { TENSIONS as SF_TENSIONS } from './genres/sci-fi/tensions.js';
 import { SECRETS as SF_SECRETS } from './genres/sci-fi/secrets.js';
 import { ECONOMIC_TIERS as SF_ECONOMIC_TIERS, CITY_SETTINGS as SF_CITY_SETTINGS, TAG_POOLS as SF_TAG_POOLS } from './genres/sci-fi/settings.js';
 import { NAME_POOLS as SF_NAME_POOLS } from './genres/sci-fi/names.js';
+
+// ── PALEOLITHIC TABLES ────────────────────────────────────────────────────
+import { GENDERS as PA_GENDERS, ORIENTATIONS as PA_ORIENTATIONS, RACES as PALEO_RACES, BUILDS as PA_BUILDS, HAIR as PA_HAIR, DISTINGUISHING_FEATURES as PA_DISTINGUISHING_FEATURES, QUIRKS as PA_QUIRKS } from './genres/paleolithic/character-attributes.js';
+import { PROFESSIONS as PA_PROFESSIONS } from './genres/paleolithic/professions.js';
+import { LIFE_EVENTS as PA_LIFE_EVENTS } from './genres/paleolithic/life-events.js';
+import { FAMILY_STRUCTURES as PA_FAMILY_STRUCTURES } from './genres/paleolithic/family-structures.js';
+import { TENSIONS as PA_TENSIONS } from './genres/paleolithic/tensions.js';
+import { SECRETS as PA_SECRETS } from './genres/paleolithic/secrets.js';
+import { ECONOMIC_TIERS as PA_ECONOMIC_TIERS, CITY_SETTINGS as PA_CITY_SETTINGS, TAG_POOLS as PA_TAG_POOLS } from './genres/paleolithic/settings.js';
+import { NAME_POOLS as PA_NAME_POOLS } from './genres/paleolithic/names.js';
 
 // ── GENRE TABLES REGISTRY ─────────────────────────────────────────────────
 // skeleton-builder expects the key RACES_OR_ETHNICITIES — it handles both.
@@ -115,6 +126,26 @@ const GENRE_TABLES = {
     NAME_POOLS:             SF_NAME_POOLS,
     RELATIONSHIP_STATUSES,
     PLOT_ARCHETYPES:        [...COMMON_PLOT_ARCHETYPES, ...SCIFI_PLOT_ARCHETYPES],
+  },
+  paleolithic: {
+    GENDERS:                PA_GENDERS,
+    ORIENTATIONS:           PA_ORIENTATIONS,
+    RACES_OR_ETHNICITIES:   PALEO_RACES,
+    BUILDS:                 PA_BUILDS,
+    HAIR:                   PA_HAIR,
+    DISTINGUISHING_FEATURES:PA_DISTINGUISHING_FEATURES,
+    QUIRKS:                 PA_QUIRKS,
+    PROFESSIONS:            PA_PROFESSIONS,
+    LIFE_EVENTS:            PA_LIFE_EVENTS,
+    FAMILY_STRUCTURES:      PA_FAMILY_STRUCTURES,
+    TENSIONS:               PA_TENSIONS,
+    SECRETS:                PA_SECRETS,
+    ECONOMIC_TIERS:         PA_ECONOMIC_TIERS,
+    CITY_SETTINGS:          PA_CITY_SETTINGS,
+    TAG_POOLS:              PA_TAG_POOLS,
+    NAME_POOLS:             PA_NAME_POOLS,
+    RELATIONSHIP_STATUSES,
+    PLOT_ARCHETYPES:        [...COMMON_PLOT_ARCHETYPES, ...PALEOLITHIC_PLOT_ARCHETYPES],
   },
 };
 

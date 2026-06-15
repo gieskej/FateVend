@@ -76,12 +76,41 @@ export {
   FAMILY_STRUCTURES as SCIFI_FAMILY_STRUCTURES,
 } from './genres/sci-fi/family-structures.js';
 
+// ── PALEOLITHIC ────────────────────────────────────────────────────────────
+export {
+  GENDERS          as PALEO_GENDERS,
+  ORIENTATIONS     as PALEO_ORIENTATIONS,
+  BUILDS           as PALEO_BUILDS,
+  HAIR             as PALEO_HAIR,
+  RACES            as PALEO_RACES,
+  DISTINGUISHING_FEATURES as PALEO_DISTINGUISHING_FEATURES,
+  QUIRKS           as PALEO_QUIRKS,
+} from './genres/paleolithic/character-attributes.js';
+
+export {
+  ECONOMIC_TIERS   as PALEO_ECONOMIC_TIERS,
+  CITY_SETTINGS    as PALEO_CITY_SETTINGS,
+  TAG_POOLS        as PALEO_TAG_POOLS,
+} from './genres/paleolithic/settings.js';
+
+export { PROFESSIONS as PALEO_PROFESSIONS } from './genres/paleolithic/professions.js';
+export { LIFE_EVENTS as PALEO_LIFE_EVENTS } from './genres/paleolithic/life-events.js';
+export { TENSIONS    as PALEO_TENSIONS    } from './genres/paleolithic/tensions.js';
+export { SECRETS     as PALEO_SECRETS     } from './genres/paleolithic/secrets.js';
+export { NAME_POOLS  as PALEO_NAME_POOLS  } from './genres/paleolithic/names.js';
+export {
+  PARENT_STATUSES  as PALEO_PARENT_STATUSES,
+  SIBLING_DYNAMICS as PALEO_SIBLING_DYNAMICS,
+  FAMILY_STRUCTURES as PALEO_FAMILY_STRUCTURES,
+} from './genres/paleolithic/family-structures.js';
+
 // ── COMMON ──────────────────────────────────────────────────────────────────
 export { RELATIONSHIP_STATUSES } from './common/relationship-statuses.js';
 export { COMMON_PLOT_ARCHETYPES } from './common/plot-archetypes.js';
 export { MODERN_PLOT_ARCHETYPES } from './genres/modern/plot-archetypes.js';
 export { FANTASY_PLOT_ARCHETYPES } from './genres/fantasy/plot-archetypes.js';
 export { SCIFI_PLOT_ARCHETYPES } from './genres/sci-fi/plot-archetypes.js';
+export { PALEOLITHIC_PLOT_ARCHETYPES } from './genres/paleolithic/plot-archetypes.js';
 
 // ── STAT ADJECTIVES ─────────────────────────────────────────────────────────
 export { STAT_ADJECTIVES, statAdjective } from './stat-adjectives.js';
