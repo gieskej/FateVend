@@ -38,6 +38,16 @@
         placeholder="AIza..." autocomplete="off" spellcheck="false">
     </div>
     <div class="api-section">
+      <label for="ollama-url">Local Ollama URL <span style="font-style:italic;font-size:0.65rem;color:var(--ink-faint);text-transform:none;letter-spacing:0">(text — local LLM, no key needed)</span></label>
+      <input id="ollama-url" class="api-input" type="text"
+        placeholder="http://localhost:11434" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="api-section">
+      <label for="ollama-model">Ollama Model <span style="font-style:italic;font-size:0.65rem;color:var(--ink-faint);text-transform:none;letter-spacing:0">(must be pulled on your Ollama server)</span></label>
+      <input id="ollama-model" class="api-input" type="text"
+        placeholder="llama3.2" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="api-section">
       <label for="sd-url">Local SD URL <span style="font-style:italic;font-size:0.65rem;color:var(--ink-faint);text-transform:none;letter-spacing:0">(portraits — takes priority)</span></label>
       <input id="sd-url" class="api-input" type="text"
         placeholder="http://bonobo.local:7860" autocomplete="off" spellcheck="false">
@@ -91,6 +101,18 @@
         </div>
 
         <div class="help-section">
+          <div class="help-section-title">Local Ollama (Text Generation — Local LLM)</div>
+          <p>Run text generation entirely on your own machine — no API key or internet required. Ollama serves open-weight models (Llama, Mistral, Gemma, etc.) via a local REST API.</p>
+          <ol class="help-steps">
+            <li>Install <a href="https://ollama.com" target="_blank" rel="noopener">Ollama</a> and run it. The default URL is <code>http://localhost:11434</code>.</li>
+            <li>Pull a model: <code>ollama pull llama3.2</code>. Larger models give richer output; 7B+ recommended.</li>
+            <li>If running on another machine, use its hostname or IP: <code>http://192.168.1.50:11434</code>. Ensure <code>OLLAMA_ORIGINS=*</code> is set so the browser can reach it.</li>
+            <li>Enter the URL in <strong>Local Ollama URL</strong> and the model name in <strong>Ollama Model</strong> above.</li>
+          </ol>
+          <p>Quality varies by model size. Llama 3.2 (3B) works but a 7B–14B model will produce noticeably better results.</p>
+        </div>
+
+        <div class="help-section">
           <div class="help-section-title">Local Stable Diffusion (Portraits — Priority)</div>
           <p>A local Stable Diffusion instance is used for portrait generation and takes priority over the Stability AI cloud service. Generates portraits on your own hardware with no per-image cost.</p>
           <ol class="help-steps">
@@ -128,6 +150,10 @@
       <button id="provider-gemini" onclick="setProvider('gemini')"
         style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s,opacity 0.15s;">
         Gemini
+      </button>
+      <button id="provider-ollama" onclick="setProvider('ollama')"
+        style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s,opacity 0.15s;display:none;">
+        Ollama
       </button>
     </div>
   </div>
@@ -1196,18 +1222,49 @@ async function callGemini(skeleton, apiKey, genre) {
   };
 }
 
+async function callOllama(skeleton, baseUrl, modelName, genre) {
+  const url   = baseUrl.replace(/\/$/, '') + '/api/chat';
+  const model = modelName || 'llama3.2';
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model,
+      stream: false,
+      messages: [
+        { role: 'system', content: getSystemPrompt(genre) },
+        { role: 'user',   content: 'Return raw JSON only — no markdown, no code fences, no commentary.\n\n' + buildPrompt(skeleton, genre) },
+      ],
+    }),
+  });
+  if (!res.ok) { const t = await res.text().catch(() => ''); throw new Error(`Ollama error ${res.status}: ${t}`); }
+  const data = await res.json();
+  const raw = data.message?.content ?? '';
+  if (!raw) throw new Error('Empty response from Ollama');
+  const parsed = parseResponse(raw);
+  if (!parsed) throw new Error(`Failed to parse Ollama response as JSON. Response started: ${raw.slice(0, 120)}`);
+  return {
+    output: parsed,
+    usage: { inputTokens: data.prompt_eval_count ?? 0, outputTokens: data.eval_count ?? 0 },
+  };
+}
+
 // ── Provider selector ─────────────────────────────────────────────────────
 
 async function callAI(skeleton, genre) {
   const anthropicKey = document.getElementById('api-key').value.trim();
   const geminiKey    = document.getElementById('gemini-api-key').value.trim();
+  const ollamaUrl    = document.getElementById('ollama-url').value.trim();
+  const ollamaModel  = document.getElementById('ollama-model').value.trim();
   let provider, model, result;
   const t0 = Date.now();
-  if      (currentProvider === 'claude' && anthropicKey) { provider = 'claude'; model = 'claude-sonnet-4-5'; result = await callClaude(skeleton, anthropicKey, genre); }
-  else if (currentProvider === 'gemini' && geminiKey)    { provider = 'gemini'; model = 'gemini-2.5-flash';  result = await callGemini(skeleton, geminiKey,    genre); }
-  else if (anthropicKey)                                  { provider = 'claude'; model = 'claude-sonnet-4-5'; result = await callClaude(skeleton, anthropicKey, genre); }
-  else if (geminiKey)                                     { provider = 'gemini'; model = 'gemini-2.5-flash';  result = await callGemini(skeleton, geminiKey,    genre); }
-  else throw new Error('No AI API key configured. Enter an Anthropic or Gemini key in Settings.');
+  if      (currentProvider === 'claude'  && anthropicKey) { provider = 'claude';  model = 'claude-sonnet-4-5'; result = await callClaude(skeleton, anthropicKey, genre); }
+  else if (currentProvider === 'gemini'  && geminiKey)    { provider = 'gemini';  model = 'gemini-2.5-flash';  result = await callGemini(skeleton, geminiKey,    genre); }
+  else if (currentProvider === 'ollama'  && ollamaUrl)    { provider = 'ollama';  model = ollamaModel || 'llama3.2'; result = await callOllama(skeleton, ollamaUrl, ollamaModel, genre); }
+  else if (anthropicKey)                                   { provider = 'claude';  model = 'claude-sonnet-4-5'; result = await callClaude(skeleton, anthropicKey, genre); }
+  else if (geminiKey)                                      { provider = 'gemini';  model = 'gemini-2.5-flash';  result = await callGemini(skeleton, geminiKey,    genre); }
+  else if (ollamaUrl)                                      { provider = 'ollama';  model = ollamaModel || 'llama3.2'; result = await callOllama(skeleton, ollamaUrl, ollamaModel, genre); }
+  else throw new Error('No text provider configured. Enter an API key or Ollama URL in Settings.');
   return {
     output: result.output,
     stats: { provider, model, ms: Date.now() - t0, inputTokens: result.usage.inputTokens, outputTokens: result.usage.outputTokens },
@@ -1216,7 +1273,7 @@ async function callAI(skeleton, genre) {
 
 function setProvider(p) {
   currentProvider = p;
-  const ids = { claude: 'provider-claude', gemini: 'provider-gemini' };
+  const ids = { claude: 'provider-claude', gemini: 'provider-gemini', ollama: 'provider-ollama' };
   for (const [key, id] of Object.entries(ids)) {
     const btn = document.getElementById(id);
     if (!btn) continue;
@@ -1229,24 +1286,30 @@ function setProvider(p) {
 function updateProviderSelector() {
   const hasAnthropic = !!document.getElementById('api-key')?.value.trim();
   const hasGemini    = !!document.getElementById('gemini-api-key')?.value.trim();
+  const hasOllama    = !!document.getElementById('ollama-url')?.value.trim();
   const selector     = document.getElementById('provider-selector');
   const claudeBtn    = document.getElementById('provider-claude');
   const geminiBtn    = document.getElementById('provider-gemini');
+  const ollamaBtn    = document.getElementById('provider-ollama');
 
   if (!selector) return;
-  selector.style.display = (hasAnthropic || hasGemini) ? 'block' : 'none';
+  selector.style.display = (hasAnthropic || hasGemini || hasOllama) ? 'block' : 'none';
 
-  claudeBtn.disabled     = !hasAnthropic;
+  claudeBtn.disabled       = !hasAnthropic;
   claudeBtn.style.opacity  = hasAnthropic ? '1' : '0.3';
   claudeBtn.style.cursor   = hasAnthropic ? 'pointer' : 'not-allowed';
 
-  geminiBtn.disabled     = !hasGemini;
+  geminiBtn.disabled       = !hasGemini;
   geminiBtn.style.opacity  = hasGemini ? '1' : '0.3';
   geminiBtn.style.cursor   = hasGemini ? 'pointer' : 'not-allowed';
 
-  // Auto-switch if the currently selected provider no longer has a key
-  if (currentProvider === 'claude' && !hasAnthropic && hasGemini) setProvider('gemini');
-  else if (currentProvider === 'gemini' && !hasGemini && hasAnthropic) setProvider('claude');
+  ollamaBtn.style.display  = hasOllama ? 'inline-block' : 'none';
+  ollamaBtn.disabled       = !hasOllama;
+
+  // Auto-switch if the currently selected provider is no longer available
+  if      (currentProvider === 'claude' && !hasAnthropic) setProvider(hasGemini ? 'gemini' : hasOllama ? 'ollama' : 'claude');
+  else if (currentProvider === 'gemini' && !hasGemini)    setProvider(hasAnthropic ? 'claude' : hasOllama ? 'ollama' : 'gemini');
+  else if (currentProvider === 'ollama' && !hasOllama)    setProvider(hasAnthropic ? 'claude' : hasGemini ? 'gemini' : 'ollama');
   else setProvider(currentProvider);
 }
 
@@ -2277,13 +2340,6 @@ function copySkeletonText(btn) {
 
 async function runGenerate() {
   if (isGenerating) return;
-  const anthropicKey = document.getElementById('api-key').value.trim();
-  const geminiKey    = document.getElementById('gemini-api-key').value.trim();
-  if (!anthropicKey && !geminiKey) {
-    showError('Please enter an Anthropic or Gemini API key in Settings to generate narrative content.');
-    return;
-  }
-
   isGenerating = true;
   currentOutput = null;
   showError('');
@@ -2364,8 +2420,9 @@ async function runAIPhase() {
   if (isGenerating || !currentSkeleton) return;
   const anthropicKey = document.getElementById('api-key').value.trim();
   const geminiKey    = document.getElementById('gemini-api-key').value.trim();
-  if (!anthropicKey && !geminiKey) {
-    showError('Please enter an Anthropic or Gemini API key in Settings.');
+  const ollamaUrl    = document.getElementById('ollama-url').value.trim();
+  if (!anthropicKey && !geminiKey && !ollamaUrl) {
+    showError('Please enter an API key or Ollama URL in Settings to generate scenario content.');
     return;
   }
 
@@ -2539,6 +2596,8 @@ async function generatePortrait(btn) {
 const KEY_FIELDS = [
   { id: 'api-key',        store: 'gof_api_key'        },
   { id: 'gemini-api-key', store: 'gof_gemini_api_key' },
+  { id: 'ollama-url',     store: 'gof_ollama_url'     },
+  { id: 'ollama-model',   store: 'gof_ollama_model'   },
   { id: 'sd-url',         store: 'gof_sd_url'         },
   { id: 'img-api-key',    store: 'gof_img_api_key'    },
 ];
@@ -2568,7 +2627,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const v = e.target.value.trim();
       if (v) localStorage.setItem(store, v);
       else   localStorage.removeItem(store);
-      if (id === 'api-key' || id === 'gemini-api-key') updateProviderSelector();
+      if (id === 'api-key' || id === 'gemini-api-key' || id === 'ollama-url') updateProviderSelector();
     });
   });
 
