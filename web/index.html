@@ -218,11 +218,17 @@ import {
   SCIFI_NAME_POOLS, SCIFI_PARENT_STATUSES, SCIFI_SIBLING_DYNAMICS, SCIFI_FAMILY_STRUCTURES,
   // Shared
   RELATIONSHIP_STATUSES,
+  COMMON_PLOT_ARCHETYPES, MODERN_PLOT_ARCHETYPES, FANTASY_PLOT_ARCHETYPES, SCIFI_PLOT_ARCHETYPES,
   STAT_ADJECTIVES, statAdjective,
   MBTI_TYPES,
   NPC_TRAITS, FRIEND_DYNAMICS, PARENT_DYNAMICS_ALIVE, FOIL_ROLES,
   NEUTRAL_FIRST_MASC, NEUTRAL_FIRST_FEM, NEUTRAL_LAST,
 } from './generator/ui-data.js';
+
+// ── Combined plot archetype pools (common + genre) ─────────────────────────
+const MODERN_PLOTS_ALL  = [...COMMON_PLOT_ARCHETYPES, ...MODERN_PLOT_ARCHETYPES];
+const FANTASY_PLOTS_ALL = [...COMMON_PLOT_ARCHETYPES, ...FANTASY_PLOT_ARCHETYPES];
+const SCIFI_PLOTS_ALL   = [...COMMON_PLOT_ARCHETYPES, ...SCIFI_PLOT_ARCHETYPES];
 
 // ── Genre routing ─────────────────────────────────────────────────────────
 function getGenreTables(genre) {
@@ -247,6 +253,7 @@ function getGenreTables(genre) {
       QUIRKS:                FANTASY_QUIRKS,
       NAME_POOLS:            FANTASY_NAME_POOLS,
       RELATIONSHIP_STATUSES,
+      PLOT_ARCHETYPES:       FANTASY_PLOTS_ALL,
     };
   }
   if (genre === 'sci-fi') {
@@ -270,6 +277,7 @@ function getGenreTables(genre) {
       QUIRKS:                  SCIFI_QUIRKS,
       NAME_POOLS:              SCIFI_NAME_POOLS,
       RELATIONSHIP_STATUSES,
+      PLOT_ARCHETYPES:         SCIFI_PLOTS_ALL,
     };
   }
   // Default: modern
@@ -293,6 +301,7 @@ function getGenreTables(genre) {
     QUIRKS,
     NAME_POOLS,
     RELATIONSHIP_STATUSES,
+    PLOT_ARCHETYPES:      MODERN_PLOTS_ALL,
   };
 }
 
@@ -518,7 +527,7 @@ function buildSkeleton(stats, mbti, tables) {
           ECONOMIC_TIERS:ET, CITY_SETTINGS:CS, TAG_POOLS:TP,
           RACES_OR_ETHNICITIES:ROE, GENDERS:G, ORIENTATIONS:O,
           BUILDS:B, HAIR:H, DISTINGUISHING_FEATURES:DF, QUIRKS:Q, NAME_POOLS:NP,
-          RELATIONSHIP_STATUSES:RS } = tables;
+          RELATIONSHIP_STATUSES:RS, PLOT_ARCHETYPES:PA } = tables;
 
   const includeLGBQ  = document.getElementById('include-lgbq')?.checked ?? true;
   const includeNSFW  = document.getElementById('include-nsfw')?.checked ?? false;
@@ -532,6 +541,7 @@ function buildSkeleton(stats, mbti, tables) {
   const gender             = statAndWeightPick(genderPool, stats);
   const orientation        = weightedPick(orientPool);
   const relStatus          = uniformPick(RS.flatMap(r => Array(r.weight).fill(r)));
+  const plotArchetypeEntry = uniformPick(PA.flatMap(p => Array(p.weight).fill(p)));
   const identity           = statAndWeightPick(ROE, stats);
   const namePool    = NP[identity.broad] ?? NP['default'];
   const nameResult  = protoName(gender.id, namePool);
@@ -577,6 +587,8 @@ function buildSkeleton(stats, mbti, tables) {
     gender: gender.label, pronouns: gender.pronouns,
     orientation: orientation.label,
     relationshipStatus: relStatus.label,
+    plotArchetype:     plotArchetypeEntry.label,
+    plotArchetypeDesc: plotArchetypeEntry.description,
     ethnicityBroad: identity.broad, ethnicityFlavor: identity.flavor,
     appearance: { build: build.label, hair, distinguishingFeature: feat, statNotes: appearanceStatNotes(stats) },
     quirk: quirk.quirk,
@@ -597,6 +609,7 @@ function buildSkeleton(stats, mbti, tables) {
       gender:    gender.id,
       orient:    orientation.id,
       relStatus: relStatus.id,
+      plot:      plotArchetypeEntry.id,
       mbti:      mbti.type,
       prof:      profSlug(profession.title),
       sentiment: sentiment.replace(/\s+/g, '_'),
@@ -654,7 +667,7 @@ function buildPrompt(sk, genre) {
     : 'Comma-separated visual descriptors for a text-to-image model. Start with "portrait of" then: age range, gender, body type, hair color and style, eye description, distinguishing feature if any, outfit suited to their job and economic tier, setting mood. Include "face of [a historical figure or classic-cinema figure whose gender, ethnicity, and approximate age match this character — someone whose likeness is well-documented in photographs or portraiture]". Close with: photorealistic, cinematic lighting. No sentences — descriptors only.';
 
   return `Generate ${genreLabel} content for this character. Return a single JSON object with these exact keys:
-"characterEntry", "npcEntries", "title", "description", "tags", "opening", "appearancePrompt"
+"characterEntry", "npcEntries", "title", "description", "tags", "opening", "appearancePrompt", "plotEssentials"
 
 CHARACTER SKELETON:
 Name: ${sk.name}, ${sk.age}, ${sk.gender} (${sk.pronouns})
@@ -670,7 +683,8 @@ Economic status: ${sk.economicLabel} — ${(sk.econMarkers || sk.economicMarkers
 Housing: ${sk.housing} | Transport: ${sk.transport}
 Setting: ${sk.cityLabel} — ${sk.cityFlavor}
 Formative event: ${sk.lifeEvent}
-Current tension: ${sk.tension}
+Plot archetype (PRIMARY STORY): ${sk.plotArchetype} — ${sk.plotArchetypeDesc}
+Background tension (secondary): ${sk.tension}
 Secret (severity: ${sk.secretSeverity}): ${sk.secret}
 
 SUPPORTING CAST:
@@ -690,7 +704,9 @@ OUTPUT RULES:
 
 "opening": MAX 4000 chars. ${openingNote}
 
-"appearancePrompt": MAX 500 chars. ${appearanceNote}`;
+"appearancePrompt": MAX 500 chars. ${appearanceNote}
+
+"plotEssentials": MAX 2000 chars. Using "${sk.plotArchetype}" as the primary story engine, write the plot overview for this scenario tailored to this specific character. Cover: what triggers the story (the inciting incident), the central objective, the main obstacle or antagonist, and what's at stake if the character fails. Ground it specifically in this character's skills, cast, and setting. The background tension ("${sk.tension}") is a secondary thread — weave it in but don't let it dominate. Write for a GM who needs to run this session tonight: concrete, specific, actionable.`;
 }
 
 // Truncate to maxLen, preferring sentence boundaries for long fields, word boundaries for short.
@@ -746,6 +762,7 @@ function parseResponse(raw) {
       tags:             (p.tags ?? []).slice(0, 10),
       opening:          smartTruncate(p.opening          ?? '', 4000),
       appearancePrompt: smartTruncate(p.appearancePrompt ?? '',  500),
+      plotEssentials:   smartTruncate(p.plotEssentials   ?? '', 2000),
     };
   } catch(e) { console.error('parseResponse failed:', e.message, '\nRaw:', raw?.slice(0, 300)); return null; }
 }
@@ -1106,6 +1123,7 @@ function getSlotConfig(genre) {
   ];
   const MBTI_CAT = MBTI_TYPES.map(m => [m.type, m.type, m.type]);
   const RELSTATUS_CAT = RELATIONSHIP_STATUSES.map(r => [r.id, r.iconPath?.match(/#([^.]+)\.png$/i)?.[1] ?? r.id, r.label]);
+  const plotCat = pool => pool.map(p => [p.id, p.iconPath?.match(/#([^.]+)\.png$/i)?.[1] ?? p.id, p.label]);
   // 'burned_out' → maps to 'burnt_out' filename; all others match
   const SENT_CAT = [
     ['proud','proud','Proud'],['resentful','resentful','Resentful'],
@@ -1129,8 +1147,9 @@ function getSlotConfig(genre) {
         { key:'econ',      header:'Economy',    cat:'ECONOMIC_TIERS',    common:false },
         { key:'city',      header:'Setting',    cat:'CITY_SETTINGS',     common:false },
         { key:'family',    header:'Background', cat:'FAMILY_STRUCTURES', common:false },
-        { key:'lifeEvent', header:'Life Event', cat:'LIFE_EVENTS',       common:false },
-        { key:'tension',   header:'Tension',    cat:'TENSIONS',          common:false },
+        { key:'lifeEvent', header:'Life Event', cat:'LIFE_EVENTS',         common:false },
+        { key:'tension',   header:'Tension',    cat:'TENSIONS',            common:false },
+        { key:'plot',      header:'Plot',        cat:'PLOT_ARCHETYPES',     common:true  },
       ],
       catalog: {
         SPECIES:          SCIFI_SPECIES.map(s => [s.id, s.id, s.broad]),
@@ -1151,6 +1170,7 @@ function getSlotConfig(genre) {
         FAMILY_STRUCTURES:SCIFI_FAMILY_STRUCTURES.map(f => [f.id, iconSlugFrom(f, f.id), f.label]),
         LIFE_EVENTS:      SCIFI_LIFE_EVENTS.map(e => [e.id, e.id, idToLabel(e.id)]),
         TENSIONS:         SCIFI_TENSIONS.map(t => [t.id, t.id, idToLabel(t.id)]),
+        PLOT_ARCHETYPES:  plotCat(SCIFI_PLOTS_ALL),
       },
     };
   }
@@ -1169,8 +1189,9 @@ function getSlotConfig(genre) {
         { key:'econ',      header:'Economy',    cat:'ECONOMIC_TIER', common:false },
         { key:'city',      header:'Setting',    cat:'CITY_SETTING',  common:false },
         { key:'family',    header:'Background', cat:'FAMILY',        common:false },
-        { key:'lifeEvent', header:'Life Event', cat:'LIFE_EVENT',    common:false },
-        { key:'tension',   header:'Tension',    cat:'TENSION',       common:false },
+        { key:'lifeEvent', header:'Life Event', cat:'LIFE_EVENT',        common:false },
+        { key:'tension',   header:'Tension',    cat:'TENSION',           common:false },
+        { key:'plot',      header:'Plot',        cat:'PLOT_ARCHETYPES',   common:true  },
       ],
       catalog: {
         RACE:         FANTASY_RACES.map(r => [r.id, r.id, r.broad]),
@@ -1189,8 +1210,9 @@ function getSlotConfig(genre) {
         ],
         CITY_SETTING: FANTASY_CITY_SETTINGS.map(c => [c.id, c.id, c.label]),
         FAMILY:       FANTASY_FAMILY_STRUCTURES.map(f => [f.id, f.id, f.label]),
-        LIFE_EVENT:   FANTASY_LIFE_EVENTS.map(e => [e.id, e.id, idToLabel(e.id)]),
-        TENSION:      FANTASY_TENSIONS.map(t => [t.id, t.id, idToLabel(t.id)]),
+        LIFE_EVENT:       FANTASY_LIFE_EVENTS.map(e => [e.id, e.id, idToLabel(e.id)]),
+        TENSION:          FANTASY_TENSIONS.map(t => [t.id, t.id, idToLabel(t.id)]),
+        PLOT_ARCHETYPES:  plotCat(FANTASY_PLOTS_ALL),
       },
     };
   }
@@ -1209,8 +1231,9 @@ function getSlotConfig(genre) {
       { key:'econ',      header:'Economy',    cat:'ECONOMIC_TIER',    common:false },
       { key:'city',      header:'Setting',    cat:'CITY_SETTING',     common:false },
       { key:'family',    header:'Background', cat:'FAMILY_STRUCTURE', common:false },
-      { key:'lifeEvent', header:'Life Event', cat:'LIFE_EVENT',       common:false },
-      { key:'tension',   header:'Tension',    cat:'TENSION',          common:false },
+      { key:'lifeEvent', header:'Life Event', cat:'LIFE_EVENT',        common:false },
+      { key:'tension',   header:'Tension',    cat:'TENSION',           common:false },
+      { key:'plot',      header:'Plot',        cat:'PLOT_ARCHETYPES',   common:true  },
     ],
     catalog: {
       ETHNICITY:      ETHNICITIES.map(e => [e.id, e.id, e.broad]),
@@ -1231,6 +1254,7 @@ function getSlotConfig(genre) {
       FAMILY_STRUCTURE: FAMILY_STRUCTURES.map(f => [f.id, f.id, f.label]),
       LIFE_EVENT:       LIFE_EVENTS.map(e => [e.id, e.id, idToLabel(e.id)]),
       TENSION:          TENSIONS.map(t => [t.id, t.id, idToLabel(t.id)]),
+      PLOT_ARCHETYPES:  plotCat(MODERN_PLOTS_ALL),
     },
   };
 }
@@ -1429,7 +1453,11 @@ function renderSkeleton(sk) {
         <span class="skeleton-val">${sk.lifeEvent}</span>
       </div>
       <div class="skeleton-row">
-        <span class="skeleton-key">Tension</span>
+        <span class="skeleton-key">Plot Archetype</span>
+        <span class="skeleton-val"><strong>${sk.plotArchetype}</strong> <span style="color:var(--ink-faint);font-style:italic">— ${sk.plotArchetypeDesc}</span></span>
+      </div>
+      <div class="skeleton-row">
+        <span class="skeleton-key">Background Tension</span>
         <span class="skeleton-val">${sk.tension}</span>
       </div>
       <div class="skeleton-row">
@@ -1502,7 +1530,7 @@ function renderOutput(sk, output) {
 
       <div class="output-field">
         <div class="field-header">
-          <span class="field-label">Title</span>
+          <span class="field-label">Details: Title</span>
           <div class="field-meta">
             <span class="char-count" id="cc-title">${output.title.length} / 70</span>
             <button class="btn-copy" onclick="copyField('field-title',this)">Copy</button>
@@ -1515,7 +1543,7 @@ function renderOutput(sk, output) {
 
       <div class="output-field">
         <div class="field-header">
-          <span class="field-label">Tags</span>
+          <span class="field-label">Details: Tags</span>
           <div class="field-meta">
             <button class="btn-copy" onclick="copyTags(this)">Copy</button>
           </div>
@@ -1540,7 +1568,7 @@ function renderOutput(sk, output) {
 
       <div class="output-field">
         <div class="field-header">
-          <span class="field-label">Description</span>
+          <span class="field-label">Details: Description</span>
           <div class="field-meta">
             <span class="char-count" id="cc-desc">${output.description.length} / 5000</span>
             <button class="btn-copy" onclick="copyField('field-desc',this)">Copy</button>
@@ -1550,9 +1578,22 @@ function renderOutput(sk, output) {
           oninput="updateCount(this,'cc-desc',5000)">${escHtml(output.description)}</textarea>
       </div>
 
+      ${output.plotEssentials ? `
       <div class="output-field">
         <div class="field-header">
-          <span class="field-label">Opening</span>
+          <span class="field-label">Plot: Plot Essentials</span>
+          <div class="field-meta">
+            <span class="char-count" id="cc-plot">${output.plotEssentials.length} / 2000</span>
+            <button class="btn-copy" onclick="copyField('field-plot',this)">Copy</button>
+          </div>
+        </div>
+        <textarea class="field-textarea" id="field-plot" rows="6"
+          oninput="updateCount(this,'cc-plot',2000)">${escHtml(output.plotEssentials)}</textarea>
+      </div>` : ''}
+
+      <div class="output-field">
+        <div class="field-header">
+          <span class="field-label">Details: Opening (Append to end of Description)</span>
           <div class="field-meta">
             <span class="char-count" id="cc-opening">${output.opening.length} / 4000</span>
             <button class="btn-copy" onclick="copyField('field-opening',this)">Copy</button>
@@ -1568,7 +1609,7 @@ function renderOutput(sk, output) {
   <!-- CHARACTER ENTRIES -->
   <div class="card" id="card-entries">
     <div class="card-header">
-      <span class="card-title">⚙ AI Generated Character Entries</span>
+      <span class="card-title">⚙ AI Generated Character Story Cards</span>
     </div>
     <div class="card-body">
 

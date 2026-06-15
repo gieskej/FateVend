@@ -34,6 +34,7 @@ const LIMITS = {
   description:      5000,
   opening:          4000,
   appearancePrompt:  500,
+  plotEssentials:   2000,
   npcEntry:         1000,
   tags:               10,
 };
@@ -66,6 +67,7 @@ function enforceOutputLimits(output) {
     description:      smartTruncate(output.description,      LIMITS.description),
     opening:          smartTruncate(output.opening,          LIMITS.opening),
     appearancePrompt: smartTruncate(output.appearancePrompt, LIMITS.appearancePrompt),
+    plotEssentials:   smartTruncate(output.plotEssentials,   LIMITS.plotEssentials),
     tags:             (output.tags ?? []).slice(0, LIMITS.tags),
     npcEntries,
   };

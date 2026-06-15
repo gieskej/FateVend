@@ -42,7 +42,7 @@ export function buildPrompt(sk) {
   ].filter(Boolean).join('; ');
 
   return `Generate AI Dungeon sci-fi content for this character. Return a single JSON object with these exact keys:
-"characterEntry", "npcEntries", "title", "description", "tags", "opening", "appearancePrompt"
+"characterEntry", "npcEntries", "title", "description", "tags", "opening", "appearancePrompt", "plotEssentials"
 
 CHARACTER SKELETON:
 Name: ${sk.name}, ${sk.age}, ${sk.gender} (${sk.pronouns})
@@ -59,7 +59,8 @@ Economic status: ${sk.economicLabel} — ${sk.economicMarkers.join('; ')}
 Housing: ${sk.housing} | Transport: ${sk.transport}
 Setting: ${sk.cityLabel} — ${sk.cityFlavor}
 Formative event: ${sk.lifeEvent}
-Current tension: ${sk.tension}
+Plot archetype (PRIMARY STORY): ${sk.plotArchetype} — ${sk.plotArchetypeDesc}
+Background tension (secondary): ${sk.tension}
 Secret (severity: ${sk.secretSeverity}): ${sk.secret}
 
 SUPPORTING CAST:
@@ -79,7 +80,9 @@ OUTPUT RULES:
 
 "opening": MAX 4000 chars. Second person. Drop the player into a specific vivid sci-fi moment — right now, mid-scene. Something is happening. Smells: recycled air, ozone, synth-food. Weight: aug hardware, vacuum suit, the particular drag of a weapon you've carried long enough it feels like part of you. End mid-moment with a clear choice or action available. No backstory. No summaries. Just: you are here, this is happening, what do you do.
 
-"appearancePrompt": MAX 500 chars. Comma-separated visual descriptors for a text-to-image model. Start with "portrait of" then: species and augmentation description, age range, gender, body type, hair, eyes, cybernetic features if any, clothing and equipment suited to their role and economic tier, setting mood. Include "face of [a historical figure or well-known portrait subject whose gender and appearance match this character — choose someone whose likeness is well-documented]". Close with: sci-fi concept art, detailed digital illustration, dramatic lighting. No sentences — descriptors only.`;
+"appearancePrompt": MAX 500 chars. Comma-separated visual descriptors for a text-to-image model. Start with "portrait of" then: species and augmentation description, age range, gender, body type, hair, eyes, cybernetic features if any, clothing and equipment suited to their role and economic tier, setting mood. Include "face of [a historical figure or well-known portrait subject whose gender and appearance match this character — choose someone whose likeness is well-documented]". Close with: sci-fi concept art, detailed digital illustration, dramatic lighting. No sentences — descriptors only.
+
+"plotEssentials": MAX 2000 chars. Using "${sk.plotArchetype}" as the primary story engine, write the plot overview for this sci-fi scenario tailored to this specific character. Cover: what triggers the story (the inciting incident), the central objective, the main obstacle or antagonist, and what's at stake if the character fails. Ground it in this character's species, skills, augmentations, cast, and setting. The background tension ("${sk.tension}") is a secondary thread — weave it in but don't let it dominate. Write for a GM who needs to run this session tonight: concrete, specific, actionable.`;
 }
 
 /**
@@ -113,7 +116,8 @@ export function parseResponse(rawText) {
       description:      parsed.description      ?? '',
       tags:             parsed.tags             ?? [],
       opening:          parsed.opening          ?? '',
-      appearancePrompt: parsed.appearancePrompt ?? '',
+      appearancePrompt: parsed.appearancePrompt  ?? '',
+      plotEssentials:   parsed.plotEssentials    ?? '',
     };
   } catch (err) {
     console.error('Failed to parse Claude response:', err);

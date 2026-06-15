@@ -78,6 +78,10 @@ export {
 
 // ── COMMON ──────────────────────────────────────────────────────────────────
 export { RELATIONSHIP_STATUSES } from './common/relationship-statuses.js';
+export { COMMON_PLOT_ARCHETYPES } from './common/plot-archetypes.js';
+export { MODERN_PLOT_ARCHETYPES } from './genres/modern/plot-archetypes.js';
+export { FANTASY_PLOT_ARCHETYPES } from './genres/fantasy/plot-archetypes.js';
+export { SCIFI_PLOT_ARCHETYPES } from './genres/sci-fi/plot-archetypes.js';
 
 // ── STAT ADJECTIVES ─────────────────────────────────────────────────────────
 export { STAT_ADJECTIVES, statAdjective } from './stat-adjectives.js';

@@ -17,6 +17,10 @@ import { rollStats, assignMBTI }  from './roller.js';
 import { buildSkeleton }          from './skeleton-builder.js';
 import { callClaudeAPI }          from './api-client.js';
 import { RELATIONSHIP_STATUSES }  from './common/relationship-statuses.js';
+import { COMMON_PLOT_ARCHETYPES } from './common/plot-archetypes.js';
+import { MODERN_PLOT_ARCHETYPES } from './genres/modern/plot-archetypes.js';
+import { FANTASY_PLOT_ARCHETYPES } from './genres/fantasy/plot-archetypes.js';
+import { SCIFI_PLOT_ARCHETYPES }  from './genres/sci-fi/plot-archetypes.js';
 
 // ── MODERN TABLES ─────────────────────────────────────────────────────────
 import { GENDERS as M_GENDERS, ORIENTATIONS as M_ORIENTATIONS, ETHNICITIES, BUILDS as M_BUILDS, HAIR as M_HAIR, DISTINGUISHING_FEATURES as M_DISTINGUISHING_FEATURES, QUIRKS as M_QUIRKS } from './genres/modern/character-attributes.js';
@@ -70,6 +74,7 @@ const GENRE_TABLES = {
     TAG_POOLS:              M_TAG_POOLS,
     NAME_POOLS:             M_NAME_POOLS,
     RELATIONSHIP_STATUSES,
+    PLOT_ARCHETYPES:        [...COMMON_PLOT_ARCHETYPES, ...MODERN_PLOT_ARCHETYPES],
   },
   fantasy: {
     GENDERS:                F_GENDERS,
@@ -89,6 +94,7 @@ const GENRE_TABLES = {
     TAG_POOLS:              F_TAG_POOLS,
     NAME_POOLS:             F_NAME_POOLS,
     RELATIONSHIP_STATUSES,
+    PLOT_ARCHETYPES:        [...COMMON_PLOT_ARCHETYPES, ...FANTASY_PLOT_ARCHETYPES],
   },
   'sci-fi': {
     GENDERS:                SF_GENDERS,
@@ -108,6 +114,7 @@ const GENRE_TABLES = {
     TAG_POOLS:              SF_TAG_POOLS,
     NAME_POOLS:             SF_NAME_POOLS,
     RELATIONSHIP_STATUSES,
+    PLOT_ARCHETYPES:        [...COMMON_PLOT_ARCHETYPES, ...SCIFI_PLOT_ARCHETYPES],
   },
 };
 

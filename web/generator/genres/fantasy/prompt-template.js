@@ -39,7 +39,7 @@ export function buildPrompt(sk) {
   ].filter(Boolean).join('; ');
 
   return `Generate AI Dungeon fantasy content for this character. Return a single JSON object with these exact keys:
-"characterEntry", "npcEntries", "title", "description", "tags", "opening", "appearancePrompt"
+"characterEntry", "npcEntries", "title", "description", "tags", "opening", "appearancePrompt", "plotEssentials"
 
 CHARACTER SKELETON:
 Name: ${sk.name}, ${sk.age}, ${sk.gender} (${sk.pronouns})
@@ -56,7 +56,8 @@ Economic status: ${sk.economicLabel} — ${sk.economicMarkers.join('; ')}
 Housing: ${sk.housing} | Transport: ${sk.transport}
 Setting: ${sk.cityLabel} — ${sk.cityFlavor}
 Formative event: ${sk.lifeEvent}
-Current tension: ${sk.tension}
+Plot archetype (PRIMARY STORY): ${sk.plotArchetype} — ${sk.plotArchetypeDesc}
+Background tension (secondary): ${sk.tension}
 Secret (severity: ${sk.secretSeverity}): ${sk.secret}
 
 SUPPORTING CAST:
@@ -76,7 +77,9 @@ OUTPUT RULES:
 
 "opening": MAX 4000 chars. Second person. Drop the player into a vivid, specific moment right now — mid-scene. Something is happening. Use sensory detail. End mid-moment with a clear choice or action available. No backstory dumps.
 
-"appearancePrompt": MAX 500 chars. Comma-separated visual descriptors for a text-to-image model. Build a portrait prompt: start with "portrait of" then describe the subject (race, age range, gender, body type), hair color and style, eye description, distinguishing feature if any, armor or clothing suited to their role, and setting mood. Include "face of [a historical figure, classical warrior, or well-known portrait subject whose gender, racial appearance, and approximate age match this character]". Close with: fantasy character art, detailed digital illustration, dramatic lighting. Descriptors only — no full sentences, no labels, no stats.`;
+"appearancePrompt": MAX 500 chars. Comma-separated visual descriptors for a text-to-image model. Build a portrait prompt: start with "portrait of" then describe the subject (race, age range, gender, body type), hair color and style, eye description, distinguishing feature if any, armor or clothing suited to their role, and setting mood. Include "face of [a historical figure, classical warrior, or well-known portrait subject whose gender, racial appearance, and approximate age match this character]". Close with: fantasy character art, detailed digital illustration, dramatic lighting. Descriptors only — no full sentences, no labels, no stats.
+
+"plotEssentials": MAX 2000 chars. Using "${sk.plotArchetype}" as the primary story engine, write the plot overview for this fantasy scenario tailored to this specific character. Cover: what triggers the story (the inciting incident), the central objective, the main obstacle or antagonist, and what's at stake if the character fails. Ground it in this character's skills, cast, and setting. The background tension ("${sk.tension}") is a secondary thread — weave it in but don't let it dominate. Write for a GM who needs to run this session tonight: concrete, specific, actionable.`;
 }
 
 /**
@@ -104,13 +107,14 @@ export function parseResponse(rawText) {
     const npcEntries = {};
     for (const [k, v] of Object.entries(parsed.npcEntries ?? {})) npcEntries[k] = coerceEntry(v);
     return {
-      characterEntry:  parsed.characterEntry  ?? '',
+      characterEntry:   parsed.characterEntry   ?? '',
       npcEntries,
-      title:           parsed.title           ?? '',
-      description:     parsed.description     ?? '',
-      tags:            parsed.tags            ?? [],
-      opening:         parsed.opening         ?? '',
-      appearancePrompt: parsed.appearancePrompt ?? '',
+      title:            parsed.title            ?? '',
+      description:      parsed.description      ?? '',
+      tags:             parsed.tags             ?? [],
+      opening:          parsed.opening          ?? '',
+      appearancePrompt: parsed.appearancePrompt  ?? '',
+      plotEssentials:   parsed.plotEssentials    ?? '',
     };
   } catch (err) {
     return null;
