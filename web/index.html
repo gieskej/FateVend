@@ -657,12 +657,17 @@ function buildSkeleton(stats, mbti, tables) {
   const allowNSFW    = includeNSFW && age >= 18;
   const genderPool   = includeLGBQ ? G : G.filter(g => g.id === 'man' || g.id === 'woman');
   const orientPool   = includeLGBQ ? O : O.filter(o => o.id === 'straight');
-  const profPool     = allowNSFW ? P : P.filter(p => !p.nsfw);
+  const identity           = statAndWeightPick(ROE, stats);
+  const nsfwPool     = allowNSFW ? P : P.filter(p => !p.nsfw);
+  const profPool     = (() => {
+    if (!identity.allowedIndustries) return nsfwPool;
+    const filtered = nsfwPool.filter(p => identity.allowedIndustries.includes(p.industry));
+    return filtered.length > 0 ? filtered : nsfwPool;
+  })();
   const gender             = statAndWeightPick(genderPool, stats);
   const orientation        = weightedPick(orientPool);
   const relStatus          = uniformPick(RS.flatMap(r => Array(r.weight).fill(r)));
   const plotArchetypeEntry = uniformPick(PA.flatMap(p => Array(p.weight).fill(p)));
-  const identity           = statAndWeightPick(ROE, stats);
   const namePool    = NP[identity.broad] ?? NP['default'];
   const nameResult  = protoName(gender.id, namePool);
   const name        = nameResult.full;

@@ -138,7 +138,10 @@ export function buildSkeleton(stats, mbti, tables) {
   const quirkEntry = statWeightedPick(QUIRKS, stats);
 
   // ── PROFESSION ────────────────────────────────────────────────────────
-  const profession = statWeightedPick(PROFESSIONS, stats);
+  const clanProfPool = identity.allowedIndustries
+    ? PROFESSIONS.filter(p => identity.allowedIndustries.includes(p.industry))
+    : PROFESSIONS;
+  const profession = statWeightedPick(clanProfPool.length > 0 ? clanProfPool : PROFESSIONS, stats);
   const sentiment  = uniformPick(profession.sentiments);
 
   // ── FAMILY STRUCTURE ──────────────────────────────────────────────────
