@@ -104,6 +104,34 @@ export {
   FAMILY_STRUCTURES as PALEO_FAMILY_STRUCTURES,
 } from './genres/paleolithic/family-structures.js';
 
+// ── MANGA OSAKA HIGH SCHOOL 1987 ───────────────────────────────────────────
+export {
+  GENDERS          as MANGA_HS_GENDERS,
+  ORIENTATIONS     as MANGA_HS_ORIENTATIONS,
+  BUILDS           as MANGA_HS_BUILDS,
+  HAIR             as MANGA_HS_HAIR,
+  RACES            as MANGA_HS_RACES,
+  DISTINGUISHING_FEATURES as MANGA_HS_DISTINGUISHING_FEATURES,
+  QUIRKS           as MANGA_HS_QUIRKS,
+} from './genres/manga-osaka-highschool1987/character-attributes.js';
+
+export {
+  ECONOMIC_TIERS   as MANGA_HS_ECONOMIC_TIERS,
+  CITY_SETTINGS    as MANGA_HS_CITY_SETTINGS,
+  TAG_POOLS        as MANGA_HS_TAG_POOLS,
+} from './genres/manga-osaka-highschool1987/settings.js';
+
+export { PROFESSIONS as MANGA_HS_PROFESSIONS } from './genres/manga-osaka-highschool1987/professions.js';
+export { LIFE_EVENTS as MANGA_HS_LIFE_EVENTS } from './genres/manga-osaka-highschool1987/life-events.js';
+export { TENSIONS    as MANGA_HS_TENSIONS    } from './genres/manga-osaka-highschool1987/tensions.js';
+export { SECRETS     as MANGA_HS_SECRETS     } from './genres/manga-osaka-highschool1987/secrets.js';
+export { NAME_POOLS  as MANGA_HS_NAME_POOLS  } from './genres/manga-osaka-highschool1987/names.js';
+export {
+  PARENT_STATUSES  as MANGA_HS_PARENT_STATUSES,
+  SIBLING_DYNAMICS as MANGA_HS_SIBLING_DYNAMICS,
+  FAMILY_STRUCTURES as MANGA_HS_FAMILY_STRUCTURES,
+} from './genres/manga-osaka-highschool1987/family-structures.js';
+
 // ── COMMON ──────────────────────────────────────────────────────────────────
 export { RELATIONSHIP_STATUSES } from './common/relationship-statuses.js';
 export { COMMON_PLOT_ARCHETYPES } from './common/plot-archetypes.js';
@@ -111,6 +139,7 @@ export { MODERN_PLOT_ARCHETYPES } from './genres/modern/plot-archetypes.js';
 export { FANTASY_PLOT_ARCHETYPES } from './genres/fantasy/plot-archetypes.js';
 export { SCIFI_PLOT_ARCHETYPES } from './genres/sci-fi/plot-archetypes.js';
 export { PALEOLITHIC_PLOT_ARCHETYPES } from './genres/paleolithic/plot-archetypes.js';
+export { MANGA_HS_PLOT_ARCHETYPES }   from './genres/manga-osaka-highschool1987/plot-archetypes.js';
 
 // ── STAT ADJECTIVES ─────────────────────────────────────────────────────────
 export { STAT_ADJECTIVES, statAdjective } from './stat-adjectives.js';

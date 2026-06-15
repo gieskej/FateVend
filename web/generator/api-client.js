@@ -28,6 +28,12 @@ import {
   parseResponse as paleoParseResponse,
 } from './genres/paleolithic/prompt-template.js';
 
+import {
+  SYSTEM_PROMPT as MANGA_HS_SYSTEM_PROMPT,
+  buildPrompt   as mangaHsBuildPrompt,
+  parseResponse as mangaHsParseResponse,
+} from './genres/manga-osaka-highschool1987/prompt-template.js';
+
 const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
 const MODEL             = 'claude-sonnet-4-5';
 const MAX_TOKENS        = 8192;
@@ -101,6 +107,11 @@ const PROMPT_TEMPLATES = {
     systemPrompt:  PALEO_SYSTEM_PROMPT,
     buildPrompt:   paleoBuildPrompt,
     parseResponse: paleoParseResponse,
+  },
+  'manga-osaka-highschool1987': {
+    systemPrompt:  MANGA_HS_SYSTEM_PROMPT,
+    buildPrompt:   mangaHsBuildPrompt,
+    parseResponse: mangaHsParseResponse,
   },
 };
 

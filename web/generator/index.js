@@ -22,6 +22,7 @@ import { MODERN_PLOT_ARCHETYPES } from './genres/modern/plot-archetypes.js';
 import { FANTASY_PLOT_ARCHETYPES } from './genres/fantasy/plot-archetypes.js';
 import { SCIFI_PLOT_ARCHETYPES }  from './genres/sci-fi/plot-archetypes.js';
 import { PALEOLITHIC_PLOT_ARCHETYPES } from './genres/paleolithic/plot-archetypes.js';
+import { MANGA_HS_PLOT_ARCHETYPES }   from './genres/manga-osaka-highschool1987/plot-archetypes.js';
 
 // ── MODERN TABLES ─────────────────────────────────────────────────────────
 import { GENDERS as M_GENDERS, ORIENTATIONS as M_ORIENTATIONS, ETHNICITIES, BUILDS as M_BUILDS, HAIR as M_HAIR, DISTINGUISHING_FEATURES as M_DISTINGUISHING_FEATURES, QUIRKS as M_QUIRKS } from './genres/modern/character-attributes.js';
@@ -52,6 +53,16 @@ import { TENSIONS as SF_TENSIONS } from './genres/sci-fi/tensions.js';
 import { SECRETS as SF_SECRETS } from './genres/sci-fi/secrets.js';
 import { ECONOMIC_TIERS as SF_ECONOMIC_TIERS, CITY_SETTINGS as SF_CITY_SETTINGS, TAG_POOLS as SF_TAG_POOLS } from './genres/sci-fi/settings.js';
 import { NAME_POOLS as SF_NAME_POOLS } from './genres/sci-fi/names.js';
+
+// ── MANGA OSAKA HIGH SCHOOL 1987 TABLES ──────────────────────────────────
+import { GENDERS as MH_GENDERS, ORIENTATIONS as MH_ORIENTATIONS, RACES as MH_RACES, BUILDS as MH_BUILDS, HAIR as MH_HAIR, DISTINGUISHING_FEATURES as MH_DISTINGUISHING_FEATURES, QUIRKS as MH_QUIRKS } from './genres/manga-osaka-highschool1987/character-attributes.js';
+import { PROFESSIONS as MH_PROFESSIONS } from './genres/manga-osaka-highschool1987/professions.js';
+import { LIFE_EVENTS as MH_LIFE_EVENTS } from './genres/manga-osaka-highschool1987/life-events.js';
+import { FAMILY_STRUCTURES as MH_FAMILY_STRUCTURES } from './genres/manga-osaka-highschool1987/family-structures.js';
+import { TENSIONS as MH_TENSIONS } from './genres/manga-osaka-highschool1987/tensions.js';
+import { SECRETS as MH_SECRETS } from './genres/manga-osaka-highschool1987/secrets.js';
+import { ECONOMIC_TIERS as MH_ECONOMIC_TIERS, CITY_SETTINGS as MH_CITY_SETTINGS, TAG_POOLS as MH_TAG_POOLS } from './genres/manga-osaka-highschool1987/settings.js';
+import { NAME_POOLS as MH_NAME_POOLS } from './genres/manga-osaka-highschool1987/names.js';
 
 // ── PALEOLITHIC TABLES ────────────────────────────────────────────────────
 import { GENDERS as PA_GENDERS, ORIENTATIONS as PA_ORIENTATIONS, RACES as PALEO_RACES, BUILDS as PA_BUILDS, HAIR as PA_HAIR, DISTINGUISHING_FEATURES as PA_DISTINGUISHING_FEATURES, QUIRKS as PA_QUIRKS } from './genres/paleolithic/character-attributes.js';
@@ -126,6 +137,26 @@ const GENRE_TABLES = {
     NAME_POOLS:             SF_NAME_POOLS,
     RELATIONSHIP_STATUSES,
     PLOT_ARCHETYPES:        [...COMMON_PLOT_ARCHETYPES, ...SCIFI_PLOT_ARCHETYPES],
+  },
+  'manga-osaka-highschool1987': {
+    GENDERS:                MH_GENDERS,
+    ORIENTATIONS:           MH_ORIENTATIONS,
+    RACES_OR_ETHNICITIES:   MH_RACES,
+    BUILDS:                 MH_BUILDS,
+    HAIR:                   MH_HAIR,
+    DISTINGUISHING_FEATURES:MH_DISTINGUISHING_FEATURES,
+    QUIRKS:                 MH_QUIRKS,
+    PROFESSIONS:            MH_PROFESSIONS,
+    LIFE_EVENTS:            MH_LIFE_EVENTS,
+    FAMILY_STRUCTURES:      MH_FAMILY_STRUCTURES,
+    TENSIONS:               MH_TENSIONS,
+    SECRETS:                MH_SECRETS,
+    ECONOMIC_TIERS:         MH_ECONOMIC_TIERS,
+    CITY_SETTINGS:          MH_CITY_SETTINGS,
+    TAG_POOLS:              MH_TAG_POOLS,
+    NAME_POOLS:             MH_NAME_POOLS,
+    RELATIONSHIP_STATUSES,
+    PLOT_ARCHETYPES:        [...COMMON_PLOT_ARCHETYPES, ...MANGA_HS_PLOT_ARCHETYPES],
   },
   paleolithic: {
     GENDERS:                PA_GENDERS,

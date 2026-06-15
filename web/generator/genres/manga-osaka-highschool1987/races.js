@@ -1,0 +1,78 @@
+// genres/manga-osaka-highschool1987/races.js
+// School social archetypes — replace race/ethnicity for this setting.
+// 'broad' is the archetype group label used for NAME_POOLS lookup.
+
+export const RACES = [
+  {
+    id: 'yankii',
+    broad: 'Yankii',
+    label: 'Yankii',
+    flavor: 'Bleached pompadour, sukajan jacket, rides a custom bike — the delinquent everyone secretly respects',
+    weight: 8,
+    iconPrompt: 'japanese yankii delinquent student 1987 bleached pompadour sukajan jacket school gate confrontation manga style illustration',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TRIBES#yankii.png',
+  },
+  {
+    id: 'honor_student',
+    broad: 'Honor Student',
+    label: 'Honor Student',
+    flavor: 'Cram school veteran, textbook-perfect answers, quietly exhausted from being everyone\'s benchmark',
+    weight: 8,
+    iconPrompt: 'japanese honor student 1987 thick glasses textbooks serious cram school studying manga style illustration',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TRIBES#honor_student.png',
+  },
+  {
+    id: 'sports_ace',
+    broad: 'Sports Ace',
+    label: 'Sports Ace',
+    flavor: 'Club captain or ace pitcher — the sun everyone orbits, still figuring out who they actually are',
+    weight: 8,
+    iconPrompt: 'japanese high school sports ace athlete 1987 baseball uniform confident dynamic Koshien manga style illustration',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TRIBES#sports_ace.png',
+  },
+  {
+    id: 'drama_kid',
+    broad: 'Drama Kid',
+    label: 'Drama Kid',
+    flavor: 'Theater club or school band member — speaks in metaphors, cries beautifully at graduation',
+    weight: 6,
+    iconPrompt: 'japanese drama theater club student 1987 expressive artistic stage performance spotlight manga style illustration',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TRIBES#drama_kid.png',
+  },
+  {
+    id: 'transfer_student',
+    broad: 'Transfer Student',
+    label: 'Transfer Student',
+    flavor: 'Arrived mid-semester with a past — immediately disrupts every established social dynamic',
+    weight: 6,
+    iconPrompt: 'japanese transfer student 1987 new school uniform uncertain expression new classroom manga style illustration',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TRIBES#transfer_student.png',
+  },
+  {
+    id: 'otaku',
+    broad: 'Otaku',
+    label: 'Otaku',
+    flavor: 'Den Den Town regular, knows every mecha anime, somehow always figures out the actual mystery',
+    weight: 6,
+    iconPrompt: 'japanese otaku student 1987 manga anime fan den den town Nipponbashi electronics street manga style illustration',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TRIBES#otaku.png',
+  },
+  {
+    id: 'popular_crowd',
+    broad: 'Popular Crowd',
+    label: 'Popular Crowd',
+    flavor: 'Fashion-forward, sets social trends, considerably more complicated beneath the surface',
+    weight: 7,
+    iconPrompt: 'japanese popular students 1987 fashion Shinsaibashi shopping confident laughing school corridor manga style illustration',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TRIBES#popular_crowd.png',
+  },
+  {
+    id: 'ordinary_kid',
+    broad: 'Ordinary Kid',
+    label: 'Ordinary Kid',
+    flavor: 'Average grades, average looks, somehow always at the center of extraordinary things anyway',
+    weight: 10,
+    iconPrompt: 'japanese ordinary protagonist student 1987 school uniform unremarkable determined classic manga hero style illustration',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TRIBES#ordinary_kid.png',
+  },
+];
