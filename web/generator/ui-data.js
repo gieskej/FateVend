@@ -76,6 +76,9 @@ export {
   FAMILY_STRUCTURES as SCIFI_FAMILY_STRUCTURES,
 } from './genres/sci-fi/family-structures.js';
 
+// ── COMMON ──────────────────────────────────────────────────────────────────
+export { RELATIONSHIP_STATUSES } from './common/relationship-statuses.js';
+
 // ── STAT ADJECTIVES ─────────────────────────────────────────────────────────
 export { STAT_ADJECTIVES, statAdjective } from './stat-adjectives.js';
 

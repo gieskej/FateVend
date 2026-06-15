@@ -217,6 +217,7 @@ import {
   SCIFI_PROFESSIONS, SCIFI_LIFE_EVENTS, SCIFI_TENSIONS, SCIFI_SECRETS,
   SCIFI_NAME_POOLS, SCIFI_PARENT_STATUSES, SCIFI_SIBLING_DYNAMICS, SCIFI_FAMILY_STRUCTURES,
   // Shared
+  RELATIONSHIP_STATUSES,
   STAT_ADJECTIVES, statAdjective,
   MBTI_TYPES,
   NPC_TRAITS, FRIEND_DYNAMICS, PARENT_DYNAMICS_ALIVE, FOIL_ROLES,
@@ -245,6 +246,7 @@ function getGenreTables(genre) {
       DISTINGUISHING_FEATURES: FANTASY_DISTINGUISHING_FEATURES,
       QUIRKS:                FANTASY_QUIRKS,
       NAME_POOLS:            FANTASY_NAME_POOLS,
+      RELATIONSHIP_STATUSES,
     };
   }
   if (genre === 'sci-fi') {
@@ -267,6 +269,7 @@ function getGenreTables(genre) {
       DISTINGUISHING_FEATURES: SCIFI_DISTINGUISHING_FEATURES,
       QUIRKS:                  SCIFI_QUIRKS,
       NAME_POOLS:              SCIFI_NAME_POOLS,
+      RELATIONSHIP_STATUSES,
     };
   }
   // Default: modern
@@ -289,6 +292,7 @@ function getGenreTables(genre) {
     DISTINGUISHING_FEATURES,
     QUIRKS,
     NAME_POOLS,
+    RELATIONSHIP_STATUSES,
   };
 }
 
@@ -513,7 +517,8 @@ function buildSkeleton(stats, mbti, tables) {
   const { PROFESSIONS:P, LIFE_EVENTS:LE, TENSIONS:T, SECRETS:S, FAMILY_STRUCTURES:FS,
           ECONOMIC_TIERS:ET, CITY_SETTINGS:CS, TAG_POOLS:TP,
           RACES_OR_ETHNICITIES:ROE, GENDERS:G, ORIENTATIONS:O,
-          BUILDS:B, HAIR:H, DISTINGUISHING_FEATURES:DF, QUIRKS:Q, NAME_POOLS:NP } = tables;
+          BUILDS:B, HAIR:H, DISTINGUISHING_FEATURES:DF, QUIRKS:Q, NAME_POOLS:NP,
+          RELATIONSHIP_STATUSES:RS } = tables;
 
   const includeLGBQ  = document.getElementById('include-lgbq')?.checked ?? true;
   const includeNSFW  = document.getElementById('include-nsfw')?.checked ?? false;
@@ -524,9 +529,10 @@ function buildSkeleton(stats, mbti, tables) {
   const genderPool   = includeLGBQ ? G : G.filter(g => g.id === 'man' || g.id === 'woman');
   const orientPool   = includeLGBQ ? O : O.filter(o => o.id === 'straight');
   const profPool     = allowNSFW ? P : P.filter(p => !p.nsfw);
-  const gender      = statAndWeightPick(genderPool, stats);
-  const orientation = weightedPick(orientPool);
-  const identity    = statAndWeightPick(ROE, stats);
+  const gender             = statAndWeightPick(genderPool, stats);
+  const orientation        = weightedPick(orientPool);
+  const relStatus          = uniformPick(RS.flatMap(r => Array(r.weight).fill(r)));
+  const identity           = statAndWeightPick(ROE, stats);
   const namePool    = NP[identity.broad] ?? NP['default'];
   const nameResult  = protoName(gender.id, namePool);
   const name        = nameResult.full;
@@ -570,6 +576,7 @@ function buildSkeleton(stats, mbti, tables) {
     name, age,
     gender: gender.label, pronouns: gender.pronouns,
     orientation: orientation.label,
+    relationshipStatus: relStatus.label,
     ethnicityBroad: identity.broad, ethnicityFlavor: identity.flavor,
     appearance: { build: build.label, hair, distinguishingFeature: feat, statNotes: appearanceStatNotes(stats) },
     quirk: quirk.quirk,
@@ -589,6 +596,7 @@ function buildSkeleton(stats, mbti, tables) {
       race:      identity.flavor.split(' — ')[0].trim(),
       gender:    gender.id,
       orient:    orientation.id,
+      relStatus: relStatus.id,
       mbti:      mbti.type,
       prof:      profSlug(profession.title),
       sentiment: sentiment.replace(/\s+/g, '_'),
@@ -652,6 +660,7 @@ CHARACTER SKELETON:
 Name: ${sk.name}, ${sk.age}, ${sk.gender} (${sk.pronouns})
 ${identityLabel}: ${sk.ethnicityFlavor}
 Orientation: ${sk.orientation}
+Relationship status: ${sk.relationshipStatus}
 Appearance: ${appParts}
 Quirk: ${sk.quirk}
 Profession: ${sk.profession} (${sk.industry}) — feels ${sk.sentiment} about it
@@ -1096,6 +1105,7 @@ function getSlotConfig(genre) {
     ['asexual','asexual','Asexual'],['questioning','questioning','Questioning'],
   ];
   const MBTI_CAT = MBTI_TYPES.map(m => [m.type, m.type, m.type]);
+  const RELSTATUS_CAT = RELATIONSHIP_STATUSES.map(r => [r.id, r.iconPath?.match(/#([^.]+)\.png$/i)?.[1] ?? r.id, r.label]);
   // 'burned_out' → maps to 'burnt_out' filename; all others match
   const SENT_CAT = [
     ['proud','proud','Proud'],['resentful','resentful','Resentful'],
@@ -1109,10 +1119,11 @@ function getSlotConfig(genre) {
     return {
       iconBase: './generator/genres/sci-fi/icons/',
       defs: [
-        { key:'gender',    header:'Gender',     cat:'GENDERS',           common:true  },
-        { key:'species',   header:'Species',    cat:'SPECIES',           common:false },
-        { key:'orient',    header:'Orientation',cat:'ORIENTATIONS',      common:true  },
-        { key:'mbti',      header:'Personality',cat:'MBTI_TYPES',        common:true  },
+        { key:'gender',    header:'Gender',       cat:'GENDERS',              common:true  },
+        { key:'species',   header:'Species',      cat:'SPECIES',              common:false },
+        { key:'orient',    header:'Orientation',  cat:'ORIENTATIONS',         common:true  },
+        { key:'relStatus', header:'Relationship', cat:'RELATIONSHIP_STATUSES', common:true  },
+        { key:'mbti',      header:'Personality',  cat:'MBTI_TYPES',           common:true  },
         { key:'prof',      header:'Profession', cat:'PROFESSIONS',       common:false },
         { key:'sentiment', header:'Sentiment',  cat:'SENTIMENTS',        common:true  },
         { key:'econ',      header:'Economy',    cat:'ECONOMIC_TIERS',    common:false },
@@ -1123,10 +1134,11 @@ function getSlotConfig(genre) {
       ],
       catalog: {
         SPECIES:          SCIFI_SPECIES.map(s => [s.id, s.id, s.broad]),
-        GENDERS:          GENDERS_CAT,
-        ORIENTATIONS:     ORIENT_CAT,
-        MBTI_TYPES:       MBTI_CAT,
-        PROFESSIONS:      SCIFI_PROFESSIONS.map(p => { const ds=toIconSlug(p.title); return [ds, iconSlugFrom(p,ds), p.title]; }),
+        GENDERS:               GENDERS_CAT,
+        ORIENTATIONS:          ORIENT_CAT,
+        RELATIONSHIP_STATUSES: RELSTATUS_CAT,
+        MBTI_TYPES:            MBTI_CAT,
+        PROFESSIONS:           SCIFI_PROFESSIONS.map(p => { const ds=toIconSlug(p.title); return [ds, iconSlugFrom(p,ds), p.title]; }),
         SENTIMENTS:       SENT_CAT,
         ECONOMIC_TIERS: [
           ['tier1','tier1-below-the-line','Below the Line'],
@@ -1147,10 +1159,11 @@ function getSlotConfig(genre) {
     return {
       iconBase: './generator/genres/fantasy/icons/',
       defs: [
-        { key:'gender',    header:'Gender',     cat:'GENDERS',       common:true  },
-        { key:'species',   header:'Species',    cat:'RACE',          common:false },
-        { key:'orient',    header:'Orientation',cat:'ORIENTATIONS',  common:true  },
-        { key:'mbti',      header:'Personality',cat:'MBTI_TYPES',    common:true  },
+        { key:'gender',    header:'Gender',       cat:'GENDERS',              common:true  },
+        { key:'species',   header:'Species',      cat:'RACE',                 common:false },
+        { key:'orient',    header:'Orientation',  cat:'ORIENTATIONS',         common:true  },
+        { key:'relStatus', header:'Relationship', cat:'RELATIONSHIP_STATUSES', common:true  },
+        { key:'mbti',      header:'Personality',  cat:'MBTI_TYPES',           common:true  },
         { key:'prof',      header:'Profession', cat:'PROFESSION',    common:false },
         { key:'sentiment', header:'Sentiment',  cat:'SENTIMENTS',    common:true  },
         { key:'econ',      header:'Economy',    cat:'ECONOMIC_TIER', common:false },
@@ -1161,9 +1174,10 @@ function getSlotConfig(genre) {
       ],
       catalog: {
         RACE:         FANTASY_RACES.map(r => [r.id, r.id, r.broad]),
-        GENDERS:      GENDERS_CAT.filter(([id]) => FANTASY_GENDERS.some(g => g.id === id)),
-        ORIENTATIONS: ORIENT_CAT.filter(([id]) => FANTASY_ORIENTATIONS.some(o => o.id === id)),
-        MBTI_TYPES:   MBTI_CAT,
+        GENDERS:               GENDERS_CAT.filter(([id]) => FANTASY_GENDERS.some(g => g.id === id)),
+        ORIENTATIONS:          ORIENT_CAT.filter(([id]) => FANTASY_ORIENTATIONS.some(o => o.id === id)),
+        RELATIONSHIP_STATUSES: RELSTATUS_CAT,
+        MBTI_TYPES:            MBTI_CAT,
         PROFESSION:   FANTASY_PROFESSIONS.map(p => { const ds=toIconSlug(p.title); return [ds, iconSlugFrom(p,ds), p.title]; }),
         SENTIMENTS:   SENT_CAT,
         ECONOMIC_TIER: [
@@ -1185,10 +1199,11 @@ function getSlotConfig(genre) {
   return {
     iconBase: './generator/genres/modern/icons/',
     defs: [
-      { key:'gender',    header:'Gender',     cat:'GENDERS',          common:true  },
-      { key:'species',   header:'Race',       cat:'ETHNICITY',        common:false },
-      { key:'orient',    header:'Orientation',cat:'ORIENTATIONS',     common:true  },
-      { key:'mbti',      header:'Personality',cat:'MBTI_TYPES',       common:true  },
+      { key:'gender',    header:'Gender',       cat:'GENDERS',              common:true  },
+      { key:'species',   header:'Race',         cat:'ETHNICITY',            common:false },
+      { key:'orient',    header:'Orientation',  cat:'ORIENTATIONS',         common:true  },
+      { key:'relStatus', header:'Relationship', cat:'RELATIONSHIP_STATUSES', common:true  },
+      { key:'mbti',      header:'Personality',  cat:'MBTI_TYPES',           common:true  },
       { key:'prof',      header:'Profession', cat:'PROFESSION',       common:false },
       { key:'sentiment', header:'Sentiment',  cat:'SENTIMENTS',       common:true  },
       { key:'econ',      header:'Economy',    cat:'ECONOMIC_TIER',    common:false },
@@ -1199,9 +1214,10 @@ function getSlotConfig(genre) {
     ],
     catalog: {
       ETHNICITY:      ETHNICITIES.map(e => [e.id, e.id, e.broad]),
-      GENDERS:        GENDERS_CAT.filter(([id]) => GENDERS.some(g => g.id === id)),
-      ORIENTATIONS:   ORIENT_CAT.filter(([id]) => ORIENTATIONS.some(o => o.id === id)),
-      MBTI_TYPES:     MBTI_CAT,
+      GENDERS:               GENDERS_CAT.filter(([id]) => GENDERS.some(g => g.id === id)),
+      ORIENTATIONS:          ORIENT_CAT.filter(([id]) => ORIENTATIONS.some(o => o.id === id)),
+      RELATIONSHIP_STATUSES: RELSTATUS_CAT,
+      MBTI_TYPES:            MBTI_CAT,
       PROFESSION:     PROFESSIONS.map(p => { const ds=toIconSlug(p.title); return [ds, iconSlugFrom(p,ds), p.title]; }),
       SENTIMENTS:     SENT_CAT,
       ECONOMIC_TIER: [

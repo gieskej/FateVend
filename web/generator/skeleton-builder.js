@@ -83,12 +83,13 @@ export function buildSkeleton(stats, mbti, tables) {
     ECONOMIC_TIERS, CITY_SETTINGS, TAG_POOLS,
     GENDERS, ORIENTATIONS, RACES_OR_ETHNICITIES,
     BUILDS, HAIR, DISTINGUISHING_FEATURES, QUIRKS,
-    NAME_POOLS,
+    NAME_POOLS, RELATIONSHIP_STATUSES,
   } = tables;
 
   // ── IDENTITY ──────────────────────────────────────────────────────────
-  const gender      = statAndWeightPick(GENDERS, stats);
-  const orientation = uniformPick(ORIENTATIONS.flatMap(o => Array(o.weight).fill(o)));
+  const gender             = statAndWeightPick(GENDERS, stats);
+  const orientation        = uniformPick(ORIENTATIONS.flatMap(o => Array(o.weight).fill(o)));
+  const relationshipStatus = uniformPick(RELATIONSHIP_STATUSES.flatMap(r => Array(r.weight).fill(r)));
   const identity    = statAndWeightPick(RACES_OR_ETHNICITIES, stats);  // works for both race and ethnicity
 
   // ── NAME (ethnicity/race-matched) ─────────────────────────────────────
@@ -171,10 +172,11 @@ export function buildSkeleton(stats, mbti, tables) {
 
   return {
     name, age,
-    statLabels:      buildStatLabels(stats),
-    gender:          gender.label,
-    pronouns:        gender.pronouns,
-    orientation:     orientation.label,
+    statLabels:          buildStatLabels(stats),
+    gender:              gender.label,
+    pronouns:            gender.pronouns,
+    orientation:         orientation.label,
+    relationshipStatus:  relationshipStatus.label,
     ethnicityBroad:  identity.broad,
     ethnicityFlavor: identity.flavor,
     appearance: {

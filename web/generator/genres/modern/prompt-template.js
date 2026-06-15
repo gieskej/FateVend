@@ -48,6 +48,7 @@ Name: ${sk.name}, ${sk.age}, ${sk.gender} (${sk.pronouns})
 Race: ${sk.ethnicityBroad}
 Ethnicity: ${sk.ethnicityFlavor}
 Orientation: ${sk.orientation}
+Relationship status: ${sk.relationshipStatus}
 Appearance: ${appearanceParts}
 Quirk: ${sk.quirk}
 Profession: ${sk.profession} (${sk.industry}) — feels ${sk.sentiment} about it
