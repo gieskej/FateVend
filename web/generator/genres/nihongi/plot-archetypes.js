@@ -7,7 +7,7 @@ export const NIHONGI_PLOT_ARCHETYPES = [
     label: 'The Succession War',
     description: 'A great clan lord is dead or dying, and two successors have already begun maneuvering; the character\'s position forces them into the conflict whether they choose it or not',
     toneTag: 'dramatic',
-    iconPrompt: 'ancient japanese clan succession war two heirs court politics dying lord factions forming asuka period nihon shoki yamato-e painting',
+    iconPrompt: 'two asuka court nobles in layered silk robes facing each other tensely across dying lord on ceremonial bed, hands reaching for ancestral objects, palace compound interior',
     iconPath: 'generator/common/icons/PLOT_ARCHETYPES#clan_succession.png',
   },
   {
@@ -15,7 +15,7 @@ export const NIHONGI_PLOT_ARCHETYPES = [
     label: 'The Buddhist Question',
     description: 'The arrival of the continental faith has split the court — old kami-priest clans and new Buddhist patrons move toward open conflict, and the character must choose or be chosen for',
     toneTag: 'dramatic',
-    iconPrompt: 'ancient japanese buddhist question faith arrival split court kami priest buddhist patron open conflict choosing nihon shoki yamato-e painting',
+    iconPrompt: 'buddhist monk in grey robes and kami shrine priest in white robes standing facing each other with sacred scroll between them, ancient japanese temple gate setting, tense confrontation',
     iconPath: 'generator/common/icons/PLOT_ARCHETYPES#buddhist_question.png',
   },
   {
@@ -23,7 +23,7 @@ export const NIHONGI_PLOT_ARCHETYPES = [
     label: 'The Diplomatic Mission',
     description: 'A mission to the continent — Baekje, Silla, or Tang — with stakes that will reshape relationships between Yamato and its neighbours; what was sent and what comes back may be very different things',
     toneTag: 'neutral',
-    iconPrompt: 'ancient japanese diplomatic mission ship continental journey baekje tang dangerous stakes nihon shoki yamato-e painting',
+    iconPrompt: 'asuka era wooden sailing ship on open sea, richly dressed envoys aboard carrying lacquered tribute boxes and scrolls, dramatic ocean horizon, historic voyage',
     iconPath: 'generator/common/icons/PLOT_ARCHETYPES#diplomatic_mission.png',
   },
   {
@@ -31,7 +31,7 @@ export const NIHONGI_PLOT_ARCHETYPES = [
     label: 'The Purge',
     description: 'A rival faction has moved against the character\'s clan, and what began as court politics has turned to violence; survival, justice, and revenge are not necessarily compatible goals',
     toneTag: 'gritty',
-    iconPrompt: 'ancient japanese clan purge political violence survival fleeing faction defeat aftermath nihon shoki yamato-e painting',
+    iconPrompt: 'figure in ancient japanese silk robes fleeing through palace corridor at night, torch-bearing guards in pursuit behind them, desperate flight through asuka compound',
     iconPath: 'generator/common/icons/PLOT_ARCHETYPES#clan_purge.png',
   },
   {
@@ -39,7 +39,7 @@ export const NIHONGI_PLOT_ARCHETYPES = [
     label: 'The Oracle\'s Warning',
     description: 'A kami has spoken through a shrine medium — the message is unambiguous, the timeline is unclear, and whoever it concerns is powerful enough to make the messenger\'s life dangerous',
     toneTag: 'dramatic',
-    iconPrompt: 'ancient japanese oracle warning kami shrine medium powerful person threatened message dangerous nihon shoki yamato-e painting',
+    iconPrompt: 'miko shrine maiden in white and red robes with eyes rolled back in divine trance, glowing kami spirit manifestation rising above sacred fire, ancient shrine setting at night',
     iconPath: 'generator/common/icons/PLOT_ARCHETYPES#oracle_warning.png',
   },
   {
@@ -47,7 +47,7 @@ export const NIHONGI_PLOT_ARCHETYPES = [
     label: 'The Forbidden Alliance',
     description: 'A bond — love, friendship, loyalty — between individuals whose clans are political enemies; the relationship cannot survive the coming conflict without destroying something essential',
     toneTag: 'dramatic',
-    iconPrompt: 'ancient japanese forbidden alliance love friendship enemy clans political impossible bond choosing nihon shoki yamato-e painting',
+    iconPrompt: 'asuka period man and woman from rival clans touching hands through gap in bamboo screen, longing expressions, japanese garden setting, soft evening light',
     iconPath: 'generator/common/icons/PLOT_ARCHETYPES#forbidden_alliance.png',
   },
   {
@@ -55,7 +55,7 @@ export const NIHONGI_PLOT_ARCHETYPES = [
     label: 'The Divine Blood',
     description: 'Evidence has emerged that someone — the character, or someone close to them — has kami ancestry that was deliberately concealed; the implications for clan hierarchy are either catastrophic or transformative',
     toneTag: 'dramatic',
-    iconPrompt: 'ancient japanese divine blood kami ancestry revealed hidden lineage clan hierarchy disrupted nihon shoki yamato-e painting',
+    iconPrompt: 'asuka period figure kneeling with golden divine radiance emanating from their silhouette, ancient genealogy scroll unrolling to reveal shocking lineage, sacred light in dark shrine',
     iconPath: 'generator/common/icons/PLOT_ARCHETYPES#divine_blood.png',
   },
 ];

@@ -40,4 +40,5 @@ PARAMS = dict(
     batch_size          = 3,
 )
 
-run(GENRE_DIR, ICON_DIR, STYLE, PARAMS, description=__doc__)
+run(GENRE_DIR, ICON_DIR, STYLE, PARAMS, description=__doc__,
+    exclude_filenames={'plot-archetypes.js'})

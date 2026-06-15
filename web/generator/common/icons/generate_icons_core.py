@@ -18,18 +18,21 @@ def extract_pairs(js_text):
     return list(zip(prompts, paths))
 
 
-def run(genre_dir, icon_dir, style, params, description="", recursive=False):
+def run(genre_dir, icon_dir, style, params, description="", recursive=False,
+        extra_js_files=None, exclude_filenames=None):
     """
     Collect iconPrompt/iconPath pairs from all JS files in genre_dir,
     generate images via SD WebUI Forge, and save to icon_dir/<timestamp>/.
 
     Args:
-        genre_dir:   Path to the genre's root folder (contains *.js data files).
-        icon_dir:    Path to the icons output folder (this script's directory).
-        style:       Genre-specific style suffix appended to every prompt.
-        params:      SD API parameter dict (steps, cfg_scale, batch_size, etc.).
-        description: CLI --help description string.
-        recursive:   If True, scan all subdirectory PNGs when building the skip set.
+        genre_dir:         Path to the genre's root folder (contains *.js data files).
+        icon_dir:          Path to the icons output folder (this script's directory).
+        style:             Genre-specific style suffix appended to every prompt.
+        params:            SD API parameter dict (steps, cfg_scale, batch_size, etc.).
+        description:       CLI --help description string.
+        recursive:         If True, scan all subdirectory PNGs when building the skip set.
+        extra_js_files:    Optional iterable of additional JS file paths to scan.
+        exclude_filenames: Optional set of filenames (e.g. {'plot-archetypes.js'}) to skip.
     """
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument(
@@ -49,6 +52,12 @@ def run(genre_dir, icon_dir, style, params, description="", recursive=False):
         sys.stdout.write(f"Filter: only regenerate icons matching {missing_path} ({len(missing_bytes):,} bytes)\n\n")
 
     js_files = sorted(genre_dir.glob("*.js"))
+    if exclude_filenames:
+        js_files = [f for f in js_files if f.name not in exclude_filenames]
+    if extra_js_files:
+        extra_paths = {Path(f) for f in extra_js_files}
+        existing = set(js_files)
+        js_files = sorted(existing | extra_paths, key=lambda p: str(p))
     items    = []
 
     for js_path in js_files:
