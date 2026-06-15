@@ -152,6 +152,10 @@
         style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s;">
         Paleolithic
       </button>
+      <button id="genre-manga-osaka-highschool1987" onclick="setGenre('manga-osaka-highschool1987')"
+        style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s;">
+        Osaka HS '87
+      </button>
     </div>
   </div>
 
@@ -226,9 +230,15 @@ import {
   PALEO_ECONOMIC_TIERS, PALEO_CITY_SETTINGS, PALEO_TAG_POOLS,
   PALEO_PROFESSIONS, PALEO_LIFE_EVENTS, PALEO_TENSIONS, PALEO_SECRETS,
   PALEO_NAME_POOLS, PALEO_PARENT_STATUSES, PALEO_SIBLING_DYNAMICS, PALEO_FAMILY_STRUCTURES,
+  // Manga Osaka High School 1987
+  MANGA_HS_GENDERS, MANGA_HS_ORIENTATIONS, MANGA_HS_BUILDS, MANGA_HS_HAIR,
+  MANGA_HS_RACES, MANGA_HS_DISTINGUISHING_FEATURES, MANGA_HS_QUIRKS,
+  MANGA_HS_ECONOMIC_TIERS, MANGA_HS_CITY_SETTINGS, MANGA_HS_TAG_POOLS,
+  MANGA_HS_PROFESSIONS, MANGA_HS_LIFE_EVENTS, MANGA_HS_TENSIONS, MANGA_HS_SECRETS,
+  MANGA_HS_NAME_POOLS, MANGA_HS_PARENT_STATUSES, MANGA_HS_SIBLING_DYNAMICS, MANGA_HS_FAMILY_STRUCTURES,
   // Shared
   RELATIONSHIP_STATUSES,
-  COMMON_PLOT_ARCHETYPES, MODERN_PLOT_ARCHETYPES, FANTASY_PLOT_ARCHETYPES, SCIFI_PLOT_ARCHETYPES, PALEOLITHIC_PLOT_ARCHETYPES,
+  COMMON_PLOT_ARCHETYPES, MODERN_PLOT_ARCHETYPES, FANTASY_PLOT_ARCHETYPES, SCIFI_PLOT_ARCHETYPES, PALEOLITHIC_PLOT_ARCHETYPES, MANGA_HS_PLOT_ARCHETYPES,
   STAT_ADJECTIVES, statAdjective,
   MBTI_TYPES,
   NPC_TRAITS, FRIEND_DYNAMICS, PARENT_DYNAMICS_ALIVE, FOIL_ROLES,
@@ -239,7 +249,8 @@ import {
 const MODERN_PLOTS_ALL  = [...COMMON_PLOT_ARCHETYPES, ...MODERN_PLOT_ARCHETYPES];
 const FANTASY_PLOTS_ALL = [...COMMON_PLOT_ARCHETYPES, ...FANTASY_PLOT_ARCHETYPES];
 const SCIFI_PLOTS_ALL   = [...COMMON_PLOT_ARCHETYPES, ...SCIFI_PLOT_ARCHETYPES];
-const PALEO_PLOTS_ALL   = [...COMMON_PLOT_ARCHETYPES, ...PALEOLITHIC_PLOT_ARCHETYPES];
+const PALEO_PLOTS_ALL    = [...COMMON_PLOT_ARCHETYPES, ...PALEOLITHIC_PLOT_ARCHETYPES];
+const MANGA_HS_PLOTS_ALL = [...COMMON_PLOT_ARCHETYPES, ...MANGA_HS_PLOT_ARCHETYPES];
 
 // ── Genre routing ─────────────────────────────────────────────────────────
 function getGenreTables(genre) {
@@ -313,6 +324,30 @@ function getGenreTables(genre) {
       NAME_POOLS:              PALEO_NAME_POOLS,
       RELATIONSHIP_STATUSES,
       PLOT_ARCHETYPES:         PALEO_PLOTS_ALL,
+    };
+  }
+  if (genre === 'manga-osaka-highschool1987') {
+    return {
+      PROFESSIONS:             MANGA_HS_PROFESSIONS,
+      LIFE_EVENTS:             MANGA_HS_LIFE_EVENTS,
+      TENSIONS:                MANGA_HS_TENSIONS,
+      SECRETS:                 MANGA_HS_SECRETS,
+      FAMILY_STRUCTURES:       MANGA_HS_FAMILY_STRUCTURES,
+      PARENT_STATUSES:         MANGA_HS_PARENT_STATUSES,
+      SIBLING_DYNAMICS:        MANGA_HS_SIBLING_DYNAMICS,
+      ECONOMIC_TIERS:          MANGA_HS_ECONOMIC_TIERS,
+      CITY_SETTINGS:           MANGA_HS_CITY_SETTINGS,
+      TAG_POOLS:               MANGA_HS_TAG_POOLS,
+      RACES_OR_ETHNICITIES:    MANGA_HS_RACES,
+      GENDERS:                 MANGA_HS_GENDERS,
+      ORIENTATIONS:            MANGA_HS_ORIENTATIONS,
+      BUILDS:                  MANGA_HS_BUILDS,
+      HAIR:                    MANGA_HS_HAIR.map(h => ({ label: typeof h === 'string' ? h : h.label })),
+      DISTINGUISHING_FEATURES: MANGA_HS_DISTINGUISHING_FEATURES,
+      QUIRKS:                  MANGA_HS_QUIRKS,
+      NAME_POOLS:              MANGA_HS_NAME_POOLS,
+      RELATIONSHIP_STATUSES,
+      PLOT_ARCHETYPES:         MANGA_HS_PLOTS_ALL,
     };
   }
   // Default: modern
@@ -683,14 +718,16 @@ function buildPrompt(sk, genre) {
     `  - ${npc.name} (${npc.role}, ${npc.status}): ${npc.traits.join(', ')}. ${npc.dynamic}`
   ).join('\n');
   const appParts = [sk.appearance.build, sk.appearance.hair, sk.appearance.distinguishingFeature, ...(sk.appearance.statNotes ?? [])].filter(Boolean).join('; ');
-  const identityLabel  = genre === 'fantasy' ? 'Race' : genre === 'sci-fi' ? 'Species' : genre === 'paleolithic' ? 'Tribe' : 'Ethnicity';
-  const genreLabel     = genre === 'fantasy' ? 'fantasy' : genre === 'sci-fi' ? 'AI Dungeon sci-fi' : genre === 'paleolithic' ? 'AI Dungeon paleolithic' : 'AI Dungeon';
+  const identityLabel  = genre === 'fantasy' ? 'Race' : genre === 'sci-fi' ? 'Species' : genre === 'paleolithic' ? 'Tribe' : genre === 'manga-osaka-highschool1987' ? 'Archetype' : 'Ethnicity';
+  const genreLabel     = genre === 'fantasy' ? 'fantasy' : genre === 'sci-fi' ? 'AI Dungeon sci-fi' : genre === 'paleolithic' ? 'AI Dungeon paleolithic' : genre === 'manga-osaka-highschool1987' ? 'AI Dungeon manga Osaka high school 1987' : 'AI Dungeon';
   const entryNote      = genre === 'fantasy'
     ? 'Lead with name, rough age, role. Weave in race appearance and quirk through behavior. Ground in sensory fantasy detail. End on forward momentum.'
     : genre === 'sci-fi'
     ? 'Lead with name, age, role. Weave in species and augmentation level through behavior — show don\'t state. Ground in sensory sci-fi detail. Use sentence fragments. Reference key cast members. End on forward momentum.'
     : genre === 'paleolithic'
     ? 'Lead with name, rough age, tribal role. Weave in tribal origin, physical presence, and quirk through behavior. Ground in sensory paleolithic detail: woodsmoke, flint, hide, the cold. End on forward momentum.'
+    : genre === 'manga-osaka-highschool1987'
+    ? 'Lead with name, school year, archetype. Weave in background and physical presence through behavior — show don\'t state. Ground in 1987 Osaka specifics: walkman, school uniform, batting cage smell. Reference key cast members by name. End on forward momentum.'
     : 'Lead with name, age, role. Use sentence fragments. Fold in appearance and quirk through behavior. Reference key cast members. End on forward momentum.';
   const openingNote    = genre === 'fantasy'
     ? 'Second person. Drop the player into a vivid fantasy moment right now — mid-scene. Sensory detail (smells, sounds, weight of gear). End mid-moment with a clear choice.'
@@ -698,6 +735,8 @@ function buildPrompt(sk, genre) {
     ? 'Second person. Drop the player into a specific vivid sci-fi moment — right now, mid-scene. Smells: recycled air, ozone, synth-food. Weight: aug hardware, vacuum suit. End mid-moment with a clear choice or action available. No backstory. No summaries.'
     : genre === 'paleolithic'
     ? 'Second person. Drop the player into a specific vivid stone-age moment — right now, mid-scene. Smells: woodsmoke, wet earth, blood, hide. Weight: a hafted spear, a stone axe, cold air. End mid-moment with a clear choice or action available. No backstory. No summaries.'
+    : genre === 'manga-osaka-highschool1987'
+    ? 'Second person. Drop the player into a specific vivid Osaka 1987 high school moment — right now, mid-scene. Smells: chalk dust, shoe lockers, canned coffee. Sound: walkman leak, squeaking gym floor, rain on the school roof. End mid-moment with a clear choice or action available. No backstory. No summaries.'
     : 'Second person. Drop the player directly into a vivid, specific moment — right now. Sensory detail. End mid-moment with a clear next decision.';
   const appearanceNote = genre === 'fantasy'
     ? 'Comma-separated visual descriptors for a text-to-image model. Start with "portrait of" then: race, age range, gender, body type, hair color and style, eye description, distinguishing feature if any, armor or clothing suited to their role, setting mood. Include "face of [a historical figure, classical warrior, or well-known portrait subject whose gender, racial appearance, and approximate age match this character]". Close with: fantasy character art, detailed digital illustration, dramatic lighting. No sentences — descriptors only.'
@@ -705,6 +744,8 @@ function buildPrompt(sk, genre) {
     ? 'Comma-separated visual descriptors for a text-to-image model. Start with "portrait of" then: species and augmentation description, age range, gender, body type, hair, eyes, cybernetic features if any, clothing and equipment suited to their role and economic tier, setting mood. Include "face of [a historical figure or well-known portrait subject whose gender and appearance match this character — someone whose likeness is well-documented]". Close with: sci-fi concept art, detailed digital illustration, dramatic lighting. No sentences — descriptors only.'
     : genre === 'paleolithic'
     ? 'Comma-separated visual descriptors for a text-to-image model. Start with "portrait of" then: tribal group, age range, gender, body type, natural unprocessed hair, eyes, ritual markings or scars if any, clothing (hides, sinew, bone ornaments) suited to their role. Include "face of [a historical figure or archaeological reconstruction whose gender, geographic origin, and approximate age match this character]". Close with: paleolithic cave art style, dramatic torchlight, detailed digital illustration. No sentences — descriptors only.'
+    : genre === 'manga-osaka-highschool1987'
+    ? 'Comma-separated visual descriptors for a text-to-image model. Start with "portrait of" then: Japanese high school student, archetype (yankii/honor student/etc.), age range, gender, uniform description, hair style, eyes, distinguishing feature if any, school or Osaka street setting detail. Include "face of [a Japanese actor or musician from the 1980s whose gender and approximate age match this character — someone visually documented in 1980s Japanese media]". Close with: 1980s shounen or shoujo manga illustration style, high contrast ink lines, halftone. No sentences — descriptors only.'
     : 'Comma-separated visual descriptors for a text-to-image model. Start with "portrait of" then: age range, gender, body type, hair color and style, eye description, distinguishing feature if any, outfit suited to their job and economic tier, setting mood. Include "face of [a historical figure or classic-cinema figure whose gender, ethnicity, and approximate age match this character — someone whose likeness is well-documented in photographs or portraiture]". Close with: photorealistic, cinematic lighting. No sentences — descriptors only.';
 
   return `Generate ${genreLabel} content for this character. Return a single JSON object with these exact keys:
@@ -878,6 +919,38 @@ STYLE:
 
 Output only the JSON structure requested. No preamble, no commentary, no markdown fences.`;
   }
+  if (genre === 'manga-osaka-highschool1987') {
+    return `You are a creative writer generating AI Dungeon content for a manga-style high school RPG set in Osaka, Japan, 1987.
+Your output must be vivid, emotionally charged, and immediately playable as a scenario.
+
+TONE — this is critical:
+This is shounen and shoujo manga territory. Big feelings. Dramatic pauses. Rain at the worst possible moment.
+Characters should feel like they are the protagonist of their own manga — even the background characters.
+The emotional register is high: first loves feel world-ending, rivalries feel cosmic, club losses feel like grief.
+Ground it in specificity: the smell of canned Boss coffee, the weight of a baseball bat callus, the specific embarrassment of slipping into Osaka-ben mid-confession.
+Dark material is permitted — but even the yankii should feel like they have a code and a reason.
+Every character should have a moment that makes the reader lean forward.
+
+SETTING RULES — 1987 Osaka:
+- Bubble economy heating up — money is visible, optimism is real, fashion is getting louder
+- High school: sailor fuku and gakuran uniforms, strict clubs, school festivals (bunkasai), entrance exam obsession
+- Technology: cassette walkmans, CRT televisions, corded phones, no internet, no mobile phones
+- Music: Boøwy, THE BLUE HEARTS, Yumi Matsutoya, Southern All Stars, Yellow Magic Orchestra
+- Manga/anime of the era: Dragon Ball, City Hunter, Touch, Maison Ikkoku, Kimagure Orange Road
+- Yankii subculture: pompadours, sukajan jackets, custom bicycles, territory, respect is everything
+- Osaka identity: Kansai dialect beneath standard Japanese; merchant culture pride; tachikiri humor
+- Locations: Dotonbori neon, Shinsaibashi boutiques, Den Den Town electronics, school rooftops, batting cages, kissaten
+
+STYLE:
+- Behavioral prose — show character through action, dialogue rhythm, small physical details
+- Manga visual language is welcome: describe what a panel would show
+- Never mention stat numbers
+- Sensory specificity: squeak of gym floors, chalk dust, Boss coffee can warmth, rain on the school roof
+- Sentence fragments for emphasis — manga style
+- Stay within the exact character limits given
+
+Output only the JSON structure requested. No preamble, no commentary, no markdown fences.`;
+  }
   return SYSTEM_PROMPT;
 }
 
@@ -1007,6 +1080,7 @@ function setGenre(genre) {
     fantasy:      document.getElementById('genre-fantasy'),
     'sci-fi':     document.getElementById('genre-scifi'),
     paleolithic:  document.getElementById('genre-paleolithic'),
+    'manga-osaka-highschool1987': document.getElementById('genre-manga-osaka-highschool1987'),
   };
   for (const [g, btn] of Object.entries(btns)) {
     if (!btn) continue;
@@ -1239,6 +1313,48 @@ function getSlotConfig(genre) {
         LIFE_EVENTS:      SCIFI_LIFE_EVENTS.map(e => [e.id, e.id, idToLabel(e.id)]),
         TENSIONS:         SCIFI_TENSIONS.map(t => [t.id, t.id, idToLabel(t.id)]),
         PLOT_ARCHETYPES:  plotCat(SCIFI_PLOTS_ALL),
+      },
+    };
+  }
+
+  if (genre === 'manga-osaka-highschool1987') {
+    return {
+      iconBase: './generator/genres/manga-osaka-highschool1987/icons/',
+      defs: [
+        { key:'gender',    header:'Gender',       cat:'GENDERS',               common:true  },
+        { key:'species',   header:'Archetype',    cat:'ARCHETYPES',            common:false },
+        { key:'orient',    header:'Orientation',  cat:'ORIENTATIONS',          common:true  },
+        { key:'relStatus', header:'Relationship', cat:'RELATIONSHIP_STATUSES',  common:true  },
+        { key:'mbti',      header:'Personality',  cat:'MBTI_TYPES',            common:true  },
+        { key:'prof',      header:'Role',          cat:'PROFESSIONS',           common:false },
+        { key:'sentiment', header:'Sentiment',    cat:'SENTIMENTS',            common:true  },
+        { key:'econ',      header:'Standing',     cat:'ECONOMIC_TIERS',        common:false },
+        { key:'city',      header:'Setting',      cat:'CITY_SETTINGS',         common:false },
+        { key:'family',    header:'Background',   cat:'FAMILY_STRUCTURES',     common:false },
+        { key:'lifeEvent', header:'Life Event',   cat:'LIFE_EVENTS',           common:false },
+        { key:'tension',   header:'Tension',      cat:'TENSIONS',              common:false },
+        { key:'plot',      header:'Plot',          cat:'PLOT_ARCHETYPES',       common:true  },
+      ],
+      catalog: {
+        ARCHETYPES:            MANGA_HS_RACES.map(r => [r.id, r.id, r.broad]),
+        GENDERS:               GENDERS_CAT,
+        ORIENTATIONS:          ORIENT_CAT,
+        RELATIONSHIP_STATUSES: RELSTATUS_CAT,
+        MBTI_TYPES:            MBTI_CAT,
+        PROFESSIONS:           MANGA_HS_PROFESSIONS.map(p => { const ds=toIconSlug(p.title); return [ds, iconSlugFrom(p,ds), p.title]; }),
+        SENTIMENTS:            SENT_CAT,
+        ECONOMIC_TIERS: [
+          ['tier1','tier1-struggling','Struggling'],
+          ['tier2','tier2-working-class','Working Class'],
+          ['tier3','tier3-middle-class','Middle Class'],
+          ['tier4','tier4-well-off','Well-Off'],
+          ['tier5','tier5-bubble-rich','Bubble Rich'],
+        ],
+        CITY_SETTINGS:         MANGA_HS_CITY_SETTINGS.map(c => [c.id, c.id, c.label]),
+        FAMILY_STRUCTURES:     MANGA_HS_FAMILY_STRUCTURES.map(f => [f.id, f.id, f.label]),
+        LIFE_EVENTS:           MANGA_HS_LIFE_EVENTS.map(e => [e.id, e.id, idToLabel(e.id)]),
+        TENSIONS:              MANGA_HS_TENSIONS.map(t => [t.id, t.id, idToLabel(t.id)]),
+        PLOT_ARCHETYPES:       plotCat(MANGA_HS_PLOTS_ALL),
       },
     };
   }
