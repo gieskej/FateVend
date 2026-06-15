@@ -1,6 +1,6 @@
 """
-Generate fantasy genre icons via SD WebUI Forge API.
-Reads iconPrompt / iconPath pairs from all JS files in genres/fantasy/.
+Generate manga-osaka-highschool1987 genre icons via SD WebUI Forge API.
+Reads iconPrompt / iconPath pairs from all JS files in genres/manga-osaka-highschool1987/.
 Saves variants into a timestamp subfolder inside the icons directory.
 Skips items whose output files already exist anywhere in the icons tree.
 
@@ -18,13 +18,14 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[3] / 'common' / 'icons'))
 from generate_icons_core import run
 
-GENRE_DIR = Path(__file__).resolve().parent.parent   # genres/fantasy/
-ICON_DIR  = Path(__file__).resolve().parent          # genres/fantasy/icons/
+GENRE_DIR = Path(__file__).resolve().parent.parent   # genres/manga-osaka-highschool1987/
+ICON_DIR  = Path(__file__).resolve().parent          # genres/manga-osaka-highschool1987/icons/
 
 STYLE = (
-    "square icon, fantasy RPG art style, dramatic lighting, "
-    "detailed digital illustration, centered subject, clean composition, "
-    "painterly texture, rich warm palette, high fantasy atmosphere"
+    "square icon, 1980s shounen manga illustration style, "
+    "bold ink lines, high contrast black and white with spot color, "
+    "dramatic composition, expressive character design, "
+    "retro Japanese school drama aesthetic, screen tone texture"
 )
 
 PARAMS = dict(
