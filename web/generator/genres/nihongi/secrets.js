@@ -4,7 +4,7 @@
 export const SECRETS = [
   {
     id: 'continental_ancestry',
-    label: 'Their clan records conceal continental immigrant blood from a Baekje or Silla craftsman line',
+    description: 'Their clan records conceal continental immigrant blood from a Baekje or Silla craftsman line',
     severity: 'medium',
     criminalFlag: false,
     iconPrompt: 'ancient japanese hidden continental ancestry clan record concealment immigrant baekje craftsman blood shame nihon shoki yamato-e painting',
@@ -12,7 +12,7 @@ export const SECRETS = [
   },
   {
     id: 'hidden_buddhist',
-    label: 'They have been practising Buddhism in secret since before it was officially accepted in their region',
+    description: 'They have been practising Buddhism in secret since before it was officially accepted in their region',
     severity: 'medium',
     criminalFlag: false,
     iconPrompt: 'ancient japanese secret buddhist practice hidden sutra prayer night candlelight forbidden faith nihon shoki yamato-e painting',
@@ -20,7 +20,7 @@ export const SECRETS = [
   },
   {
     id: 'forbidden_rite',
-    label: 'They participated in a shamanic or forbidden kami rite that the court has declared illegal',
+    description: 'They participated in a shamanic or forbidden kami rite that the court has declared illegal',
     severity: 'medium',
     criminalFlag: false,
     iconPrompt: 'ancient japanese forbidden shamanic rite night ritual illegal participation secret kami provincial nihon shoki yamato-e painting',
@@ -28,7 +28,7 @@ export const SECRETS = [
   },
   {
     id: 'false_genealogy_made',
-    label: 'They forged their own clan genealogy records to improve their social standing — and the forgery has been accepted at court',
+    description: 'They forged their own clan genealogy records to improve their social standing — and the forgery has been accepted at court',
     severity: 'explosive',
     criminalFlag: true,
     iconPrompt: 'ancient japanese forged genealogy document clan record falsified accepted court dangerous secret identity nihon shoki yamato-e painting',
@@ -36,7 +36,7 @@ export const SECRETS = [
   },
   {
     id: 'traitor_contact',
-    label: 'They are in contact with a clan that has been officially declared traitors to the Yamato court',
+    description: 'They are in contact with a clan that has been officially declared traitors to the Yamato court',
     severity: 'high',
     criminalFlag: true,
     iconPrompt: 'ancient japanese secret contact traitor clan declared enemy correspondence dangerous nihon shoki yamato-e painting',
@@ -44,7 +44,7 @@ export const SECRETS = [
   },
   {
     id: 'death_covered',
-    label: 'They know the real cause of a great lord\'s death — it was not what the official record says',
+    description: 'They know the real cause of a great lord\'s death — it was not what the official record says',
     severity: 'explosive',
     criminalFlag: true,
     iconPrompt: 'ancient japanese covered death great lord true cause hidden danger knowing too much nihon shoki yamato-e painting',
@@ -52,7 +52,7 @@ export const SECRETS = [
   },
   {
     id: 'tribute_theft',
-    label: 'They have been systematically diverting a portion of official rice tribute to their own stockpile',
+    description: 'They have been systematically diverting a portion of official rice tribute to their own stockpile',
     severity: 'high',
     criminalFlag: true,
     iconPrompt: 'ancient japanese tribute theft rice tax diverted stockpile corruption provincial official nihon shoki yamato-e painting',
@@ -60,7 +60,7 @@ export const SECRETS = [
   },
   {
     id: 'assassination_witness',
-    label: 'They were present at a political assassination that was officially attributed to other causes',
+    description: 'They were present at a political assassination that was officially attributed to other causes',
     severity: 'explosive',
     criminalFlag: true,
     iconPrompt: 'ancient japanese political assassination witness cover story dangerous knowledge survivor hiding nihon shoki yamato-e painting',
@@ -68,7 +68,7 @@ export const SECRETS = [
   },
   {
     id: 'forbidden_child',
-    label: 'They have a child by someone from a rival or politically forbidden clan — the child is being raised under a different identity',
+    description: 'They have a child by someone from a rival or politically forbidden clan — the child is being raised under a different identity',
     severity: 'medium',
     criminalFlag: false,
     iconPrompt: 'ancient japanese forbidden child rival clan hidden child other identity secret parentage asuka period nihon shoki yamato-e painting',
@@ -76,7 +76,7 @@ export const SECRETS = [
   },
   {
     id: 'literacy_secret',
-    label: 'They have secretly learned to read and write Chinese characters, knowledge that is forbidden to their social class',
+    description: 'They have secretly learned to read and write Chinese characters, knowledge that is forbidden to their social class',
     severity: 'medium',
     criminalFlag: false,
     iconPrompt: 'ancient japanese secret literacy chinese characters forbidden class night study candle scroll nihon shoki yamato-e painting',
@@ -84,7 +84,7 @@ export const SECRETS = [
   },
   {
     id: 'smuggler_contact',
-    label: 'They are receiving continental goods through illegal channels, bypassing the official tribute system',
+    description: 'They are receiving continental goods through illegal channels, bypassing the official tribute system',
     severity: 'high',
     criminalFlag: true,
     iconPrompt: 'ancient japanese smuggler contact continental goods black market illegal ship cargo bypass official nihon shoki yamato-e painting',
@@ -92,7 +92,7 @@ export const SECRETS = [
   },
   {
     id: 'kami_promise',
-    label: 'A kami oracle made them promise something specific — and that promise directly conflicts with their current clan obligations',
+    description: 'A kami oracle made them promise something specific — and that promise directly conflicts with their current clan obligations',
     severity: 'medium',
     criminalFlag: false,
     iconPrompt: 'ancient japanese kami promise oracle conflicting obligation clan duty divine vow impossible position nihon shoki yamato-e painting',
@@ -100,7 +100,7 @@ export const SECRETS = [
   },
   {
     id: 'dangerous_letter',
-    label: 'They carry a letter that would destroy a great lord\'s reputation if its contents became known',
+    description: 'They carry a letter that would destroy a great lord\'s reputation if its contents became known',
     severity: 'high',
     criminalFlag: false,
     iconPrompt: 'ancient japanese dangerous letter scroll great lord reputation destruction carrying hidden nihon shoki yamato-e painting',
@@ -108,7 +108,7 @@ export const SECRETS = [
   },
   {
     id: 'seal_forgery',
-    label: 'They have forged official clan seals to authenticate documents that serve their interests',
+    description: 'They have forged official clan seals to authenticate documents that serve their interests',
     severity: 'explosive',
     criminalFlag: true,
     iconPrompt: 'ancient japanese forged official seal clan document authentication crime dangerous explosive secret nihon shoki yamato-e painting',

@@ -4,7 +4,7 @@
 export const LIFE_EVENTS = [
   {
     id: 'compound_fire',
-    label: 'Survived a great fire that took the family compound',
+    description: 'Survived a great fire that took the family compound',
     toneTag: 'trauma',
     statAffinity: { constitution: 1.2, wisdom: 1.1 },
     iconPrompt: 'ancient japanese compound fire thatched roof burning night family fleeing loss rebuild nihon shoki yamato-e painting',
@@ -12,7 +12,7 @@ export const LIFE_EVENTS = [
   },
   {
     id: 'witnessed_lord_death',
-    label: 'Was present at the death of a great clan lord',
+    description: 'Was present at the death of a great clan lord',
     toneTag: 'formative',
     statAffinity: { wisdom: 1.3, charisma: 1.1 },
     iconPrompt: 'ancient japanese great clan lord death bedside retainer mourning compound nihon shoki yamato-e painting',
@@ -20,7 +20,7 @@ export const LIFE_EVENTS = [
   },
   {
     id: 'diplomatic_mission',
-    label: 'Traveled to Baekje, Silla, or Tang China as part of a diplomatic mission',
+    description: 'Traveled to Baekje, Silla, or Tang China as part of a diplomatic mission',
     toneTag: 'transformative',
     statAffinity: { intelligence: 1.3, charisma: 1.2 },
     iconPrompt: 'ancient japanese diplomatic mission ship sea voyage baekje continental journey cultural exchange nihon shoki yamato-e painting',
@@ -28,7 +28,7 @@ export const LIFE_EVENTS = [
   },
   {
     id: 'survived_purge',
-    label: 'Their clan\'s faction lost a court power struggle — survived the purge',
+    description: 'Their clan\'s faction lost a court power struggle — survived the purge',
     toneTag: 'survival',
     statAffinity: { wisdom: 1.3, dexterity: 1.2 },
     iconPrompt: 'ancient japanese survived clan purge political loss hiding escape court fall from grace nihon shoki yamato-e painting',
@@ -36,7 +36,7 @@ export const LIFE_EVENTS = [
   },
   {
     id: 'imperial_audience',
-    label: 'Received a direct personal audience with the emperor',
+    description: 'Received a direct personal audience with the emperor',
     toneTag: 'prestigious',
     statAffinity: { charisma: 1.3, wisdom: 1.2 },
     iconPrompt: 'ancient japanese imperial audience throne room prostrating reverence asuka court emperor divine nihon shoki yamato-e painting',
@@ -44,7 +44,7 @@ export const LIFE_EVENTS = [
   },
   {
     id: 'buddhist_arrival',
-    label: 'Was present when Buddhist scriptures and images first arrived in their region',
+    description: 'Was present when Buddhist scriptures and images first arrived in their region',
     toneTag: 'transformative',
     statAffinity: { wisdom: 1.3, intelligence: 1.2 },
     iconPrompt: 'ancient japanese buddhist scriptures arriving monks baekje temple founding asuka period new faith nihon shoki yamato-e painting',
@@ -52,7 +52,7 @@ export const LIFE_EVENTS = [
   },
   {
     id: 'great_shrine_built',
-    label: 'Participated in the building of a great shrine or the first temple in a province',
+    description: 'Participated in the building of a great shrine or the first temple in a province',
     toneTag: 'communal',
     statAffinity: { constitution: 1.2, wisdom: 1.2 },
     iconPrompt: 'ancient japanese shrine temple construction communal ritual sacred building hinoki cypress forest nihon shoki yamato-e painting',
@@ -60,7 +60,7 @@ export const LIFE_EVENTS = [
   },
   {
     id: 'survived_flood',
-    label: 'Survived a major flood or typhoon that reshaped their region',
+    description: 'Survived a major flood or typhoon that reshaped their region',
     toneTag: 'trauma',
     statAffinity: { constitution: 1.3, wisdom: 1.1 },
     iconPrompt: 'ancient japanese flood typhoon disaster village survival rebuilding after catastrophe nihon shoki yamato-e painting',
@@ -68,7 +68,7 @@ export const LIFE_EVENTS = [
   },
   {
     id: 'taken_as_hostage',
-    label: 'Was held at the imperial court or a great clan compound as a peace hostage',
+    description: 'Was held at the imperial court or a great clan compound as a peace hostage',
     toneTag: 'formative',
     statAffinity: { wisdom: 1.2, charisma: 1.2 },
     iconPrompt: 'ancient japanese clan hostage held imperial court child alone far from home political guarantee asuka period nihon shoki yamato-e painting',
@@ -76,7 +76,7 @@ export const LIFE_EVENTS = [
   },
   {
     id: 'continental_training',
-    label: 'Trained under a continental scholar or Buddhist monk for several years',
+    description: 'Trained under a continental scholar or Buddhist monk for several years',
     toneTag: 'transformative',
     statAffinity: { intelligence: 1.4, wisdom: 1.2 },
     iconPrompt: 'ancient japanese student continental scholar monk teaching chinese characters medicine astronomy asuka period nihon shoki yamato-e painting',
@@ -84,7 +84,7 @@ export const LIFE_EVENTS = [
   },
   {
     id: 'survived_clan_war',
-    label: 'Fought in an inter-clan military conflict and survived',
+    description: 'Fought in an inter-clan military conflict and survived',
     toneTag: 'trauma',
     statAffinity: { strength: 1.2, constitution: 1.3 },
     iconPrompt: 'ancient japanese inter-clan war battle survivors aftermath provincial nihon shoki yamato-e painting',
@@ -92,7 +92,7 @@ export const LIFE_EVENTS = [
   },
   {
     id: 'great_ritual',
-    label: 'Participated in a grand national Shinto ceremony at the imperial court',
+    description: 'Participated in a grand national Shinto ceremony at the imperial court',
     toneTag: 'prestigious',
     statAffinity: { wisdom: 1.3, charisma: 1.2 },
     iconPrompt: 'ancient japanese grand national shinto ceremony court ritual imperial participation sacred offering nihon shoki yamato-e painting',
@@ -100,7 +100,7 @@ export const LIFE_EVENTS = [
   },
   {
     id: 'kami_oracle',
-    label: 'Received a direct oracle from a kami through a spirit medium — and the message was unambiguous',
+    description: 'Received a direct oracle from a kami through a spirit medium — and the message was unambiguous',
     toneTag: 'transformative',
     statAffinity: { wisdom: 1.4, charisma: 1.1 },
     iconPrompt: 'ancient japanese kami oracle spirit medium miko possessed divine message sacred terrifying nihon shoki yamato-e painting',

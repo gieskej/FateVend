@@ -5,6 +5,7 @@ export const NIHONGI_PLOT_ARCHETYPES = [
   {
     id: 'clan_succession',
     label: 'The Succession War',
+    weight: 7,
     description: 'A great clan lord is dead or dying, and two successors have already begun maneuvering; the character\'s position forces them into the conflict whether they choose it or not',
     toneTag: 'dramatic',
     iconPrompt: 'two asuka court nobles in layered silk robes facing each other tensely across dying lord on ceremonial bed, hands reaching for ancestral objects, palace compound interior',
@@ -13,6 +14,7 @@ export const NIHONGI_PLOT_ARCHETYPES = [
   {
     id: 'buddhist_question',
     label: 'The Buddhist Question',
+    weight: 6,
     description: 'The arrival of the continental faith has split the court — old kami-priest clans and new Buddhist patrons move toward open conflict, and the character must choose or be chosen for',
     toneTag: 'dramatic',
     iconPrompt: 'buddhist monk in grey robes and kami shrine priest in white robes standing facing each other with sacred scroll between them, ancient japanese temple gate setting, tense confrontation',
@@ -21,6 +23,7 @@ export const NIHONGI_PLOT_ARCHETYPES = [
   {
     id: 'diplomatic_mission',
     label: 'The Diplomatic Mission',
+    weight: 5,
     description: 'A mission to the continent — Baekje, Silla, or Tang — with stakes that will reshape relationships between Yamato and its neighbours; what was sent and what comes back may be very different things',
     toneTag: 'neutral',
     iconPrompt: 'asuka era wooden sailing ship on open sea, richly dressed envoys aboard carrying lacquered tribute boxes and scrolls, dramatic ocean horizon, historic voyage',
@@ -29,6 +32,7 @@ export const NIHONGI_PLOT_ARCHETYPES = [
   {
     id: 'clan_purge',
     label: 'The Purge',
+    weight: 5,
     description: 'A rival faction has moved against the character\'s clan, and what began as court politics has turned to violence; survival, justice, and revenge are not necessarily compatible goals',
     toneTag: 'gritty',
     iconPrompt: 'figure in ancient japanese silk robes fleeing through palace corridor at night, torch-bearing guards in pursuit behind them, desperate flight through asuka compound',
@@ -37,6 +41,7 @@ export const NIHONGI_PLOT_ARCHETYPES = [
   {
     id: 'oracle_warning',
     label: 'The Oracle\'s Warning',
+    weight: 5,
     description: 'A kami has spoken through a shrine medium — the message is unambiguous, the timeline is unclear, and whoever it concerns is powerful enough to make the messenger\'s life dangerous',
     toneTag: 'dramatic',
     iconPrompt: 'miko shrine maiden in white and red robes with eyes rolled back in divine trance, glowing kami spirit manifestation rising above sacred fire, ancient shrine setting at night',
@@ -45,6 +50,7 @@ export const NIHONGI_PLOT_ARCHETYPES = [
   {
     id: 'forbidden_alliance',
     label: 'The Forbidden Alliance',
+    weight: 6,
     description: 'A bond — love, friendship, loyalty — between individuals whose clans are political enemies; the relationship cannot survive the coming conflict without destroying something essential',
     toneTag: 'dramatic',
     iconPrompt: 'asuka period man and woman from rival clans touching hands through gap in bamboo screen, longing expressions, japanese garden setting, soft evening light',
@@ -53,6 +59,7 @@ export const NIHONGI_PLOT_ARCHETYPES = [
   {
     id: 'divine_blood',
     label: 'The Divine Blood',
+    weight: 5,
     description: 'Evidence has emerged that someone — the character, or someone close to them — has kami ancestry that was deliberately concealed; the implications for clan hierarchy are either catastrophic or transformative',
     toneTag: 'dramatic',
     iconPrompt: 'asuka period figure kneeling with golden divine radiance emanating from their silhouette, ancient genealogy scroll unrolling to reveal shocking lineage, sacred light in dark shrine',

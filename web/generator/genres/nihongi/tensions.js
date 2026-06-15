@@ -4,7 +4,7 @@
 export const TENSIONS = [
   {
     id: 'ritual_pollution',
-    label: 'A powerful official has declared them ritually impure (kegare) — they must undergo public cleansing or lose their position',
+    description: 'A powerful official has declared them ritually impure (kegare) — they must undergo public cleansing or lose their position',
     toneTag: 'dramatic',
     criminalFlag: false,
     iconPrompt: 'ancient japanese ritual pollution kegare accusation court shame cleansing ceremony public crisis nihon shoki yamato-e painting',
@@ -12,7 +12,7 @@ export const TENSIONS = [
   },
   {
     id: 'impossible_mission',
-    label: 'Their clan lord has assigned them a mission that is either impossible or certain to create powerful enemies',
+    description: 'Their clan lord has assigned them a mission that is either impossible or certain to create powerful enemies',
     toneTag: 'dramatic',
     criminalFlag: false,
     iconPrompt: 'ancient japanese clan lord command difficult mission impossible retainer bound by duty no good option nihon shoki yamato-e painting',
@@ -20,7 +20,7 @@ export const TENSIONS = [
   },
   {
     id: 'clan_absorption',
-    label: 'A great clan has begun the process of absorbing their family\'s lands and loyalties into their own structure',
+    description: 'A great clan has begun the process of absorbing their family\'s lands and loyalties into their own structure',
     toneTag: 'gritty',
     criminalFlag: false,
     iconPrompt: 'ancient japanese powerful clan absorbing smaller family pressure obligation resistance surrender provincial nihon shoki yamato-e painting',
@@ -28,7 +28,7 @@ export const TENSIONS = [
   },
   {
     id: 'forbidden_text',
-    label: 'They carry continental documents — a letter, a copied sutra, a medical text — that the old kami-priest faction wants destroyed',
+    description: 'They carry continental documents — a letter, a copied sutra, a medical text — that the old kami-priest faction wants destroyed',
     toneTag: 'dramatic',
     criminalFlag: false,
     iconPrompt: 'ancient japanese forbidden continental text scroll hidden danger kami priest faction threat literacy nihon shoki yamato-e painting',
@@ -36,7 +36,7 @@ export const TENSIONS = [
   },
   {
     id: 'false_genealogy_planted',
-    label: 'Someone has doctored the official clan records to undercut their lineage claim — and the forgery is convincing',
+    description: 'Someone has doctored the official clan records to undercut their lineage claim — and the forgery is convincing',
     toneTag: 'gritty',
     criminalFlag: false,
     iconPrompt: 'ancient japanese clan record falsified genealogy document forgery identity undermined accusation nihon shoki yamato-e painting',
@@ -44,7 +44,7 @@ export const TENSIONS = [
   },
   {
     id: 'kami_wrath',
-    label: 'Omens are accumulating — floods, sick livestock, a shrine oracle — that suggest a kami is specifically displeased with something they have done',
+    description: 'Omens are accumulating — floods, sick livestock, a shrine oracle — that suggest a kami is specifically displeased with something they have done',
     toneTag: 'dramatic',
     criminalFlag: false,
     iconPrompt: 'ancient japanese kami divine wrath omens flood sick livestock shrine warning ritual appeasement nihon shoki yamato-e painting',
@@ -52,7 +52,7 @@ export const TENSIONS = [
   },
   {
     id: 'purge_knowledge',
-    label: 'They know the timing and targets of an upcoming political purge — and must choose between warning, silence, and using the knowledge',
+    description: 'They know the timing and targets of an upcoming political purge — and must choose between warning, silence, and using the knowledge',
     toneTag: 'dramatic',
     criminalFlag: false,
     iconPrompt: 'ancient japanese court purge knowledge danger choosing sides silence warning political survival nihon shoki yamato-e painting',
@@ -60,7 +60,7 @@ export const TENSIONS = [
   },
   {
     id: 'buddhist_secrecy',
-    label: 'They practise Buddhism privately while officially serving a kami shrine — the two factions are moving toward open conflict',
+    description: 'They practise Buddhism privately while officially serving a kami shrine — the two factions are moving toward open conflict',
     toneTag: 'gritty',
     criminalFlag: false,
     iconPrompt: 'ancient japanese secret buddhist practice hidden sutra shrine duty dual faith kami buddhist conflict nihon shoki yamato-e painting',
@@ -68,7 +68,7 @@ export const TENSIONS = [
   },
   {
     id: 'foreign_arrival',
-    label: 'A continental ship has arrived carrying something — a person, a document, a relic — that multiple powerful factions want controlled',
+    description: 'A continental ship has arrived carrying something — a person, a document, a relic — that multiple powerful factions want controlled',
     toneTag: 'dramatic',
     criminalFlag: false,
     iconPrompt: 'ancient japanese foreign ship continental arrival competing factions dangerous cargo monk relic document nihon shoki yamato-e painting',
@@ -76,7 +76,7 @@ export const TENSIONS = [
   },
   {
     id: 'succession_crisis',
-    label: 'The clan lord is dying and two potential successors have already begun positioning — the character\'s position forces them to choose',
+    description: 'The clan lord is dying and two potential successors have already begun positioning — the character\'s position forces them to choose',
     toneTag: 'dramatic',
     criminalFlag: false,
     iconPrompt: 'ancient japanese clan succession dying lord rival heirs pressure choose sides court politics nihon shoki yamato-e painting',
@@ -84,7 +84,7 @@ export const TENSIONS = [
   },
   {
     id: 'imperial_spy',
-    label: 'A court official has asked them to report on a clan they owe personal loyalty — and has made clear this is not optional',
+    description: 'A court official has asked them to report on a clan they owe personal loyalty — and has made clear this is not optional',
     toneTag: 'criminal',
     criminalFlag: true,
     iconPrompt: 'ancient japanese court spy coerced informant reporting clan lord loyalty conflict imperial pressure nihon shoki yamato-e painting',
@@ -92,7 +92,7 @@ export const TENSIONS = [
   },
   {
     id: 'dire_prophecy',
-    label: 'A shrine medium has named something terrible involving someone close to them — and the oracle has not been wrong in living memory',
+    description: 'A shrine medium has named something terrible involving someone close to them — and the oracle has not been wrong in living memory',
     toneTag: 'gritty',
     criminalFlag: false,
     iconPrompt: 'ancient japanese shrine oracle prophecy dire miko spirit medium foretelling someone close dread nihon shoki yamato-e painting',
