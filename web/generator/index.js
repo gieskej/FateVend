@@ -23,6 +23,7 @@ import { FANTASY_PLOT_ARCHETYPES } from './genres/fantasy/plot-archetypes.js';
 import { SCIFI_PLOT_ARCHETYPES }  from './genres/sci-fi/plot-archetypes.js';
 import { PALEOLITHIC_PLOT_ARCHETYPES } from './genres/paleolithic/plot-archetypes.js';
 import { MANGA_HS_PLOT_ARCHETYPES }   from './genres/manga-osaka-highschool1987/plot-archetypes.js';
+import { JOSEON_PLOT_ARCHETYPES }     from './genres/historical-korea-joseon-dynasty/plot-archetypes.js';
 
 // ── MODERN TABLES ─────────────────────────────────────────────────────────
 import { GENDERS as M_GENDERS, ORIENTATIONS as M_ORIENTATIONS, ETHNICITIES, BUILDS as M_BUILDS, HAIR as M_HAIR, DISTINGUISHING_FEATURES as M_DISTINGUISHING_FEATURES, QUIRKS as M_QUIRKS } from './genres/modern/character-attributes.js';
@@ -73,6 +74,16 @@ import { TENSIONS as PA_TENSIONS } from './genres/paleolithic/tensions.js';
 import { SECRETS as PA_SECRETS } from './genres/paleolithic/secrets.js';
 import { ECONOMIC_TIERS as PA_ECONOMIC_TIERS, CITY_SETTINGS as PA_CITY_SETTINGS, TAG_POOLS as PA_TAG_POOLS } from './genres/paleolithic/settings.js';
 import { NAME_POOLS as PA_NAME_POOLS } from './genres/paleolithic/names.js';
+
+// ── JOSEON DYNASTY KOREA TABLES ───────────────────────────────────────────
+import { GENDERS as JS_GENDERS, ORIENTATIONS as JS_ORIENTATIONS, RACES as JOSEON_RACES, BUILDS as JS_BUILDS, HAIR as JS_HAIR, DISTINGUISHING_FEATURES as JS_DISTINGUISHING_FEATURES, QUIRKS as JS_QUIRKS } from './genres/historical-korea-joseon-dynasty/character-attributes.js';
+import { PROFESSIONS as JS_PROFESSIONS } from './genres/historical-korea-joseon-dynasty/professions.js';
+import { LIFE_EVENTS as JS_LIFE_EVENTS } from './genres/historical-korea-joseon-dynasty/life-events.js';
+import { FAMILY_STRUCTURES as JS_FAMILY_STRUCTURES } from './genres/historical-korea-joseon-dynasty/family-structures.js';
+import { TENSIONS as JS_TENSIONS } from './genres/historical-korea-joseon-dynasty/tensions.js';
+import { SECRETS as JS_SECRETS } from './genres/historical-korea-joseon-dynasty/secrets.js';
+import { ECONOMIC_TIERS as JS_ECONOMIC_TIERS, CITY_SETTINGS as JS_CITY_SETTINGS, TAG_POOLS as JS_TAG_POOLS } from './genres/historical-korea-joseon-dynasty/settings.js';
+import { NAME_POOLS as JS_NAME_POOLS } from './genres/historical-korea-joseon-dynasty/names.js';
 
 // ── GENRE TABLES REGISTRY ─────────────────────────────────────────────────
 // skeleton-builder expects the key RACES_OR_ETHNICITIES — it handles both.
@@ -177,6 +188,26 @@ const GENRE_TABLES = {
     NAME_POOLS:             PA_NAME_POOLS,
     RELATIONSHIP_STATUSES,
     PLOT_ARCHETYPES:        [...COMMON_PLOT_ARCHETYPES, ...PALEOLITHIC_PLOT_ARCHETYPES],
+  },
+  'historical-korea-joseon-dynasty': {
+    GENDERS:                JS_GENDERS,
+    ORIENTATIONS:           JS_ORIENTATIONS,
+    RACES_OR_ETHNICITIES:   JOSEON_RACES,
+    BUILDS:                 JS_BUILDS,
+    HAIR:                   JS_HAIR,
+    DISTINGUISHING_FEATURES:JS_DISTINGUISHING_FEATURES,
+    QUIRKS:                 JS_QUIRKS,
+    PROFESSIONS:            JS_PROFESSIONS,
+    LIFE_EVENTS:            JS_LIFE_EVENTS,
+    FAMILY_STRUCTURES:      JS_FAMILY_STRUCTURES,
+    TENSIONS:               JS_TENSIONS,
+    SECRETS:                JS_SECRETS,
+    ECONOMIC_TIERS:         JS_ECONOMIC_TIERS,
+    CITY_SETTINGS:          JS_CITY_SETTINGS,
+    TAG_POOLS:              JS_TAG_POOLS,
+    NAME_POOLS:             JS_NAME_POOLS,
+    RELATIONSHIP_STATUSES,
+    PLOT_ARCHETYPES:        [...COMMON_PLOT_ARCHETYPES, ...JOSEON_PLOT_ARCHETYPES],
   },
 };
 

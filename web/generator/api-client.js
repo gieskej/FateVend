@@ -34,6 +34,12 @@ import {
   parseResponse as mangaHsParseResponse,
 } from './genres/manga-osaka-highschool1987/prompt-template.js';
 
+import {
+  SYSTEM_PROMPT as JOSEON_SYSTEM_PROMPT,
+  buildPrompt   as joseonBuildPrompt,
+  parseResponse as joseonParseResponse,
+} from './genres/historical-korea-joseon-dynasty/prompt-template.js';
+
 const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
 const MODEL             = 'claude-sonnet-4-5';
 const MAX_TOKENS        = 8192;
@@ -112,6 +118,11 @@ const PROMPT_TEMPLATES = {
     systemPrompt:  MANGA_HS_SYSTEM_PROMPT,
     buildPrompt:   mangaHsBuildPrompt,
     parseResponse: mangaHsParseResponse,
+  },
+  'historical-korea-joseon-dynasty': {
+    systemPrompt:  JOSEON_SYSTEM_PROMPT,
+    buildPrompt:   joseonBuildPrompt,
+    parseResponse: joseonParseResponse,
   },
 };
 

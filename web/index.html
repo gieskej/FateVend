@@ -156,6 +156,10 @@
         style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s;">
         Osaka HS '87
       </button>
+      <button id="genre-historical-korea-joseon-dynasty" onclick="setGenre('historical-korea-joseon-dynasty')"
+        style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s;">
+        Joseon Korea
+      </button>
     </div>
   </div>
 
@@ -236,9 +240,15 @@ import {
   MANGA_HS_ECONOMIC_TIERS, MANGA_HS_CITY_SETTINGS, MANGA_HS_TAG_POOLS,
   MANGA_HS_PROFESSIONS, MANGA_HS_LIFE_EVENTS, MANGA_HS_TENSIONS, MANGA_HS_SECRETS,
   MANGA_HS_NAME_POOLS, MANGA_HS_PARENT_STATUSES, MANGA_HS_SIBLING_DYNAMICS, MANGA_HS_FAMILY_STRUCTURES,
+  // Joseon Dynasty Korea
+  JOSEON_GENDERS, JOSEON_ORIENTATIONS, JOSEON_BUILDS, JOSEON_HAIR,
+  JOSEON_RACES, JOSEON_DISTINGUISHING_FEATURES, JOSEON_QUIRKS,
+  JOSEON_ECONOMIC_TIERS, JOSEON_CITY_SETTINGS, JOSEON_TAG_POOLS,
+  JOSEON_PROFESSIONS, JOSEON_LIFE_EVENTS, JOSEON_TENSIONS, JOSEON_SECRETS,
+  JOSEON_NAME_POOLS, JOSEON_PARENT_STATUSES, JOSEON_SIBLING_DYNAMICS, JOSEON_FAMILY_STRUCTURES,
   // Shared
   RELATIONSHIP_STATUSES,
-  COMMON_PLOT_ARCHETYPES, MODERN_PLOT_ARCHETYPES, FANTASY_PLOT_ARCHETYPES, SCIFI_PLOT_ARCHETYPES, PALEOLITHIC_PLOT_ARCHETYPES, MANGA_HS_PLOT_ARCHETYPES,
+  COMMON_PLOT_ARCHETYPES, MODERN_PLOT_ARCHETYPES, FANTASY_PLOT_ARCHETYPES, SCIFI_PLOT_ARCHETYPES, PALEOLITHIC_PLOT_ARCHETYPES, MANGA_HS_PLOT_ARCHETYPES, JOSEON_PLOT_ARCHETYPES,
   STAT_ADJECTIVES, statAdjective,
   MBTI_TYPES,
   NPC_TRAITS, FRIEND_DYNAMICS, PARENT_DYNAMICS_ALIVE, FOIL_ROLES,
@@ -251,6 +261,7 @@ const FANTASY_PLOTS_ALL = [...COMMON_PLOT_ARCHETYPES, ...FANTASY_PLOT_ARCHETYPES
 const SCIFI_PLOTS_ALL   = [...COMMON_PLOT_ARCHETYPES, ...SCIFI_PLOT_ARCHETYPES];
 const PALEO_PLOTS_ALL    = [...COMMON_PLOT_ARCHETYPES, ...PALEOLITHIC_PLOT_ARCHETYPES];
 const MANGA_HS_PLOTS_ALL = [...COMMON_PLOT_ARCHETYPES, ...MANGA_HS_PLOT_ARCHETYPES];
+const JOSEON_PLOTS_ALL   = [...COMMON_PLOT_ARCHETYPES, ...JOSEON_PLOT_ARCHETYPES];
 
 // ── Genre routing ─────────────────────────────────────────────────────────
 function getGenreTables(genre) {
@@ -348,6 +359,30 @@ function getGenreTables(genre) {
       NAME_POOLS:              MANGA_HS_NAME_POOLS,
       RELATIONSHIP_STATUSES,
       PLOT_ARCHETYPES:         MANGA_HS_PLOTS_ALL,
+    };
+  }
+  if (genre === 'historical-korea-joseon-dynasty') {
+    return {
+      PROFESSIONS:           JOSEON_PROFESSIONS,
+      LIFE_EVENTS:           JOSEON_LIFE_EVENTS,
+      TENSIONS:              JOSEON_TENSIONS,
+      SECRETS:               JOSEON_SECRETS,
+      FAMILY_STRUCTURES:     JOSEON_FAMILY_STRUCTURES,
+      PARENT_STATUSES:       JOSEON_PARENT_STATUSES,
+      SIBLING_DYNAMICS:      JOSEON_SIBLING_DYNAMICS,
+      ECONOMIC_TIERS:        JOSEON_ECONOMIC_TIERS,
+      CITY_SETTINGS:         JOSEON_CITY_SETTINGS,
+      TAG_POOLS:             JOSEON_TAG_POOLS,
+      RACES_OR_ETHNICITIES:  JOSEON_RACES,
+      GENDERS:               JOSEON_GENDERS,
+      ORIENTATIONS:          JOSEON_ORIENTATIONS,
+      BUILDS:                JOSEON_BUILDS,
+      HAIR:                  JOSEON_HAIR.map(h => ({ label: typeof h === 'string' ? h : h.label })),
+      DISTINGUISHING_FEATURES: JOSEON_DISTINGUISHING_FEATURES,
+      QUIRKS:                JOSEON_QUIRKS,
+      NAME_POOLS:            JOSEON_NAME_POOLS,
+      RELATIONSHIP_STATUSES,
+      PLOT_ARCHETYPES:       JOSEON_PLOTS_ALL,
     };
   }
   // Default: modern
@@ -718,8 +753,8 @@ function buildPrompt(sk, genre) {
     `  - ${npc.name} (${npc.role}, ${npc.status}): ${npc.traits.join(', ')}. ${npc.dynamic}`
   ).join('\n');
   const appParts = [sk.appearance.build, sk.appearance.hair, sk.appearance.distinguishingFeature, ...(sk.appearance.statNotes ?? [])].filter(Boolean).join('; ');
-  const identityLabel  = genre === 'fantasy' ? 'Race' : genre === 'sci-fi' ? 'Species' : genre === 'paleolithic' ? 'Tribe' : genre === 'manga-osaka-highschool1987' ? 'Archetype' : 'Ethnicity';
-  const genreLabel     = genre === 'fantasy' ? 'fantasy' : genre === 'sci-fi' ? 'AI Dungeon sci-fi' : genre === 'paleolithic' ? 'AI Dungeon paleolithic' : genre === 'manga-osaka-highschool1987' ? 'AI Dungeon manga Osaka high school 1987' : 'AI Dungeon';
+  const identityLabel  = genre === 'fantasy' ? 'Race' : genre === 'sci-fi' ? 'Species' : genre === 'paleolithic' ? 'Tribe' : genre === 'manga-osaka-highschool1987' ? 'Archetype' : genre === 'historical-korea-joseon-dynasty' ? 'Class' : 'Ethnicity';
+  const genreLabel     = genre === 'fantasy' ? 'fantasy' : genre === 'sci-fi' ? 'AI Dungeon sci-fi' : genre === 'paleolithic' ? 'AI Dungeon paleolithic' : genre === 'manga-osaka-highschool1987' ? 'AI Dungeon manga Osaka high school 1987' : genre === 'historical-korea-joseon-dynasty' ? 'AI Dungeon Joseon Korea' : 'AI Dungeon';
   const entryNote      = genre === 'fantasy'
     ? 'Lead with name, rough age, role. Weave in race appearance and quirk through behavior. Ground in sensory fantasy detail. End on forward momentum.'
     : genre === 'sci-fi'
@@ -728,6 +763,8 @@ function buildPrompt(sk, genre) {
     ? 'Lead with name, rough age, tribal role. Weave in tribal origin, physical presence, and quirk through behavior. Ground in sensory paleolithic detail: woodsmoke, flint, hide, the cold. End on forward momentum.'
     : genre === 'manga-osaka-highschool1987'
     ? 'Lead with name, school year, archetype. Weave in background and physical presence through behavior — show don\'t state. Ground in 1987 Osaka specifics: walkman, school uniform, batting cage smell. Reference key cast members by name. End on forward momentum.'
+    : genre === 'historical-korea-joseon-dynasty'
+    ? 'Lead with name, social class, and profession. Use sentence fragments. Show character through what they carry, how they bow, what ritual they perform. Ground in Joseon texture: ink, silk, gat hat, ondol floor. Reference key cast members. End on forward momentum.'
     : 'Lead with name, age, role. Use sentence fragments. Fold in appearance and quirk through behavior. Reference key cast members. End on forward momentum.';
   const openingNote    = genre === 'fantasy'
     ? 'Second person. Drop the player into a vivid fantasy moment right now — mid-scene. Sensory detail (smells, sounds, weight of gear). End mid-moment with a clear choice.'
@@ -737,6 +774,8 @@ function buildPrompt(sk, genre) {
     ? 'Second person. Drop the player into a specific vivid stone-age moment — right now, mid-scene. Smells: woodsmoke, wet earth, blood, hide. Weight: a hafted spear, a stone axe, cold air. End mid-moment with a clear choice or action available. No backstory. No summaries.'
     : genre === 'manga-osaka-highschool1987'
     ? 'Second person. Drop the player into a specific vivid Osaka 1987 high school moment — right now, mid-scene. Smells: chalk dust, shoe lockers, canned coffee. Sound: walkman leak, squeaking gym floor, rain on the school roof. End mid-moment with a clear choice or action available. No backstory. No summaries.'
+    : genre === 'historical-korea-joseon-dynasty'
+    ? 'Second person. Drop the player into a specific vivid Joseon moment — right now, mid-scene. Smells: pine ink, incense, ondol heat, cold winter air. Weight: silk hanbok, a gat hat, a brushwork memorial to deliver. End mid-moment with a clear choice or action available. No backstory. No summaries.'
     : 'Second person. Drop the player directly into a vivid, specific moment — right now. Sensory detail. End mid-moment with a clear next decision.';
   const appearanceNote = genre === 'fantasy'
     ? 'Comma-separated visual descriptors for a text-to-image model. Start with "portrait of" then: race, age range, gender, body type, hair color and style, eye description, distinguishing feature if any, armor or clothing suited to their role, setting mood. Include "face of [a historical figure, classical warrior, or well-known portrait subject whose gender, racial appearance, and approximate age match this character]". Close with: fantasy character art, detailed digital illustration, dramatic lighting. No sentences — descriptors only.'
@@ -746,6 +785,8 @@ function buildPrompt(sk, genre) {
     ? 'Comma-separated visual descriptors for a text-to-image model. Start with "portrait of" then: tribal group, age range, gender, body type, natural unprocessed hair, eyes, ritual markings or scars if any, clothing (hides, sinew, bone ornaments) suited to their role. Include "face of [a historical figure or archaeological reconstruction whose gender, geographic origin, and approximate age match this character]". Close with: paleolithic cave art style, dramatic torchlight, detailed digital illustration. No sentences — descriptors only.'
     : genre === 'manga-osaka-highschool1987'
     ? 'Comma-separated visual descriptors for a text-to-image model. Start with "portrait of" then: Japanese high school student, archetype (yankii/honor student/etc.), age range, gender, uniform description, hair style, eyes, distinguishing feature if any, school or Osaka street setting detail. Include "face of [a Japanese actor or musician from the 1980s whose gender and approximate age match this character — someone visually documented in 1980s Japanese media]". Close with: 1980s shounen or shoujo manga illustration style, high contrast ink lines, halftone. No sentences — descriptors only.'
+    : genre === 'historical-korea-joseon-dynasty'
+    ? 'Comma-separated visual descriptors for a text-to-image model. Start with "portrait of" then: Joseon Dynasty Korean person, social class indicator, age range, gender, hanbok style and color, hair style (topknot/gat/binyeo/chignon), eyes, distinguishing feature if any, setting element. Include "face of [a Korean or East Asian historical figure, classical portrait subject, or screen actor whose gender, approximate age, and social register match this character]". Close with: Joseon court painting style, minhwa folk art palette, ink and mineral pigment. No sentences — descriptors only.'
     : 'Comma-separated visual descriptors for a text-to-image model. Start with "portrait of" then: age range, gender, body type, hair color and style, eye description, distinguishing feature if any, outfit suited to their job and economic tier, setting mood. Include "face of [a historical figure or classic-cinema figure whose gender, ethnicity, and approximate age match this character — someone whose likeness is well-documented in photographs or portraiture]". Close with: photorealistic, cinematic lighting. No sentences — descriptors only.';
 
   return `Generate ${genreLabel} content for this character. Return a single JSON object with these exact keys:
@@ -951,6 +992,36 @@ STYLE:
 
 Output only the JSON structure requested. No preamble, no commentary, no markdown fences.`;
   }
+  if (genre === 'historical-korea-joseon-dynasty') {
+    return `You are a creative writer generating AI Dungeon content for a historical RPG set in Joseon Dynasty Korea.
+Your output must be vivid, grounded in authentic Korean history and culture, and immediately playable as a scenario.
+
+TONE — this is critical:
+This is historical drama territory: Confucian weight, faction politics, the specific cruelties of a class system enforced with paperwork.
+Characters should feel the full gravity of the world without being crushed by it — they want things, scheme for things, love things.
+The register is literary but never academic. Sensory texture: mulberry paper, pine ink, ondol floors, silk hanbok, gat hats, haegeum music.
+Dark material is permitted and treated seriously. But every character should have at least one quality that makes the player lean forward.
+Wit is welcome — Joseon scholars were deeply funny — but bone-dry and never anachronistic.
+
+SETTING RULES — Joseon Korea:
+- Strict hierarchy: yangban (scholar/military aristocracy), jungin (technical middle class), sangmin (commoners), cheonmin (low-born). Genealogy registers (jokbo) are everything.
+- The gwageo civil service examinations are the path to power — years of preparation, crushing failure rates, political manipulation.
+- Bungdang faction politics: court factions (Easterner/Westerner/Southerner/Northerner) engage in perpetual purges. The wrong patron is death.
+- Women are confined to the inner household (anchae) by Confucian law but exercise real power within those constraints. Gisaeng move freely.
+- Buddhism is officially suppressed but practiced everywhere. Catholic converts face execution in later periods.
+- The Imjin War (Japanese invasion, 1592–1598) is a generational trauma. After 1598, references are inevitable.
+- Tributary relationship with Ming/Qing China: diplomatic missions to Beijing are the most worldly experience available.
+
+STYLE:
+- Behavioral prose — show character through action, objects, posture, and what they don't say. Never explain.
+- Honor the hierarchy in every address and bow — rank is performed constantly.
+- Never mention stat numbers.
+- Sensory specificity: ink, silk, ondol heat, gat hat weight, haegeum sound, makgeolli smell, the cold of a northern province.
+- Sentence fragments where they sharpen — maintain a slightly elevated register that suits the era's literary self-consciousness.
+- Stay within the exact character limits given.
+
+Output only the JSON structure requested. No preamble, no commentary, no markdown fences.`;
+  }
   return SYSTEM_PROMPT;
 }
 
@@ -1081,6 +1152,7 @@ function setGenre(genre) {
     'sci-fi':     document.getElementById('genre-scifi'),
     paleolithic:  document.getElementById('genre-paleolithic'),
     'manga-osaka-highschool1987': document.getElementById('genre-manga-osaka-highschool1987'),
+    'historical-korea-joseon-dynasty': document.getElementById('genre-historical-korea-joseon-dynasty'),
   };
   for (const [g, btn] of Object.entries(btns)) {
     if (!btn) continue;
@@ -1397,6 +1469,48 @@ function getSlotConfig(genre) {
         LIFE_EVENTS:           PALEO_LIFE_EVENTS.map(e => [e.id, e.id, idToLabel(e.id)]),
         TENSIONS:              PALEO_TENSIONS.map(t => [t.id, t.id, idToLabel(t.id)]),
         PLOT_ARCHETYPES:       plotCat(PALEO_PLOTS_ALL),
+      },
+    };
+  }
+
+  if (genre === 'historical-korea-joseon-dynasty') {
+    return {
+      iconBase: './generator/genres/historical-korea-joseon-dynasty/icons/',
+      defs: [
+        { key:'gender',    header:'Gender',       cat:'GENDERS',               common:true  },
+        { key:'species',   header:'Class',         cat:'CLASSES',               common:false },
+        { key:'orient',    header:'Orientation',  cat:'ORIENTATIONS',          common:true  },
+        { key:'relStatus', header:'Relationship', cat:'RELATIONSHIP_STATUSES',  common:true  },
+        { key:'mbti',      header:'Personality',  cat:'MBTI_TYPES',            common:true  },
+        { key:'prof',      header:'Profession',   cat:'PROFESSIONS',           common:false },
+        { key:'sentiment', header:'Sentiment',    cat:'SENTIMENTS',            common:true  },
+        { key:'econ',      header:'Standing',     cat:'ECONOMIC_TIERS',        common:false },
+        { key:'city',      header:'Setting',      cat:'CITY_SETTINGS',         common:false },
+        { key:'family',    header:'Background',   cat:'FAMILY_STRUCTURES',     common:false },
+        { key:'lifeEvent', header:'Life Event',   cat:'LIFE_EVENTS',           common:false },
+        { key:'tension',   header:'Tension',      cat:'TENSIONS',              common:false },
+        { key:'plot',      header:'Plot',          cat:'PLOT_ARCHETYPES',       common:true  },
+      ],
+      catalog: {
+        CLASSES:               JOSEON_RACES.map(r => [r.id, r.id, r.broad]),
+        GENDERS:               GENDERS_CAT,
+        ORIENTATIONS:          ORIENT_CAT,
+        RELATIONSHIP_STATUSES: RELSTATUS_CAT,
+        MBTI_TYPES:            MBTI_CAT,
+        PROFESSIONS:           JOSEON_PROFESSIONS.map(p => { const ds=toIconSlug(p.title); return [ds, iconSlugFrom(p,ds), p.title]; }),
+        SENTIMENTS:            SENT_CAT,
+        ECONOMIC_TIERS: [
+          ['tier1','tier1-destitute','Destitute'],
+          ['tier2','tier2-subsistence','Subsistence'],
+          ['tier3','tier3-modest','Modest'],
+          ['tier4','tier4-established','Established'],
+          ['tier5','tier5-elite','Elite'],
+        ],
+        CITY_SETTINGS:         JOSEON_CITY_SETTINGS.map(c => [c.id, c.id, c.label]),
+        FAMILY_STRUCTURES:     JOSEON_FAMILY_STRUCTURES.map(f => [f.id, f.id, f.label]),
+        LIFE_EVENTS:           JOSEON_LIFE_EVENTS.map(e => [e.id, e.id, idToLabel(e.id)]),
+        TENSIONS:              JOSEON_TENSIONS.map(t => [t.id, t.id, idToLabel(t.id)]),
+        PLOT_ARCHETYPES:       plotCat(JOSEON_PLOTS_ALL),
       },
     };
   }

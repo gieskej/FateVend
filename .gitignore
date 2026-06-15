@@ -6,3 +6,5 @@ old
 *.bak
 bad-icons.txt
 node_modules
+2026-*
+__pycache__

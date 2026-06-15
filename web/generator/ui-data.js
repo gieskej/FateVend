@@ -132,6 +132,34 @@ export {
   FAMILY_STRUCTURES as MANGA_HS_FAMILY_STRUCTURES,
 } from './genres/manga-osaka-highschool1987/family-structures.js';
 
+// ── JOSEON DYNASTY KOREA ───────────────────────────────────────────────────
+export {
+  GENDERS          as JOSEON_GENDERS,
+  ORIENTATIONS     as JOSEON_ORIENTATIONS,
+  BUILDS           as JOSEON_BUILDS,
+  HAIR             as JOSEON_HAIR,
+  RACES            as JOSEON_RACES,
+  DISTINGUISHING_FEATURES as JOSEON_DISTINGUISHING_FEATURES,
+  QUIRKS           as JOSEON_QUIRKS,
+} from './genres/historical-korea-joseon-dynasty/character-attributes.js';
+
+export {
+  ECONOMIC_TIERS   as JOSEON_ECONOMIC_TIERS,
+  CITY_SETTINGS    as JOSEON_CITY_SETTINGS,
+  TAG_POOLS        as JOSEON_TAG_POOLS,
+} from './genres/historical-korea-joseon-dynasty/settings.js';
+
+export { PROFESSIONS as JOSEON_PROFESSIONS } from './genres/historical-korea-joseon-dynasty/professions.js';
+export { LIFE_EVENTS as JOSEON_LIFE_EVENTS } from './genres/historical-korea-joseon-dynasty/life-events.js';
+export { TENSIONS    as JOSEON_TENSIONS    } from './genres/historical-korea-joseon-dynasty/tensions.js';
+export { SECRETS     as JOSEON_SECRETS     } from './genres/historical-korea-joseon-dynasty/secrets.js';
+export { NAME_POOLS  as JOSEON_NAME_POOLS  } from './genres/historical-korea-joseon-dynasty/names.js';
+export {
+  PARENT_STATUSES  as JOSEON_PARENT_STATUSES,
+  SIBLING_DYNAMICS as JOSEON_SIBLING_DYNAMICS,
+  FAMILY_STRUCTURES as JOSEON_FAMILY_STRUCTURES,
+} from './genres/historical-korea-joseon-dynasty/family-structures.js';
+
 // ── COMMON ──────────────────────────────────────────────────────────────────
 export { RELATIONSHIP_STATUSES } from './common/relationship-statuses.js';
 export { COMMON_PLOT_ARCHETYPES } from './common/plot-archetypes.js';
@@ -140,6 +168,7 @@ export { FANTASY_PLOT_ARCHETYPES } from './genres/fantasy/plot-archetypes.js';
 export { SCIFI_PLOT_ARCHETYPES } from './genres/sci-fi/plot-archetypes.js';
 export { PALEOLITHIC_PLOT_ARCHETYPES } from './genres/paleolithic/plot-archetypes.js';
 export { MANGA_HS_PLOT_ARCHETYPES }   from './genres/manga-osaka-highschool1987/plot-archetypes.js';
+export { JOSEON_PLOT_ARCHETYPES }     from './genres/historical-korea-joseon-dynasty/plot-archetypes.js';
 
 // ── STAT ADJECTIVES ─────────────────────────────────────────────────────────
 export { STAT_ADJECTIVES, statAdjective } from './stat-adjectives.js';
