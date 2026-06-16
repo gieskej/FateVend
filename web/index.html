@@ -112,7 +112,7 @@
 
         <div class="help-section">
           <div class="help-section-title">Anthropic — Claude (Text Generation)</div>
-          <p>Claude is the primary text generation provider. It writes the character entries, scenario description, opening, and NPC entries.</p>
+          <p>Claude writes the character entries, scenario description, opening, and NPC entries. Select it in the Text Provider selector after entering a key.</p>
           <ol class="help-steps">
             <li>Go to <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a> and sign in or create an account.</li>
             <li>In the left sidebar, click <strong>API Keys</strong>.</li>
@@ -123,14 +123,14 @@
         </div>
 
         <div class="help-section">
-          <div class="help-section-title">Google Gemini (Text Generation — Fallback)</div>
-          <p>Gemini is used when no Anthropic key is configured. The Text Provider selector above the genre picker lets you switch between them if both keys are set.</p>
+          <div class="help-section-title">Google Gemini (Text Generation)</div>
+          <p>Gemini writes the same content as Claude. Select it in the Text Provider selector after entering a key. Has a free tier with generous daily limits.</p>
           <ol class="help-steps">
             <li>Go to <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">aistudio.google.com/app/apikey</a> and sign in with your Google account.</li>
             <li>Click <strong>Create API key</strong> and choose or create a project.</li>
             <li>Copy the key and paste it into the <strong>Google Gemini Key</strong> field above. Keys start with <code>AIza</code>.</li>
           </ol>
-          <p>Gemini has a free tier with generous daily limits. Paid tiers are available for higher usage.</p>
+          <p>Paid tiers are available for higher usage.</p>
         </div>
 
         <div class="help-section">
@@ -172,23 +172,43 @@
     </div>
   </div>
 
-  <!-- TEXT PROVIDER SELECTOR (hidden until at least one key is configured) -->
-  <div id="provider-selector" style="text-align:center;margin-bottom:1.25rem;display:none;">
-    <div style="font-family:var(--font-display);font-size:0.62rem;letter-spacing:0.16em;color:var(--brass-light);text-transform:uppercase;margin-bottom:0.6rem;">Text Provider</div>
-    <div style="display:inline-flex;gap:0;border:1px solid var(--brass-dark);border-radius:var(--radius);overflow:hidden;">
-      <button id="provider-claude" onclick="setProvider('claude')"
-        style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:var(--brass);color:var(--ink);transition:background 0.15s,color 0.15s,opacity 0.15s;">
-        Claude
-      </button>
-      <button id="provider-gemini" onclick="setProvider('gemini')"
-        style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s,opacity 0.15s;">
-        Gemini
-      </button>
-      <button id="provider-ollama" onclick="setProvider('ollama')"
-        style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s,opacity 0.15s;display:none;">
-        Ollama
-      </button>
+  <!-- PROVIDER SELECTORS -->
+  <div style="display:flex;justify-content:center;gap:2.5rem;flex-wrap:wrap;margin-bottom:1.25rem;">
+
+    <!-- Text provider (hidden until at least one source configured) -->
+    <div id="provider-selector" style="text-align:center;display:none;">
+      <div style="font-family:var(--font-display);font-size:0.62rem;letter-spacing:0.16em;color:var(--brass-light);text-transform:uppercase;margin-bottom:0.6rem;">Text Provider</div>
+      <div style="display:inline-flex;gap:0;border:1px solid var(--brass-dark);border-radius:var(--radius);overflow:hidden;">
+        <button id="provider-claude" onclick="setProvider('claude')"
+          style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s,opacity 0.15s;">
+          Claude
+        </button>
+        <button id="provider-gemini" onclick="setProvider('gemini')"
+          style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s,opacity 0.15s;">
+          Gemini
+        </button>
+        <button id="provider-ollama" onclick="setProvider('ollama')"
+          style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s,opacity 0.15s;display:none;">
+          Ollama
+        </button>
+      </div>
     </div>
+
+    <!-- Image provider (hidden until at least one source configured) -->
+    <div id="img-provider-selector" style="text-align:center;display:none;">
+      <div style="font-family:var(--font-display);font-size:0.62rem;letter-spacing:0.16em;color:var(--brass-light);text-transform:uppercase;margin-bottom:0.6rem;">Image Provider</div>
+      <div style="display:inline-flex;gap:0;border:1px solid var(--brass-dark);border-radius:var(--radius);overflow:hidden;">
+        <button id="img-provider-sd" onclick="setImageProvider('sd')"
+          style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s,opacity 0.15s;">
+          Stable Diffusion
+        </button>
+        <button id="img-provider-stability" onclick="setImageProvider('stability')"
+          style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s,opacity 0.15s;">
+          Stability AI
+        </button>
+      </div>
+    </div>
+
   </div>
 
   <!-- GENRE SELECTOR -->
@@ -196,9 +216,9 @@
     <div style="font-family:var(--font-display);font-size:0.62rem;letter-spacing:0.16em;color:var(--brass-light);text-transform:uppercase;margin-bottom:0.6rem;">Genre</div>
     <select id="genre-select" onchange="setGenre(this.value)"
       style="font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.5rem 2rem 0.5rem 1rem;background:rgba(26,18,8,0.6);color:var(--brass-light);border:1px solid var(--brass-dark);border-radius:var(--radius);cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%228%22 viewBox=%220 0 12 8%22><path d=%22M1 1l5 5 5-5%22 stroke=%22%23c9a84c%22 stroke-width=%221.8%22 fill=%22none%22 stroke-linecap=%22round%22/></svg>');background-repeat:no-repeat;background-position:right 0.75rem center;">
-      <option value="fantasy">Fantasy</option>
+      <option value="fantasy" selected>Fantasy</option>
       <option value="historical-korea-joseon-dynasty">Joseon Korea</option>
-      <option value="modern" selected>Modern</option>
+      <option value="modern">Modern</option>
       <option value="nihongi">Nihongi</option>
       <option value="manga-osaka-highschool1987">Osaka HS '87</option>
       <option value="paleolithic">Paleolithic</option>
@@ -1328,22 +1348,48 @@ function updateProviderSelector() {
   if (!selector) return;
   selector.style.display = (hasAnthropic || hasGemini || hasOllama) ? 'block' : 'none';
 
-  claudeBtn.disabled       = !hasAnthropic;
-  claudeBtn.style.opacity  = hasAnthropic ? '1' : '0.3';
-  claudeBtn.style.cursor   = hasAnthropic ? 'pointer' : 'not-allowed';
-
-  geminiBtn.disabled       = !hasGemini;
-  geminiBtn.style.opacity  = hasGemini ? '1' : '0.3';
-  geminiBtn.style.cursor   = hasGemini ? 'pointer' : 'not-allowed';
-
-  ollamaBtn.style.display  = hasOllama ? 'inline-block' : 'none';
-  ollamaBtn.disabled       = !hasOllama;
+  claudeBtn.style.display  = hasAnthropic ? 'inline-block' : 'none';
+  geminiBtn.style.display  = hasGemini    ? 'inline-block' : 'none';
+  ollamaBtn.style.display  = hasOllama    ? 'inline-block' : 'none';
 
   // Auto-switch if the currently selected provider is no longer available
   if      (currentProvider === 'claude' && !hasAnthropic) setProvider(hasGemini ? 'gemini' : hasOllama ? 'ollama' : 'claude');
   else if (currentProvider === 'gemini' && !hasGemini)    setProvider(hasAnthropic ? 'claude' : hasOllama ? 'ollama' : 'gemini');
   else if (currentProvider === 'ollama' && !hasOllama)    setProvider(hasAnthropic ? 'claude' : hasGemini ? 'gemini' : 'ollama');
   else setProvider(currentProvider);
+}
+
+function setImageProvider(p) {
+  currentImageProvider = p;
+  const ids = { sd: 'img-provider-sd', stability: 'img-provider-stability' };
+  for (const [key, id] of Object.entries(ids)) {
+    const btn = document.getElementById(id);
+    if (!btn) continue;
+    const active = key === p;
+    btn.style.background = active ? 'var(--brass)' : 'rgba(26,18,8,0.6)';
+    btn.style.color      = active ? 'var(--ink)'   : 'var(--brass-light)';
+  }
+}
+
+function updateImageProviderSelector() {
+  const hasSd        = !!document.getElementById('sd-url')?.value.trim();
+  const hasStability = !!document.getElementById('img-api-key')?.value.trim();
+  const selector     = document.getElementById('img-provider-selector');
+  const sdBtn        = document.getElementById('img-provider-sd');
+  const stabBtn      = document.getElementById('img-provider-stability');
+
+  if (!selector) return;
+  selector.style.display = (hasSd || hasStability) ? 'block' : 'none';
+
+  sdBtn.style.display   = hasSd        ? 'inline-block' : 'none';
+  stabBtn.style.display = hasStability ? 'inline-block' : 'none';
+
+  // Auto-switch if current selection is no longer available; default to SD
+  if (!currentImageProvider || (currentImageProvider === 'sd' && !hasSd) || (currentImageProvider === 'stability' && !hasStability)) {
+    setImageProvider(hasSd ? 'sd' : hasStability ? 'stability' : currentImageProvider ?? 'sd');
+  } else {
+    setImageProvider(currentImageProvider);
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -1354,8 +1400,9 @@ let currentOutput      = null;
 let currentGeneratedAt = null;
 let currentStats       = null;
 let isGenerating    = false;
-let currentGenre    = 'modern';
-let currentProvider = 'gemini';
+let currentGenre    = 'fantasy';
+let currentProvider      = 'gemini';
+let currentImageProvider = null;
 
 function setGenre(genre) {
   currentGenre = genre;
@@ -2554,10 +2601,15 @@ async function runAIPhase() {
 async function generatePortrait(btn) {
   const sdUrl    = document.getElementById('sd-url').value.trim();
   const apiKey   = document.getElementById('img-api-key').value.trim();
+  const useSD    = currentImageProvider === 'sd' ? !!sdUrl
+                 : currentImageProvider === 'stability' ? false
+                 : !!sdUrl;   // fallback if selector not yet initialised
   if (!sdUrl && !apiKey) {
     showError('Enter a local SD URL or Stability AI key to generate portraits.');
     return;
   }
+  if (useSD && !sdUrl) { showError('No Stable Diffusion URL configured.'); return; }
+  if (!useSD && !apiKey) { showError('No Stability AI key configured.'); return; }
   const promptEl = document.getElementById('field-appearance');
   if (!promptEl || !promptEl.value.trim()) return;
 
@@ -2569,8 +2621,8 @@ async function generatePortrait(btn) {
   try {
     let src;
     const imgT0 = Date.now();
-    const imgBackend = sdUrl ? 'Local Stable Diffusion' : 'Stability AI';
-    if (sdUrl) {
+    const imgBackend = useSD ? 'Local Stable Diffusion' : 'Stability AI';
+    if (useSD) {
       // ── Local Stable Diffusion WebUI (Forge / A1111) with Flux1-dev model ──────────────────
       const res = await fetch(`${sdUrl}/sdapi/v1/txt2img`, {
         method: 'POST',
@@ -2661,11 +2713,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (v) localStorage.setItem(store, v);
       else   localStorage.removeItem(store);
       if (id === 'api-key' || id === 'gemini-api-key' || id === 'ollama-url') updateProviderSelector();
+      if (id === 'sd-url' || id === 'img-api-key') updateImageProviderSelector();
     });
   });
 
   // Init provider selector state now that keys are loaded
   updateProviderSelector();
+  updateImageProviderSelector();
 
   // Preload icons for the default genre so the slot animation has them cached
   preloadGenreIcons(currentGenre);
@@ -2731,7 +2785,7 @@ function updateStatsDisplay() {
 
 // Expose module functions to inline HTML event handlers
 Object.assign(window, {
-  runGenerate, runAIPhase, setGenre, setProvider, toggleHelp, openSettings, closeSettings,
+  runGenerate, runAIPhase, setGenre, setProvider, setImageProvider, toggleHelp, openSettings, closeSettings,
   copyField, copyAll, copySkeletonText, copyTags,
   generatePortrait, updateCount, downloadPackage,
 });
