@@ -188,7 +188,7 @@ export const PROFESSIONS = [
     nsfw: true,
     statAffinity: { charisma: 1.4, constitution: 1.1 },
     sentiments: ['desperate', 'resentful', 'indifferent', 'lost'],
-    iconPrompt: 'japanese teenager 1987 Osaka namba night recruitment suspicious uncertain expression manga illustration',
+    iconPrompt: 'japanese teenage girl wearing a serafuku holding money in front of a bar with a neon martini sign, manga illustration',
     iconPath: 'generator/genres/manga-osaka-highschool1987/icons/PROFESSIONS#hostess_bar_recruit.png',
   },
 ];

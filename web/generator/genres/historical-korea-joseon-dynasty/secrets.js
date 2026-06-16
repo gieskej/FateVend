@@ -69,7 +69,7 @@ export const SECRETS = [
     severity: 'explosive',
     criminalFlag: true,
     toneTag: 'dark',
-    iconPrompt: 'joseon dynasty korean covered up death bribed official secret grave night guilt haunted alone traditional painting',
+    iconPrompt: 'joseon dynasty korean unmarked grave',
     iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/SECRETS#covered_up_death.png',
   },
   {

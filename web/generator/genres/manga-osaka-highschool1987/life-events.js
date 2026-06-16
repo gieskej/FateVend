@@ -47,7 +47,7 @@ export const LIFE_EVENTS = [
     description: 'Was bullied severely in middle school — this school was supposed to be a fresh start',
     toneTag: 'gritty',
     statAffinity: { constitution: 1.1, charisma: 0.9 },
-    iconPrompt: 'japanese student 1987 walking home alone after school isolated crowd passing by quiet manga illustration',
+    iconPrompt: 'japanese student with black eye surrounded by boys wearing gakuran uniforms, 1987, manga illustration',
     iconPath: 'generator/genres/manga-osaka-highschool1987/icons/LIFE_EVENTS#bullied_badly.png',
   },
   {

@@ -554,7 +554,7 @@ export const PROFESSIONS = [
     nsfw: true,
     statAffinity: { charisma: 1.4, intelligence: 0.9, wisdom: 0.8 },
     sentiments: ['proud', 'indifferent', 'quietly satisfied', 'burned out'],
-    iconPrompt: 'Fantasy RPG icon. A female sex worker wearing a skimpy outfit outside a dimly lit tavern.',
+    iconPrompt: 'Fantasy RPG icon. A woman wearing a corset showing cleavage with a sultry smile standing outside a dimly lit tavern.',
     iconPath: 'generator/genres/fantasy/icons/PROFESSION#sex_worker.png',
   },
 ];
