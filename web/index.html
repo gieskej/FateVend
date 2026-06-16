@@ -1987,7 +1987,7 @@ async function animateSlots(skeleton, genre) {
 
     if (slotEl) { slotEl.classList.remove('rolling'); slotEl.classList.add('landed'); }
 
-    if (i === 0) {
+    if (i === cfg.defs.length - 1) {
       _bellSfx.currentTime = 0;
       _bellSfx.play().catch(() => {});
     }

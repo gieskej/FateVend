@@ -683,6 +683,10 @@ body::before {
   flex-direction: column;
   align-items: center;
   width: 120px;
+  transition: opacity 0.5s;
+}
+.slot.rolling {
+  opacity: 0.35;
 }
 .slot-header {
   font-family: var(--font-display);
