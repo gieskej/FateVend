@@ -256,7 +256,3 @@ export const FOIL_ROLES = [
   { role:'love interest',       dynamics:["Has known {n} long enough to see past the performance — still here","Wants more from {n} than {n} knows how to give right now","The timing has never been right. Might never be. They're both ignoring this.","Finds {n}'s specific brand of disaster oddly endearing"] },
   { role:'estranged former ally',dynamics:["Used to be the person {n} trusted most. Something happened. Neither talks about it.","Resurfaces at exactly the wrong moment, as they always do","Could be an asset or a liability — {n} genuinely doesn't know which"] },
 ];
-
-export const NEUTRAL_FIRST_MASC = ['Marcus','Ray','Eli','Nate','Omar','Silas','Calvin','Andre','Luca','Hassan','Ricky','Brendan','Patrick','Curtis','Terrence','Sam','Jordan','Alex','Tyler','Jesse'];
-export const NEUTRAL_FIRST_FEM  = ['Diana','Cassie','Renee','Angie','Becca','Simone','Tamara','Rosa','Leila','Claudia','Priya','Nadia','Ashley','Morgan','Keisha','Lauren','Amber','Shannon','Tanya','Jade'];
-export const NEUTRAL_LAST       = ['Vega','Tran','Kelly','Osei','Park','Walsh','Grant','Patel','Cruz','Flynn','Moss','Shaw','Reed','Kim','Boyd','Hayes','Leon','Moran','Russo','Diaz'];

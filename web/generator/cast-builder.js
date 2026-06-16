@@ -15,27 +15,25 @@ import { uniformPick, uniformPickN, randomInt } from './selector.js';
 import { PARENT_STATUSES, SIBLING_DYNAMICS }    from './genres/modern/family-structures.js';
 import { poolFor, pickFirstName }               from './skeleton-builder.js';
 
-// ── NEUTRAL NAME POOL (friends, foils — could be anyone) ──────────────────
-// Deliberately mixed — friends aren't necessarily the same ethnicity
-const NEUTRAL_FIRST_MASC = ['Marcus','Ray','Eli','Nate','Omar','Silas','Calvin','Andre','Luca','Hassan','Ricky','Brendan','Patrick','Curtis','Terrence','Sam','Jordan','Alex','Tyler','Jesse'];
-const NEUTRAL_FIRST_FEM  = ['Diana','Cassie','Renee','Angie','Becca','Simone','Tamara','Rosa','Leila','Claudia','Priya','Nadia','Ashley','Morgan','Keisha','Lauren','Amber','Shannon','Tanya','Jade'];
-const NEUTRAL_LAST       = ['Vega','Tran','Kelly','Osei','Park','Walsh','Grant','Patel','Cruz','Flynn','Moss','Shaw','Reed','Kim','Boyd','Hayes','Leon','Moran','Russo','Diaz'];
-
-// Broad race labels for neutrally-named NPCs — diverse by design
-const NEUTRAL_RACES = ['Black','Latino','White','East Asian','South Asian','Middle Eastern','Indigenous','Mixed'];
-
 // Gender id → display label (mirrors common/genders.js without the import)
 const GENDER_LABELS = {
   man: 'Man', trans_man: 'Trans man', woman: 'Woman',
   trans_woman: 'Trans woman', non_binary: 'Non-binary', genderfluid: 'Genderfluid',
 };
 
-function neutralNameForGender(genderId) {
-  const isMasc = genderId === 'man' || genderId === 'trans_man';
-  const isNB   = genderId === 'non_binary' || genderId === 'genderfluid';
-  const pool   = isNB ? (Math.random() < 0.5 ? NEUTRAL_FIRST_MASC : NEUTRAL_FIRST_FEM)
-               : isMasc ? NEUTRAL_FIRST_MASC : NEUTRAL_FIRST_FEM;
-  return `${uniformPick(pool)} ${uniformPick(NEUTRAL_LAST)}`;
+// Picks a random broad identity key from namePools (excluding 'default' fallback).
+function randomBroadFrom(namePools) {
+  const keys = Object.keys(namePools).filter(k => k !== 'default');
+  return uniformPick(keys.length ? keys : Object.keys(namePools));
+}
+
+// Returns a full name for an NPC drawn from the genre's name pools.
+function nameForGender(genderId, namePools) {
+  const broad    = randomBroadFrom(namePools);
+  const pool     = poolFor(namePools, broad);
+  const firstName = pickFirstName(genderId, pool);
+  const lastName  = uniformPick(pool.last);
+  return { fullName: `${firstName} ${lastName}`, broad };
 }
 
 function neutralGenderId() {
@@ -330,14 +328,15 @@ function buildSibling(protName, protLast, ethnicityBroad, namePools) {
 
 // ── FRIEND BUILDER ────────────────────────────────────────────────────────
 
-function buildFriend(protName) {
+function buildFriend(protName, namePools) {
   const genderId = neutralGenderId();
+  const { fullName, broad } = nameForGender(genderId, namePools);
   return {
-    name:    neutralNameForGender(genderId),
+    name:    fullName,
     role:    'best friend',
     status:  'present and close',
     gender:  GENDER_LABELS[genderId],
-    race:    uniformPick(NEUTRAL_RACES),
+    race:    broad,
     traits:  pickTraits(3),
     dynamic: fillD(uniformPick(FRIEND_DYNAMICS), protName),
   };
@@ -345,7 +344,7 @@ function buildFriend(protName) {
 
 // ── FOIL BUILDER ──────────────────────────────────────────────────────────
 
-function buildFoil(protName, protagonistGenderId, protagonistOrientation, excludeLoveInterest) {
+function buildFoil(protName, protagonistGenderId, protagonistOrientation, excludeLoveInterest, namePools) {
   const pool     = excludeLoveInterest ? FOIL_ROLES.filter(f => f.role !== 'love interest') : FOIL_ROLES;
   const foilType = uniformPick(pool.length ? pool : FOIL_ROLES);
   let genderId;
@@ -354,12 +353,13 @@ function buildFoil(protName, protagonistGenderId, protagonistOrientation, exclud
   } else {
     genderId = neutralGenderId();
   }
+  const { fullName, broad } = nameForGender(genderId, namePools);
   return {
-    name:    neutralNameForGender(genderId),
+    name:    fullName,
     role:    foilType.role,
     status:  'present',
     gender:  GENDER_LABELS[genderId],
-    race:    uniformPick(NEUTRAL_RACES),
+    race:    broad,
     traits:  pickTraits(2),
     dynamic: fillD(uniformPick(foilType.dynamics), protName),
   };
@@ -443,12 +443,12 @@ export function buildCast(protagonistName, protagonistLast, ethnicityBroad, fami
   // ── BEST FRIENDS ──────────────────────────────────────────────────────
   const friendSlots = Math.min(randomInt(1, 2), MAX - cast.length - 1);
   for (let i = 0; i < friendSlots; i++) {
-    cast.push(buildFriend(protagonistName));
+    cast.push(buildFriend(protagonistName, namePools));
   }
 
   // ── DRAMATIC FOIL ─────────────────────────────────────────────────────
   const hasPartner = relationshipStatusId && PARTNER_HAS_NPC.has(relationshipStatusId);
-  if (cast.length < MAX) cast.push(buildFoil(protagonistName, protagonistGenderId, protagonistOrientation, hasPartner));
+  if (cast.length < MAX) cast.push(buildFoil(protagonistName, protagonistGenderId, protagonistOrientation, hasPartner, namePools));
 
   return cast;
 }

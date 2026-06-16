@@ -321,7 +321,6 @@ import {
   STAT_ADJECTIVES, statAdjective,
   MBTI_TYPES,
   NPC_TRAITS, FRIEND_DYNAMICS, PARENT_DYNAMICS_ALIVE, FOIL_ROLES,
-  NEUTRAL_FIRST_MASC, NEUTRAL_FIRST_FEM, NEUTRAL_LAST,
 } from './generator/ui-data.js';
 
 // ── Combined plot archetype pools (common + genre) ─────────────────────────
@@ -703,7 +702,8 @@ function buildCast(protName, protLast, ethnicityBroad, familyStructure, tables, 
   const friendSlots = Math.min(randomInt(1,2), MAX - cast.length - 1);
   for (let i = 0; i < friendSlots; i++) {
     const fGid = neutralGenderId();
-    cast.push({ name:neutralNameForGender(fGid), role:'best friend', status:'present and close', gender:GENDER_LABELS[fGid], race:uniformPick(NEUTRAL_RACES), traits:pickTraits(3), dynamic:fillD(uniformPick(FRIEND_DYNAMICS), protName) });
+    const { fullName:fName, broad:fBroad } = nameForGender(fGid, namePools);
+    cast.push({ name:fName, role:'best friend', status:'present and close', gender:GENDER_LABELS[fGid], race:fBroad, traits:pickTraits(3), dynamic:fillD(uniformPick(FRIEND_DYNAMICS), protName) });
   }
 
   if (cast.length < MAX) {
@@ -713,7 +713,8 @@ function buildCast(protName, protLast, ethnicityBroad, familyStructure, tables, 
     const foilGid     = foilType.role === 'love interest'
       ? loveInterestGenderId(protagonistGenderId, protagonistOrientation)
       : neutralGenderId();
-    cast.push({ name:neutralNameForGender(foilGid), role:foilType.role, status:'present', gender:GENDER_LABELS[foilGid], race:uniformPick(NEUTRAL_RACES), traits:pickTraits(2), dynamic:fillD(uniformPick(foilType.dynamics), protName) });
+    const { fullName:foilName, broad:foilBroad } = nameForGender(foilGid, namePools);
+    cast.push({ name:foilName, role:foilType.role, status:'present', gender:GENDER_LABELS[foilGid], race:foilBroad, traits:pickTraits(2), dynamic:fillD(uniformPick(foilType.dynamics), protName) });
   }
   return cast;
 }
@@ -734,8 +735,20 @@ function protoName(genderId, pool) {
   return { first, last, full: `${first} ${last}` };
 }
 
-const NEUTRAL_RACES = ['Black','Latino','White','East Asian','South Asian','Middle Eastern','Indigenous','Mixed'];
 const GENDER_LABELS = { man:'Man', trans_man:'Trans man', woman:'Woman', trans_woman:'Trans woman', non_binary:'Non-binary', genderfluid:'Genderfluid' };
+
+function randomBroadFrom(namePools) {
+  const keys = Object.keys(namePools).filter(k => k !== 'default');
+  return uniformPick(keys.length ? keys : Object.keys(namePools));
+}
+
+function nameForGender(genderId, namePools) {
+  const broad     = randomBroadFrom(namePools);
+  const pool      = namePools[broad] ?? namePools['default'];
+  const firstName = pickFirst(genderId, pool);
+  const lastName  = uniformPick(pool.last);
+  return { fullName: `${firstName} ${lastName}`, broad };
+}
 
 function neutralGenderId() {
   const r = Math.random();
@@ -756,18 +769,6 @@ function loveInterestGenderId(protagonistGenderId, protagonistOrientation) {
   return Math.random() < 0.5 ? 'man' : 'woman';
 }
 
-function neutralName() {
-  const first = Math.random() < 0.5 ? uniformPick(NEUTRAL_FIRST_MASC) : uniformPick(NEUTRAL_FIRST_FEM);
-  return `${first} ${uniformPick(NEUTRAL_LAST)}`;
-}
-
-function neutralNameForGender(gId) {
-  const isNB   = gId === 'non_binary' || gId === 'genderfluid';
-  const isMasc = gId === 'man' || gId === 'trans_man';
-  const pool   = isNB ? (Math.random() < 0.5 ? NEUTRAL_FIRST_MASC : NEUTRAL_FIRST_FEM)
-               : isMasc ? NEUTRAL_FIRST_MASC : NEUTRAL_FIRST_FEM;
-  return `${uniformPick(pool)} ${uniformPick(NEUTRAL_LAST)}`;
-}
 
 function familyFirst(genderId, ethnicityBroad) {
   return pickFirst(genderId, poolFor(ethnicityBroad));
