@@ -19,6 +19,9 @@ STYLE:
 - Fantasy-specific: ground descriptions in sensory detail — smells of forge smoke, the weight of armor, the sound of a crowded tavern.
 - Stay within the exact character limits given. Count carefully.
 
+CANONICAL FACTS — do not contradict:
+Every attribute in the character skeleton is a fixed fact. Names, ages, races/species, genders, professions, relationship statuses, and every NPC's name, role, race, and gender are non-negotiable. Do not change, omit, or substitute any of them. State these facts directly when relevant and build outward from them. Precision beats indirection.
+
 Output only the JSON structure requested. No preamble, no commentary, no markdown fences.`;
 
 /**
@@ -65,9 +68,9 @@ ${castLines}
 
 OUTPUT RULES:
 
-"characterEntry": MAX 1000 chars. Terse behavioral prose. Lead with name, rough age, role. Use sentence fragments. Weave in race appearance and the quirk through behavior — show don't state. Reference key cast members by name. End on something that creates forward momentum. Make the reader want to be this person, at least for an evening.
+"characterEntry": MAX 1000 chars. Terse behavioral prose. Lead with name, rough age, race, role. Use sentence fragments. Reference key cast members by name. End on something that creates forward momentum. Make the reader want to be this person, at least for an evening.
 
-"npcEntries": An object where every key is an NPC name and every value is a PLAIN STRING (not a nested object). Each string ~1000 chars — use the full length. Open with physical presence: age, build, race markers, distinguishing features, how they move in the world. Then personality through behavior — speech, habits, the thing that gives them away. Reference the protagonist by name and show the relationship in action, not summary. These people should feel real enough to share a fire with.
+"npcEntries": An object where every key is an NPC name and every value is a PLAIN STRING (not a nested object). Each string ~1000 chars — use the full length. Open with physical presence: name, age, race, build, distinguishing features, how they move in the world. Then personality through behavior — speech, habits, the thing that gives them away. Reference the protagonist by name. These people should feel real enough to share a fire with.
 
 "title": MAX 70 chars. Hook the player. Specific, evocative, and flavored for the setting. Can be darkly funny.
 

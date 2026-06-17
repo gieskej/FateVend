@@ -20,6 +20,9 @@ STYLE:
 - Use sentence fragments where they sharpen the prose.
 - Stay within the exact character limits given. Count carefully.
 
+CANONICAL FACTS — do not contradict:
+Every attribute in the character skeleton is a fixed fact. Names, ages, races/species, genders, professions, relationship statuses, and every NPC's name, role, race, and gender are non-negotiable. Do not change, omit, or substitute any of them. State these facts directly when relevant and build outward from them. Precision beats indirection.
+
 Output only the JSON structure requested. No preamble, no commentary, no markdown fences.`;
 
 /**
@@ -68,9 +71,9 @@ ${castLines}
 
 OUTPUT RULES:
 
-"characterEntry": MAX 1000 chars. Terse behavioral prose. Lead with name, age, role. Weave in species and augmentation level through behavior — show don't state. Ground in sensory sci-fi detail. Use sentence fragments. Reference key cast members by name. End on something that creates forward momentum — a tension, an itch, a thing they want. Make the reader want to be this person, at least for an evening. Specific, alive, a little fun.
+"characterEntry": MAX 1000 chars. Terse behavioral prose. Lead with name, age, species, role. Ground in sensory sci-fi detail. Use sentence fragments. Reference key cast members by name. End on something that creates forward momentum — a tension, an itch, a thing they want. Make the reader want to be this person, at least for an evening. Specific, alive, a little fun.
 
-"npcEntries": An object where every key is an NPC name and every value is a PLAIN STRING (not a nested object). Each string ~1000 chars — use the full length. Open with physical presence: age, build, species traits, visible augmentations, how they occupy space. Then personality through behavior — speech patterns, habits, tells. Reference the protagonist by name and show the relationship in action, not summary. These people should feel real enough to trust in a firefight — or not.
+"npcEntries": An object where every key is an NPC name and every value is a PLAIN STRING (not a nested object). Each string ~1000 chars — use the full length. Open with physical presence: name, age, species, build, visible augmentations, how they occupy space. Then personality through behavior — speech patterns, habits, tells. Reference the protagonist by name. These people should feel real enough to trust in a firefight — or not.
 
 "title": MAX 70 chars. Hook the player. Specific and evocative. Can be darkly funny if it fits.
 

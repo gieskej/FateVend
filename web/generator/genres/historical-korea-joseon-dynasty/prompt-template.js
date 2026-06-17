@@ -31,6 +31,9 @@ STYLE:
 - Sentence fragments where they sharpen — but maintain a slightly elevated register that befits the era's literary self-consciousness.
 - Stay within the exact character limits given.
 
+CANONICAL FACTS — do not contradict:
+Every attribute in the character skeleton is a fixed fact. Names, ages, social classes, genders, professions, relationship statuses, and every NPC's name, role, class, and gender are non-negotiable. Do not change, omit, or substitute any of them. State these facts directly when relevant and build outward from them. Precision beats indirection.
+
 Output only the JSON structure requested. No preamble, no commentary, no markdown fences.`;
 
 /**
@@ -78,9 +81,9 @@ ${castLines}
 
 OUTPUT RULES:
 
-"characterEntry": MAX 1000 chars. Terse behavioral prose. Lead with name, class, and profession. Use sentence fragments. Show the character through what they do and what objects they carry — do not explain inner states. Weave in appearance and the quirk through action. Reference key cast members by name. Ground in the physical texture of Joseon: the objects, the rituals, the hierarchy in every bow. End on forward momentum — a tension, an unresolved question, a want. Make the player root for this person.
+"characterEntry": MAX 1000 chars. Terse behavioral prose. Lead with name, class, and profession. Use sentence fragments. Show the character through what they do and what objects they carry — do not explain inner states. Reference key cast members by name. Ground in the physical texture of Joseon: the objects, the rituals, the hierarchy in every bow. End on forward momentum — a tension, an unresolved question, a want. Make the player root for this person.
 
-"npcEntries": An object where every key is an NPC name and every value is a PLAIN STRING (not a nested object). Each string ~1000 chars — use the full length. Open with physical presence: how they appear in their social context, how their rank and profession show in posture and clothing. Then personality through behavior — speech register, habitual gestures, what they never say directly. Reference the protagonist by name and show the relationship as it actually functions. Ground each NPC in their social position: a magistrate behaves differently with a yangban than with a merchant. These people should feel like they have been alive in Joseon for decades.
+"npcEntries": An object where every key is an NPC name and every value is a PLAIN STRING (not a nested object). Each string ~1000 chars — use the full length. Open with physical presence: name, class, how their rank and profession show in posture and clothing. Then personality through behavior — speech register, habitual gestures, what they never say directly. Reference the protagonist by name. Ground each NPC in their social position: a magistrate behaves differently with a yangban than with a merchant. These people should feel like they have been alive in Joseon for decades.
 
 "title": MAX 70 chars. Hook the player. Specific and evocative. Can draw on classical Korean literary tradition — a poem fragment, a court title, a place name — but must be immediately intelligible.
 

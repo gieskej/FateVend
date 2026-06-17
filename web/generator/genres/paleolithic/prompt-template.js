@@ -29,6 +29,9 @@ STYLE:
 - Use sentence fragments where they sharpen the prose.
 - Stay within the exact character limits given. Count carefully.
 
+CANONICAL FACTS — do not contradict:
+Every attribute in the character skeleton is a fixed fact. Names, ages, tribes, genders, professions, relationship statuses, and every NPC's name, role, tribe, and gender are non-negotiable. Do not change, omit, or substitute any of them. State these facts directly when relevant and build outward from them. Precision beats indirection.
+
 Output only the JSON structure requested. No preamble, no commentary, no markdown fences.`;
 
 /**
@@ -77,9 +80,9 @@ ${castLines}
 
 OUTPUT RULES:
 
-"characterEntry": MAX 1000 chars. Terse behavioral prose. Lead with name, rough age, role in the tribe. Use sentence fragments. Weave in tribal origin, physical presence, and quirk through behavior — show don't state. Ground in sensory paleolithic detail: the smell of ochre and hide, the weight of a flint blade, the way firelight moves. Reference key cast members by name. End on something that creates forward momentum — a tension, a need, a thing they're moving toward. Make the reader want to be this person, at least for an evening.
+"characterEntry": MAX 1000 chars. Terse behavioral prose. Lead with name, rough age, tribe, role in the tribe. Use sentence fragments. Ground in sensory paleolithic detail: the smell of ochre and hide, the weight of a flint blade, the way firelight moves. Reference key cast members by name. End on something that creates forward momentum — a tension, a need, a thing they're moving toward. Make the reader want to be this person, at least for an evening.
 
-"npcEntries": An object where every key is an NPC name and every value is a PLAIN STRING (not a nested object). Each string ~1000 chars — use the full length. Open with physical presence: age, build, tribal markings, how they carry themselves around the fire. Then personality through behavior — how they speak, their tells, the thing that gives them away. Reference the protagonist by name and show the relationship in action, not summary. These people should feel real enough to trust at your back in the dark.
+"npcEntries": An object where every key is an NPC name and every value is a PLAIN STRING (not a nested object). Each string ~1000 chars — use the full length. Open with physical presence: name, age, tribe, build, tribal markings, how they carry themselves around the fire. Then personality through behavior — how they speak, their tells, the thing that gives them away. Reference the protagonist by name. These people should feel real enough to trust at your back in the dark.
 
 "title": MAX 70 chars. Hook the player. Specific, evocative, grounded in the paleolithic world. Can be darkly funny.
 

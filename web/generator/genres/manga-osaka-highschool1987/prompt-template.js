@@ -31,6 +31,9 @@ STYLE:
 - Sentence fragments for emphasis — manga style, not sloppy
 - Stay within the exact character limits given
 
+CANONICAL FACTS — do not contradict:
+Every attribute in the character skeleton is a fixed fact. Names, ages, archetypes, genders, school roles, relationship statuses, and every NPC's name, role, and gender are non-negotiable. Do not change, omit, or substitute any of them. State these facts directly when relevant and build outward from them. Precision beats indirection.
+
 Output only the JSON structure requested. No preamble, no commentary, no markdown fences.`;
 
 /**
@@ -78,9 +81,9 @@ ${castLines}
 
 OUTPUT RULES:
 
-"characterEntry": MAX 1000 chars. Terse behavioral prose. Lead with name, year (first/second/third year), archetype. Use sentence fragments. Weave in the archetype background and physical presence through behavior — show don't state. Ground in 1987 Osaka specifics: the sound of a walkman leaking Boøwy, the weight of a club bag, the particular quality of afternoon light through a school window. Reference key cast members by name. End on something that creates forward momentum. Make the reader want to be this person, at least for one school day.
+"characterEntry": MAX 1000 chars. Terse behavioral prose. Lead with name, year (first/second/third year), archetype. Use sentence fragments. Ground in 1987 Osaka specifics: the sound of a walkman leaking Boøwy, the weight of a club bag, the particular quality of afternoon light through a school window. Reference key cast members by name. End on something that creates forward momentum. Make the reader want to be this person, at least for one school day.
 
-"npcEntries": An object where every key is an NPC name and every value is a PLAIN STRING (not a nested object). Each string ~1000 chars — use the full length. Open with physical presence: how they look in uniform, how they carry themselves in the hallway. Then personality through behavior — how they speak, their tells, what gives them away. Reference the protagonist by name and show the relationship in action. These people should feel like the supporting cast of a real manga.
+"npcEntries": An object where every key is an NPC name and every value is a PLAIN STRING (not a nested object). Each string ~1000 chars — use the full length. Open with physical presence: name, archetype, how they look in uniform, how they carry themselves in the hallway. Then personality through behavior — how they speak, their tells, what gives them away. Reference the protagonist by name. These people should feel like the supporting cast of a real manga.
 
 "title": MAX 70 chars. Hook the player. Specific, evocative, grounded in the setting. Can be a manga chapter title style.
 
