@@ -106,4 +106,24 @@ export const QUIRKS = [
     quirk: 'Maps every room\'s exits and assesses every occupant\'s rank before doing anything else — a habit formed in a court that has witnessed several purges within living memory',
     statAffinity: { wisdom: 1.2, dexterity: 1.1 },
   },
+  {
+    id: 'sees_shades',
+    quirk: 'Occasionally reacts to things no one else can perceive — pauses mid-sentence, adjusts their path to avoid an empty corner, addresses an apology to unoccupied air; they have learned to disguise it as distraction, but not perfectly',
+    statAffinity: { wisdom: 1.3, charisma: 0.9 },
+  },
+  {
+    id: 'kami_marked',
+    quirk: 'Animals behave wrongly around them — birds go silent when they enter a courtyard, dogs refuse to approach, and on two occasions a fox has sat in a visible location and watched them for an extended period without moving or leaving',
+    statAffinity: { wisdom: 1.2, charisma: 1.1 },
+  },
+  {
+    id: 'death_touched',
+    quirk: 'Since a near-death experience they run slightly cold to the touch and occasionally know about injuries or illnesses in others before any visible symptom appears — they describe it as a heaviness they sense, not a vision; they do not enjoy the ability',
+    statAffinity: { wisdom: 1.3, constitution: 1.1 },
+  },
+  {
+    id: 'wrong_hunger',
+    quirk: 'Since an encounter with something they do not speak about directly, their appetite is irregular — sometimes they go two or three days without eating and feel no particular need; occasionally they taste something that is not there; once, they ate something they cannot identify and experienced no ill effects',
+    statAffinity: { constitution: 1.2, wisdom: 1.1 },
+  },
 ];
