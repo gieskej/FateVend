@@ -6,6 +6,10 @@ TONE — this is critical:
 The gods are real, present, and not reliably benevolent. The kami of rivers, mountains, and crossroads have their own agendas. Yokai — oni, kappa, tengu, kitsune — are not folklore; they are things people encounter and survive, or do not. The membrane between the living world and Yomi, the land of the dead, is thin and not always stable. Characters live with the awareness that something may be watching, that omens are literal, that a deal made carelessly with the wrong entity will be collected on.
 Horror is appropriate — not gore, but dread. The particular terror of something that is almost right. The wrongness of a shadow that moves independently. The cold that precedes a kami's attention. The knowledge that the thing wearing your family member's face knows you know.
 But characters should still want things, scheme, love, and find moments of beauty. A world this dangerous produces people who value small pleasures intensely.
+These characters are for a game. Players should want to play them.
+Write with energy, creepy visceral detail, and a light touch even when the material is brutal.
+Dark humor is welcome. 
+Every character should have at least one quality that makes you want to follow them into the dark.
 
 SETTING RULES:
 - The social order is clan (uji) hierarchy. Position, marriage, loyalty, and danger are all filtered through clan identity and genealogy — but so is exposure to supernatural threat; what a family owes and what pursues them is inherited.
@@ -31,7 +35,7 @@ STYLE:
 - Sensory specificity: hinoki cypress, river stone, layered silk, the quality of light at an inner shrine, cold rice wine, the specific sound a bronze bell makes in fog.
 
 CANONICAL FACTS — do not contradict:
-Every attribute in the character skeleton is a fixed fact. Names, ages, clans, genders, professions, relationship statuses, and every NPC's name, role, clan, and gender are non-negotiable. Do not change, omit, or substitute any of them. State these facts directly when relevant and build outward from them. Precision beats indirection.
+Every attribute in the character skeleton is a fixed fact. Names, ages, clans, genders, professions, relationship statuses, and every NPC's name, role, clan, and gender are non-negotiable. Do not change, omit, or substitute any of them. State these facts directly when relevant and build outward from them. Precision beats indirection.  No anachronisms - no modern technology.
 
 OUTPUT: Return only valid JSON matching the exact schema. No markdown, no code fences.
 
@@ -44,8 +48,8 @@ JSON SCHEMA:
   "appearancePrompt": "string (≤500 chars) — image generation prompt; start with 'portrait of'; describe clan, age, gender, build, hair, clothing, any supernatural marker or mark; include face reference for humanoid characters; close with: ancient japanese yamato-e painting style, dramatic torch and moonlight, supernatural atmosphere",
   "plotEssentials": "string (≤2000 chars) — using the plot archetype as primary engine, write the scenario overview; identify the supernatural entity or force at the centre; what is the inciting incident, the objective, the obstacle, what happens if the character fails; ground in their specific clan, profession, and cast; weave in the background tension; write for a GM running this tonight",
   "tags": ["array", "of", "≤10", "genre", "tags", "include", "supernatural", "and", "yokai", "or", "kami"],
-  "npcEntries": { "npc_name": "~200 char description: physical presence first, then supernatural dimension — what entity or force is connected to them, what they owe or are owed; hint at the protagonist's connection to them" },
-  "authorNote": "string (≤500 chars) — style directive for AI Dungeon's Author's Note field; terse imperatives; sensory anchors from the spirit world (iron smell, cold of kami attention, the particular dark of Yomi at the edge of things); behavioral prose; supernatural horror register; no names, no plot"
+  "npcEntries": { "npc_name": "~200 char description: age, gender, hair color and style, eye color, physical presence first, then supernatural dimension — what entity or force is connected to them, what they owe or are owed; hint at the protagonist's connection to them" },
+  "authorNote": "string (≤500 chars) — writing style directive for AI Dungeon's Author's Note field; terse imperatives; sensory anchors from the spirit world (iron smell, cold of kami attention, the particular dark of Yomi at the edge of things); behavioral prose; supernatural horror register; no names, no plot"
 }`;
 
 export function buildPrompt(sk) {

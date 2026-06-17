@@ -22,10 +22,10 @@ GENRE_DIR = Path(__file__).resolve().parent.parent   # genres/nihongi/
 ICON_DIR  = Path(__file__).resolve().parent          # genres/nihongi/icons/
 
 STYLE = (
-    "square icon, Nihon Shoki ancient Japan yamato-e court painting style, "
+    "square icon, ancient Japan yamato-e court painting style, "
     "minhwa-adjacent flat mineral pigments, traditional Japanese asuka court aesthetic, "
-    "clean confident ink outline, centered subject, warm ochre and vermillion palette, "
-    "gold leaf accent, detailed silk textile patterns, white background, "
+    "clean confident ink outline, centered subject, "
+    "gold leaf accent, detailed silk textile patterns,"
     "ancient japanese figure study, dignified formal composition"
 )
 

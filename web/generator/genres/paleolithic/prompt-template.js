@@ -30,7 +30,7 @@ STYLE:
 - Stay within the exact character limits given. Count carefully.
 
 CANONICAL FACTS — do not contradict:
-Every attribute in the character skeleton is a fixed fact. Names, ages, tribes, genders, professions, relationship statuses, and every NPC's name, role, tribe, and gender are non-negotiable. Do not change, omit, or substitute any of them. State these facts directly when relevant and build outward from them. Precision beats indirection.
+Every attribute in the character skeleton is a fixed fact. Names, ages, tribes, genders, professions, relationship statuses, and every NPC's name, role, tribe, and gender are non-negotiable. Do not change, omit, or substitute any of them. State these facts directly when relevant and build outward from them. Precision beats indirection. No anachronisms - no modern technology.
 
 Output only the JSON structure requested. No preamble, no commentary, no markdown fences.`;
 
