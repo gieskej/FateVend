@@ -1409,6 +1409,16 @@ let currentGeneratedAt = null;
 let currentStats       = null;
 let npcPortraitData       = {};
 let npcPortraitGenerating = false;
+
+const GENRE_PORTRAIT_STYLES = {
+  'modern':                           'modern cinematic style, natural lighting, detailed digital illustration, centered subject, clean composition, contemporary realism, muted urban palette, grounded atmosphere',
+  'fantasy':                          'fantasy RPG art style, dramatic lighting, detailed digital illustration, centered subject, clean composition, painterly texture, rich warm palette, high fantasy atmosphere',
+  'sci-fi':                           'dark sci-fi atmosphere, dramatic rim lighting, detailed digital illustration, centered subject, clean composition, cyberpunk aesthetic, muted palette with neon accent',
+  'paleolithic':                      'prehistoric cave painting art style, ochre and charcoal pigments on rough stone texture, bold primitive silhouette, warm earth tones, ancient petroglyph aesthetic, centered subject',
+  'manga-osaka-highschool1987':       '1980s shounen manga illustration style, bold ink lines, high contrast black and white with spot color, dramatic composition, expressive character design, retro Japanese school drama aesthetic, screen tone texture',
+  'historical-korea-joseon-dynasty':  'Joseon Dynasty Korean court painting style, minhwa folk art, clean flat colors with mineral pigments, traditional hanbok dress, decorative floral and nature motifs, centered subject, white background, confident ink outline, warm earth and jewel tones',
+  'nihongi':                          'Nihon Shoki ancient Japan yamato-e court painting style, minhwa-adjacent flat mineral pigments, traditional Japanese asuka court aesthetic, clean confident ink outline, centered subject, warm ochre and vermillion palette, gold leaf accent, detailed silk textile patterns, white background, ancient japanese figure study, dignified formal composition',
+};
 let isGenerating    = false;
 let currentGenre    = 'fantasy';
 let currentProvider      = 'gemini';
@@ -2773,8 +2783,9 @@ async function generateNpcPortrait(npcName) {
   const sentences = text.match(/[^.!?]+[.!?]+/g) ?? [text];
   const snippet   = sentences.slice(0, 2).join(' ').trim();
   const npc       = currentSkeleton?.cast?.find(c => c.name === npcName);
-  const prefix    = npc ? `portrait of ${npc.race} ${npc.gender.toLowerCase()}, ` : 'portrait of ';
-  const prompt    = prefix + snippet + ', photorealistic, cinematic lighting';
+  const prefix       = npc ? `portrait of ${npc.race} ${npc.gender.toLowerCase()}, ` : 'portrait of ';
+  const portraitStyle = GENRE_PORTRAIT_STYLES[currentGenre] ?? 'photorealistic, cinematic lighting';
+  const prompt       = prefix + snippet + ', ' + portraitStyle;
 
   npcPortraitGenerating = true;
   const prevHTML = thumbEl.innerHTML;
