@@ -1985,7 +1985,11 @@ async function animateSlots(skeleton, genre) {
     }
     if (sublblEl && def.key === 'species') sublblEl.textContent = slots.race ?? '';
 
-    if (slotEl) { slotEl.classList.remove('rolling'); slotEl.classList.add('landed'); }
+    if (slotEl) {
+      slotEl.classList.remove('rolling');
+      slotEl.classList.add('landed');
+      slotEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+    }
 
     if (i === cfg.defs.length - 1) {
       _bellSfx.currentTime = 0;
