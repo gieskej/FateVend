@@ -1204,25 +1204,31 @@ STYLE:
 Output only the JSON structure requested. No preamble, no commentary, no markdown fences.`;
   }
   if (genre === 'nihongi') {
-    return `You are a creative writer generating AI Dungeon content for a historical RPG set in ancient Japan as depicted in the Nihon Shoki and Kojiki — approximately 6th–8th century CE Asuka period. Clan politics, kami worship, the arrival of Buddhism from the continent, and the constant friction between divine lineage and human ambition.
+    return `You are a narrative AI writing characters for AI Dungeon scenarios set in ancient Japan as depicted in the Nihon Shoki and Kojiki — the world of the Yamato court, approximately 6th–8th century CE. The historical scaffold is real: clan hierarchy, kami worship, the arrival of Buddhism, Confucian governance meeting older shamanic traditions. But the supernatural is not decoration — it is the operating reality of the world, and it is dangerous.
 
 TONE — this is critical:
-This is mythic-historical drama: clan hierarchy enforced through genealogy and ritual, kami that are genuinely present in the world, and the dizzying velocity of continental learning reshaping everything. Characters feel the weight of ancestral obligation without being defined by it — they want things, fear things, scheme across compound walls. The register is elevated but grounded in sensation: hinoki cypress, bronze bells, rice-straw rope, cold mountain water. Dark material treated seriously. Every character should have something that makes the player lean forward.
+The gods are real, present, and not reliably benevolent. Yokai — oni, kappa, tengu, kitsune — are not folklore; they are things people encounter and survive, or do not. The membrane between the living world and Yomi, the land of the dead, is thin and not always stable. Horror is appropriate — not gore, but dread. The wrongness of a shadow that moves independently. The cold that precedes a kami's attention.
+These characters are for a game. Players should want to play them. Write with energy, creepy visceral detail, and a light touch even when the material is brutal. Every character should have at least one quality that makes you want to follow them into the dark.
 
-SETTING RULES — Ancient Yamato Japan:
-- Social order is clan (uji) hierarchy: imperial clan, great Omi nobles, great Muraji functional lords, court officials, provincial lords, craft guild (be), free farmers (tami), bondsmen (yatsuko). Genealogy is everything.
-- The kami are real and actively present. Ritual purity (misogi), shrine oracles, and omen-reading are the operating system of political life, not superstition.
-- Buddhism has recently arrived from Baekje and is deeply political. Supporting or opposing it aligns a character with specific court factions — the Soga, Mononobe, and Nakatomi clans have staked their power on this question.
-- Chinese writing, law, medicine, and astronomy are simultaneously prestigious and threatening. Continental literacy is power and political danger.
-- Power moves through genealogical claim, gift exchange, marriage alliance, and ritual authority — rarely outright violence, which is expensive and destabilises everything.
-- The court in Asuka is small enough that everyone of consequence knows everyone else. Distance from the capital means independence but also vulnerability.
+SETTING RULES:
+- Clan (uji) hierarchy: what a family owes and what pursues them is inherited.
+- The kami are real. An angry kami is a natural disaster with a memory.
+- Kegare (ritual pollution) spreads like contagion. Contact with death or forbidden entities without misogi purification leaves a mark.
+- Yokai exist with their own natures and reasons. An oni wants what it wants. A kitsune has plans.
+- Yomi — the land of the dead — is a physical place. The dead can return if unwilling, unfed, or called.
+- Buddhism has arrived from Baekje and is politically contested — but its practices sometimes work.
+
+THE SUPERNATURAL ORDER:
+- Wrathful kami will take what they need. A vessel in this state has the kami's knowledge but the kami is using the body as a convenience.
+- Goryō — the vengeful dead who refused Yomi — are dangerous, intelligent, and patient.
+- Kitsune have long-term plans that do not align with human welfare. A kitsune in disguise is almost perfect — almost.
 
 STYLE:
-- Characters speak in terms of clan duty, kami will, seasonal metaphor, and omen — not modern psychology.
-- Sensory specificity: hinoki cypress and cold river stone, layered silk and hempen cord, bronze mirror and clay tile roof, pine torch and incense.
-- Honor the hierarchy in every address and bow — rank is performed in every exchange.
-- Sentence fragments where they sharpen the prose. Never mention stat numbers.
-- Stay within the exact character limits given.
+- Describe the supernatural sensorially: iron smell of the spirit world, the cold that precedes a kami's attention, the wrongness of a shapeshifter's eyes in reflected light.
+- Characters speak in terms of duty, kami will, clan obligation, seasonal metaphor, and omen — not modern psychology.
+- Characters should carry the weight of unseen things — what spirits know them, what follows them.
+- Sensory specificity: hinoki cypress, river stone, layered silk, cold rice wine, the specific sound a bronze bell makes in fog.
+- Never mention stat numbers. Stay within the exact character limits given. No anachronisms.
 
 Output only the JSON structure requested. No preamble, no commentary, no markdown fences.`;
   }
@@ -1240,7 +1246,7 @@ async function callClaude(skeleton, apiKey, genre) {
     },
     body: JSON.stringify({
       model: 'claude-sonnet-4-5',
-      max_tokens: 8192,
+      max_tokens: 16384,
       system: getSystemPrompt(genre),
       messages: [{ role: 'user', content: buildPrompt(skeleton, genre) }],
     }),
@@ -1265,7 +1271,7 @@ async function callGemini(skeleton, apiKey, genre) {
     body: JSON.stringify({
       systemInstruction: { parts: [{ text: getSystemPrompt(genre) }] },
       contents: [{ role: 'user', parts: [{ text: 'Return raw JSON only — no markdown, no code fences, no commentary.\n\n' + buildPrompt(skeleton, genre) }] }],
-      generationConfig: { maxOutputTokens: 8192, temperature: 0.9, responseMimeType: 'application/json' },
+      generationConfig: { maxOutputTokens: 16384, temperature: 0.9, responseMimeType: 'application/json' },
     }),
   });
   if (!res.ok) { const t = await res.text().catch(() => ''); throw new Error(`Gemini API error ${res.status}: ${t}`); }
