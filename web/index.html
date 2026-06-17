@@ -1400,6 +1400,8 @@ let currentSkeleton    = null;
 let currentOutput      = null;
 let currentGeneratedAt = null;
 let currentStats       = null;
+let npcPortraitData       = {};
+let npcPortraitGenerating = false;
 let isGenerating    = false;
 let currentGenre    = 'fantasy';
 let currentProvider      = 'gemini';
@@ -2127,27 +2129,49 @@ function renderSkeleton(sk) {
 }
 
 function renderOutput(sk, output) {
+  npcPortraitData = {};
+
   const tagHTML = output.tags.map(t => `<span class="tag-pill">${t}</span>`).join('');
 
   const castByName = Object.fromEntries(sk.cast.map(n => [n.name, n]));
 
+  const NPC_SILHOUETTE = `<svg class="npc-silhouette" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 70" aria-hidden="true"><ellipse cx="30" cy="22" rx="14" ry="15"/><path d="M2 70 Q2 46 30 46 Q58 46 58 70"/></svg>`;
+
   const npcEntriesHTML = Object.entries(output.npcEntries).map(([name, entry]) => {
-    const npc  = castByName[name];
-    const meta = npc ? `<div class="npc-entry-meta">${npc.gender} · ${npc.race}</div>` : '';
+    const npc        = castByName[name];
+    const meta       = npc ? `<div class="npc-entry-meta">${npc.gender} · ${npc.race}</div>` : '';
+    const safeName   = name.replace(/\s+/g,'_');
+    const nameJS     = JSON.stringify(name);
+    const safeFile   = name.replace(/[^a-zA-Z0-9]+/g,'-').replace(/^-|-$/g,'');
     return `
     <div class="npc-section">
-      <div class="field-header">
-        <div>
-          <span class="npc-section-name">${name}</span>
-          ${meta}
+      <div class="npc-card-top">
+        <div class="npc-portrait-zone" id="npc-pz-${safeName}">
+          <button class="npc-portrait-thumb" id="npc-thumb-${safeName}"
+                  onclick="toggleNpcPortraitMenu(${escHtml(nameJS)})"
+                  title="Portrait options">${NPC_SILHOUETTE}</button>
+          <div class="npc-portrait-popup" id="npc-menu-${safeName}" hidden>
+            <button class="npc-menu-btn" id="npc-gen-btn-${safeName}"
+                    onclick="generateNpcPortrait(${escHtml(nameJS)})">⚙ Generate Portrait</button>
+            <a class="npc-menu-btn" id="npc-save-${safeName}" hidden
+               download="${safeFile}.png">↓ Save Portrait</a>
+          </div>
         </div>
-        <div class="field-meta">
-          <span class="char-count" id="cc-npc-${name.replace(/\s+/g,'_')}">${entry.length} / 1000</span>
-          <button class="btn-copy" onclick="copyField('npc-entry-${name.replace(/\s+/g,'_')}', this)">Copy</button>
+        <div class="npc-card-info">
+          <div class="field-header">
+            <div>
+              <span class="npc-section-name">${name}</span>
+              ${meta}
+            </div>
+            <div class="field-meta">
+              <span class="char-count" id="cc-npc-${safeName}">${entry.length} / 1000</span>
+              <button class="btn-copy" onclick="copyField('npc-entry-${safeName}', this)">Copy</button>
+            </div>
+          </div>
         </div>
       </div>
-      <textarea class="field-textarea" id="npc-entry-${name.replace(/\s+/g,'_')}" rows="4"
-        oninput="updateCount(this,'cc-npc-${name.replace(/\s+/g,'_')}',1000)">${entry}</textarea>
+      <textarea class="field-textarea" id="npc-entry-${safeName}" rows="4"
+        oninput="updateCount(this,'cc-npc-${safeName}',1000)">${entry}</textarea>
     </div>
   `}).join('');
 
@@ -2372,6 +2396,14 @@ async function downloadPackage(btn) {
     if (portraitImg?.src?.startsWith('data:image/')) {
       const base64 = portraitImg.src.split(',')[1];
       zip.file('portrait.png', base64, { base64: true });
+    }
+
+    for (const [npcName, src] of Object.entries(npcPortraitData)) {
+      if (src?.startsWith('data:image/')) {
+        const base64   = src.split(',')[1];
+        const safeFname = npcName.replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-|-$/g, '');
+        zip.file(`npc-portraits/${safeFname}.png`, base64, { base64: true });
+      }
     }
 
     const dt = (currentGeneratedAt ?? new Date())
@@ -2682,6 +2714,107 @@ async function generatePortrait(btn) {
   }
 }
 
+// ── NPC portrait popup toggle ─────────────────────────────────────────────
+function toggleNpcPortraitMenu(npcName) {
+  const safeName = npcName.replace(/\s+/g, '_');
+  const menuEl   = document.getElementById(`npc-menu-${safeName}`);
+  if (!menuEl) return;
+  const wasHidden = menuEl.hidden;
+  document.querySelectorAll('.npc-portrait-popup').forEach(m => { m.hidden = true; });
+  menuEl.hidden = !wasHidden;
+}
+
+// ── NPC portrait generation ───────────────────────────────────────────────
+const NPC_SILHOUETTE_SVG = `<svg class="npc-silhouette" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 70" aria-hidden="true"><ellipse cx="30" cy="22" rx="14" ry="15"/><path d="M2 70 Q2 46 30 46 Q58 46 58 70"/></svg>`;
+
+async function generateNpcPortrait(npcName) {
+  if (npcPortraitGenerating) { showError('A portrait is already being generated — please wait.'); return; }
+
+  const sdUrl  = document.getElementById('sd-url').value.trim();
+  const apiKey = document.getElementById('img-api-key').value.trim();
+  const useSD  = currentImageProvider === 'sd'        ? !!sdUrl
+               : currentImageProvider === 'stability' ? false
+               : !!sdUrl;
+  if (!sdUrl && !apiKey) { showError('Enter a local SD URL or Stability AI key to generate portraits.'); return; }
+  if (useSD && !sdUrl)   { showError('No Stable Diffusion URL configured.'); return; }
+  if (!useSD && !apiKey) { showError('No Stability AI key configured.'); return; }
+
+  const safeName = npcName.replace(/\s+/g, '_');
+  const textarea = document.getElementById(`npc-entry-${safeName}`);
+  const thumbEl  = document.getElementById(`npc-thumb-${safeName}`);
+  const menuEl   = document.getElementById(`npc-menu-${safeName}`);
+  const genBtn   = document.getElementById(`npc-gen-btn-${safeName}`);
+  const saveEl   = document.getElementById(`npc-save-${safeName}`);
+  if (!textarea || !thumbEl) return;
+
+  if (menuEl) menuEl.hidden = true;
+
+  const text      = textarea.value.trim();
+  const sentences = text.match(/[^.!?]+[.!?]+/g) ?? [text];
+  const snippet   = sentences.slice(0, 2).join(' ').trim();
+  const npc       = currentSkeleton?.cast?.find(c => c.name === npcName);
+  const prefix    = npc ? `portrait of ${npc.race} ${npc.gender.toLowerCase()}, ` : 'portrait of ';
+  const prompt    = prefix + snippet + ', photorealistic, cinematic lighting';
+
+  npcPortraitGenerating = true;
+  const prevHTML = thumbEl.innerHTML;
+  thumbEl.innerHTML = `<div class="npc-thumb-spinner"></div>`;
+  thumbEl.disabled = true;
+  if (genBtn) { genBtn.disabled = true; genBtn.textContent = 'Generating…'; }
+
+  try {
+    let src;
+    if (useSD) {
+      const res = await fetch(`${sdUrl}/sdapi/v1/txt2img`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          prompt,
+          negative_prompt:     'low quality, blurry, duplicate, deformed, bad anatomy, extra limbs, text, watermark, logo',
+          steps:               20,
+          width:               256,
+          height:              256,
+          cfg_scale:           1,
+          distilled_cfg_scale: 6,
+          sampler_name:        'Euler',
+          scheduler:           'Simple',
+        }),
+      });
+      if (!res.ok) { const t = await res.text().catch(()=>''); throw new Error(`SD API ${res.status}: ${t}`); }
+      const data = await res.json();
+      src = `data:image/png;base64,${data.images[0]}`;
+    } else {
+      const form = new FormData();
+      form.append('prompt', prompt);
+      form.append('aspect_ratio', '1:1');
+      form.append('output_format', 'png');
+      const res = await fetch('https://api.stability.ai/v2beta/stable-image/generate/core', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${apiKey}`, 'Accept': 'application/json' },
+        body: form,
+      });
+      if (!res.ok) { const t = await res.text().catch(()=>''); throw new Error(`Stability API ${res.status}: ${t}`); }
+      const data = await res.json();
+      src = `data:image/png;base64,${data.image}`;
+    }
+
+    npcPortraitData[npcName] = src;
+    thumbEl.innerHTML = `<img src="${src}" alt="${escHtml(npcName)}" class="npc-portrait-img">`;
+
+    const safeFilename = npcName.replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-|-$/g, '');
+    if (saveEl) { saveEl.href = src; saveEl.download = `${safeFilename}.png`; saveEl.hidden = false; }
+    if (genBtn) { genBtn.textContent = '⚙ Redo Portrait'; }
+
+  } catch (err) {
+    thumbEl.innerHTML = prevHTML;
+    showError(`Portrait failed: ${err.message}`);
+  } finally {
+    npcPortraitGenerating = false;
+    thumbEl.disabled = false;
+    if (genBtn) { genBtn.disabled = false; }
+  }
+}
+
 // ── Key persistence (localStorage) ────────────────────────────────────────
 const KEY_FIELDS = [
   { id: 'api-key',        store: 'gof_api_key'        },
@@ -2691,6 +2824,12 @@ const KEY_FIELDS = [
   { id: 'sd-url',         store: 'gof_sd_url'         },
   { id: 'img-api-key',    store: 'gof_img_api_key'    },
 ];
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.npc-portrait-zone')) {
+    document.querySelectorAll('.npc-portrait-popup').forEach(m => { m.hidden = true; });
+  }
+});
 
 document.addEventListener('DOMContentLoaded', () => {
   // Seed fields from serve.sh-generated config.js (takes priority — always
@@ -2792,7 +2931,7 @@ function updateStatsDisplay() {
 Object.assign(window, {
   runGenerate, runAIPhase, setGenre, setProvider, setImageProvider, toggleHelp, openSettings, closeSettings,
   copyField, copyAll, copySkeletonText, copyTags,
-  generatePortrait, updateCount, downloadPackage,
+  generatePortrait, generateNpcPortrait, toggleNpcPortraitMenu, updateCount, downloadPackage,
 });
 </script>
 </body>
