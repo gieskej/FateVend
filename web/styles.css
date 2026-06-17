@@ -1413,6 +1413,19 @@ body::before {
   margin-top: 0.1em;
 }
 
+/* ── SITE DISCLAIMER ───────────────────────────────────────────────── */
+.site-disclaimer {
+  max-width: 680px;
+  margin: 2.5rem auto 1.5rem;
+  padding: 0 1rem;
+  text-align: center;
+  font-size: 0.72rem;
+  font-style: italic;
+  color: var(--ink-faint);
+  opacity: 0.65;
+  line-height: 1.6;
+}
+
 /* ── SCROLLBAR ─────────────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
