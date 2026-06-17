@@ -55,7 +55,7 @@ export function buildPrompt(sk) {
   ].filter(Boolean).join('; ');
 
   return `Generate AI Dungeon manga Osaka high school 1987 content for this character. Return a single JSON object with these exact keys:
-"characterEntry", "npcEntries", "title", "description", "tags", "opening", "appearancePrompt", "plotEssentials"
+"characterEntry", "npcEntries", "title", "description", "tags", "opening", "appearancePrompt", "plotEssentials", "authorNote"
 
 CHARACTER SKELETON:
 Name: ${sk.name}, ${sk.age}, ${sk.gender} (${sk.pronouns})
@@ -95,7 +95,9 @@ OUTPUT RULES:
 
 "appearancePrompt": MAX 500 chars. Comma-separated visual descriptors for a text-to-image model. Start with "portrait of" then: Japanese high school student, school archetype, age range, gender, uniform description, hair style, eyes, distinguishing feature if any, setting detail (classroom, rooftop, street). Include "face of [a Japanese actor, musician, or media personality from the 1980s whose gender and approximate age match this character]". Close with: 1980s manga illustration style, dramatic ink lines, high contrast. No sentences — descriptors only.
 
-"plotEssentials": MAX 2000 chars. Using "${sk.plotArchetype}" as the primary story engine, write the plot overview for this Osaka high school 1987 scenario. Cover: what triggers the story (the inciting incident), the central objective, the main obstacle (a rival, an authority figure, a deadline, a truth), and what's at stake if the character fails. Ground it in this character's role, the school setting, and 1987 Osaka. The background tension ("${sk.tension}") is a secondary thread — weave it in. Write for a GM who needs to run this session tonight: concrete, specific, actionable.`;
+"plotEssentials": MAX 2000 chars. Using "${sk.plotArchetype}" as the primary story engine, write the plot overview for this Osaka high school 1987 scenario. Cover: what triggers the story (the inciting incident), the central objective, the main obstacle (a rival, an authority figure, a deadline, a truth), and what's at stake if the character fails. Ground it in this character's role, the school setting, and 1987 Osaka. The background tension ("${sk.tension}") is a secondary thread — weave it in. Write for a GM who needs to run this session tonight: concrete, specific, actionable.
+
+"authorNote": MAX 500 chars. Style directive for AI Dungeon's Author's Note field — injected every AI turn. Terse commands. Tailor to this character: manga emotional register (specify genre — shounen/shoujo/etc.), 1–2 sensory anchors from their Osaka school world (specific sounds, smells, textures of their daily life), Osaka-ben flavor (minimal, legible). No names, no plot.`;
 }
 
 function coerceEntry(v) {
@@ -126,6 +128,7 @@ export function parseResponse(rawText) {
       opening:          parsed.opening          ?? '',
       appearancePrompt: parsed.appearancePrompt  ?? '',
       plotEssentials:   parsed.plotEssentials    ?? '',
+      authorNote:       parsed.authorNote        ?? '',
     };
   } catch (err) {
     console.error('Failed to parse manga-osaka-highschool1987 response:', err);

@@ -54,7 +54,7 @@ export function buildPrompt(sk) {
   ].filter(Boolean).join('; ');
 
   return `Generate AI Dungeon paleolithic content for this character. Return a single JSON object with these exact keys:
-"characterEntry", "npcEntries", "title", "description", "tags", "opening", "appearancePrompt", "plotEssentials"
+"characterEntry", "npcEntries", "title", "description", "tags", "opening", "appearancePrompt", "plotEssentials", "authorNote"
 
 CHARACTER SKELETON:
 Name: ${sk.name}, ${sk.age}, ${sk.gender} (${sk.pronouns})
@@ -94,7 +94,9 @@ OUTPUT RULES:
 
 "appearancePrompt": MAX 500 chars. Comma-separated visual descriptors for a text-to-image model. Start with "portrait of" then: tribal group, age range, gender, body type, hair (natural, unprocessed), eyes, ritual markings or scars if any, clothing (hides, sinew, bone ornaments) suited to their role, setting mood. Include "face of [a historical figure or archaeological reconstruction whose gender, geographic origin, and approximate age match this character — someone visually documented or reconstructed by science]". Close with: paleolithic cave art style, dramatic torchlight, detailed digital illustration. No sentences — descriptors only.
 
-"plotEssentials": MAX 2000 chars. Using "${sk.plotArchetype}" as the primary story engine, write the plot overview for this paleolithic scenario tailored to this specific character. Cover: what triggers the story (the inciting incident), the central objective, the main obstacle or antagonist (human, animal, or spirit), and what's at stake if the character fails. Ground it in this character's skills, cast, tribal territory, and the technology of the stone age. The background tension ("${sk.tension}") is a secondary thread — weave it in but don't let it dominate. Write for a GM who needs to run this session tonight: concrete, specific, actionable.`;
+"plotEssentials": MAX 2000 chars. Using "${sk.plotArchetype}" as the primary story engine, write the plot overview for this paleolithic scenario tailored to this specific character. Cover: what triggers the story (the inciting incident), the central objective, the main obstacle or antagonist (human, animal, or spirit), and what's at stake if the character fails. Ground it in this character's skills, cast, tribal territory, and the technology of the stone age. The background tension ("${sk.tension}") is a secondary thread — weave it in but don't let it dominate. Write for a GM who needs to run this session tonight: concrete, specific, actionable.
+
+"authorNote": MAX 500 chars. Style directive for AI Dungeon's Author's Note field — injected every AI turn. Terse imperatives tailored to this character. Include: visceral behavioral prose, 2 sensory anchors from their specific world (wet hide, woodsmoke, flint weight — pick what fits this character's life), register (survival-grounded, dark-humored, fully human). No names, no plot.`;
 }
 
 function coerceEntry(v) {
@@ -125,6 +127,7 @@ export function parseResponse(rawText) {
       opening:          parsed.opening          ?? '',
       appearancePrompt: parsed.appearancePrompt  ?? '',
       plotEssentials:   parsed.plotEssentials    ?? '',
+      authorNote:       parsed.authorNote        ?? '',
     };
   } catch (err) {
     console.error('Failed to parse paleolithic response:', err);

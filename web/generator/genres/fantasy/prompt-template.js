@@ -47,7 +47,7 @@ export function buildPrompt(sk) {
     : `Include "face of [a historical figure, classical warrior, or well-known portrait subject whose gender, racial appearance, and approximate age match this character]". `;
 
   return `Generate AI Dungeon fantasy content for this character. Return a single JSON object with these exact keys:
-"characterEntry", "npcEntries", "title", "description", "tags", "opening", "appearancePrompt", "plotEssentials"
+"characterEntry", "npcEntries", "title", "description", "tags", "opening", "appearancePrompt", "plotEssentials", "authorNote"
 
 CHARACTER SKELETON:
 Name: ${sk.name}, ${sk.age}, ${sk.gender} (${sk.pronouns})
@@ -87,7 +87,9 @@ OUTPUT RULES:
 
 "appearancePrompt": MAX 500 chars. Comma-separated visual descriptors for a text-to-image model. Build a portrait prompt: start with "portrait of" then describe the subject (race, age range, gender, body type), hair color and style, eye description, distinguishing feature if any, armor or clothing suited to their role, and setting mood. ${faceOf}Close with: fantasy character art, detailed digital illustration, dramatic lighting. Descriptors only — no full sentences, no labels, no stats.
 
-"plotEssentials": MAX 2000 chars. Using "${sk.plotArchetype}" as the primary story engine, write the plot overview for this fantasy scenario tailored to this specific character. Cover: what triggers the story (the inciting incident), the central objective, the main obstacle or antagonist, and what's at stake if the character fails. Ground it in this character's skills, cast, and setting. The background tension ("${sk.tension}") is a secondary thread — weave it in but don't let it dominate. Write for a GM who needs to run this session tonight: concrete, specific, actionable.`;
+"plotEssentials": MAX 2000 chars. Using "${sk.plotArchetype}" as the primary story engine, write the plot overview for this fantasy scenario tailored to this specific character. Cover: what triggers the story (the inciting incident), the central objective, the main obstacle or antagonist, and what's at stake if the character fails. Ground it in this character's skills, cast, and setting. The background tension ("${sk.tension}") is a secondary thread — weave it in but don't let it dominate. Write for a GM who needs to run this session tonight: concrete, specific, actionable.
+
+"authorNote": MAX 500 chars. Style directive for AI Dungeon's Author's Note field — injected into every AI turn to shape the game's prose. Terse imperatives tailored to this specific character. Include: prose style (behavioral, fragment-friendly), 1–2 sensory anchors from their specific world (forge smoke, cold stone, the smell of this character's particular brand of magic or danger), fantasy register (gritty/dark/heroic). No names, no plot.`;
 }
 
 /**
@@ -123,6 +125,7 @@ export function parseResponse(rawText) {
       opening:          parsed.opening          ?? '',
       appearancePrompt: parsed.appearancePrompt  ?? '',
       plotEssentials:   parsed.plotEssentials    ?? '',
+      authorNote:       parsed.authorNote        ?? '',
     };
   } catch (err) {
     return null;

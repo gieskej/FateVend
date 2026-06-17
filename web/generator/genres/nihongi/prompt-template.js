@@ -44,7 +44,8 @@ JSON SCHEMA:
   "appearancePrompt": "string (≤500 chars) — image generation prompt; start with 'portrait of'; describe clan, age, gender, build, hair, clothing, any supernatural marker or mark; include face reference for humanoid characters; close with: ancient japanese yamato-e painting style, dramatic torch and moonlight, supernatural atmosphere",
   "plotEssentials": "string (≤2000 chars) — using the plot archetype as primary engine, write the scenario overview; identify the supernatural entity or force at the centre; what is the inciting incident, the objective, the obstacle, what happens if the character fails; ground in their specific clan, profession, and cast; weave in the background tension; write for a GM running this tonight",
   "tags": ["array", "of", "≤10", "genre", "tags", "include", "supernatural", "and", "yokai", "or", "kami"],
-  "npcEntries": { "npc_name": "~200 char description: physical presence first, then supernatural dimension — what entity or force is connected to them, what they owe or are owed; hint at the protagonist's connection to them" }
+  "npcEntries": { "npc_name": "~200 char description: physical presence first, then supernatural dimension — what entity or force is connected to them, what they owe or are owed; hint at the protagonist's connection to them" },
+  "authorNote": "string (≤500 chars) — style directive for AI Dungeon's Author's Note field; terse imperatives; sensory anchors from the spirit world (iron smell, cold of kami attention, the particular dark of Yomi at the edge of things); behavioral prose; supernatural horror register; no names, no plot"
 }`;
 
 export function buildPrompt(sk) {

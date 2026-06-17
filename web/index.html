@@ -968,7 +968,7 @@ function buildPrompt(sk, genre) {
     : 'Comma-separated visual descriptors for a text-to-image model. Start with "portrait of" then: age range, gender, body type, hair color and style, eye description, distinguishing feature if any, outfit suited to their job and economic tier, setting mood. Include "face of [a historical figure or classic-cinema figure whose gender, ethnicity, and approximate age match this character — someone whose likeness is well-documented in photographs or portraiture]". Close with: photorealistic, cinematic lighting. No sentences — descriptors only.';
 
   return `Generate ${genreLabel} content for this character. Return a single JSON object with these exact keys:
-"characterEntry", "npcEntries", "title", "description", "tags", "opening", "appearancePrompt", "plotEssentials"
+"characterEntry", "npcEntries", "title", "description", "tags", "opening", "appearancePrompt", "plotEssentials", "authorNote"
 
 CHARACTER SKELETON:
 Name: ${sk.name}, ${sk.age}, ${sk.gender} (${sk.pronouns})
@@ -1007,7 +1007,9 @@ OUTPUT RULES:
 
 "appearancePrompt": MAX 500 chars. ${appearanceNote}
 
-"plotEssentials": MAX 2000 chars. Using "${sk.plotArchetype}" as the primary story engine, write the plot overview for this scenario tailored to this specific character. Cover: what triggers the story (the inciting incident), the central objective, the main obstacle or antagonist, and what's at stake if the character fails. Ground it specifically in this character's skills, cast, and setting. The background tension ("${sk.tension}") is a secondary thread — weave it in but don't let it dominate. Write for a GM who needs to run this session tonight: concrete, specific, actionable.`;
+"plotEssentials": MAX 2000 chars. Using "${sk.plotArchetype}" as the primary story engine, write the plot overview for this scenario tailored to this specific character. Cover: what triggers the story (the inciting incident), the central objective, the main obstacle or antagonist, and what's at stake if the character fails. Ground it specifically in this character's skills, cast, and setting. The background tension ("${sk.tension}") is a secondary thread — weave it in but don't let it dominate. Write for a GM who needs to run this session tonight: concrete, specific, actionable.
+
+"authorNote": MAX 500 chars. Style directive for AI Dungeon's Author's Note field — injected into every AI turn to shape the game's prose. Terse imperatives tailored to this specific character and setting. Include prose style, 1–2 sensory anchors from their specific world, and the emotional/genre register. No character names, no plot details.`;
 }
 
 // Truncate to maxLen, preferring sentence boundaries for long fields, word boundaries for short.
@@ -1064,6 +1066,7 @@ function parseResponse(raw) {
       opening:          smartTruncate(p.opening          ?? '', 4000),
       appearancePrompt: smartTruncate(p.appearancePrompt ?? '',  500),
       plotEssentials:   smartTruncate(p.plotEssentials   ?? '', 2000),
+      authorNote:       smartTruncate(p.authorNote       ?? '',  500),
     };
   } catch(e) { console.error('parseResponse failed:', e.message, '\nRaw:', raw?.slice(0, 300)); return null; }
 }
@@ -2248,6 +2251,19 @@ function renderOutput(sk, output) {
         </div>
         <textarea class="field-textarea" id="field-plot" rows="6"
           oninput="updateCount(this,'cc-plot',2000)">${escHtml(output.plotEssentials)}</textarea>
+      </div>` : ''}
+
+      ${output.authorNote ? `
+      <div class="output-field">
+        <div class="field-header">
+          <span class="field-label">Style: Author's Note</span>
+          <div class="field-meta">
+            <span class="char-count" id="cc-authornote">${output.authorNote.length} / 500</span>
+            <button class="btn-copy" onclick="copyField('field-authornote',this)">Copy</button>
+          </div>
+        </div>
+        <textarea class="field-textarea" id="field-authornote" rows="3"
+          oninput="updateCount(this,'cc-authornote',500)">${escHtml(output.authorNote)}</textarea>
       </div>` : ''}
 
       <div class="output-field">

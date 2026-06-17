@@ -192,15 +192,15 @@ export const PROFESSIONS = [
 
   // ── AGRICULTURE ────────────────────────────────────────────────────────────
   {
-    id: 'village_headman',
-    title: 'Village Headman',
+    id: 'village_chief',
+    title: 'Village Chief',
     industry: 'Agriculture',
     economicTier: 3,
     nsfw: false,
     statAffinity: { wisdom: 1.3, charisma: 1.2 },
     sentiments: ['pragmatic', 'protective of community', 'perpetually mediating'],
-    iconPrompt: 'ancient japanese village headman mediating rice paddy community provincial administration mediator respected elder nihon shoki folk painting',
-    iconPath: 'generator/genres/nihongi/icons/PROFESSIONS#village_headman.png',
+    iconPrompt: 'ancient japanese village chief mediating rice paddy community provincial administration mediator respected elder nihon shoki folk painting',
+    iconPath: 'generator/genres/nihongi/icons/PROFESSIONS#village_chief.png',
   },
   {
     id: 'rice_farmer',

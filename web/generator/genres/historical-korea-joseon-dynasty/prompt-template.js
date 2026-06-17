@@ -55,7 +55,7 @@ export function buildPrompt(sk) {
   ].filter(Boolean).join('; ');
 
   return `Generate AI Dungeon Joseon Korea content for this character. Return a single JSON object with these exact keys:
-"characterEntry", "npcEntries", "title", "description", "tags", "opening", "appearancePrompt", "plotEssentials"
+"characterEntry", "npcEntries", "title", "description", "tags", "opening", "appearancePrompt", "plotEssentials", "authorNote"
 
 CHARACTER SKELETON:
 Name: ${sk.name}, ${sk.age}, ${sk.gender} (${sk.pronouns})
@@ -95,7 +95,9 @@ OUTPUT RULES:
 
 "appearancePrompt": MAX 500 chars. Comma-separated visual descriptors for a text-to-image model. Start with "portrait of" then describe: Joseon Dynasty Korean person, class indicator, age range, gender, hanbok style and color, hair style (topknot/gat/binyeo etc.), eyes, distinguishing feature if any, setting element. Include "face of [a Korean or East Asian historical figure, classical portrait subject, or screen actor whose gender, approximate age, and social register match this character]". Close with: Joseon court painting style, minhwa folk art palette, ink and mineral pigment. Descriptors only — no sentences, no labels.
 
-"plotEssentials": MAX 2000 chars. Using "${sk.plotArchetype}" as the primary story engine, write the plot overview for this Joseon Korea scenario. Cover: what triggers the story (the inciting incident, rooted in the specific mechanisms of Joseon society — a gwageo result, a factional accusation, a jokbo investigation), the central objective, the main obstacle or antagonist (could be a faction enemy, a social law, a secret), and what's at stake if the character fails. Ground it specifically in this character's class, profession, cast, and setting. The background tension ("${sk.tension}") is a secondary thread — weave it in. Write for a GM who needs to run this session tonight: concrete, specific, actionable.`;
+"plotEssentials": MAX 2000 chars. Using "${sk.plotArchetype}" as the primary story engine, write the plot overview for this Joseon Korea scenario. Cover: what triggers the story (the inciting incident, rooted in the specific mechanisms of Joseon society — a gwageo result, a factional accusation, a jokbo investigation), the central objective, the main obstacle or antagonist (could be a faction enemy, a social law, a secret), and what's at stake if the character fails. Ground it specifically in this character's class, profession, cast, and setting. The background tension ("${sk.tension}") is a secondary thread — weave it in. Write for a GM who needs to run this session tonight: concrete, specific, actionable.
+
+"authorNote": MAX 500 chars. Style directive for AI Dungeon's Author's Note field — injected every AI turn. Terse imperatives. Tailor to this character: literary behavioral prose with elevated register, 1–2 sensory anchors specific to Joseon and this character's station (mulberry paper, ondol heat, silk rustling, specific sounds of their world), honorific atmosphere in all dialogue. No names, no plot.`;
 }
 
 function coerceEntry(v) {
@@ -126,6 +128,7 @@ export function parseResponse(rawText) {
       opening:          parsed.opening          ?? '',
       appearancePrompt: parsed.appearancePrompt  ?? '',
       plotEssentials:   parsed.plotEssentials    ?? '',
+      authorNote:       parsed.authorNote        ?? '',
     };
   } catch (err) {
     console.error('Failed to parse historical-korea-joseon-dynasty response:', err);
