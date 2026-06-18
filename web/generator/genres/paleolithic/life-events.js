@@ -12,7 +12,7 @@ export const LIFE_EVENTS = [
     toneTag: 'gritty',
     statAffinity: { constitution: 1.3, strength: 1.1 },
     iconPrompt: 'paleolithic life event icon, lone wounded hunter limping away from a mammoth carcass, other hunters fallen in background, dramatic tundra light',
-    iconPath: 'generator/genres/paleolithic/icons/LIFE_EVENTS#mammoth_hunt_wrong.png',
+    iconPath: 'generator/genres/paleolithic/icons/LIFE_EVENTS#mammoth_hunt_wrong.webp',
   },
   {
     id: 'first_great_kill',
@@ -21,7 +21,7 @@ export const LIFE_EVENTS = [
     statAffinity: { strength: 1.3, constitution: 1.2 },
     economicHint: 1,
     iconPrompt: 'paleolithic life event icon, young hunter standing victorious over a downed aurochs, spear raised, dawn light, pride and exhaustion',
-    iconPath: 'generator/genres/paleolithic/icons/LIFE_EVENTS#first_great_kill.png',
+    iconPath: 'generator/genres/paleolithic/icons/LIFE_EVENTS#first_great_kill.webp',
   },
   {
     id: 'predator_attack',
@@ -29,7 +29,7 @@ export const LIFE_EVENTS = [
     toneTag: 'gritty',
     statAffinity: { constitution: 1.2, wisdom: 1.2 },
     iconPrompt: 'paleolithic life event icon, terrified figure hiding in reeds while large predators move past in darkness, moonlight',
-    iconPath: 'generator/genres/paleolithic/icons/LIFE_EVENTS#predator_attack.png',
+    iconPath: 'generator/genres/paleolithic/icons/LIFE_EVENTS#predator_attack.webp',
   },
 
   // ── WINTER & FAMINE ───────────────────────────────────────────────────────
@@ -39,7 +39,7 @@ export const LIFE_EVENTS = [
     toneTag: 'gritty',
     statAffinity: { constitution: 1.4, wisdom: 0.9 },
     iconPrompt: 'paleolithic life event icon, gaunt survivor wrapped in furs crouching over tiny fire in blizzard, desperate survival, brutal cold',
-    iconPath: 'generator/genres/paleolithic/icons/LIFE_EVENTS#great_winter.png',
+    iconPath: 'generator/genres/paleolithic/icons/LIFE_EVENTS#great_winter.webp',
   },
   {
     id: 'guided_tribe_crossing',
@@ -48,7 +48,7 @@ export const LIFE_EVENTS = [
     statAffinity: { wisdom: 1.3, constitution: 1.2 },
     economicHint: 1,
     iconPrompt: 'paleolithic life event icon, determined figure leading a line of tribe members through a snowy mountain pass, wind and ice, leading from the front',
-    iconPath: 'generator/genres/paleolithic/icons/LIFE_EVENTS#guided_tribe_crossing.png',
+    iconPath: 'generator/genres/paleolithic/icons/LIFE_EVENTS#guided_tribe_crossing.webp',
   },
 
   // ── SPIRIT & MYSTERY ──────────────────────────────────────────────────────
@@ -58,7 +58,7 @@ export const LIFE_EVENTS = [
     toneTag: 'dramatic',
     statAffinity: { wisdom: 1.4, intelligence: 1.2 },
     iconPrompt: 'paleolithic life event icon, figure lying in fever sweat surrounded by spirit animals and glowing patterns on cave wall, transcendent and terrifying, firelight',
-    iconPath: 'generator/genres/paleolithic/icons/LIFE_EVENTS#spirit_vision.png',
+    iconPath: 'generator/genres/paleolithic/icons/LIFE_EVENTS#spirit_vision.webp',
   },
   {
     id: 'found_cache',
@@ -67,7 +67,7 @@ export const LIFE_EVENTS = [
     statAffinity: { intelligence: 1.2, wisdom: 1.1 },
     economicHint: 1,
     iconPrompt: 'paleolithic life event icon, figure uncovering a hidden stone cache of dark obsidian beneath rocks, eyes wide with wonder, sunlight catching the glass edge',
-    iconPath: 'generator/genres/paleolithic/icons/LIFE_EVENTS#found_cache.png',
+    iconPath: 'generator/genres/paleolithic/icons/LIFE_EVENTS#found_cache.webp',
   },
 
   // ── EXILE & BELONGING ─────────────────────────────────────────────────────
@@ -78,7 +78,7 @@ export const LIFE_EVENTS = [
     statAffinity: { wisdom: 1.2, charisma: 0.9 },
     economicHint: -1,
     iconPrompt: 'paleolithic life event icon, figure walking alone away from a camp as tribe members watch from behind, lonely departing silhouette, dusk',
-    iconPath: 'generator/genres/paleolithic/icons/LIFE_EVENTS#cast_out.png',
+    iconPath: 'generator/genres/paleolithic/icons/LIFE_EVENTS#cast_out.webp',
   },
   {
     id: 'adopted_foundling',
@@ -86,7 +86,7 @@ export const LIFE_EVENTS = [
     toneTag: 'neutral',
     statAffinity: { constitution: 1.1, wisdom: 1.1 },
     iconPrompt: 'paleolithic life event icon, tribe elder carrying an abandoned infant found at the forest edge, compassionate expression, woodland background',
-    iconPath: 'generator/genres/paleolithic/icons/LIFE_EVENTS#adopted_foundling.png',
+    iconPath: 'generator/genres/paleolithic/icons/LIFE_EVENTS#adopted_foundling.webp',
   },
 
   // ── CONFLICT ──────────────────────────────────────────────────────────────
@@ -97,7 +97,7 @@ export const LIFE_EVENTS = [
     statAffinity: { constitution: 1.2, strength: 1.1 },
     economicHint: -1,
     iconPrompt: 'paleolithic life event icon, burning camp at night, family fleeing into darkness as rival warriors enter the camp, chaos and terror, dramatic firelight',
-    iconPath: 'generator/genres/paleolithic/icons/LIFE_EVENTS#rival_tribe_attack.png',
+    iconPath: 'generator/genres/paleolithic/icons/LIFE_EVENTS#rival_tribe_attack.webp',
   },
   {
     id: 'brokered_peace',
@@ -106,7 +106,7 @@ export const LIFE_EVENTS = [
     statAffinity: { charisma: 1.3, wisdom: 1.2 },
     economicHint: 1,
     iconPrompt: 'paleolithic life event icon, two rival tribe leaders touching hands over a shared fire as a third figure stands between them, all wearing ceremonial paint, hopeful tension',
-    iconPath: 'generator/genres/paleolithic/icons/LIFE_EVENTS#brokered_peace.png',
+    iconPath: 'generator/genres/paleolithic/icons/LIFE_EVENTS#brokered_peace.webp',
   },
 
   // ── DISCOVERY ─────────────────────────────────────────────────────────────
@@ -116,7 +116,7 @@ export const LIFE_EVENTS = [
     toneTag: 'neutral',
     statAffinity: { constitution: 1.2, intelligence: 1.2 },
     iconPrompt: 'paleolithic life event icon, figure standing at mountain top looking down at a lush green valley spread below them, awe and wonder, dramatic sky',
-    iconPath: 'generator/genres/paleolithic/icons/LIFE_EVENTS#discovered_new_land.png',
+    iconPath: 'generator/genres/paleolithic/icons/LIFE_EVENTS#discovered_new_land.webp',
   },
   {
     id: 'captured_escaped',
@@ -124,6 +124,6 @@ export const LIFE_EVENTS = [
     toneTag: 'dramatic',
     statAffinity: { dexterity: 1.2, wisdom: 1.1 },
     iconPrompt: 'paleolithic life event icon, figure slipping away from a rival camp in darkness, bound wrists, crawling through undergrowth, tense escape, moonlight',
-    iconPath: 'generator/genres/paleolithic/icons/LIFE_EVENTS#captured_escaped.png',
+    iconPath: 'generator/genres/paleolithic/icons/LIFE_EVENTS#captured_escaped.webp',
   },
 ];

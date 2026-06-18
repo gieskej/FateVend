@@ -22,7 +22,7 @@ export const ECONOMIC_TIERS = {
       'by river on a borrowed raft, working the current',
     ],
     iconPrompt: 'ancient japanese outcast bondsman no clan bare feet rough cloth roadside humble survival nihon shoki yamato-e folk painting',
-    iconPath: 'generator/genres/nihongi/icons/ECONOMIC_TIERS#tier1-outcast.png',
+    iconPath: 'generator/genres/nihongi/icons/ECONOMIC_TIERS#tier1-outcast.webp',
   },
   2: {
     label: 'Peasant',
@@ -44,7 +44,7 @@ export const ECONOMIC_TIERS = {
       'river boat shared between several families for market day',
     ],
     iconPrompt: 'ancient japanese free farmer tami rice paddy village communal simple honest labour nihon shoki yamato-e folk painting',
-    iconPath: 'generator/genres/nihongi/icons/ECONOMIC_TIERS#tier2-peasant.png',
+    iconPath: 'generator/genres/nihongi/icons/ECONOMIC_TIERS#tier2-peasant.webp',
   },
   3: {
     label: 'Minor Official',
@@ -66,7 +66,7 @@ export const ECONOMIC_TIERS = {
       'a sedan palanquin for formal occasions',
     ],
     iconPrompt: 'ancient japanese minor official craftsman shrine keeper modest robes respectful functional nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/ECONOMIC_TIERS#tier3-minor-official.png',
+    iconPath: 'generator/genres/nihongi/icons/ECONOMIC_TIERS#tier3-minor-official.webp',
   },
   4: {
     label: 'Court Retainer',
@@ -88,7 +88,7 @@ export const ECONOMIC_TIERS = {
       'water travel by covered barge with household retainers',
     ],
     iconPrompt: 'ancient japanese court retainer official silk layered robes lacquered furniture asuka period prosperity court nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/ECONOMIC_TIERS#tier4-court-retainer.png',
+    iconPath: 'generator/genres/nihongi/icons/ECONOMIC_TIERS#tier4-court-retainer.webp',
   },
   5: {
     label: 'Great Lord',
@@ -109,6 +109,6 @@ export const ECONOMIC_TIERS = {
       'imperial-gifted horses from the continent, stabled in a private paddock',
     ],
     iconPrompt: 'ancient japanese great clan lord omi muraji grand compound silk robes escort prestige asuka court nihon shoki yamato-e court painting',
-    iconPath: 'generator/genres/nihongi/icons/ECONOMIC_TIERS#tier5-great-lord.png',
+    iconPath: 'generator/genres/nihongi/icons/ECONOMIC_TIERS#tier5-great-lord.webp',
   },
 };

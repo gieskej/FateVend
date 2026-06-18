@@ -5,7 +5,7 @@ export const ECONOMIC_TIERS = {
     housing: ['stable loft', 'doorway or alley', 'a corner of a crowded common room', 'a cave or ruin'],
     transport: ['on foot', 'a lame mule', 'nothing'],
     iconPrompt: 'Fantasy RPG icon. A gaunt figure huddled in a stone doorway wrapped in a threadbare cloak, a cracked begging bowl beside them, rain-slicked cobblestones, city wealth visible and indifferent in the distance.',
-    iconPath: 'generator/genres/fantasy/icons/ECONOMIC_TIER#destitute.png',
+    iconPath: 'generator/genres/fantasy/icons/ECONOMIC_TIER#destitute.webp',
   },
   2: {
     label: 'Common folk',
@@ -13,7 +13,7 @@ export const ECONOMIC_TIERS = {
     housing: ['rented room', 'shared dormitory', 'a modest cottage'],
     transport: ['on foot', 'a serviceable horse', 'passage on a merchant barge'],
     iconPrompt: 'Fantasy RPG icon. A tired laborer eating a simple meal at a tavern table, a nearly empty coin purse beside a mug of ale, patched secondhand gear hanging on the chair, making ends meet.',
-    iconPath: 'generator/genres/fantasy/icons/ECONOMIC_TIER#common_folk.png',
+    iconPath: 'generator/genres/fantasy/icons/ECONOMIC_TIER#common_folk.webp',
   },
   3: {
     label: 'Skilled / journeyman',
@@ -21,7 +21,7 @@ export const ECONOMIC_TIERS = {
     housing: ['own room at an inn', 'rented townhouse', 'quarters provided by an employer'],
     transport: ['reliable horse', 'their own small boat', 'hired passage'],
     iconPrompt: 'Fantasy RPG icon. A skilled artisan at a tidy workshop bench in the craftsmen\'s quarter, quality tools on the wall, a reliable horse visible through the window, steady and capable if not wealthy.',
-    iconPath: 'generator/genres/fantasy/icons/ECONOMIC_TIER#skilled_journeyman.png',
+    iconPath: 'generator/genres/fantasy/icons/ECONOMIC_TIER#skilled_journeyman.webp',
   },
   4: {
     label: 'Prosperous',
@@ -29,7 +29,7 @@ export const ECONOMIC_TIERS = {
     housing: ['townhouse', 'estate rooms', 'private quarters at a keep'],
     transport: ['quality horse', 'carriage', 'private ship cabin'],
     iconPrompt: 'Fantasy RPG icon. A well-dressed merchant in a fine townhouse study, maps and ledgers spread across an oak desk, quality arms displayed on the wall, a carriage visible through the window below.',
-    iconPath: 'generator/genres/fantasy/icons/ECONOMIC_TIER#prosperous.png',
+    iconPath: 'generator/genres/fantasy/icons/ECONOMIC_TIER#prosperous.webp',
   },
   5: {
     label: 'Wealthy / noble',
@@ -37,6 +37,6 @@ export const ECONOMIC_TIERS = {
     housing: ['manor house', 'castle wing', 'palatial city residence'],
     transport: ['fine warhorse', 'private carriage', 'personal ship'],
     iconPrompt: 'Fantasy RPG icon. A noble seated in a grand manor hall, liveried servants in attendance, tall windows overlooking manicured estate grounds, wealth and power woven into every surface.',
-    iconPath: 'generator/genres/fantasy/icons/ECONOMIC_TIER#wealthy_noble.png',
+    iconPath: 'generator/genres/fantasy/icons/ECONOMIC_TIER#wealthy_noble.webp',
   },
 };

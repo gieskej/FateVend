@@ -7,7 +7,7 @@ export const CITY_SETTINGS = [
     label: 'Asuka — the Imperial Capital',
     toneTag: 'dramatic',
     iconPrompt: 'ancient japanese asuka imperial capital palace compound supernatural kami watching from wooded hills beyond eaves shadow figures at edge of torchlight, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/CITY_SETTINGS#asuka.png',
+    iconPath: 'generator/genres/nihongi/icons/CITY_SETTINGS#asuka.webp',
     flavor: 'The imperial palace and its surrounding clan compounds; every conversation is also a political act, and the kami of the land watch from the wooded hills immediately beyond the eaves — closer than they used to be, the older shrine priests say, and less patient',
   },
   {
@@ -15,7 +15,7 @@ export const CITY_SETTINGS = [
     label: 'Naniwa — the Port and Diplomatic Hub',
     toneTag: 'neutral',
     iconPrompt: 'ancient japanese naniwa port harbor continental ships arriving foreign monks merchants something wrong in cargo not all passengers entirely human, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/CITY_SETTINGS#naniwa.png',
+    iconPath: 'generator/genres/nihongi/icons/CITY_SETTINGS#naniwa.webp',
     flavor: 'The western coastal gateway where continental envoys, Buddhist monks, craftsmen, and merchants arrive — and sometimes things that wear those shapes convincingly but are not quite right; rumor travels faster here than anywhere else, including rumors about what arrived on the last ship that has not yet disembarked',
   },
   {
@@ -23,7 +23,7 @@ export const CITY_SETTINGS = [
     label: 'Yamato Province — the Ancient Heartland',
     toneTag: 'cozy',
     iconPrompt: 'ancient japanese yamato province kofun burial mounds glowing at night ancestral dead stirring rice paddies kami of land visible in mist, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/CITY_SETTINGS#yamato_province.png',
+    iconPath: 'generator/genres/nihongi/icons/CITY_SETTINGS#yamato_province.webp',
     flavor: 'The ancestral homeland of the Yamato court, dotted with kofun burial mounds whose occupants are old enough to have very different ideas about the current political arrangement; clan lineage claims are older than memory here, and some of the things those claims disturb have been asleep for a long time',
   },
   {
@@ -31,7 +31,7 @@ export const CITY_SETTINGS = [
     label: 'Izumo — Where the Earthly Kami Gather',
     toneTag: 'supernatural',
     iconPrompt: 'ancient japanese izumo grand shrine okuninushi dead gathering in autumn kami congress spirit roads converging fog, miko priests who can see things others cannot, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/CITY_SETTINGS#izumo.png',
+    iconPath: 'generator/genres/nihongi/icons/CITY_SETTINGS#izumo.webp',
     flavor: "Home of the great shrine of Ōkuninushi, where every October the kami of all Japan gather to conduct their congress — the province empties of kami for the rest of the world, but here they are all present at once; the local priests can see spirit roads converging on the shrine from every direction, and the dead come here because Ōkuninushi still hears them",
   },
   {
@@ -39,7 +39,7 @@ export const CITY_SETTINGS = [
     label: 'Ise — the Sacred Forest of Amaterasu',
     toneTag: 'supernatural',
     iconPrompt: 'ancient japanese ise shrine amaterasu sacred forest wrong at night trees moving in no wind things that look like priests between the hinoki cypress, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/CITY_SETTINGS#ise_shrine.png',
+    iconPath: 'generator/genres/nihongi/icons/CITY_SETTINGS#ise_shrine.webp',
     flavor: 'A wilderness of hinoki cypress and river stones, kept deliberately apart from the capital and the ports; the mirror of Amaterasu rests here and the shrine princess speaks for a power that answers to no minister — the forest moves at night in ways wind cannot explain, and the figures visible between the trees during purification rituals are not always shrine attendants',
   },
   {
@@ -47,7 +47,7 @@ export const CITY_SETTINGS = [
     label: 'Kashihara — the Spirit-Road Mountains',
     toneTag: 'supernatural',
     iconPrompt: 'ancient japanese kashihara sacred mountains spirit roads visible at night as light between peaks ancestor dead walking paths ancient shrines older than political system, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/CITY_SETTINGS#kashihara.png',
+    iconPath: 'generator/genres/nihongi/icons/CITY_SETTINGS#kashihara.webp',
     flavor: 'The holy mountain country where the first emperor received sovereignty from Amaterasu; the shrines here are older than the political system that tends them, and the mountain passes are spirit roads — routes the dead use to travel, visible at the right hour as dim light between the peaks, and sometimes congested',
   },
   {
@@ -55,7 +55,7 @@ export const CITY_SETTINGS = [
     label: 'A Shrine That Has Gone Wrong',
     toneTag: 'horror',
     iconPrompt: 'ancient japanese defiled ruined shrine kami corrupted or fled rope rotted offerings blackened stone cracked wrong cold feeling in approach, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/CITY_SETTINGS#defiled_shrine.png',
+    iconPath: 'generator/genres/nihongi/icons/CITY_SETTINGS#defiled_shrine.webp',
     flavor: 'A shrine whose kami has either fled or turned — the offerings are still left, the priests still perform the rituals, but something is wrong in the quality of silence here; animals avoid the approach path, the sacred ropes have rotted faster than they should, and three of the last five priests to serve here have disappeared without explanation',
   },
   {
@@ -63,7 +63,7 @@ export const CITY_SETTINGS = [
     label: 'The Yomi Margin — Where the Gate Is Thin',
     toneTag: 'horror',
     iconPrompt: 'ancient japanese sea cave coastal entrance to yomi underworld land of dead border thin between worlds dead figures visible through shimmer pale hands reaching from darkness within, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/CITY_SETTINGS#yomi_margin.png',
+    iconPath: 'generator/genres/nihongi/icons/CITY_SETTINGS#yomi_margin.webp',
     flavor: 'A coastal cave or deep mountain hollow where the boundary between the living world and Yomi has always been thin — scholars of the continental texts say this is where Izanagi entered after Izanami; the local community knows not to go near it after dark, not because of old superstition but because of what was found last autumn near the entrance at dawn',
   },
   {
@@ -71,7 +71,7 @@ export const CITY_SETTINGS = [
     label: 'Tsukushi — the Continental Gateway',
     toneTag: 'gritty',
     iconPrompt: 'ancient japanese tsukushi kyushu frontier continental ships arriving watchpost defence something arrived on last ship that did not leave with the other passengers, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/CITY_SETTINGS#tsukushi.png',
+    iconPath: 'generator/genres/nihongi/icons/CITY_SETTINGS#tsukushi.webp',
     flavor: 'The northwestern tip of Kyushu, where the straits to the Korean peninsula are narrow enough to seem crossable in bad weather; the court keeps military watchposts here because everything dangerous comes through Tsukushi first — including things that cross the water that were not on any manifest',
   },
   {
@@ -79,7 +79,7 @@ export const CITY_SETTINGS = [
     label: 'Emishi Frontier — the Northern Margin',
     toneTag: 'gritty',
     iconPrompt: 'ancient japanese emishi frontier northern honshu forest dark spirits of land not in yamato catalogue kami that do not recognise imperial authority watching garrison, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/CITY_SETTINGS#emishi_frontier.png',
+    iconPath: 'generator/genres/nihongi/icons/CITY_SETTINGS#emishi_frontier.webp',
     flavor: 'The ragged northern edge of Yamato authority, where the court\'s writ fades into forest; the Emishi maintain their own relationships with the land, and the spirits of this place are not in the Yamato kami catalogue — older, less interested in negotiation, and entirely unimpressed by imperial genealogical claims',
   },
 ];

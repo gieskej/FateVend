@@ -8,7 +8,7 @@ export const LIFE_EVENTS = [
     toneTag: 'dramatic',
     statAffinity: { wisdom: 1.3, constitution: 0.9 },
     iconPrompt: 'japanese student 1987 holding old family photo alone quiet room manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/LIFE_EVENTS#lost_parent_early.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/LIFE_EVENTS#lost_parent_early.webp',
   },
   {
     id: 'parents_divorced',
@@ -16,7 +16,7 @@ export const LIFE_EVENTS = [
     toneTag: 'dramatic',
     statAffinity: { wisdom: 1.1, charisma: 0.9 },
     iconPrompt: 'japanese student 1987 sitting between two adults who are not looking at each other quiet apartment manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/LIFE_EVENTS#parents_divorced.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/LIFE_EVENTS#parents_divorced.webp',
   },
   {
     id: 'failed_entrance_exam',
@@ -24,7 +24,7 @@ export const LIFE_EVENTS = [
     toneTag: 'neutral',
     statAffinity: { intelligence: 0.9, wisdom: 1.1 },
     iconPrompt: 'japanese student 1987 staring at exam results sheet posted on board disappointed quiet manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/LIFE_EVENTS#failed_entrance_exam.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/LIFE_EVENTS#failed_entrance_exam.webp',
   },
   {
     id: 'koshien_loss',
@@ -32,7 +32,7 @@ export const LIFE_EVENTS = [
     toneTag: 'dramatic',
     statAffinity: { strength: 1.2, constitution: 1.1 },
     iconPrompt: 'japanese middle school baseball team 1987 kneeling after loss on field summer heat tears manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/LIFE_EVENTS#koshien_loss.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/LIFE_EVENTS#koshien_loss.webp',
   },
   {
     id: 'first_arubaito',
@@ -40,7 +40,7 @@ export const LIFE_EVENTS = [
     toneTag: 'gritty',
     statAffinity: { constitution: 1.2, wisdom: 1.1 },
     iconPrompt: 'japanese young student 1987 early morning delivery newspaper arubaito part time job bicycle predawn manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/LIFE_EVENTS#first_arubaito.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/LIFE_EVENTS#first_arubaito.webp',
   },
   {
     id: 'bullied_badly',
@@ -48,7 +48,7 @@ export const LIFE_EVENTS = [
     toneTag: 'gritty',
     statAffinity: { constitution: 1.1, charisma: 0.9 },
     iconPrompt: 'japanese student with black eye surrounded by boys wearing gakuran uniforms, 1987, manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/LIFE_EVENTS#bullied_badly.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/LIFE_EVENTS#bullied_badly.webp',
   },
   {
     id: 'moved_from_tokyo',
@@ -56,7 +56,7 @@ export const LIFE_EVENTS = [
     toneTag: 'neutral',
     statAffinity: { charisma: 1.1, wisdom: 1.1 },
     iconPrompt: 'japanese transfer student 1987 looking at new school building from outside first day Tokyo transfer manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/LIFE_EVENTS#moved_from_tokyo.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/LIFE_EVENTS#moved_from_tokyo.webp',
   },
   {
     id: 'witnessed_yakuza_incident',
@@ -64,7 +64,7 @@ export const LIFE_EVENTS = [
     toneTag: 'gritty',
     statAffinity: { wisdom: 1.2, constitution: 1.1 },
     iconPrompt: 'japanese student 1987 Dotonbori night alley witnessed something dangerous frozen scared manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/LIFE_EVENTS#witnessed_yakuza_incident.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/LIFE_EVENTS#witnessed_yakuza_incident.webp',
   },
   {
     id: 'prodigy_faded',
@@ -72,7 +72,7 @@ export const LIFE_EVENTS = [
     toneTag: 'neutral',
     statAffinity: { intelligence: 1.3, wisdom: 0.9 },
     iconPrompt: 'japanese child prodigy 1987 recital performance young parents watching pressure spotlight manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/LIFE_EVENTS#prodigy_faded.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/LIFE_EVENTS#prodigy_faded.webp',
   },
   {
     id: 'first_love_moved',
@@ -80,7 +80,7 @@ export const LIFE_EVENTS = [
     toneTag: 'cozy',
     statAffinity: { charisma: 1.1, wisdom: 1.1 },
     iconPrompt: 'japanese students 1987 one waving goodbye train station other watching from platform unsaid feelings manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/LIFE_EVENTS#first_love_moved.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/LIFE_EVENTS#first_love_moved.webp',
   },
   {
     id: 'sickness_missed_year',
@@ -88,7 +88,7 @@ export const LIFE_EVENTS = [
     toneTag: 'dramatic',
     statAffinity: { constitution: 0.8, wisdom: 1.2 },
     iconPrompt: 'japanese student 1987 hospital bed window light looking outside missing school manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/LIFE_EVENTS#sickness_missed_year.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/LIFE_EVENTS#sickness_missed_year.webp',
   },
   {
     id: 'family_business_collapsed',
@@ -97,7 +97,7 @@ export const LIFE_EVENTS = [
     statAffinity: { wisdom: 1.1, constitution: 1.1 },
     economicHint: -1,
     iconPrompt: 'japanese family 1987 small shop shuttered closed sign family looking at empty store manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/LIFE_EVENTS#family_business_collapsed.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/LIFE_EVENTS#family_business_collapsed.webp',
   },
   {
     id: 'top_of_class',
@@ -105,6 +105,6 @@ export const LIFE_EVENTS = [
     toneTag: 'neutral',
     statAffinity: { intelligence: 1.3, charisma: 1.1 },
     iconPrompt: 'japanese student 1987 receiving award ceremony middle school top grades nervous proud manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/LIFE_EVENTS#top_of_class.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/LIFE_EVENTS#top_of_class.webp',
   },
 ];

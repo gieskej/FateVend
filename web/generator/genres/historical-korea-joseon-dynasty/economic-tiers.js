@@ -22,7 +22,7 @@ export const ECONOMIC_TIERS = {
       'the ox belongs to someone else; they walk behind it',
     ],
     iconPrompt: 'joseon dynasty korean destitute nobi servant cold winter carrying load landowner compound poverty suffering traditional minhwa folk painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/ECONOMIC_TIERS#tier1-destitute.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/ECONOMIC_TIERS#tier1-destitute.webp',
   },
   2: {
     label: 'Subsistence',
@@ -44,7 +44,7 @@ export const ECONOMIC_TIERS = {
       'no horse, no palanquin — those belong to another world entirely',
     ],
     iconPrompt: 'joseon dynasty korean subsistence farmer thatched chogajip cottage barley meal plain hanbok modest hardship traditional minhwa folk painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/ECONOMIC_TIERS#tier2-subsistence.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/ECONOMIC_TIERS#tier2-subsistence.webp',
   },
   3: {
     label: 'Modest',
@@ -66,7 +66,7 @@ export const ECONOMIC_TIERS = {
       'no palanquin — but not embarrassed about it',
     ],
     iconPrompt: 'joseon dynasty korean modest commoner artisan market clean hanbok tile roof courtyard comfortable ordinary traditional folk painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/ECONOMIC_TIERS#tier3-modest.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/ECONOMIC_TIERS#tier3-modest.webp',
   },
   4: {
     label: 'Established',
@@ -88,7 +88,7 @@ export const ECONOMIC_TIERS = {
       'hired chair and bearers for formal visits to officials',
     ],
     iconPrompt: 'joseon dynasty korean established yangban official silk hanbok tile compound inner courtyard horse servants formal traditional painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/ECONOMIC_TIERS#tier4-established.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/ECONOMIC_TIERS#tier4-established.webp',
   },
   5: {
     label: 'Elite',
@@ -110,6 +110,6 @@ export const ECONOMIC_TIERS = {
       'never walks anywhere that requires an explanation',
     ],
     iconPrompt: 'joseon dynasty korean elite yangban high official grand clan compound silk robes gat hat ceremony servants dignified imposing traditional court painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/ECONOMIC_TIERS#tier5-elite.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/ECONOMIC_TIERS#tier5-elite.webp',
   },
 };

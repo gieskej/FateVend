@@ -11,7 +11,7 @@ export const RACES = [
     allowedIndustries: ['Civil Administration', 'Arts & Learning', 'Military'],
     weight: 8,
     iconPrompt: 'joseon dynasty korean civil yangban scholar official gat horsehair hat silk robes gwageo exam traditional court painting style',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#civil_yangban.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#civil_yangban.webp',
   },
   {
     id: 'military_yangban',
@@ -21,7 +21,7 @@ export const RACES = [
     allowedIndustries: ['Military', 'Civil Administration', 'Arts & Learning'],
     weight: 6,
     iconPrompt: 'joseon dynasty korean military yangban warrior officer armor sword archery proud stance traditional court painting style',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#military_yangban.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#military_yangban.webp',
   },
   {
     id: 'royal_court',
@@ -31,7 +31,7 @@ export const RACES = [
     allowedIndustries: ['Civil Administration', 'Military', 'Arts & Learning', 'Service'],
     weight: 3,
     iconPrompt: 'joseon dynasty korean royal court official palace gyeongbokgung ceremonial robes refined posture traditional court painting style',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#royal_court.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#royal_court.webp',
   },
   {
     id: 'jungin',
@@ -41,7 +41,7 @@ export const RACES = [
     allowedIndustries: ['Civil Administration', 'Arts & Learning', 'Spiritual', 'Trade'],
     weight: 7,
     iconPrompt: 'joseon dynasty korean jungin middle class official interpreter physician practical hanbok ledger traditional painting style',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#jungin.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#jungin.webp',
   },
   {
     id: 'common_folk',
@@ -51,7 +51,7 @@ export const RACES = [
     allowedIndustries: ['Labor', 'Trade', 'Civil Administration', 'Spiritual'],
     weight: 12,
     iconPrompt: 'joseon dynasty korean common farmer village worker plain hanbok rice field straw hat traditional minhwa folk painting style',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#common_folk.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#common_folk.webp',
   },
   {
     id: 'merchant',
@@ -61,7 +61,7 @@ export const RACES = [
     allowedIndustries: ['Trade'],
     weight: 7,
     iconPrompt: 'joseon dynasty korean merchant trader market stall goods ledger shrewd practical hanbok traditional painting style',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#merchant.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#merchant.webp',
   },
   {
     id: 'gisaeng',
@@ -71,7 +71,7 @@ export const RACES = [
     allowedIndustries: ['Gisaeng Arts', 'Arts & Learning', 'Service', 'Spiritual'],
     weight: 5,
     iconPrompt: 'joseon dynasty korean gisaeng female entertainer musician haegeum elegant hanbok ornate hairpin court banquet traditional painting style',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#gisaeng.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#gisaeng.webp',
   },
   {
     id: 'cheonmin',
@@ -81,6 +81,6 @@ export const RACES = [
     allowedIndustries: ['Labor', 'Service', 'Spiritual', 'Gisaeng Arts'],
     weight: 7,
     iconPrompt: 'joseon dynasty korean cheonmin low born servant shaman plain rough clothing weathered defiant expression traditional painting style',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#cheonmin.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#cheonmin.webp',
   },
 ];

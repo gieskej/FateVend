@@ -14,7 +14,7 @@ export const LIFE_EVENTS = [
     toneTag: 'gritty',
     statAffinity: { constitution: 1.3, wisdom: 1.1 },
     iconPrompt: 'A soldier standing in a war-torn city, looking out over the ruins.',
-    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#corp_proxy_war.png'
+    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#corp_proxy_war.webp'
   },
   {
     id: 'sole_survivor',
@@ -22,7 +22,7 @@ export const LIFE_EVENTS = [
     toneTag: 'gritty',
     statAffinity: { constitution: 1.2, wisdom: 1.2 },
     iconPrompt: 'A lone survivor standing in a destroyed battlefield, looking out over the ruins.',
-    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#sole_survivor.png'
+    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#sole_survivor.webp'
   },
   {
     id: 'station_siege',
@@ -30,7 +30,7 @@ export const LIFE_EVENTS = [
     toneTag: 'gritty',
     statAffinity: { constitution: 1.3, strength: 1.1 },
     iconPrompt: 'A person standing in a station during a siege, looking out over the ruins.',
-    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#station_siege.png'
+    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#station_siege.webp'
   },
 
   // ── CORPORATE ─────────────────────────────────────────────────────────────
@@ -40,7 +40,7 @@ export const LIFE_EVENTS = [
     toneTag: 'gritty',
     statAffinity: { wisdom: 1.2, dexterity: 1.1 },
     iconPrompt: 'A person standing in a corporate office during a purge, looking out over the ruins.',
-    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#corp_purge.png'
+    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#corp_purge.webp'
   },
   {
     id: 'corp_indentured',
@@ -48,7 +48,7 @@ export const LIFE_EVENTS = [
     toneTag: 'gritty',
     statAffinity: { constitution: 1.3, wisdom: 1.1 },
     iconPrompt: 'A person standing in a corporate office during indentured labour, looking out over the ruins.',
-    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#corp_indentured.png'
+    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#corp_indentured.webp'
   },
   {
     id: 'corp_pawn',
@@ -56,7 +56,7 @@ export const LIFE_EVENTS = [
     toneTag: 'dramatic',
     statAffinity: { wisdom: 1.2, charisma: 0.9 },
     iconPrompt: 'A person standing in a corporate office during a pawn operation, looking out over the ruins.',
-    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#corp_pawn.png'
+    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#corp_pawn.webp'
   },
 
   // ── PERSONAL TRAGEDY ──────────────────────────────────────────────────────
@@ -66,7 +66,7 @@ export const LIFE_EVENTS = [
     toneTag: 'dramatic',
     statAffinity: { wisdom: 1.3, constitution: 0.9 },
     iconPrompt: 'A person standing in a void, looking out over the ruins.',
-    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#void_incident.png'
+    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#void_incident.webp'
   },
   {
     id: 'aug_rejection',
@@ -74,7 +74,7 @@ export const LIFE_EVENTS = [
     toneTag: 'gritty',
     statAffinity: { constitution: 0.8, wisdom: 1.2 },
     iconPrompt: 'A person standing in a medical facility during an aug rejection, looking out over the ruins.',
-    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#aug_rejection.png'
+    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#aug_rejection.webp'
   },
   {
     id: 'memory_wipe',
@@ -83,7 +83,7 @@ export const LIFE_EVENTS = [
     statAffinity: { wisdom: 1.2, intelligence: 0.9 },
     economicHint: -1,
     iconPrompt: 'A person standing in a medical facility during a memory wipe, looking out over the ruins.',
-    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#memory_wipe.png'
+    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#memory_wipe.webp'
   },
   {
     id: 'lost_partner',
@@ -91,7 +91,7 @@ export const LIFE_EVENTS = [
     toneTag: 'dramatic',
     statAffinity: { wisdom: 1.3, charisma: 0.9 },
     iconPrompt: 'A person standing in a shipboard accident or war, looking out over the ruins.',
-    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#lost_partner.png'
+    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#lost_partner.webp'
   },
 
   // ── WONDER & DISCOVERY ────────────────────────────────────────────────────
@@ -101,7 +101,7 @@ export const LIFE_EVENTS = [
     toneTag: 'neutral',
     statAffinity: { wisdom: 1.3, intelligence: 1.2 },
     iconPrompt: 'A person standing in a first-contact event, looking out over the ruins.',
-    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#first_contact.png'
+    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#first_contact.webp'
   },
   {
     id: 'derelict_discovery',
@@ -109,7 +109,7 @@ export const LIFE_EVENTS = [
     toneTag: 'gritty',
     statAffinity: { wisdom: 1.2, dexterity: 1.1 },
     iconPrompt: 'A person standing in a derelict ship, looking out over the ruins.',
-    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#derelict_discovery.png'
+    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#derelict_discovery.webp'
   },
   {
     id: 'physics_violation',
@@ -117,7 +117,7 @@ export const LIFE_EVENTS = [
     toneTag: 'neutral',
     statAffinity: { intelligence: 1.3, wisdom: 1.2 },
     iconPrompt: 'A person standing in a physics violation, looking out over the ruins.',
-    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#physics_violation.png'
+    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#physics_violation.webp'
   },
 
   // ── CRIME & JUSTICE ───────────────────────────────────────────────────────
@@ -127,7 +127,7 @@ export const LIFE_EVENTS = [
     toneTag: 'gritty',
     statAffinity: { wisdom: 1.2, constitution: 1.1 },
     iconPrompt: 'A person standing in a prison, looking out over the ruins.',
-    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#wrongful_prison.png'
+    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#wrongful_prison.webp'
   },
   {
     id: 'burned_informant',
@@ -135,7 +135,7 @@ export const LIFE_EVENTS = [
     toneTag: 'gritty',
     statAffinity: { wisdom: 1.2, charisma: 0.8 },
     iconPrompt: 'A person standing in an informant situation, looking out over the ruins.',
-    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#burned_informant.png'
+    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#burned_informant.webp'
   },
   {
     id: 'heist_sideways',
@@ -143,7 +143,7 @@ export const LIFE_EVENTS = [
     toneTag: 'gritty',
     statAffinity: { dexterity: 1.1, wisdom: 1.1 },
     iconPrompt: 'A person standing in a heist situation, looking out over the ruins.',
-    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#heist_sideways.png'
+    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#heist_sideways.webp'
   },
 
   // ── DISASTER ──────────────────────────────────────────────────────────────
@@ -154,7 +154,7 @@ export const LIFE_EVENTS = [
     statAffinity: { constitution: 1.2, wisdom: 1.1 },
     economicHint: -1,
     iconPrompt: 'A person standing in a colony collapse, looking out over the ruins.',
-    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#colony_collapse.png'
+    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#colony_collapse.webp'
   },
   {
     id: 'ship_failure',
@@ -162,7 +162,7 @@ export const LIFE_EVENTS = [
     toneTag: 'gritty',
     statAffinity: { constitution: 1.3, dexterity: 1.1 },
     iconPrompt: 'A person standing in a ship failure, looking out over the ruins.',
-    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#ship_failure.png'
+    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#ship_failure.webp'
   },
   {
     id: 'mass_evacuation',
@@ -171,7 +171,7 @@ export const LIFE_EVENTS = [
     statAffinity: { constitution: 1.2, wisdom: 1.1 },
     economicHint: -1,
     iconPrompt: 'A person standing in a mass evacuation, looking out over the ruins.',
-    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#mass_evacuation.png'
+    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#mass_evacuation.webp'
   },
 
   // ── ACHIEVEMENT ───────────────────────────────────────────────────────────
@@ -182,7 +182,7 @@ export const LIFE_EVENTS = [
     statAffinity: { charisma: 1.2, intelligence: 1.1 },
     economicHint: 1,
     iconPrompt: 'A person standing in a reputation building situation, looking out over the ruins.',
-    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#built_reputation.png'
+    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#built_reputation.webp'
   },
   {
     id: 'megacorp_defector',
@@ -191,6 +191,6 @@ export const LIFE_EVENTS = [
     statAffinity: { wisdom: 1.2, constitution: 1.1 },
     economicHint: -1,
     iconPrompt: 'A person standing in a megacorp defector situation, looking out over the ruins.',
-    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#megacorp_defector.png'
+    iconPath: 'generator/genres/sci-fi/icons/LIFE_EVENTS#megacorp_defector.webp'
   },
 ];

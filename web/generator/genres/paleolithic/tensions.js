@@ -11,7 +11,7 @@ export const TENSIONS = [
     statAffinity: { constitution: 1.2, strength: 1.1 },
     criminalFlag: false,
     iconPrompt: 'paleolithic rpg icon, tribe member counting nearly empty food stores in a cave, worried expression, sparse food supplies visible, dim light',
-    iconPath: 'generator/genres/paleolithic/icons/TENSIONS#stores_running_low.png',
+    iconPath: 'generator/genres/paleolithic/icons/TENSIONS#stores_running_low.webp',
   },
   {
     id: 'famine_territory',
@@ -20,7 +20,7 @@ export const TENSIONS = [
     statAffinity: { constitution: 1.2, wisdom: 1.1 },
     criminalFlag: false,
     iconPrompt: 'paleolithic rpg icon, hunter standing in empty grassland, no game visible, scanning horizon with growing unease, bleak open landscape',
-    iconPath: 'generator/genres/paleolithic/icons/TENSIONS#famine_territory.png',
+    iconPath: 'generator/genres/paleolithic/icons/TENSIONS#famine_territory.webp',
   },
 
   // ── PREDATORS ─────────────────────────────────────────────────────────────
@@ -31,7 +31,7 @@ export const TENSIONS = [
     statAffinity: { constitution: 1.2, strength: 1.1 },
     criminalFlag: false,
     iconPrompt: 'paleolithic rpg icon, massive cave lion silhouette at the edge of firelight, eyes glowing, tribe members frozen in terror by the fire, night',
-    iconPath: 'generator/genres/paleolithic/icons/TENSIONS#cave_lion_stalking.png',
+    iconPath: 'generator/genres/paleolithic/icons/TENSIONS#cave_lion_stalking.webp',
   },
   {
     id: 'wolf_pack_territory',
@@ -40,7 +40,7 @@ export const TENSIONS = [
     statAffinity: { strength: 1.2, dexterity: 1.1 },
     criminalFlag: false,
     iconPrompt: 'paleolithic rpg icon, hunter being circled by wolves in a forest clearing, spear raised, outnumbered, tense standoff, twilight',
-    iconPath: 'generator/genres/paleolithic/icons/TENSIONS#wolf_pack_territory.png',
+    iconPath: 'generator/genres/paleolithic/icons/TENSIONS#wolf_pack_territory.webp',
   },
 
   // ── RIVAL TRIBES ──────────────────────────────────────────────────────────
@@ -51,7 +51,7 @@ export const TENSIONS = [
     statAffinity: { strength: 1.2, wisdom: 1.1 },
     criminalFlag: false,
     iconPrompt: 'paleolithic rpg icon, two hunters from different tribes facing off across a stream, spears held but not raised, mutual wary assessment, tense daylight',
-    iconPath: 'generator/genres/paleolithic/icons/TENSIONS#rival_encroachment.png',
+    iconPath: 'generator/genres/paleolithic/icons/TENSIONS#rival_encroachment.webp',
   },
   {
     id: 'raid_coming',
@@ -60,7 +60,7 @@ export const TENSIONS = [
     statAffinity: { strength: 1.2, constitution: 1.1 },
     criminalFlag: false,
     iconPrompt: 'paleolithic rpg icon, scout running into camp with urgent news, tribe chief and warriors gathering to listen, alarm, firelit camp evening',
-    iconPath: 'generator/genres/paleolithic/icons/TENSIONS#raid_coming.png',
+    iconPath: 'generator/genres/paleolithic/icons/TENSIONS#raid_coming.webp',
   },
 
   // ── SPIRITS & OMENS ───────────────────────────────────────────────────────
@@ -71,7 +71,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 1.2, charisma: 1.1 },
     criminalFlag: false,
     iconPrompt: 'paleolithic rpg icon, shaman performing ceremony in cave, arms raised but fire guttering, animals on cave walls seeming empty, troubled expression, eerie atmosphere',
-    iconPath: 'generator/genres/paleolithic/icons/TENSIONS#spirits_silent.png',
+    iconPath: 'generator/genres/paleolithic/icons/TENSIONS#spirits_silent.webp',
   },
   {
     id: 'bad_omen',
@@ -80,7 +80,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 1.3, intelligence: 1.1 },
     criminalFlag: false,
     iconPrompt: 'paleolithic rpg icon, tribe members examining a dead two-headed bird with fear and awe, shaman kneeling beside it, gathering dark clouds, ominous light',
-    iconPath: 'generator/genres/paleolithic/icons/TENSIONS#bad_omen.png',
+    iconPath: 'generator/genres/paleolithic/icons/TENSIONS#bad_omen.webp',
   },
 
   // ── INTERNAL ──────────────────────────────────────────────────────────────
@@ -91,7 +91,7 @@ export const TENSIONS = [
     statAffinity: { charisma: 1.2, wisdom: 1.1 },
     criminalFlag: false,
     iconPrompt: 'paleolithic rpg icon, tense council fire scene, old chief and young challenger across from each other, other tribe members watching the confrontation, firelight',
-    iconPath: 'generator/genres/paleolithic/icons/TENSIONS#leadership_challenge.png',
+    iconPath: 'generator/genres/paleolithic/icons/TENSIONS#leadership_challenge.webp',
   },
   {
     id: 'thief_among_us',
@@ -100,7 +100,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 1.2, charisma: 1.1 },
     criminalFlag: true,
     iconPrompt: 'paleolithic rpg icon, tribe members pointing at each other in accusation by the fire, suspicion and anger in their faces, someone looking guilty in background',
-    iconPath: 'generator/genres/paleolithic/icons/TENSIONS#thief_among_us.png',
+    iconPath: 'generator/genres/paleolithic/icons/TENSIONS#thief_among_us.webp',
   },
 
   // ── ENVIRONMENT ───────────────────────────────────────────────────────────
@@ -111,7 +111,7 @@ export const TENSIONS = [
     statAffinity: { constitution: 1.2, wisdom: 1.2 },
     criminalFlag: false,
     iconPrompt: 'paleolithic rpg icon, tribe gathered at flooded river crossing, looking across at far bank, debating the crossing, heavy packs and children in arms, tension',
-    iconPath: 'generator/genres/paleolithic/icons/TENSIONS#migration_time.png',
+    iconPath: 'generator/genres/paleolithic/icons/TENSIONS#migration_time.webp',
   },
   {
     id: 'healing_crisis',
@@ -120,7 +120,7 @@ export const TENSIONS = [
     statAffinity: { constitution: 0.9, wisdom: 1.2 },
     criminalFlag: false,
     iconPrompt: 'paleolithic rpg icon, healer tending to feverish tribe members in cave shelter, worried expression, insufficient herbs visible, others watching anxiously',
-    iconPath: 'generator/genres/paleolithic/icons/TENSIONS#healing_crisis.png',
+    iconPath: 'generator/genres/paleolithic/icons/TENSIONS#healing_crisis.webp',
   },
   {
     id: 'someone_dangerous',
@@ -129,6 +129,6 @@ export const TENSIONS = [
     statAffinity: { wisdom: 1.2, charisma: 1.1 },
     criminalFlag: false,
     iconPrompt: 'paleolithic rpg icon, tribe member watching another figure return from the dark forest edge with strange demeanor, others observing warily from camp',
-    iconPath: 'generator/genres/paleolithic/icons/TENSIONS#someone_dangerous.png',
+    iconPath: 'generator/genres/paleolithic/icons/TENSIONS#someone_dangerous.webp',
   },
 ];

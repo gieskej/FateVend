@@ -9,7 +9,7 @@ export const CITY_SETTINGS = [
     toneTag: 'neutral',
     statAffinity: { constitution: 1.1, wisdom: 1.1 },
     iconPrompt: 'paleolithic campsite in a river valley, hide tents by a wide river, cooking fires, people at work, green valley walls, golden hour light',
-    iconPath: 'generator/genres/paleolithic/icons/CITY_SETTINGS#river_valley_camp.png',
+    iconPath: 'generator/genres/paleolithic/icons/CITY_SETTINGS#river_valley_camp.webp',
   },
   {
     id: 'cave_network',
@@ -18,7 +18,7 @@ export const CITY_SETTINGS = [
     toneTag: 'dramatic',
     statAffinity: { wisdom: 1.2, intelligence: 1.1 },
     iconPrompt: 'paleolithic cave entrance in rocky highlands, orange firelight visible inside, handprint paintings on cave wall, stone tools and bones at threshold, dusk light',
-    iconPath: 'generator/genres/paleolithic/icons/CITY_SETTINGS#cave_network.png',
+    iconPath: 'generator/genres/paleolithic/icons/CITY_SETTINGS#cave_network.webp',
   },
   {
     id: 'coastal_shell_midden',
@@ -27,7 +27,7 @@ export const CITY_SETTINGS = [
     toneTag: 'neutral',
     statAffinity: { constitution: 1.2, charisma: 1.1 },
     iconPrompt: 'paleolithic coastal camp on rocky shore, hide shelters beside a massive shell midden heap, figures processing seafood, waves beyond, morning light',
-    iconPath: 'generator/genres/paleolithic/icons/CITY_SETTINGS#coastal_shell_midden.png',
+    iconPath: 'generator/genres/paleolithic/icons/CITY_SETTINGS#coastal_shell_midden.webp',
   },
   {
     id: 'open_tundra',
@@ -36,7 +36,7 @@ export const CITY_SETTINGS = [
     toneTag: 'gritty',
     statAffinity: { constitution: 1.3, strength: 1.1 },
     iconPrompt: 'paleolithic tundra camp, hide tents weighted with rocks against wind, mammoth bones as structure supports, distant herd on flat horizon, overcast grey sky',
-    iconPath: 'generator/genres/paleolithic/icons/CITY_SETTINGS#open_tundra.png',
+    iconPath: 'generator/genres/paleolithic/icons/CITY_SETTINGS#open_tundra.webp',
   },
   {
     id: 'dense_forest',
@@ -45,7 +45,7 @@ export const CITY_SETTINGS = [
     toneTag: 'neutral',
     statAffinity: { dexterity: 1.2, wisdom: 1.1 },
     iconPrompt: 'paleolithic forest camp, small shelters beneath ancient trees, fire ringed with stones, shafts of light through canopy, quiet and green and watchful',
-    iconPath: 'generator/genres/paleolithic/icons/CITY_SETTINGS#dense_forest.png',
+    iconPath: 'generator/genres/paleolithic/icons/CITY_SETTINGS#dense_forest.webp',
   },
   {
     id: 'mountain_pass',
@@ -54,7 +54,7 @@ export const CITY_SETTINGS = [
     toneTag: 'dramatic',
     statAffinity: { constitution: 1.2, charisma: 1.1 },
     iconPrompt: 'paleolithic mountain pass camp, stone windbreak shelters, narrow rocky path, figures on lookout above, dramatic mountain peaks and clouds, cold light',
-    iconPath: 'generator/genres/paleolithic/icons/CITY_SETTINGS#mountain_pass.png',
+    iconPath: 'generator/genres/paleolithic/icons/CITY_SETTINGS#mountain_pass.webp',
   },
   {
     id: 'lake_shore',
@@ -63,7 +63,7 @@ export const CITY_SETTINGS = [
     toneTag: 'cozy',
     statAffinity: { constitution: 1.1, wisdom: 1.1 },
     iconPrompt: 'paleolithic lakeshore camp, hide tents reflected in still water, dugout canoes pulled up on shore, mist over lake at dawn, waterfowl lifting from reeds',
-    iconPath: 'generator/genres/paleolithic/icons/CITY_SETTINGS#lake_shore.png',
+    iconPath: 'generator/genres/paleolithic/icons/CITY_SETTINGS#lake_shore.webp',
   },
   {
     id: 'sacred_grove',
@@ -72,7 +72,7 @@ export const CITY_SETTINGS = [
     toneTag: 'dramatic',
     statAffinity: { wisdom: 1.3, charisma: 1.2 },
     iconPrompt: 'paleolithic sacred grove, ancient massive trees with carved markings, offerings on stone altar, figures from different tribes gathered around central fire, twilight ceremony, wide shot',
-    iconPath: 'generator/genres/paleolithic/icons/CITY_SETTINGS#sacred_grove.png',
+    iconPath: 'generator/genres/paleolithic/icons/CITY_SETTINGS#sacred_grove.webp',
   },
   {
     id: 'river_delta',
@@ -81,7 +81,7 @@ export const CITY_SETTINGS = [
     toneTag: 'neutral',
     statAffinity: { constitution: 1.1, intelligence: 1.1 },
     iconPrompt: 'paleolithic river delta camp, reed platform shelters over shallow water, dugout canoes tied to posts, marshland birds, morning mist, wide calm water',
-    iconPath: 'generator/genres/paleolithic/icons/CITY_SETTINGS#river_delta.png',
+    iconPath: 'generator/genres/paleolithic/icons/CITY_SETTINGS#river_delta.webp',
   },
   {
     id: 'rock_shelter_bluff',
@@ -90,6 +90,6 @@ export const CITY_SETTINGS = [
     toneTag: 'gritty',
     statAffinity: { constitution: 1.2, strength: 1.1 },
     iconPrompt: 'paleolithic rock shelter under a massive sandstone bluff overhang, fire at center, cave paintings visible on back wall, sleeping figures, dried meat hanging, warm firelight against dark stone',
-    iconPath: 'generator/genres/paleolithic/icons/CITY_SETTINGS#rock_shelter_bluff.png',
+    iconPath: 'generator/genres/paleolithic/icons/CITY_SETTINGS#rock_shelter_bluff.webp',
   },
 ];

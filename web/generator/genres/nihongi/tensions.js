@@ -8,7 +8,7 @@ export const TENSIONS = [
     toneTag: 'horror',
     criminalFlag: false,
     iconPrompt: 'ancient japanese figure walking at night through moonlit compound, dark shape following at edge of torchlight too still to be human, wrongness in silhouette, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/TENSIONS#something_following.png',
+    iconPath: 'generator/genres/nihongi/icons/TENSIONS#something_following.webp',
   },
   {
     id: 'family_possessed',
@@ -16,7 +16,7 @@ export const TENSIONS = [
     toneTag: 'horror',
     criminalFlag: false,
     iconPrompt: 'ancient japanese family member with possession in eyes wrong expression watching protagonist who knows the truth, dark divine energy visible only to viewer, family compound interior, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/TENSIONS#family_possessed.png',
+    iconPath: 'generator/genres/nihongi/icons/TENSIONS#family_possessed.webp',
   },
   {
     id: 'holy_site_defiled',
@@ -24,7 +24,7 @@ export const TENSIONS = [
     toneTag: 'horror',
     criminalFlag: false,
     iconPrompt: 'ancient japanese defiled shrine rotting offerings sacred rope torn stone broken kami wrath building signs appearing animals fled disturbed earth, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/TENSIONS#holy_site_defiled.png',
+    iconPath: 'generator/genres/nihongi/icons/TENSIONS#holy_site_defiled.webp',
   },
   {
     id: 'yomi_bleeding_through',
@@ -32,7 +32,7 @@ export const TENSIONS = [
     toneTag: 'horror',
     criminalFlag: false,
     iconPrompt: 'ancient japanese village with yomi leaking through dead walking cold mist animals bloodless shadows wrong angles shrine medium refusing to say why gate thinning, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/TENSIONS#yomi_bleeding_through.png',
+    iconPath: 'generator/genres/nihongi/icons/TENSIONS#yomi_bleeding_through.webp',
   },
   {
     id: 'deal_coming_due',
@@ -40,7 +40,7 @@ export const TENSIONS = [
     toneTag: 'horror',
     criminalFlag: false,
     iconPrompt: 'ancient japanese family shrine record in unreadable script supernatural entity representative appearing messenger of deal ancient bargain coming due, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/TENSIONS#deal_coming_due.png',
+    iconPath: 'generator/genres/nihongi/icons/TENSIONS#deal_coming_due.webp',
   },
   {
     id: 'shadow_wrong',
@@ -48,7 +48,7 @@ export const TENSIONS = [
     toneTag: 'horror',
     criminalFlag: false,
     iconPrompt: 'ancient japanese figure with shadow moving wrong direction wrong timing slightly separate entity miko shrine maiden staring at shadow with recognition dread, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/TENSIONS#shadow_wrong.png',
+    iconPath: 'generator/genres/nihongi/icons/TENSIONS#shadow_wrong.webp',
   },
   {
     id: 'kami_wrath',
@@ -56,7 +56,7 @@ export const TENSIONS = [
     toneTag: 'supernatural',
     criminalFlag: false,
     iconPrompt: 'ancient japanese kami divine wrath omens accumulating flood birds silent oracle naming figure specifically sacred warning supernatural anger, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/TENSIONS#kami_wrath.png',
+    iconPath: 'generator/genres/nihongi/icons/TENSIONS#kami_wrath.webp',
   },
   {
     id: 'ritual_pollution_spreading',
@@ -64,7 +64,7 @@ export const TENSIONS = [
     toneTag: 'horror',
     criminalFlag: false,
     iconPrompt: 'ancient japanese ritual pollution kegare spreading from figure to objects people dark stain visible on things touched death contamination beyond normal supernatural intensity, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/TENSIONS#ritual_pollution_spreading.png',
+    iconPath: 'generator/genres/nihongi/icons/TENSIONS#ritual_pollution_spreading.webp',
   },
   {
     id: 'dire_prophecy',
@@ -72,7 +72,7 @@ export const TENSIONS = [
     toneTag: 'dramatic',
     criminalFlag: false,
     iconPrompt: 'ancient japanese shrine oracle prophecy dire miko spirit medium foretelling someone loved refusal to say more kami silent terrible future, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/TENSIONS#dire_prophecy.png',
+    iconPath: 'generator/genres/nihongi/icons/TENSIONS#dire_prophecy.webp',
   },
   {
     id: 'succession_crisis',
@@ -80,7 +80,7 @@ export const TENSIONS = [
     toneTag: 'dramatic',
     criminalFlag: false,
     iconPrompt: 'ancient japanese clan succession dying lord rival heir consulting supernatural entity in empty room at night someone watches secretly, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/TENSIONS#succession_crisis.png',
+    iconPath: 'generator/genres/nihongi/icons/TENSIONS#succession_crisis.webp',
   },
   {
     id: 'wrong_twin',
@@ -88,6 +88,6 @@ export const TENSIONS = [
     toneTag: 'horror',
     criminalFlag: false,
     iconPrompt: 'ancient japanese two identical figures one wrong reflection delayed in water one staring with inhuman patience, imposter shapeshifter in community hidden wrongness, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/TENSIONS#wrong_twin.png',
+    iconPath: 'generator/genres/nihongi/icons/TENSIONS#wrong_twin.webp',
   },
 ];

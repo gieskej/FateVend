@@ -10,7 +10,7 @@ export const RACES = [
     flavor: 'Bleached pompadour, sukajan jacket, rides a custom bike — the delinquent everyone secretly respects',
     weight: 8,
     iconPrompt: 'japanese yankii delinquent student 1987 bleached pompadour sukajan jacket school gate confrontation manga style illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TRIBES#yankii.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TRIBES#yankii.webp',
   },
   {
     id: 'honor_student',
@@ -19,7 +19,7 @@ export const RACES = [
     flavor: 'Cram school veteran, textbook-perfect answers, quietly exhausted from being everyone\'s benchmark',
     weight: 8,
     iconPrompt: 'japanese honor student 1987 thick glasses textbooks serious cram school studying manga style illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TRIBES#honor_student.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TRIBES#honor_student.webp',
   },
   {
     id: 'sports_ace',
@@ -28,7 +28,7 @@ export const RACES = [
     flavor: 'Club captain or ace pitcher — the sun everyone orbits, still figuring out who they actually are',
     weight: 8,
     iconPrompt: 'japanese high school sports ace athlete 1987 baseball uniform confident dynamic Koshien manga style illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TRIBES#sports_ace.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TRIBES#sports_ace.webp',
   },
   {
     id: 'drama_kid',
@@ -37,7 +37,7 @@ export const RACES = [
     flavor: 'Theater club or school band member — speaks in metaphors, cries beautifully at graduation',
     weight: 6,
     iconPrompt: 'japanese drama theater club student 1987 expressive artistic stage performance spotlight manga style illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TRIBES#drama_kid.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TRIBES#drama_kid.webp',
   },
   {
     id: 'transfer_student',
@@ -46,7 +46,7 @@ export const RACES = [
     flavor: 'Arrived mid-semester with a past — immediately disrupts every established social dynamic',
     weight: 6,
     iconPrompt: 'japanese transfer student 1987 new school uniform uncertain expression new classroom manga style illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TRIBES#transfer_student.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TRIBES#transfer_student.webp',
   },
   {
     id: 'otaku',
@@ -55,7 +55,7 @@ export const RACES = [
     flavor: 'Den Den Town regular, knows every mecha anime, somehow always figures out the actual mystery',
     weight: 6,
     iconPrompt: 'japanese otaku student 1987 manga anime fan den den town Nipponbashi electronics street manga style illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TRIBES#otaku.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TRIBES#otaku.webp',
   },
   {
     id: 'popular_crowd',
@@ -64,7 +64,7 @@ export const RACES = [
     flavor: 'Fashion-forward, sets social trends, considerably more complicated beneath the surface',
     weight: 7,
     iconPrompt: 'japanese popular students 1987 fashion Shinsaibashi shopping confident laughing school corridor manga style illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TRIBES#popular_crowd.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TRIBES#popular_crowd.webp',
   },
   {
     id: 'ordinary_kid',
@@ -73,6 +73,6 @@ export const RACES = [
     flavor: 'Average grades, average looks, somehow always at the center of extraordinary things anyway',
     weight: 10,
     iconPrompt: 'japanese ordinary protagonist student 1987 school uniform unremarkable determined classic manga hero style illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TRIBES#ordinary_kid.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TRIBES#ordinary_kid.webp',
   },
 ];

@@ -16,7 +16,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 0.9, constitution: 1.1 },
     criminalFlag: false,
     iconPrompt: 'sci-fi rpg icon, corporate office, figure in corp attire signing contract renewal at desk, compliance officer in uniform watching from behind, holographic interface visible, submissive tense posture, bright corp lighting, medium shot, digital art',
-    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#megacorp_debt.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#megacorp_debt.webp'
   },
   {
     id: 'syndicate_debt',
@@ -25,7 +25,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 0.8, constitution: 1.1 },
     criminalFlag: true,
     iconPrompt: 'sci-fi rpg icon, dim station cantina booth, syndicate representative in dark jacket leaning back relaxed, other figure in worn clothing tense across table, neon bar lighting, drinks on table, medium two-shot, digital art',
-    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#syndicate_debt.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#syndicate_debt.webp'
   },
   {
     id: 'ship_failing',
@@ -34,7 +34,7 @@ export const TENSIONS = [
     statAffinity: { constitution: 1.1, intelligence: 1.1 },
     criminalFlag: false,
     iconPrompt: 'sci-fi rpg icon, spaceship engine room, engineer in coveralls crawling through open conduit access panel, diagnostic scanner in hand, amber warning lights active, steam venting from pipes, focused expression, low industrial lighting, medium shot, digital art',
-    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#ship_failing.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#ship_failing.webp'
   },
 
   // ── CORPORATE / POLITICAL ─────────────────────────────────────────────────
@@ -45,7 +45,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 1.1, constitution: 1.2 },
     criminalFlag: false,
     iconPrompt: 'sci-fi rpg icon, layoff notice paper, digital art',
-    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#corp_layoff.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#corp_layoff.webp'
   },
   {
     id: 'resistance_recruitment',
@@ -54,7 +54,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 1.2, charisma: 1.1 },
     criminalFlag: false,
     iconPrompt: 'sci-fi rpg icon, station service maintenance corridor, figure in grey coveralls standing alone, small data chip in outstretched hand, looking over shoulder, tense alert expression, dim maintenance lighting, medium close-up, digital art',
-    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#resistance_recruitment.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#resistance_recruitment.webp'
   },
   {
     id: 'leaked_data',
@@ -63,7 +63,7 @@ export const TENSIONS = [
     statAffinity: { intelligence: 1.2, wisdom: 0.9 },
     criminalFlag: true,
     iconPrompt: 'sci-fi rpg icon, public terminal kiosk, upload progress bar at 100 percent on screen, figure in nondescript clothing walking away at controlled pace, restrained tense expression, bright public area, medium shot from behind, digital art',
-    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#leaked_data.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#leaked_data.webp'
   },
   {
     id: 'political_exile',
@@ -72,7 +72,7 @@ export const TENSIONS = [
     statAffinity: { charisma: 1.1, wisdom: 1.1 },
     criminalFlag: false,
     iconPrompt: 'draw sci-fi rpg icon, an opened passport book stamped with "ASYLUM GRANTED", digital art',
-    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#political_exile.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#political_exile.webp'
   },
 
   // ── CRIMINAL ──────────────────────────────────────────────────────────────
@@ -83,7 +83,7 @@ export const TENSIONS = [
     statAffinity: { dexterity: 1.2, wisdom: 1.1 },
     criminalFlag: true,
     iconPrompt: 'sci-fi rpg icon, cargo hold interior, figure in utility jacket beside sealed shipping container, wrist display showing two conflicting faction messages, conflicted stressed expression, cargo bay lighting, medium close-up, digital art',
-    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#contested_cargo.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#contested_cargo.webp'
   },
   {
     id: 'bounty',
@@ -92,7 +92,7 @@ export const TENSIONS = [
     statAffinity: { constitution: 1.2, strength: 1.1 },
     criminalFlag: true,
     iconPrompt: 'sci-fi rpg icon, busy station docking terminal, public display board with wanted listing and face photo, figure in jacket and low hat brim nearby, other passersby moving past, tense concealed expression, bright public lighting, medium wide shot, digital art',
-    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#bounty.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#bounty.webp'
   },
   {
     id: 'heist_something_off',
@@ -101,7 +101,7 @@ export const TENSIONS = [
     statAffinity: { intelligence: 1.2, dexterity: 1.1 },
     criminalFlag: true,
     iconPrompt: 'sci-fi rpg icon, planning room, crew in dark tactical clothing around table with holographic station schematic, one figure pointing at specific detail on display, others observing, uneasy expression on one face, overhead blue planning light, medium wide shot, digital art',
-    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#heist_something_off.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#heist_something_off.webp'
   },
   {
     id: 'witnessed_massacre',
@@ -110,7 +110,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 1.2, intelligence: 1.1 },
     criminalFlag: false,
     iconPrompt: 'sci-fi rpg icon, a reporter with a camera hiding behind a wall, photographing a massacre, digital art',
-    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#witnessed_massacre.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#witnessed_massacre.webp'
   },
 
   // ── SURVIVAL ──────────────────────────────────────────────────────────────
@@ -121,7 +121,7 @@ export const TENSIONS = [
     statAffinity: { constitution: 1.2, intelligence: 1.2 },
     criminalFlag: false,
     iconPrompt: 'sci-fi rpg icon, habitat control room, environmental monitoring panel with multiple yellow-to-red status indicators, figure in coveralls working repair sequence at controls, focused calm expression, amber emergency lighting, medium shot, digital art',
-    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#life_support_failing.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#life_support_failing.webp'
   },
   {
     id: 'aug_rejection_onset',
@@ -130,7 +130,7 @@ export const TENSIONS = [
     statAffinity: { constitution: 0.9, wisdom: 1.1 },
     criminalFlag: false,
     iconPrompt: 'sci-fi rpg icon, station restroom, woman examining artificial eye in mirror, visible rash around eye, touching own face, worried assessing expression, bright restroom lighting, close-up on arm and reflected face, digital art',
-    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#aug_rejection_onset.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#aug_rejection_onset.webp'
   },
   {
     id: 'void_pursuit',
@@ -139,7 +139,7 @@ export const TENSIONS = [
     statAffinity: { constitution: 1.2, dexterity: 1.1 },
     criminalFlag: false,
     iconPrompt: 'sci-fi rpg icon, freighter cockpit, pilot in flight suit at controls, scanner display showing closing contact icon, calculating tense expression, red emergency cockpit lighting, hands on controls, medium close-up, digital art',
-    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#void_pursuit.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#void_pursuit.webp'
   },
 
   // ── PERSONAL ──────────────────────────────────────────────────────────────
@@ -150,7 +150,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 1.2, intelligence: 1.1 },
     criminalFlag: false,
     iconPrompt: 'sci-fi rpg icon, private workspace, two documents displayed side by side on desk screen with discrepancies highlighted, figure in corp attire leaning over desk staring between them, disturbed expression, desk lamp lighting, medium close-up, digital art',
-    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#identity_fracture.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#identity_fracture.webp'
   },
   {
     id: 'someone_in_danger',
@@ -159,7 +159,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 1.1, charisma: 1.1 },
     criminalFlag: false,
     iconPrompt: 'sci-fi rpg icon, a man in a crowd, seen through a sniper scope, digital art',
-    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#someone_in_danger.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#someone_in_danger.webp'
   },
   {
     id: 'ai_awakening',
@@ -168,7 +168,7 @@ export const TENSIONS = [
     statAffinity: { intelligence: 1.2, wisdom: 1.2 },
     criminalFlag: false,
     iconPrompt: 'sci-fi rpg icon, female android surprised expression, open mouth, digital concept art',
-    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#ai_awakening.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#ai_awakening.webp'
   },
   {
     id: 'past_resurfaced',
@@ -177,7 +177,7 @@ export const TENSIONS = [
     statAffinity: { charisma: 1.1, wisdom: 1.1 },
     criminalFlag: false,
     iconPrompt: 'sci-fi rpg icon, busy station concourse, figure in jacket standing still in moving crowd, looking across space toward someone in distance, controlled guarded expression, crowd moving around them, medium wide shot, digital art',
-    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#past_resurfaced.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#past_resurfaced.webp'
   },
 
   // ── QUIET ─────────────────────────────────────────────────────────────────
@@ -188,6 +188,6 @@ export const TENSIONS = [
     statAffinity: { charisma: 1.1, wisdom: 1.1 },
     criminalFlag: false,
     iconPrompt: 'sci-fi rpg icon, station corridor junction, figure in neutral clothing at center, two uniformed faction representatives approaching from opposite directions with different emblems visible, torn conflicted expression, crossroads overhead lighting, medium wide shot, digital art',
-    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#two_factions.png'
+    iconPath: 'generator/genres/sci-fi/icons/TENSIONS#two_factions.webp'
   },
 ];

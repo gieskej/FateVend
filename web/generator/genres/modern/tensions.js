@@ -17,7 +17,7 @@ export const TENSIONS = [
     economicHint: -1,
     criminalFlag: false,
     iconPrompt: 'Modern RPG icon. An eviction notice taped to an apartment door, a person staring at it in the hallway with 30 days to solve a problem that has no easy solution.',
-    iconPath: 'generator/genres/modern/icons/TENSION#facing_eviction.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#facing_eviction.webp'
   },
   {
     id: 'debt_collectors',
@@ -26,7 +26,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 0.8, constitution: 1.1 },
     criminalFlag: false,
     iconPrompt: 'Modern RPG icon. A person checking missed calls on their phone — three from the same unfamiliar number — the specific low-grade dread of people who are circling and will eventually stop waiting.',
-    iconPath: 'generator/genres/modern/icons/TENSION#debt_collectors.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#debt_collectors.webp'
   },
   {
     id: 'bankruptcy_looming',
@@ -36,7 +36,7 @@ export const TENSIONS = [
     economicHint: -2,
     criminalFlag: false,
     iconPrompt: 'Modern RPG icon. A person at a kitchen table surrounded by paper statements and an open laptop showing red numbers — the math not working no matter how many times they run it.',
-    iconPath: 'generator/genres/modern/icons/TENSION#bankruptcy_looming.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#bankruptcy_looming.webp'
   },
   {
     id: 'gambling_debt',
@@ -45,7 +45,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 0.7, charisma: 1.1 },
     criminalFlag: true,
     iconPrompt: 'Modern RPG icon. A person in a diner booth receiving a visit from two men who didn\'t sit down, the conversation quiet and very clear — the kind of debt that doesn\'t come with a grace period.',
-    iconPath: 'generator/genres/modern/icons/TENSION#gambling_debt.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#gambling_debt.webp'
   },
   {
     id: 'supporting_family',
@@ -54,7 +54,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 1.2, constitution: 1.1 },
     criminalFlag: false,
     iconPrompt: 'Modern RPG icon. A person transferring money on their phone at the end of the month, the balance dropping below comfortable — supporting someone else\'s life before they can think about their own.',
-    iconPath: 'generator/genres/modern/icons/TENSION#supporting_family.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#supporting_family.webp'
   },
   {
     id: 'medical_bills',
@@ -63,7 +63,7 @@ export const TENSIONS = [
     statAffinity: { constitution: 0.9, wisdom: 1.1 },
     criminalFlag: false,
     iconPrompt: 'Modern RPG icon. A person at a kitchen table with a stack of medical billing envelopes, opening the next one with the resignation of someone who already knows it\'s more than they have.',
-    iconPath: 'generator/genres/modern/icons/TENSION#medical_bills.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#medical_bills.webp'
   },
 
   // ── CAREER & IDENTITY ─────────────────────────────────────────────────────
@@ -74,7 +74,7 @@ export const TENSIONS = [
     statAffinity: { charisma: 0.9, wisdom: 0.9 },
     criminalFlag: false,
     iconPrompt: 'Modern RPG icon. A person walking out of an office building mid-morning with a small box of belongings, the workday carrying on behind the glass above them without missing a beat.',
-    iconPath: 'generator/genres/modern/icons/TENSION#just_got_fired.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#just_got_fired.webp'
   },
   {
     id: 'business_collapsing',
@@ -84,7 +84,7 @@ export const TENSIONS = [
     economicHint: -1,
     criminalFlag: false,
     iconPrompt: 'Modern RPG icon. A person in an empty storefront or office, looking at their phone and a spreadsheet that say the same thing — the end coming faster than expected and already visible.',
-    iconPath: 'generator/genres/modern/icons/TENSION#business_collapsing.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#business_collapsing.webp'
   },
   {
     id: 'passed_over_promotion',
@@ -93,7 +93,7 @@ export const TENSIONS = [
     statAffinity: { charisma: 0.9, wisdom: 1.1 },
     criminalFlag: false,
     iconPrompt: 'Modern RPG icon. A person reading an all-hands email announcing someone else\'s promotion, the expression of someone doing the math on what that means for the next five years of their career.',
-    iconPath: 'generator/genres/modern/icons/TENSION#passed_over_promotion.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#passed_over_promotion.webp'
   },
   {
     id: 'midlife_crisis',
@@ -102,7 +102,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 1.2, charisma: 0.9 },
     criminalFlag: false,
     iconPrompt: 'Modern RPG icon. A person standing in the middle of a life they built — good job, decent apartment, all the right things — unable to explain why none of it is working the way it was supposed to.',
-    iconPath: 'generator/genres/modern/icons/TENSION#midlife_crisis.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#midlife_crisis.webp'
   },
   {
     id: 'whistleblower_dilemma',
@@ -111,7 +111,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 1.2, intelligence: 1.2 },
     criminalFlag: false,
     iconPrompt: 'Modern RPG icon. A person at a work computer late at night, an incriminating file open on screen — weighing the cost of acting against the cost of staying silent, neither option clean.',
-    iconPath: 'generator/genres/modern/icons/TENSION#whistleblower_dilemma.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#whistleblower_dilemma.webp'
   },
   {
     id: 'career_scandal',
@@ -120,7 +120,7 @@ export const TENSIONS = [
     statAffinity: { charisma: 1.1, intelligence: 1.1 },
     criminalFlag: false,
     iconPrompt: 'Modern RPG icon. A person scrolling through news alerts about themselves, the story already out and spreading, their professional identity on fire in public and no clear way to put it out.',
-    iconPath: 'generator/genres/modern/icons/TENSION#career_scandal.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#career_scandal.webp'
   },
 
   // ── RELATIONSHIPS ─────────────────────────────────────────────────────────
@@ -131,7 +131,7 @@ export const TENSIONS = [
     statAffinity: { charisma: 0.9, wisdom: 0.9 },
     criminalFlag: false,
     iconPrompt: 'Modern RPG icon. A person in their lawyer\'s waiting room, the formal machinery of a contested divorce underway — the relationship now being translated into documents, deadlines, and asset columns.',
-    iconPath: 'generator/genres/modern/icons/TENSION#messy_divorce.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#messy_divorce.webp'
   },
   {
     id: 'custody_battle',
@@ -140,7 +140,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 1.1, constitution: 1.1 },
     criminalFlag: false,
     iconPrompt: 'Modern RPG icon. A parent sitting in a family court waiting area, every piece of paperwork a function of what\'s at stake — the stakes being a child who doesn\'t understand any of it yet.',
-    iconPath: 'generator/genres/modern/icons/TENSION#custody_battle.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#custody_battle.webp'
   },
   {
     id: 'affair_discovered',
@@ -149,7 +149,7 @@ export const TENSIONS = [
     statAffinity: { charisma: 1.1, wisdom: 0.9 },
     criminalFlag: false,
     iconPrompt: 'Modern RPG icon. A person on one side of a kitchen table, the discovery just made — the specific silence of when the story being told about a relationship stops being true.',
-    iconPath: 'generator/genres/modern/icons/TENSION#affair_discovered.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#affair_discovered.webp'
   },
   {
     id: 'toxic_relationship',
@@ -158,7 +158,7 @@ export const TENSIONS = [
     statAffinity: { charisma: 0.9, wisdom: 0.8 },
     criminalFlag: false,
     iconPrompt: 'Modern RPG icon. A person sitting in their car in a driveway not going inside — the stillness of someone who knows exactly what they should do and exactly why they cannot do it yet.',
-    iconPath: 'generator/genres/modern/icons/TENSION#toxic_relationship.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#toxic_relationship.webp'
   },
   {
     id: 'estranged_child',
@@ -167,7 +167,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 1.1, charisma: 0.9 },
     criminalFlag: false,
     iconPrompt: 'Modern RPG icon. A parent with their phone, their adult child\'s name in the contacts, the last message months old — the specific grief of a silence you don\'t know how to break.',
-    iconPath: 'generator/genres/modern/icons/TENSION#estranged_child.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#estranged_child.webp'
   },
   {
     id: 'old_flame_returned',
@@ -176,7 +176,7 @@ export const TENSIONS = [
     statAffinity: { charisma: 1.1, wisdom: 0.9 },
     criminalFlag: false,
     iconPrompt: 'Modern RPG icon. A person who just received a text or saw someone across a coffee shop — the specific complicated feeling of a past person walking back into a present that had finally settled.',
-    iconPath: 'generator/genres/modern/icons/TENSION#old_flame_returned.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#old_flame_returned.webp'
   },
   {
     id: 'secret_relationship',
@@ -185,7 +185,7 @@ export const TENSIONS = [
     statAffinity: { charisma: 1.1, wisdom: 0.9 },
     criminalFlag: false,
     iconPrompt: 'Modern RPG icon. Two people at the same office party or social event maintaining careful ordinary distance — every glance a performance of not looking, every normal exchange the work of concealment.',
-    iconPath: 'generator/genres/modern/icons/TENSION#secret_relationship.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#secret_relationship.webp'
   },
 
   // ── CRIMINAL / DANGEROUS ──────────────────────────────────────────────────
@@ -196,7 +196,7 @@ export const TENSIONS = [
     statAffinity: { constitution: 1.2, wisdom: 0.9 },
     criminalFlag: true,
     iconPrompt: 'Modern RPG icon. A person in their apartment with the blinds closed, thinking about what comes next now that the wrong people know their name and what they saw.',
-    iconPath: 'generator/genres/modern/icons/TENSION#witness_to_murder.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#witness_to_murder.webp'
   },
   {
     id: 'targeted_by_crew',
@@ -205,7 +205,7 @@ export const TENSIONS = [
     statAffinity: { strength: 1.2, constitution: 1.1 },
     criminalFlag: true,
     iconPrompt: 'Modern RPG icon. A person checking over their shoulder on a city street, a car they\'ve seen before idling near the corner — the recognition that the attention is no longer theoretical.',
-    iconPath: 'generator/genres/modern/icons/TENSION#targeted_by_crew.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#targeted_by_crew.webp'
   },
   {
     id: 'under_investigation',
@@ -214,7 +214,7 @@ export const TENSIONS = [
     statAffinity: { intelligence: 1.1, wisdom: 0.9 },
     criminalFlag: true,
     iconPrompt: 'Modern RPG icon. A person being approached by a federal agent at their workplace or door — the formal opening of a process that has its own logic and doesn\'t particularly care about their version of events.',
-    iconPath: 'generator/genres/modern/icons/TENSION#under_investigation.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#under_investigation.webp'
   },
   {
     id: 'one_last_job',
@@ -223,7 +223,7 @@ export const TENSIONS = [
     statAffinity: { constitution: 1.1, intelligence: 1.1 },
     criminalFlag: true,
     iconPrompt: 'Modern RPG icon. A person at a meeting point or wheel of a car at night, the job already sideways — the realization arriving that "one last job" was always going to mean exactly this.',
-    iconPath: 'generator/genres/modern/icons/TENSION#one_last_job.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#one_last_job.webp'
   },
   {
     id: 'blackmailed',
@@ -232,7 +232,7 @@ export const TENSIONS = [
     statAffinity: { charisma: 0.9, wisdom: 0.9 },
     criminalFlag: true,
     iconPrompt: 'Modern RPG icon. A person receiving an anonymous message containing something they cannot let anyone see — the cold certainty that the person on the other end already knows they will pay.',
-    iconPath: 'generator/genres/modern/icons/TENSION#blackmailed.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#blackmailed.webp'
   },
   {
     id: 'working_for_wrong_people',
@@ -241,7 +241,7 @@ export const TENSIONS = [
     statAffinity: { strength: 1.1, constitution: 1.2 },
     criminalFlag: true,
     iconPrompt: 'Modern RPG icon. A person at a meeting they cannot leave with people they cannot cross, running the calculation of how deep in they are behind a composed and careful expression.',
-    iconPath: 'generator/genres/modern/icons/TENSION#working_for_wrong_people.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#working_for_wrong_people.webp'
   },
   {
     id: 'informant_dilemma',
@@ -250,7 +250,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 1.1, charisma: 1.1 },
     criminalFlag: true,
     iconPrompt: 'Modern RPG icon. A person across from a detective in a gray interview room, given a choice they cannot make — both sides of it have consequences they would give anything to avoid.',
-    iconPath: 'generator/genres/modern/icons/TENSION#informant_dilemma.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#informant_dilemma.webp'
   },
 
   // ── HEALTH & MENTAL HEALTH ────────────────────────────────────────────────
@@ -261,7 +261,7 @@ export const TENSIONS = [
     statAffinity: { constitution: 0.8, wisdom: 1.2 },
     criminalFlag: false,
     iconPrompt: 'Modern RPG icon. A person sitting in a hospital corridor after receiving news, the world continuing around them at full speed while everything they understood about their future restructures.',
-    iconPath: 'generator/genres/modern/icons/TENSION#serious_diagnosis.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#serious_diagnosis.webp'
   },
   {
     id: 'relapse',
@@ -270,7 +270,7 @@ export const TENSIONS = [
     statAffinity: { constitution: 0.8, wisdom: 0.9 },
     criminalFlag: false,
     iconPrompt: 'Modern RPG icon. A person alone in their apartment, the evidence of a relapse out of sight but present, calculating how long they can keep this quiet and what it will cost when they can\'t.',
-    iconPath: 'generator/genres/modern/icons/TENSION#relapse.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#relapse.webp'
   },
   {
     id: 'mental_health_spiral',
@@ -279,7 +279,7 @@ export const TENSIONS = [
     statAffinity: { constitution: 0.8, intelligence: 1.1 },
     criminalFlag: false,
     iconPrompt: 'Modern RPG icon. A person at work or in a social situation, managing an invisible interior unraveling — every functional response a performance, the effort of appearing fine accumulating.',
-    iconPath: 'generator/genres/modern/icons/TENSION#mental_health_spiral.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#mental_health_spiral.webp'
   },
   {
     id: 'caring_for_sick_family',
@@ -288,7 +288,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 1.2, constitution: 0.9 },
     criminalFlag: false,
     iconPrompt: 'Modern RPG icon. A person helping a terminally ill family member through a difficult ordinary day — medical equipment in the background, the specific love and accumulated weight of being the one who always shows up.',
-    iconPath: 'generator/genres/modern/icons/TENSION#caring_for_sick_family.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#caring_for_sick_family.webp'
   },
 
   // ── QUIET CRISES ──────────────────────────────────────────────────────────
@@ -299,7 +299,7 @@ export const TENSIONS = [
     statAffinity: { charisma: 1.1, constitution: 1.1 },
     criminalFlag: false,
     iconPrompt: 'Modern RPG icon. A person in a mostly empty apartment in a new city, boxes still on the floor — the specific combination of freedom and loneliness of having started over from zero.',
-    iconPath: 'generator/genres/modern/icons/TENSION#just_moved_alone.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#just_moved_alone.webp'
   },
   {
     id: 'haunted_by_secret',
@@ -308,7 +308,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 0.9, intelligence: 1.1 },
     criminalFlag: false,
     iconPrompt: 'Modern RPG icon. A person at a dinner or party, the thing they haven\'t told anyone present in every ordinary exchange — the secret growing heavier because the people around them don\'t know to be careful with it.',
-    iconPath: 'generator/genres/modern/icons/TENSION#haunted_by_secret.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#haunted_by_secret.webp'
   },
   {
     id: 'inheritance_dispute',
@@ -317,7 +317,7 @@ export const TENSIONS = [
     statAffinity: { charisma: 1.1, wisdom: 0.9 },
     criminalFlag: false,
     iconPrompt: 'Modern RPG icon. A family gathering where something under the surface is wrong — too-careful conversation, meaningful looks, the money question present in every exchange and raised in none of them.',
-    iconPath: 'generator/genres/modern/icons/TENSION#inheritance_dispute.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#inheritance_dispute.webp'
   },
   {
     id: 'lost_in_grief',
@@ -326,7 +326,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 1.2, constitution: 0.9 },
     criminalFlag: false,
     iconPrompt: 'Modern RPG icon. A person appearing fine to everyone around them, processing a loss that is more recent and more present than anyone in the room knows — the performance of being okay, sustained.',
-    iconPath: 'generator/genres/modern/icons/TENSION#lost_in_grief.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#lost_in_grief.webp'
   },
   {
     id: 'searching_for_someone',
@@ -335,7 +335,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 1.1, intelligence: 1.1 },
     criminalFlag: false,
     iconPrompt: 'Modern RPG icon. A person with an old photo on their phone and a list of leads, quietly looking for someone who fell out of their life years ago — the search ongoing behind an ordinary-looking exterior.',
-    iconPath: 'generator/genres/modern/icons/TENSION#searching_for_someone.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#searching_for_someone.webp'
   },
   {
     id: 'reinvention',
@@ -344,7 +344,7 @@ export const TENSIONS = [
     statAffinity: { charisma: 1.2, wisdom: 1.1 },
     criminalFlag: false,
     iconPrompt: 'Modern RPG icon. A person walking away from the evidence of who they used to be — burning the last bridge deliberately, the future entirely unmapped and that being exactly the point.',
-    iconPath: 'generator/genres/modern/icons/TENSION#reinvention.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#reinvention.webp'
   },
   {
     id: 'opportunity_of_a_lifetime',
@@ -353,6 +353,6 @@ export const TENSIONS = [
     statAffinity: { intelligence: 1.2, charisma: 1.1 },
     criminalFlag: false,
     iconPrompt: 'Modern RPG icon. A person holding an offer — a letter, a contract, a call — the thing they always wanted on one side and the thing it requires giving up on the other, no way to have both.',
-    iconPath: 'generator/genres/modern/icons/TENSION#opportunity_of_a_lifetime.png'
+    iconPath: 'generator/genres/modern/icons/TENSION#opportunity_of_a_lifetime.webp'
   },
 ];

@@ -9,7 +9,7 @@ export const TENSIONS = [
     statAffinity: { intelligence: 1.1, wisdom: 0.9 },
     criminalFlag: false,
     iconPrompt: 'japanese student 1987 study desk night cram books exhausted exam pressure Osaka apartment manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#university_exam_looming.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#university_exam_looming.webp',
   },
   {
     id: 'club_elimination',
@@ -18,7 +18,7 @@ export const TENSIONS = [
     statAffinity: { strength: 1.2, constitution: 1.1 },
     criminalFlag: false,
     iconPrompt: 'japanese sports club students 1987 tense huddle coach serious elimination on the line manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#club_elimination.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#club_elimination.webp',
   },
   {
     id: 'love_triangle',
@@ -27,7 +27,7 @@ export const TENSIONS = [
     statAffinity: { charisma: 1.2, wisdom: 0.9 },
     criminalFlag: false,
     iconPrompt: 'japanese students 1987 love triangle three students awkward classroom hallway manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#love_triangle.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#love_triangle.webp',
   },
   {
     id: 'yankii_territory',
@@ -36,7 +36,7 @@ export const TENSIONS = [
     statAffinity: { strength: 1.3, constitution: 1.2 },
     criminalFlag: true,
     iconPrompt: 'japanese yankii delinquents 1987 rival school confrontation school gate tense manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#yankii_territory.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#yankii_territory.webp',
   },
   {
     id: 'teacher_suspicious',
@@ -45,7 +45,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 0.9, intelligence: 1.1 },
     criminalFlag: false,
     iconPrompt: 'japanese homeroom teacher 1987 watching student from classroom doorway suspicious expression manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#teacher_suspicious.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#teacher_suspicious.webp',
   },
   {
     id: 'parent_wants_quit',
@@ -54,7 +54,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 0.9, constitution: 1.1 },
     criminalFlag: false,
     iconPrompt: 'japanese student 1987 dinner table argument parents pressure quit club exam focus manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#parent_wants_quit.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#parent_wants_quit.webp',
   },
   {
     id: 'rumor_spreading',
@@ -63,7 +63,7 @@ export const TENSIONS = [
     statAffinity: { charisma: 0.9, wisdom: 1.1 },
     criminalFlag: false,
     iconPrompt: 'japanese students 1987 hallway whispering pointing gossip rumor manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#rumor_spreading.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#rumor_spreading.webp',
   },
   {
     id: 'debt_to_wrong_people',
@@ -72,7 +72,7 @@ export const TENSIONS = [
     statAffinity: { constitution: 1.2, wisdom: 0.9 },
     criminalFlag: true,
     iconPrompt: 'japanese student 1987 Osaka namba night confronted by adults demanding money worried manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#debt_to_wrong_people.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#debt_to_wrong_people.webp',
   },
   {
     id: 'graduation_approaching',
@@ -81,7 +81,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 1.2, charisma: 1.1 },
     criminalFlag: false,
     iconPrompt: 'japanese third year students 1987 school corridor time passing graduation approaching contemplative manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#graduation_approaching.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#graduation_approaching.webp',
   },
   {
     id: 'arubaito_discovered',
@@ -90,7 +90,7 @@ export const TENSIONS = [
     statAffinity: { wisdom: 0.9, charisma: 1.1 },
     criminalFlag: false,
     iconPrompt: 'japanese student 1987 in konbini uniform panicking seeing classmate or teacher enter the store manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#arubaito_discovered.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#arubaito_discovered.webp',
   },
   {
     id: 'club_captain_rivalry',
@@ -99,7 +99,7 @@ export const TENSIONS = [
     statAffinity: { strength: 1.2, charisma: 1.1 },
     criminalFlag: false,
     iconPrompt: 'japanese students 1987 sports club friction captain and younger member glaring practice manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#club_captain_rivalry.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#club_captain_rivalry.webp',
   },
   {
     id: 'secret_keeping_cost',
@@ -108,6 +108,6 @@ export const TENSIONS = [
     statAffinity: { wisdom: 1.1, charisma: 0.9 },
     criminalFlag: false,
     iconPrompt: 'japanese student 1987 alone rooftop holding a burden invisible weight contemplating manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#secret_keeping_cost.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#secret_keeping_cost.webp',
   },
 ];

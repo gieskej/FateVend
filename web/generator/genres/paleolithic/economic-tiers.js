@@ -23,7 +23,7 @@ export const ECONOMIC_TIERS = {
       'no one to help carry their burdens',
     ],
     iconPrompt: 'paleolithic rpg icon, solitary outcast figure huddled under a rock overhang in rain, small dying fire, alone, miserable, dark and cold, digital art',
-    iconPath: 'generator/genres/paleolithic/icons/ECONOMIC_TIERS#tier1-outcast.png',
+    iconPath: 'generator/genres/paleolithic/icons/ECONOMIC_TIERS#tier1-outcast.webp',
   },
   2: {
     label: 'Common Member',
@@ -45,7 +45,7 @@ export const ECONOMIC_TIERS = {
       'first to wade the cold crossings',
     ],
     iconPrompt: 'paleolithic rpg icon, communal camp fire at night, young tribe member sitting at fire edge carrying bundles and skins, watchful humble expression, warm light, medium shot, digital art',
-    iconPath: 'generator/genres/paleolithic/icons/ECONOMIC_TIERS#tier2-common-member.png',
+    iconPath: 'generator/genres/paleolithic/icons/ECONOMIC_TIERS#tier2-common-member.webp',
   },
   3: {
     label: 'Valued Member',
@@ -67,7 +67,7 @@ export const ECONOMIC_TIERS = {
       'first to ford the river — by choice, not assignment',
     ],
     iconPrompt: 'paleolithic rpg icon, camp scene, skilled hunter carrying fresh kill over shoulders, other tribe members greeting with respect, firelight, confident posture, medium shot, digital art',
-    iconPath: 'generator/genres/paleolithic/icons/ECONOMIC_TIERS#tier3-valued-member.png',
+    iconPath: 'generator/genres/paleolithic/icons/ECONOMIC_TIERS#tier3-valued-member.webp',
   },
   4: {
     label: 'Respected Elder',
@@ -89,7 +89,7 @@ export const ECONOMIC_TIERS = {
       'others clear the path ahead',
     ],
     iconPrompt: 'paleolithic rpg icon, elder seated at center of fire ring, tribe members seated around listening attentively, elder gesturing while storytelling, firelight on weathered face, wide shot, digital art',
-    iconPath: 'generator/genres/paleolithic/icons/ECONOMIC_TIERS#tier4-respected-elder.png',
+    iconPath: 'generator/genres/paleolithic/icons/ECONOMIC_TIERS#tier4-respected-elder.webp',
   },
   5: {
     label: 'Shaman / Chief',
@@ -111,6 +111,6 @@ export const ECONOMIC_TIERS = {
       'the first canoe, the finest raft, the most reliable guide',
     ],
     iconPrompt: 'paleolithic rpg icon, shaman in full ceremonial regalia with antler headdress, ochre face paint, standing over a fire with arms raised, tribe watching from darkness behind, dramatic backlit, medium shot, digital art',
-    iconPath: 'generator/genres/paleolithic/icons/ECONOMIC_TIERS#tier5-shaman-chief.png',
+    iconPath: 'generator/genres/paleolithic/icons/ECONOMIC_TIERS#tier5-shaman-chief.webp',
   },
 };

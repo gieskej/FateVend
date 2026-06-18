@@ -6,7 +6,7 @@ export const CITY_SETTINGS = [
     toneTag: 'neutral',
     statAffinity: { charisma: 1.2, intelligence: 1.1 },
     iconPrompt: 'Fantasy RPG icon. An enormous walled city sprawling to the horizon, towers and spires of many eras crowded together, faction banners hanging from every wall, crowds thronging the gates.',
-    iconPath: 'generator/genres/fantasy/icons/CITY_SETTING#great_city.png'
+    iconPath: 'generator/genres/fantasy/icons/CITY_SETTING#great_city.webp'
   },
   {
     id: 'frontier_town',
@@ -15,7 +15,7 @@ export const CITY_SETTINGS = [
     toneTag: 'gritty',
     statAffinity: { constitution: 1.2, strength: 1.1 },
     iconPrompt: 'Fantasy RPG icon. A rough-hewn frontier town at the edge of a dark wilderness, wooden palisade walls, muddy unpaved streets, hard-looking locals watching a stranger arrive with flat suspicious eyes.',
-    iconPath: 'generator/genres/fantasy/icons/CITY_SETTING#frontier_town.png'
+    iconPath: 'generator/genres/fantasy/icons/CITY_SETTING#frontier_town.webp'
   },
   {
     id: 'port_city',
@@ -24,7 +24,7 @@ export const CITY_SETTINGS = [
     toneTag: 'gritty',
     statAffinity: { charisma: 1.1, dexterity: 1.1 },
     iconPrompt: 'Fantasy RPG icon. A bustling fantasy port city at dusk, ships of many nations crowding the harbor, lamplit dock stalls loud with trade, sailors and merchants from distant lands moving through the fog.',
-    iconPath: 'generator/genres/fantasy/icons/CITY_SETTING#port_city.png'
+    iconPath: 'generator/genres/fantasy/icons/CITY_SETTING#port_city.webp'
   },
   {
     id: 'kingdom_capital',
@@ -33,7 +33,7 @@ export const CITY_SETTINGS = [
     toneTag: 'dramatic',
     statAffinity: { charisma: 1.3, intelligence: 1.2 },
     iconPrompt: 'Fantasy RPG icon. A gleaming royal capital atop a hill, a vast palace dominating the skyline, liveried guards at every gate, the grandeur of carved stone and gold leaf masking ruthless politics within.',
-    iconPath: 'generator/genres/fantasy/icons/CITY_SETTING#kingdom_capital.png'
+    iconPath: 'generator/genres/fantasy/icons/CITY_SETTING#kingdom_capital.webp'
   },
   {
     id: 'small_town',
@@ -42,7 +42,7 @@ export const CITY_SETTINGS = [
     toneTag: 'cozy',
     statAffinity: { wisdom: 1.2, charisma: 0.9 },
     iconPrompt: 'Fantasy RPG icon. A cozy market town square on a busy morning, locals haggling over stalls of produce and wares, a warm inn at the corner, everyone watching everyone with cheerful nosiness.',
-    iconPath: 'generator/genres/fantasy/icons/CITY_SETTING#small_town.png'
+    iconPath: 'generator/genres/fantasy/icons/CITY_SETTING#small_town.webp'
   },
   {
     id: 'mage_city',
@@ -51,7 +51,7 @@ export const CITY_SETTINGS = [
     toneTag: 'neutral',
     statAffinity: { intelligence: 1.4, wisdom: 1.1 },
     iconPrompt: 'Fantasy RPG icon. A city of tall towers crackling with arcane energy, robed scholars debating in the streets below, magical experiments visible through high windows, one tower gently on fire in the background.',
-    iconPath: 'generator/genres/fantasy/icons/CITY_SETTING#mage_city.png'
+    iconPath: 'generator/genres/fantasy/icons/CITY_SETTING#mage_city.webp'
   },
   {
     id: 'fortress_town',
@@ -60,7 +60,7 @@ export const CITY_SETTINGS = [
     toneTag: 'gritty',
     statAffinity: { strength: 1.2, constitution: 1.2 },
     iconPrompt: 'Fantasy RPG icon. A grim fortress town at the edge of hostile territory, heavy stone walls and war engines on the battlements, soldiers drilling in the courtyard below, tension in every stone.',
-    iconPath: 'generator/genres/fantasy/icons/CITY_SETTING#fortress_town.png'
+    iconPath: 'generator/genres/fantasy/icons/CITY_SETTING#fortress_town.webp'
   },
   {
     id: 'ancient_city',
@@ -69,7 +69,7 @@ export const CITY_SETTINGS = [
     toneTag: 'dramatic',
     statAffinity: { wisdom: 1.2, intelligence: 1.1 },
     iconPrompt: 'Fantasy RPG icon. A city built over the ruins of older civilizations, ancient columns and crumbling arches mixed with newer buildings, a busy trade road running through its heart, the weight of centuries in every stone.',
-    iconPath: 'generator/genres/fantasy/icons/CITY_SETTING#ancient_city.png'
+    iconPath: 'generator/genres/fantasy/icons/CITY_SETTING#ancient_city.webp'
   },
   {
     id: 'village',
@@ -78,7 +78,7 @@ export const CITY_SETTINGS = [
     toneTag: 'cozy',
     statAffinity: { wisdom: 1.2, constitution: 1.1 },
     iconPrompt: 'Fantasy RPG icon. A small village of thatched cottages in a forest clearing, villagers pausing their work to stare at an arriving stranger, an uncanny stillness beneath the ordinary surface.',
-    iconPath: 'generator/genres/fantasy/icons/CITY_SETTING#village.png'
+    iconPath: 'generator/genres/fantasy/icons/CITY_SETTING#village.webp'
   },
   {
     id: 'thieves_city',
@@ -87,6 +87,6 @@ export const CITY_SETTINGS = [
     toneTag: 'gritty',
     statAffinity: { dexterity: 1.2, charisma: 1.2 },
     iconPrompt: 'Fantasy RPG icon. A prosperous city at night, watchmen conspicuously looking away as hooded guild figures pass, coin changing hands in shadowed doorways, wealth and crime layered beneath a veneer of order.',
-    iconPath: 'generator/genres/fantasy/icons/CITY_SETTING#thieves_city.png'
+    iconPath: 'generator/genres/fantasy/icons/CITY_SETTING#thieves_city.webp'
   },
 ];

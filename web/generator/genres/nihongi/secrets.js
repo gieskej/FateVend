@@ -8,7 +8,7 @@ export const SECRETS = [
     severity: 'high',
     criminalFlag: false,
     iconPrompt: 'ancient japanese figure cutting palm offering blood to kami spirit in forest at night, divine eye watching through human face, sacred pact supernatural secret, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SECRETS#blood_pact_kami.png',
+    iconPath: 'generator/genres/nihongi/icons/SECRETS#blood_pact_kami.webp',
   },
   {
     id: 'sees_the_dead',
@@ -16,7 +16,7 @@ export const SECRETS = [
     severity: 'medium',
     criminalFlag: false,
     iconPrompt: 'ancient japanese figure seeing transparent ghost shade superimposed on living person, horrified face, dead pale figures visible only to them, crowded court setting, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SECRETS#sees_the_dead.png',
+    iconPath: 'generator/genres/nihongi/icons/SECRETS#sees_the_dead.webp',
   },
   {
     id: 'kitsune_blood',
@@ -24,7 +24,7 @@ export const SECRETS = [
     severity: 'explosive',
     criminalFlag: false,
     iconPrompt: 'ancient japanese figure with momentary fox ears and tail visible startled expression hiding supernatural ancestry, shoji screen casting shadow revealing inhuman silhouette, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SECRETS#kitsune_blood.png',
+    iconPath: 'generator/genres/nihongi/icons/SECRETS#kitsune_blood.webp',
   },
   {
     id: 'returned_from_yomi',
@@ -32,7 +32,7 @@ export const SECRETS = [
     severity: 'explosive',
     criminalFlag: false,
     iconPrompt: 'ancient japanese figure emerging from dark cave underworld yomi pale changed haunted, death mark visible on them alone, dead reaching from darkness behind still trying to grasp, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SECRETS#returned_from_yomi.png',
+    iconPath: 'generator/genres/nihongi/icons/SECRETS#returned_from_yomi.webp',
   },
   {
     id: 'killed_sacred_animal',
@@ -40,7 +40,7 @@ export const SECRETS = [
     severity: 'high',
     criminalFlag: false,
     iconPrompt: 'ancient japanese figure haunted by ghost of sacred white deer killed kami spirit watching with cold fury, debt of blood sacred animal, forest shrine supernatural guilt, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SECRETS#killed_sacred_animal.png',
+    iconPath: 'generator/genres/nihongi/icons/SECRETS#killed_sacred_animal.webp',
   },
   {
     id: 'vessel_suppressed_kami',
@@ -48,7 +48,7 @@ export const SECRETS = [
     severity: 'explosive',
     criminalFlag: false,
     iconPrompt: 'ancient japanese figure containing kami spirit of destroyed shrine, divine energy visible beneath skin, destroyed shrine ruins in background, pursuer seeking to eliminate the last vessel of suppressed kami, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SECRETS#vessel_suppressed_kami.png',
+    iconPath: 'generator/genres/nihongi/icons/SECRETS#vessel_suppressed_kami.webp',
   },
   {
     id: 'speaks_wrong_dead',
@@ -56,7 +56,7 @@ export const SECRETS = [
     severity: 'high',
     criminalFlag: false,
     iconPrompt: 'ancient japanese figure speaking in darkness with malevolent dead shade not ancestor spirit, wrong light in ghost eyes, information exchanged dangerous price, fear and fascination, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SECRETS#speaks_wrong_dead.png',
+    iconPath: 'generator/genres/nihongi/icons/SECRETS#speaks_wrong_dead.webp',
   },
   {
     id: 'forbidden_rite',
@@ -64,7 +64,7 @@ export const SECRETS = [
     severity: 'high',
     criminalFlag: true,
     iconPrompt: 'ancient japanese forbidden shamanic rite night ritual illegal participation kami summoned still present lingering darkness not fully dismissed, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SECRETS#forbidden_rite.png',
+    iconPath: 'generator/genres/nihongi/icons/SECRETS#forbidden_rite.webp',
   },
   {
     id: 'kami_promise',
@@ -72,7 +72,7 @@ export const SECRETS = [
     severity: 'medium',
     criminalFlag: false,
     iconPrompt: 'ancient japanese kami promise oracle conflicting obligation clan duty divine vow expanding impossible position supernatural commitment, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SECRETS#kami_promise.png',
+    iconPath: 'generator/genres/nihongi/icons/SECRETS#kami_promise.webp',
   },
   {
     id: 'false_genealogy_made',
@@ -80,7 +80,7 @@ export const SECRETS = [
     severity: 'explosive',
     criminalFlag: true,
     iconPrompt: 'ancient japanese forged genealogy document clan record falsified accepted court true supernatural ancestry hidden beneath lies, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SECRETS#false_genealogy_made.png',
+    iconPath: 'generator/genres/nihongi/icons/SECRETS#false_genealogy_made.webp',
   },
   {
     id: 'hidden_buddhist',
@@ -88,7 +88,7 @@ export const SECRETS = [
     severity: 'medium',
     criminalFlag: false,
     iconPrompt: 'ancient japanese secret buddhist practice hidden sutra prayer night candlelight text describing supernatural entity that exists forbidden knowledge nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SECRETS#hidden_buddhist.png',
+    iconPath: 'generator/genres/nihongi/icons/SECRETS#hidden_buddhist.webp',
   },
   {
     id: 'forbidden_child',
@@ -96,6 +96,6 @@ export const SECRETS = [
     severity: 'explosive',
     criminalFlag: false,
     iconPrompt: 'ancient japanese hidden child with wrong eyes too still yokai supernatural parentage other parent not human secret identity danger, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SECRETS#forbidden_child.png',
+    iconPath: 'generator/genres/nihongi/icons/SECRETS#forbidden_child.webp',
   },
 ];

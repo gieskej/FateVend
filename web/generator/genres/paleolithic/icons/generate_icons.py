@@ -9,7 +9,7 @@ Examples:
 $ python ./generate_icons.py
 
 # Replace icons matching the specified image's filesize (good for replacing default icons)
-$ python ./generate_icons.py --missing ../../../common/icons/none.png
+$ python ./generate_icons.py --missing ../../../common/icons/none.webp
 """
 
 import sys

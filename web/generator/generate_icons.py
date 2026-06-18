@@ -8,7 +8,7 @@ Examples:
   $ python ./generate_icons.py
 
   # Pass arguments through to every child script (e.g. --missing)
-  $ python ./generate_icons.py --missing ../common/icons/none.png
+  $ python ./generate_icons.py --missing ../common/icons/none.webp
 """
 
 import subprocess

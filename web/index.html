@@ -1617,9 +1617,9 @@ const COMMON_ICON_BASE = './generator/common/icons/';
 function toIconSlug(str) {
   return str.toLowerCase().replace(/\s*\/\s*/g,'_').replace(/[-\s]+/g,'_').replace(/[^a-z0-9_]/g,'');
 }
-// Extract icon slug from an explicit iconPath field (e.g. "PROFESSIONS#foo.png" → "foo")
+// Extract icon slug from an explicit iconPath field (e.g. "PROFESSIONS#foo.webp" → "foo")
 function iconSlugFrom(item, fallback) {
-  const m = item.iconPath?.match(/#([^.]+)\.png$/i);
+  const m = item.iconPath?.match(/#([^.]+)\.webp$/i);
   return m ? m[1] : fallback;
 }
 
@@ -1662,8 +1662,8 @@ function getSlotConfig(genre) {
     ['asexual','asexual','Asexual'],['questioning','questioning','Questioning'],
   ];
   const MBTI_CAT = MBTI_TYPES.map(m => [m.type, m.type, m.type]);
-  const RELSTATUS_CAT = RELATIONSHIP_STATUSES.map(r => [r.id, r.iconPath?.match(/#([^.]+)\.png$/i)?.[1] ?? r.id, r.label]);
-  const plotCat = pool => pool.map(p => [p.id, p.iconPath?.match(/#([^.]+)\.png$/i)?.[1] ?? p.id, p.label]);
+  const RELSTATUS_CAT = RELATIONSHIP_STATUSES.map(r => [r.id, r.iconPath?.match(/#([^.]+)\.webp$/i)?.[1] ?? r.id, r.label]);
+  const plotCat = pool => pool.map(p => [p.id, p.iconPath?.match(/#([^.]+)\.webp$/i)?.[1] ?? p.id, p.label]);
   // 'burned_out' → maps to 'burnt_out' filename; all others match
   const SENT_CAT = [
     ['proud','proud','Proud'],['resentful','resentful','Resentful'],
@@ -1968,7 +1968,7 @@ function getSlotConfig(genre) {
 }
 
 function iconPath(base, cat, slug) {
-  return `${base}${cat}%23${slug}.png`;
+  return `${base}${cat}%23${slug}.webp`;
 }
 
 function renderSlotMachine(genre) {

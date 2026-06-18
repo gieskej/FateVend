@@ -26,7 +26,7 @@ export const ECONOMIC_TIERS = {
     iconPrompt:
       "Faceless homeless man crouching in a maintenance tunnel wearing worn ragged clothes, puddle, squalor, graffiti, broken pipes, trash, rats, emergency lighting, grime and desperation, ",
     iconPath:
-      "generator/genres/sci-fi/icons/ECONOMIC_TIERS#tier1-below-the-line.png",
+      "generator/genres/sci-fi/icons/ECONOMIC_TIERS#tier1-below-the-line.webp",
   },
   2: {
     label: "Wage-Serf",
@@ -50,7 +50,7 @@ export const ECONOMIC_TIERS = {
     iconPrompt:
       "Faceless female corporate worker wearing a company-issue uniform, ID badge on a lanyard, sterile dormitory bunk behind them, company logo on the wall, exhausted compliance, weary expression, hunched shoulders",
     iconPath:
-      "generator/genres/sci-fi/icons/ECONOMIC_TIERS#tier2-wage-serf.png",
+      "generator/genres/sci-fi/icons/ECONOMIC_TIERS#tier2-wage-serf.webp",
   },
   3: {
     label: "Independent Contractor",
@@ -74,7 +74,7 @@ export const ECONOMIC_TIERS = {
     iconPrompt:
       "Faceless male independent spacer in practical worn gear, small personal ship airlock behind them, hand on a battered toolkit, self-reliant expression, modest but free",
     iconPath:
-      "generator/genres/sci-fi/icons/ECONOMIC_TIERS#tier3-independent-contractor.png",
+      "generator/genres/sci-fi/icons/ECONOMIC_TIERS#tier3-independent-contractor.webp",
   },
   4: {
     label: "Corporate Citizen",
@@ -98,7 +98,7 @@ export const ECONOMIC_TIERS = {
     iconPrompt:
       "Faceless female mid-level corporate professional in clean business attire, arcology apartment window behind them showing filtered sky, polished and compliant",
     iconPath:
-      "generator/genres/sci-fi/icons/ECONOMIC_TIERS#tier4-corporate-citizen.png",
+      "generator/genres/sci-fi/icons/ECONOMIC_TIERS#tier4-corporate-citizen.webp",
   },
   5: {
     label: "Elite / Exec",
@@ -122,6 +122,6 @@ export const ECONOMIC_TIERS = {
     iconPrompt:
       "Faceless male megacorporate executive in tailored suit, penthouse deck behind them, personal starship visible through panoramic viewport, security detail at the edge of frame, insulated from consequences",
     iconPath:
-      "generator/genres/sci-fi/icons/ECONOMIC_TIERS#tier5-elite-exec.png",
+      "generator/genres/sci-fi/icons/ECONOMIC_TIERS#tier5-elite-exec.webp",
   },
 };

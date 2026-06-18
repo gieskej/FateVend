@@ -3,7 +3,8 @@ Shared core for Gears of Fate icon-generation scripts.
 Import run() from a genre-specific generate_icons.py wrapper.
 """
 
-import re, requests, base64, time, sys, argparse
+import re, requests, base64, time, sys, argparse, io
+from PIL import Image
 from datetime import datetime
 from pathlib import Path
 
@@ -78,7 +79,7 @@ def run(genre_dir, icon_dir, style, params, description="", recursive=False,
     outdir.mkdir(parents=True, exist_ok=True)
 
     existing_slugs = set()
-    png_iter = icon_dir.rglob("*.png") if recursive else icon_dir.glob("*.png")
+    png_iter = icon_dir.rglob("*.webp") if recursive else icon_dir.glob("*.webp")
     for p in png_iter:
         if recursive and outdir in p.parents:
             continue
@@ -101,7 +102,7 @@ def run(genre_dir, icon_dir, style, params, description="", recursive=False,
             skipped += 1
             continue
 
-        out_paths = [outdir / f"{slug}#{v}.png" for v in range(1, variants + 1)]
+        out_paths = [outdir / f"{slug}#{v}.webp" for v in range(1, variants + 1)]
 
         sys.stdout.write(f"[{i}/{total}] gen   {slug}...\n")
         sys.stdout.flush()
@@ -115,10 +116,11 @@ def run(genre_dir, icon_dir, style, params, description="", recursive=False,
             images = r.json()["images"]
             sizes  = []
             for v, (img_b64, path) in enumerate(zip(images, out_paths), 1):
-                img = base64.b64decode(img_b64)
-                with open(path, "wb") as f:
-                    f.write(img)
-                sizes.append(f"#{v}:{len(img):,}b")
+                png_bytes = base64.b64decode(img_b64)
+                pil_img = Image.open(io.BytesIO(png_bytes))
+                pil_img.save(path, "WEBP", quality=90)
+                webp_size = path.stat().st_size
+                sizes.append(f"#{v}:{webp_size:,}b")
             sys.stdout.write(f"         {' '.join(sizes)}\n")
             sys.stdout.flush()
             done += 1

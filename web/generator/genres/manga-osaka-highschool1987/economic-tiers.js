@@ -22,7 +22,7 @@ export const ECONOMIC_TIERS = {
       'standing room on the last train, every time',
     ],
     iconPrompt: 'manga osaka highschool 1987 rpg icon, student in worn uniform eating simple rice lunch alone, small cracked apartment window, tired expression, autumn light',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/ECONOMIC_TIERS#tier1-struggling.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/ECONOMIC_TIERS#tier1-struggling.webp',
   },
   2: {
     label: 'Working Class',
@@ -44,7 +44,7 @@ export const ECONOMIC_TIERS = {
       'trains and transfers, never a taxi',
     ],
     iconPrompt: 'manga osaka highschool 1987 rpg icon, student in clean school uniform eating konbini onigiri on rooftop, cheerful despite everything, ordinary apartment block background, midday light',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/ECONOMIC_TIERS#tier2-working-class.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/ECONOMIC_TIERS#tier2-working-class.webp',
   },
   3: {
     label: 'Middle Class',
@@ -66,7 +66,7 @@ export const ECONOMIC_TIERS = {
       'commuter train, has a reserved spot in the bike shed',
     ],
     iconPrompt: 'manga osaka highschool 1987 rpg icon, student in neat uniform arriving at school gate by bicycle, confident relaxed expression, neat suburban neighborhood background, morning light',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/ECONOMIC_TIERS#tier3-middle-class.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/ECONOMIC_TIERS#tier3-middle-class.webp',
   },
   4: {
     label: 'Well-Off',
@@ -88,7 +88,7 @@ export const ECONOMIC_TIERS = {
       'taxi if the train is inconvenient',
     ],
     iconPrompt: 'manga osaka highschool 1987 rpg icon, student in crisp uniform stepping out of a family car at school gate, confident expression, well-kept neighborhood, cherry trees, morning',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/ECONOMIC_TIERS#tier4-well-off.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/ECONOMIC_TIERS#tier4-well-off.webp',
   },
   5: {
     label: 'Bubble Rich',
@@ -110,6 +110,6 @@ export const ECONOMIC_TIERS = {
       'private car service for weekend trips',
     ],
     iconPrompt: 'manga osaka highschool 1987 rpg icon, student in expensive designer uniform arriving at school gate from a luxury car, other students watching, slightly uncomfortable with the attention, Osaka cityscape background',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/ECONOMIC_TIERS#tier5-bubble-rich.png',
+    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/ECONOMIC_TIERS#tier5-bubble-rich.webp',
   },
 };

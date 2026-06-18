@@ -10,7 +10,7 @@ export const RACES = [
     allowedIndustries: ['Court Service', 'Religion', 'Military', 'Scholarship', 'Performance'],
     weight: 2,
     iconPrompt: 'ancient japanese yamato imperial clan noble silk robes court ritual divine lineage asuka period nihon shoki yamato-e painting style',
-    iconPath: 'generator/genres/nihongi/icons/CLANS#imperial_clan.png',
+    iconPath: 'generator/genres/nihongi/icons/CLANS#imperial_clan.webp',
   },
   {
     id: 'great_omi',
@@ -20,7 +20,7 @@ export const RACES = [
     allowedIndustries: ['Court Service', 'Military', 'Religion', 'Scholarship', 'Trade', 'Performance'],
     weight: 5,
     iconPrompt: 'ancient japanese great omi clan court noble aristocrat silk layered robes asuka court dignified powerful nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/CLANS#great_omi.png',
+    iconPath: 'generator/genres/nihongi/icons/CLANS#great_omi.webp',
   },
   {
     id: 'great_muraji',
@@ -30,7 +30,7 @@ export const RACES = [
     allowedIndustries: ['Military', 'Religion', 'Court Service', 'Performance'],
     weight: 5,
     iconPrompt: 'ancient japanese great muraji clan warrior lord ceremonial armor shrine duty traditional weapons asuka period nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/CLANS#great_muraji.png',
+    iconPath: 'generator/genres/nihongi/icons/CLANS#great_muraji.webp',
   },
   {
     id: 'court_official',
@@ -40,7 +40,7 @@ export const RACES = [
     allowedIndustries: ['Court Service', 'Scholarship', 'Religion', 'Performance'],
     weight: 7,
     iconPrompt: 'ancient japanese court official asuka palace scribe brush ink silk robes writing divination careful diligent nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/CLANS#court_official.png',
+    iconPath: 'generator/genres/nihongi/icons/CLANS#court_official.webp',
   },
   {
     id: 'provincial_lord',
@@ -50,7 +50,7 @@ export const RACES = [
     allowedIndustries: ['Military', 'Court Service', 'Agriculture', 'Trade', 'Religion'],
     weight: 6,
     iconPrompt: 'ancient japanese provincial lord governor regional authority traditional armor provincial court yamato landscape power nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/CLANS#provincial_lord.png',
+    iconPath: 'generator/genres/nihongi/icons/CLANS#provincial_lord.webp',
   },
   {
     id: 'craft_guild',
@@ -60,7 +60,7 @@ export const RACES = [
     allowedIndustries: ['Craft', 'Trade', 'Scholarship'],
     weight: 8,
     iconPrompt: 'ancient japanese craft guild be artisan potter weaver smith continental immigrant skilled hands tools workshop nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/CLANS#craft_guild.png',
+    iconPath: 'generator/genres/nihongi/icons/CLANS#craft_guild.webp',
   },
   {
     id: 'free_farmer',
@@ -70,7 +70,7 @@ export const RACES = [
     allowedIndustries: ['Agriculture', 'Trade'],
     weight: 10,
     iconPrompt: 'ancient japanese free farmer tami rice paddy field village simple clothing agricultural rural ancient yamato landscape nihon shoki folk painting',
-    iconPath: 'generator/genres/nihongi/icons/CLANS#free_farmer.png',
+    iconPath: 'generator/genres/nihongi/icons/CLANS#free_farmer.webp',
   },
   {
     id: 'bondsman',
@@ -80,6 +80,6 @@ export const RACES = [
     allowedIndustries: ['Agriculture', 'Craft', 'Trade'],
     weight: 5,
     iconPrompt: 'ancient japanese bondsman servant yatsuko clan service rough cloth humble determined outside social order nihon shoki ancient yamato folk painting',
-    iconPath: 'generator/genres/nihongi/icons/CLANS#bondsman.png',
+    iconPath: 'generator/genres/nihongi/icons/CLANS#bondsman.webp',
   },
 ];

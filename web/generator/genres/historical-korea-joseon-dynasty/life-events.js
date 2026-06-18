@@ -8,7 +8,7 @@ export const LIFE_EVENTS = [
     description: 'Achieved what generations of their family sacrificed for: a place in the official class through the civil service examinations',
     toneTag: 'triumph',
     iconPrompt: 'joseon dynasty korean gwageo civil exam success royal posting announcement celebration scholar silk hanbok traditional court painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/LIFE_EVENTS#passed_gwageo.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/LIFE_EVENTS#passed_gwageo.webp',
   },
   {
     id: 'failed_gwageo',
@@ -16,7 +16,7 @@ export const LIFE_EVENTS = [
     description: 'Has taken the examination three or more times and failed — not for lack of learning but for faction, luck, or something darker',
     toneTag: 'bitter',
     iconPrompt: 'joseon dynasty korean gwageo exam failure walking away dismissed scholar plain hanbok shame disappointment traditional painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/LIFE_EVENTS#failed_gwageo.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/LIFE_EVENTS#failed_gwageo.webp',
   },
   {
     id: 'survived_imjin',
@@ -24,7 +24,7 @@ export const LIFE_EVENTS = [
     description: 'Lived through the Japanese invasion of 1592–1598 — either as a soldier, a refugee, or someone who made difficult choices',
     toneTag: 'gritty',
     iconPrompt: 'joseon dynasty korean imjin war survivor soldier refugee battle village burning armored warrior exhausted relief traditional painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/LIFE_EVENTS#survived_imjin.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/LIFE_EVENTS#survived_imjin.webp',
   },
   {
     id: 'famine_survivor',
@@ -32,7 +32,7 @@ export const LIFE_EVENTS = [
     description: 'Endured a provincial famine — knows what people do and become when the rice harvest fails two years in a row',
     toneTag: 'gritty',
     iconPrompt: 'joseon dynasty korean famine survivor gaunt hollow-eyed villager barren field winter desperation relief traditional folk painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/LIFE_EVENTS#famine_survivor.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/LIFE_EVENTS#famine_survivor.webp',
   },
   {
     id: 'clan_exile',
@@ -40,7 +40,7 @@ export const LIFE_EVENTS = [
     description: 'Sent to a remote province after their family lost a court power struggle — built a new life in the margins',
     toneTag: 'bitter',
     iconPrompt: 'joseon dynasty korean political exile departing capital horse provincial road alone disgrace carrying luggage traditional court painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/LIFE_EVENTS#clan_exile.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/LIFE_EVENTS#clan_exile.webp',
   },
   {
     id: 'witnessed_execution',
@@ -48,7 +48,7 @@ export const LIFE_EVENTS = [
     description: 'Was present at the execution of someone they knew — for treason, for heresy, or for nothing at all that made sense',
     toneTag: 'dark',
     iconPrompt: 'joseon dynasty korean public execution crowd witness square solemn horrified silent crowd official punishment traditional painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/LIFE_EVENTS#witnessed_execution.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/LIFE_EVENTS#witnessed_execution.webp',
   },
   {
     id: 'political_accusation',
@@ -56,7 +56,7 @@ export const LIFE_EVENTS = [
     description: 'Was formally accused of a court crime — treason, sedition, or factional treachery — and survived through luck, patronage, or compromise',
     toneTag: 'gritty',
     iconPrompt: 'joseon dynasty korean political accusation court hearing official records kneeling accused tense confrontation traditional court painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/LIFE_EVENTS#political_accusation.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/LIFE_EVENTS#political_accusation.webp',
   },
   {
     id: 'bandit_encounter',
@@ -64,7 +64,7 @@ export const LIFE_EVENTS = [
     description: 'Was ambushed on a provincial road and escaped — changed everything they thought about safety and strangers',
     toneTag: 'dramatic',
     iconPrompt: 'joseon dynasty korean bandit ambush mountain road escape chase survivor aftermath tense dramatic traditional painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/LIFE_EVENTS#bandit_encounter.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/LIFE_EVENTS#bandit_encounter.webp',
   },
   {
     id: 'diplomatic_mission',
@@ -72,7 +72,7 @@ export const LIFE_EVENTS = [
     description: 'Traveled to the Ming or Qing court as part of a tributary delegation — saw the world beyond Korea\'s borders',
     toneTag: 'broadening',
     iconPrompt: 'joseon dynasty korean diplomatic mission beijing chinese court tributary embassy delegation formal impressive awe traditional painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/LIFE_EVENTS#diplomatic_mission.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/LIFE_EVENTS#diplomatic_mission.webp',
   },
   {
     id: 'forbidden_knowledge',
@@ -80,7 +80,7 @@ export const LIFE_EVENTS = [
     description: 'Read something — a Catholic text, a secret history, a technical document from Japan — that the state would prefer had never been read',
     toneTag: 'dangerous',
     iconPrompt: 'joseon dynasty korean forbidden book hidden reading secret text night candlelight nervous scholar forbidden knowledge traditional painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/LIFE_EVENTS#forbidden_knowledge.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/LIFE_EVENTS#forbidden_knowledge.webp',
   },
   {
     id: 'arranged_marriage',
@@ -88,7 +88,7 @@ export const LIFE_EVENTS = [
     description: 'Was married for clan alliance or economic necessity — the match was either unexpectedly fine or quietly catastrophic',
     toneTag: 'neutral',
     iconPrompt: 'joseon dynasty korean arranged marriage ceremony hanbok couple formal wedding ritual family compound traditional painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/LIFE_EVENTS#arranged_marriage.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/LIFE_EVENTS#arranged_marriage.webp',
   },
   {
     id: 'widowed',
@@ -96,7 +96,7 @@ export const LIFE_EVENTS = [
     description: 'Lost a spouse — to illness, execution, war, or a truth that could not be survived — and navigated the social restrictions that followed',
     toneTag: 'sorrowful',
     iconPrompt: 'joseon dynasty korean widowed figure mourning white mourning clothes grief solitary traditional court painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/LIFE_EVENTS#widowed.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/LIFE_EVENTS#widowed.webp',
   },
   {
     id: 'escaped_servitude',
@@ -104,6 +104,6 @@ export const LIFE_EVENTS = [
     description: 'Left behind a life of legal bondage — still carries the papers, the habits, and the specific kind of alertness that service requires',
     toneTag: 'gritty',
     iconPrompt: 'joseon dynasty korean escaped nobi slave freedom running hiding new identity fearful hopeful traditional folk painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/LIFE_EVENTS#escaped_servitude.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/LIFE_EVENTS#escaped_servitude.webp',
   },
 ];

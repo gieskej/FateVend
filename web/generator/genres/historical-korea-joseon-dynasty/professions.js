@@ -12,7 +12,7 @@ export const PROFESSIONS = [
     statAffinity: { intelligence: 1.4, wisdom: 1.2, charisma: 1.1 },
     sentiments: ['principled', 'suspicious', 'exacting'],
     iconPrompt: 'joseon dynasty korean scholar official seated writing brush ink calligraphy silk hanbok court painting style',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#scholar_official.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#scholar_official.webp',
   },
   {
     title: 'Local Magistrate',
@@ -22,7 +22,7 @@ export const PROFESSIONS = [
     statAffinity: { wisdom: 1.3, charisma: 1.2, strength: 1.0 },
     sentiments: ['proud', 'beleaguered', 'canny'],
     iconPrompt: 'joseon dynasty korean local magistrate seated court judgment hall formal robes stern expression traditional court painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#local_magistrate.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#local_magistrate.webp',
   },
   {
     title: "Magistrate's Aide",
@@ -32,7 +32,7 @@ export const PROFESSIONS = [
     statAffinity: { intelligence: 1.2, dexterity: 1.1, wisdom: 1.1 },
     sentiments: ['indispensable', 'calculating', 'knowing'],
     iconPrompt: 'joseon dynasty korean magistrate aide clerk ledger records practical hanbok government office traditional painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#magistrate_aide.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#magistrate_aide.webp',
   },
   {
     title: 'Village Elder',
@@ -41,7 +41,7 @@ export const PROFESSIONS = [
     statAffinity: { wisdom: 1.4, charisma: 1.2, constitution: 1.1 },
     sentiments: ['tenacious', 'mediating', 'subversive'],
     iconPrompt: 'joseon dynasty korean village elder seated respected elder weathered face plain hanbok village courtyard traditional folk painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#village_elder.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#village_elder.webp',
   },
   // ── Military ──────────────────────────────────────────────────────────
   {
@@ -52,7 +52,7 @@ export const PROFESSIONS = [
     statAffinity: { strength: 1.3, constitution: 1.2, dexterity: 1.1 },
     sentiments: ['loyal', 'skeptical', 'alert'],
     iconPrompt: 'joseon dynasty korean royal palace guard armor helmet weapon standing guard ceremonial proud traditional court painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#royal_guard.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#royal_guard.webp',
   },
   {
     title: 'Cavalry Officer',
@@ -62,7 +62,7 @@ export const PROFESSIONS = [
     statAffinity: { strength: 1.3, dexterity: 1.2, constitution: 1.1 },
     sentiments: ['contemptuous', 'loyal', 'haunted'],
     iconPrompt: 'joseon dynasty korean cavalry officer horse armor sword mounted warrior proud battlefield traditional court painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#cavalry_officer.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#cavalry_officer.webp',
   },
   {
     title: 'Fortress Soldier',
@@ -72,7 +72,7 @@ export const PROFESSIONS = [
     statAffinity: { strength: 1.2, constitution: 1.3, dexterity: 1.0 },
     sentiments: ['resigned', 'protective', 'homesick'],
     iconPrompt: 'joseon dynasty korean fortress soldier guard wall spear armor cold northern frontier tired reliable traditional painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#fortress_soldier.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#fortress_soldier.webp',
   },
   // ── Arts & Learning ───────────────────────────────────────────────────
   {
@@ -83,7 +83,7 @@ export const PROFESSIONS = [
     statAffinity: { intelligence: 1.4, wisdom: 1.2, charisma: 1.0 },
     sentiments: ['ambitious', 'exacting', 'obsessive'],
     iconPrompt: 'joseon dynasty korean sungkyunkwan scholar student academy night studying books candle lamp gwageo preparation traditional painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#sungkyunkwan_scholar.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#sungkyunkwan_scholar.webp',
   },
   {
     title: 'Royal Painter',
@@ -92,7 +92,7 @@ export const PROFESSIONS = [
     statAffinity: { dexterity: 1.3, intelligence: 1.2, wisdom: 1.1 },
     sentiments: ['perceptive', 'liminal', 'conflicted'],
     iconPrompt: 'joseon dynasty korean royal court painter brush silk scroll portrait careful precise pigments traditional court painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#royal_painter.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#royal_painter.webp',
   },
   {
     title: 'Court Historian',
@@ -102,7 +102,7 @@ export const PROFESSIONS = [
     statAffinity: { intelligence: 1.3, wisdom: 1.3, charisma: 0.9 },
     sentiments: ['fearful', 'knowing', 'principled'],
     iconPrompt: 'joseon dynasty korean court historian annals writing veritable records brush scroll official archive careful solemn traditional painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#court_historian.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#court_historian.webp',
   },
   // ── Trade ─────────────────────────────────────────────────────────────
   {
@@ -112,7 +112,7 @@ export const PROFESSIONS = [
     statAffinity: { charisma: 1.3, intelligence: 1.2, dexterity: 1.0 },
     sentiments: ['canny', 'resentful', 'calculating'],
     iconPrompt: 'joseon dynasty korean market merchant stall goods trade jongno commercial street shrewd confident practical hanbok traditional folk painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#market_merchant.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#market_merchant.webp',
   },
   {
     title: 'Traveling Peddler',
@@ -121,7 +121,7 @@ export const PROFESSIONS = [
     statAffinity: { dexterity: 1.2, charisma: 1.1, constitution: 1.2 },
     sentiments: ['worldly', 'discreet', 'prescient'],
     iconPrompt: 'joseon dynasty korean traveling peddler jangsu pack goods rural road village gate cheerful resilient traditional folk painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#traveling_peddler.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#traveling_peddler.webp',
   },
   {
     title: 'Maritime Trader',
@@ -130,7 +130,7 @@ export const PROFESSIONS = [
     statAffinity: { charisma: 1.2, constitution: 1.2, intelligence: 1.2 },
     sentiments: ['pragmatic', 'worldly', 'duplicitous'],
     iconPrompt: 'joseon dynasty korean maritime trader ship busan port japanese goods cargo sea coast prosperous risky traditional painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#maritime_trader.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#maritime_trader.webp',
   },
   // ── Spiritual ─────────────────────────────────────────────────────────
   {
@@ -141,7 +141,7 @@ export const PROFESSIONS = [
     statAffinity: { wisdom: 1.4, constitution: 1.1, intelligence: 1.2 },
     sentiments: ['liminal', 'learned', 'compassionate'],
     iconPrompt: 'joseon dynasty korean buddhist monk gray robe shaved head mountain temple incense prayer beads serene steadfast traditional painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#buddhist_monk.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#buddhist_monk.webp',
   },
   {
     title: 'Mudang (Shaman)',
@@ -151,7 +151,7 @@ export const PROFESSIONS = [
     statAffinity: { charisma: 1.3, wisdom: 1.2, constitution: 1.1 },
     sentiments: ['marginalized', 'perceptive', 'devout'],
     iconPrompt: 'joseon dynasty korean mudang shaman female ritual ceremony colorful costume drum spirit possession traditional folk painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#mudang_shaman.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#mudang_shaman.webp',
   },
   {
     title: 'Court Physician',
@@ -160,7 +160,7 @@ export const PROFESSIONS = [
     statAffinity: { intelligence: 1.3, wisdom: 1.3, dexterity: 1.1 },
     sentiments: ['entrusted', 'indispensable', 'knowing'],
     iconPrompt: 'joseon dynasty korean court physician acupuncture herbs medical diagnosis careful skilled practical traditional painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#court_physician.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#court_physician.webp',
   },
   // ── Labor ─────────────────────────────────────────────────────────────
   {
@@ -170,7 +170,7 @@ export const PROFESSIONS = [
     statAffinity: { constitution: 1.4, strength: 1.2, wisdom: 1.1 },
     sentiments: ['observant', 'unsentimental', 'rooted'],
     iconPrompt: 'joseon dynasty korean rice farmer paddy field transplanting seedlings plain hanbok straw hat muddy hands hardworking traditional folk painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#rice_farmer.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#rice_farmer.webp',
   },
   // ── Service ───────────────────────────────────────────────────────────
   {
@@ -181,7 +181,7 @@ export const PROFESSIONS = [
     statAffinity: { charisma: 1.2, wisdom: 1.2, intelligence: 1.1 },
     sentiments: ['discreet', 'dangerous', 'constrained'],
     iconPrompt: 'joseon dynasty korean court lady nagin palace service elegant green hanbok court duties discreet attentive traditional court painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#palace_court_lady.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#palace_court_lady.webp',
   },
   {
     title: 'Nobi (House Slave)',
@@ -190,7 +190,7 @@ export const PROFESSIONS = [
     statAffinity: { dexterity: 1.2, constitution: 1.2, wisdom: 1.1 },
     sentiments: ['perceptive', 'calculating', 'yearning'],
     iconPrompt: 'joseon dynasty korean nobi servant slave household duties plain clothing serving master house compound cautious dignified traditional folk painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#nobi_house_slave.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#nobi_house_slave.webp',
   },
   // ── Gisaeng Arts ──────────────────────────────────────────────────────
   {
@@ -201,7 +201,7 @@ export const PROFESSIONS = [
     statAffinity: { charisma: 1.4, intelligence: 1.3, wisdom: 1.2 },
     sentiments: ['calculating', 'enduring', 'unsentimental'],
     iconPrompt: 'joseon dynasty korean gisaeng madam older woman elegant authority jeweled hairpin silk robe commanding shrewd banquet hall traditional painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#gisaeng_madam.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#gisaeng_madam.webp',
   },
   {
     title: 'Gisaeng (Entertainer-Courtesan)',
@@ -212,6 +212,6 @@ export const PROFESSIONS = [
     statAffinity: { charisma: 1.4, dexterity: 1.2, intelligence: 1.2 },
     sentiments: ['accomplished', 'guarded', 'knowing'],
     iconPrompt: 'joseon dynasty korean gisaeng female entertainer haegeum musician court performance elegant silk hanbok ornate binyeo hairpin graceful traditional painting',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#gisaeng_entertainer.png',
+    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#gisaeng_entertainer.webp',
   },
 ];

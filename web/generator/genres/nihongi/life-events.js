@@ -8,7 +8,7 @@ export const LIFE_EVENTS = [
     toneTag: 'transformative',
     statAffinity: { wisdom: 1.4, charisma: 1.2 },
     iconPrompt: 'ancient japanese kami deity manifest directly touching figure in shrine ritual divine light contact terrifying beautiful, priests prostrated around them, chosen marked changed, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/LIFE_EVENTS#touched_by_kami.png',
+    iconPath: 'generator/genres/nihongi/icons/LIFE_EVENTS#touched_by_kami.webp',
   },
   {
     id: 'survived_yokai_attack',
@@ -16,7 +16,7 @@ export const LIFE_EVENTS = [
     toneTag: 'trauma',
     statAffinity: { constitution: 1.3, wisdom: 1.2 },
     iconPrompt: 'ancient japanese survivor yokai attack creature standing over them choosing not to kill, monstrous figure retreating leaving mark on survivor, forest night wrong darkness, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/LIFE_EVENTS#survived_yokai_attack.png',
+    iconPath: 'generator/genres/nihongi/icons/LIFE_EVENTS#survived_yokai_attack.webp',
   },
   {
     id: 'night_in_haunted_place',
@@ -24,7 +24,7 @@ export const LIFE_EVENTS = [
     toneTag: 'horror',
     statAffinity: { wisdom: 1.3, constitution: 1.1 },
     iconPrompt: 'ancient japanese figure emerging at dawn from cursed ruin defiled shrine haunted place, changed expression hollow eyes partial memory, what happened in night unknown, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/LIFE_EVENTS#night_in_haunted_place.png',
+    iconPath: 'generator/genres/nihongi/icons/LIFE_EVENTS#night_in_haunted_place.webp',
   },
   {
     id: 'witnessed_possession',
@@ -32,7 +32,7 @@ export const LIFE_EVENTS = [
     toneTag: 'horror',
     statAffinity: { wisdom: 1.3, charisma: 1.1 },
     iconPrompt: 'ancient japanese possession witnessed friend taken by kami entity speaking in wrong voice knowing impossible things, familiar face with wrong eyes, horrified witness watching, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/LIFE_EVENTS#witnessed_possession.png',
+    iconPath: 'generator/genres/nihongi/icons/LIFE_EVENTS#witnessed_possession.webp',
   },
   {
     id: 'received_divine_mark',
@@ -40,7 +40,7 @@ export const LIFE_EVENTS = [
     toneTag: 'transformative',
     statAffinity: { wisdom: 1.3, charisma: 1.3 },
     iconPrompt: 'ancient japanese figure with strange divine mark appeared overnight on skin, shrine mediums examining disagreeing about meaning, marked by supernatural forces, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/LIFE_EVENTS#received_divine_mark.png',
+    iconPath: 'generator/genres/nihongi/icons/LIFE_EVENTS#received_divine_mark.webp',
   },
   {
     id: 'kami_oracle',
@@ -48,7 +48,7 @@ export const LIFE_EVENTS = [
     toneTag: 'transformative',
     statAffinity: { wisdom: 1.4, charisma: 1.1 },
     iconPrompt: 'ancient japanese kami oracle spirit medium miko possessed divine message specific personal terrifying came true sacred nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/LIFE_EVENTS#kami_oracle.png',
+    iconPath: 'generator/genres/nihongi/icons/LIFE_EVENTS#kami_oracle.webp',
   },
   {
     id: 'compound_fire',
@@ -56,7 +56,7 @@ export const LIFE_EVENTS = [
     toneTag: 'trauma',
     statAffinity: { constitution: 1.2, wisdom: 1.1 },
     iconPrompt: 'ancient japanese compound fire thatched roof burning night family fleeing supernatural fire moving wrong direction unnatural cause, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/LIFE_EVENTS#compound_fire.png',
+    iconPath: 'generator/genres/nihongi/icons/LIFE_EVENTS#compound_fire.webp',
   },
   {
     id: 'witnessed_lord_death',
@@ -64,7 +64,7 @@ export const LIFE_EVENTS = [
     toneTag: 'formative',
     statAffinity: { wisdom: 1.3, charisma: 1.1 },
     iconPrompt: 'ancient japanese great clan lord dying supernatural cause seen by one witness alone, something in the shadows the others did not see, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/LIFE_EVENTS#witnessed_lord_death.png',
+    iconPath: 'generator/genres/nihongi/icons/LIFE_EVENTS#witnessed_lord_death.webp',
   },
   {
     id: 'survived_purge',
@@ -72,7 +72,7 @@ export const LIFE_EVENTS = [
     toneTag: 'survival',
     statAffinity: { wisdom: 1.3, dexterity: 1.2 },
     iconPrompt: 'ancient japanese survived clan purge political loss hiding escape court fall from grace, sole survivor wondering why, supernatural intervention possible, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/LIFE_EVENTS#survived_purge.png',
+    iconPath: 'generator/genres/nihongi/icons/LIFE_EVENTS#survived_purge.webp',
   },
   {
     id: 'continental_training',
@@ -80,7 +80,7 @@ export const LIFE_EVENTS = [
     toneTag: 'transformative',
     statAffinity: { intelligence: 1.4, wisdom: 1.2 },
     iconPrompt: 'ancient japanese student continental buddhist monk teaching chinese characters medicine but also supernatural knowledge spirit world kami, monk leaving before explaining all, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/LIFE_EVENTS#continental_training.png',
+    iconPath: 'generator/genres/nihongi/icons/LIFE_EVENTS#continental_training.webp',
   },
   {
     id: 'survived_clan_war',
@@ -88,6 +88,6 @@ export const LIFE_EVENTS = [
     toneTag: 'trauma',
     statAffinity: { strength: 1.2, constitution: 1.3 },
     iconPrompt: 'ancient japanese inter-clan war battle survivor aftermath bodies that were not entirely human, something fought alongside them or against that should not exist, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/LIFE_EVENTS#survived_clan_war.png',
+    iconPath: 'generator/genres/nihongi/icons/LIFE_EVENTS#survived_clan_war.webp',
   },
 ];
