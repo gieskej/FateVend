@@ -210,22 +210,31 @@ body::before {
 
 .settings-modal-body { padding: 1.5rem; }
 
-.settings-cols {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  margin-bottom: 1.5rem;
-}
-.settings-col-heading {
-  font-family: var(--font-display);
-  font-size: 0.68rem;
-  letter-spacing: 0.14em;
-  color: var(--brass-light);
-  text-transform: uppercase;
-  padding-bottom: 0.4rem;
-  margin-bottom: 0.9rem;
+.settings-tabs {
+  display: flex;
   border-bottom: 1px solid var(--brass-dark);
+  margin-bottom: 1.2rem;
+  gap: 0;
 }
+.settings-tab {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--brass-light);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+.settings-tab:hover  { color: var(--gold); }
+.settings-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+.settings-tab-panel        { display: none; }
+.settings-tab-panel.active { display: block; }
 .settings-group-heading {
   font-family: var(--font-display);
   font-size: 0.56rem;
@@ -1039,6 +1048,23 @@ body::before {
   color: #fff;
 }
 
+.btn-narrate {
+  background: transparent;
+  border: 1px solid var(--brass-dark);
+  border-radius: var(--radius);
+  color: var(--brass-dark);
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+.btn-narrate:hover   { background: var(--brass-dark); color: var(--parchment); }
+.btn-narrate.speaking { background: var(--rust, #8b3a3a); border-color: var(--rust, #8b3a3a); color: var(--parchment); }
+
 /* ── NPC ENTRY SECTION ─────────────────────────────────────────────── */
 .npc-section { margin-bottom: 1rem; }
 
@@ -1436,6 +1462,5 @@ body::before {
   .stat-grid       { grid-template-columns: repeat(2, 1fr); }
   .cast-grid       { grid-template-columns: 1fr; }
   .phase-step span { display: none; }
-  .settings-cols   { grid-template-columns: 1fr; }
   .site-header::before, .site-header::after { display: none; }
 }

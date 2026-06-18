@@ -37,52 +37,87 @@
       </div>
 
       <div class="settings-modal-body">
-        <div class="settings-cols">
 
-          <!-- TEXT GENERATION -->
-          <div class="settings-col">
-            <div class="settings-col-heading">Text Generation</div>
-            <div class="settings-group-heading">Cloud Providers</div>
-            <div class="settings-field">
-              <label for="api-key">Anthropic API Key</label>
-              <input id="api-key" class="api-input" type="password" placeholder="sk-ant-..." autocomplete="off" spellcheck="false">
-            </div>
-            <div class="settings-field">
-              <label for="gemini-api-key">Gemini API Key</label>
-              <input id="gemini-api-key" class="api-input" type="password" placeholder="AIza..." autocomplete="off" spellcheck="false">
-            </div>
-            <div class="settings-group-heading">LAN Providers</div>
-            <div class="settings-field">
-              <label for="ollama-url">Ollama URL</label>
-              <input id="ollama-url" class="api-input" type="text" placeholder="http://localhost:11434" autocomplete="off" spellcheck="false">
-            </div>
-            <div class="settings-field">
-              <label for="ollama-model">Ollama Model</label>
-              <input id="ollama-model" class="api-input" type="text" placeholder="llama3.2" autocomplete="off" spellcheck="false">
-            </div>
+        <div class="settings-tabs" role="tablist">
+          <button class="settings-tab active" onclick="switchSettingsTab('text')"      data-tab="text">Text</button>
+          <button class="settings-tab"        onclick="switchSettingsTab('image')"     data-tab="image">Image</button>
+          <button class="settings-tab"        onclick="switchSettingsTab('narration')" data-tab="narration">Narration</button>
+          <button class="settings-tab"        onclick="switchSettingsTab('options')"   data-tab="options">Options</button>
+        </div>
+
+        <!-- TEXT GENERATION -->
+        <div class="settings-tab-panel active" id="tab-text">
+          <div class="settings-group-heading">Cloud Providers</div>
+          <div class="settings-field">
+            <label for="api-key">Anthropic API Key</label>
+            <input id="api-key" class="api-input" type="password" placeholder="sk-ant-..." autocomplete="off" spellcheck="false">
           </div>
-
-          <!-- IMAGE GENERATION -->
-          <div class="settings-col">
-            <div class="settings-col-heading">Image Generation</div>
-            <div class="settings-group-heading">Cloud Providers</div>
-            <div class="settings-field">
-              <label for="img-api-key">Stability AI Key</label>
-              <input id="img-api-key" class="api-input" type="password" placeholder="sk-..." autocomplete="off" spellcheck="false">
-            </div>
-            <div class="settings-group-heading">LAN Providers</div>
-            <div class="settings-field">
-              <label for="sd-url">Stable Diffusion URL</label>
-              <input id="sd-url" class="api-input" type="text" placeholder="http://localhost:7860" autocomplete="off" spellcheck="false">
-            </div>
+          <div class="settings-field">
+            <label for="gemini-api-key">Gemini API Key</label>
+            <input id="gemini-api-key" class="api-input" type="password" placeholder="AIza..." autocomplete="off" spellcheck="false">
           </div>
+          <div class="settings-group-heading">LAN Providers</div>
+          <div class="settings-field">
+            <label for="ollama-url">Ollama URL</label>
+            <input id="ollama-url" class="api-input" type="text" placeholder="http://localhost:11434" autocomplete="off" spellcheck="false">
+          </div>
+          <div class="settings-field">
+            <label for="ollama-model">Ollama Model</label>
+            <input id="ollama-model" class="api-input" type="text" placeholder="llama3.2" autocomplete="off" spellcheck="false">
+          </div>
+        </div>
 
+        <!-- IMAGE GENERATION -->
+        <div class="settings-tab-panel" id="tab-image">
+          <div class="settings-group-heading">Cloud Providers</div>
+          <div class="settings-field">
+            <label for="img-api-key">Stability AI Key</label>
+            <input id="img-api-key" class="api-input" type="password" placeholder="sk-..." autocomplete="off" spellcheck="false">
+          </div>
+          <div class="settings-group-heading">LAN Providers</div>
+          <div class="settings-field">
+            <label for="sd-url">Stable Diffusion URL</label>
+            <input id="sd-url" class="api-input" type="text" placeholder="http://localhost:7860" autocomplete="off" spellcheck="false">
+          </div>
+        </div>
+
+        <!-- NARRATION -->
+        <div class="settings-tab-panel" id="tab-narration">
+          <div class="settings-group-heading">Provider</div>
+          <div class="settings-field">
+            <label for="tts-provider">TTS Provider</label>
+            <select id="tts-provider" class="api-input" onchange="setTtsProvider(this.value)">
+              <option value="off">Off</option>
+              <option value="browser">Browser (built-in)</option>
+              <option value="kokoro">Kokoro LAN</option>
+              <option value="openai">OpenAI</option>
+            </select>
+          </div>
+          <div class="settings-group-heading">LAN Providers</div>
+          <div class="settings-field">
+            <label for="tts-kokoro-url">Kokoro URL</label>
+            <input id="tts-kokoro-url" class="api-input" type="text" placeholder="http://192.168.x.x:8880" autocomplete="off" spellcheck="false">
+            <div class="settings-hint" style="margin-top:0.25rem;">Uses the OpenAI-compatible <code>/v1/audio/speech</code> endpoint. Default port 8880.</div>
+          </div>
+          <div class="settings-group-heading">Cloud Providers</div>
+          <div class="settings-field">
+            <label for="tts-openai-key">OpenAI TTS Key</label>
+            <input id="tts-openai-key" class="api-input" type="password" placeholder="sk-..." autocomplete="off" spellcheck="false">
+          </div>
+          <div class="settings-group-heading">Voice</div>
+          <div class="settings-field">
+            <label for="tts-voice-override">Voice <span class="settings-hint">(blank = genre default)</span></label>
+            <input id="tts-voice-override" class="api-input" type="text" placeholder="nova / af_bella / onyx …" autocomplete="off" spellcheck="false">
+          </div>
+          <div class="settings-field">
+            <label for="tts-speed-override">Speed <span class="settings-hint">(0.5 – 2.0, blank = genre default)</span></label>
+            <input id="tts-speed-override" class="api-input" type="number" min="0.5" max="2" step="0.05" placeholder="1.0">
+          </div>
         </div>
 
         <!-- OPTIONS -->
-        <div class="settings-options">
-          <div class="settings-options-heading">Options</div>
-          <div class="settings-option-row">
+        <div class="settings-tab-panel" id="tab-options">
+          <div class="settings-option-row" style="margin-top:0.5rem;">
             <input id="include-lgbq" type="checkbox" checked>
             <label for="include-lgbq">LGBQ <span class="settings-hint">(include non-binary genders &amp; queer orientations when rolling)</span></label>
           </div>
@@ -91,6 +126,7 @@
             <label for="include-nsfw">NSFW <span class="settings-hint">(include adult professions; alters portrait prompt)</span></label>
           </div>
         </div>
+
       </div>
 
       <div class="settings-modal-footer">
@@ -1415,6 +1451,10 @@ let currentGeneratedAt = null;
 let currentStats       = null;
 let npcPortraitData       = {};
 let npcPortraitGenerating = false;
+let ttsProvider  = 'off';
+let ttsAudio     = null;
+let ttsSpeaking  = false;
+let ttsAllActive = false;
 
 const GENRE_PORTRAIT_STYLES = {
   'modern':                           'modern cinematic style, natural lighting, detailed digital illustration, centered subject, clean composition, contemporary realism, muted urban palette, grounded atmosphere',
@@ -1425,6 +1465,17 @@ const GENRE_PORTRAIT_STYLES = {
   'historical-korea-joseon-dynasty':  'Joseon Dynasty Korean court painting style, minhwa folk art, clean flat colors with mineral pigments, traditional hanbok dress, decorative floral and nature motifs, centered subject, white background, confident ink outline, warm earth and jewel tones',
   'nihongi':                          'Nihon Shoki ancient Japan yamato-e court painting style, minhwa-adjacent flat mineral pigments, traditional Japanese asuka court aesthetic, clean confident ink outline, centered subject, warm ochre and vermillion palette, gold leaf accent, detailed silk textile patterns, white background, ancient japanese figure study, dignified formal composition',
 };
+
+const GENRE_TTS_CONFIG = {
+  'modern':                           { preprocess: preprocessTts,        browser: { rate: 1.00, pitch: 1.00 }, kokoro: { voice: 'af_bella',   speed: 1.00 }, openai: { voice: 'nova',    speed: 1.00 } },
+  'fantasy':                          { preprocess: preprocessTts,        browser: { rate: 0.92, pitch: 0.95 }, kokoro: { voice: 'af_bella',   speed: 0.92 }, openai: { voice: 'fable',   speed: 0.92 } },
+  'sci-fi':                           { preprocess: preprocessTts,        browser: { rate: 1.05, pitch: 1.00 }, kokoro: { voice: 'am_michael', speed: 1.05 }, openai: { voice: 'onyx',    speed: 1.05 } },
+  'paleolithic':                      { preprocess: preprocessTts,        browser: { rate: 0.88, pitch: 0.95 }, kokoro: { voice: 'am_adam',    speed: 0.88 }, openai: { voice: 'echo',    speed: 0.88 } },
+  'manga-osaka-highschool1987':       { preprocess: preprocessTtsManga,   browser: { rate: 1.10, pitch: 1.05 }, kokoro: { voice: 'af_sky',     speed: 1.10 }, openai: { voice: 'shimmer', speed: 1.10 } },
+  'historical-korea-joseon-dynasty':  { preprocess: preprocessTts,        browser: { rate: 0.85, pitch: 0.95 }, kokoro: { voice: 'bf_emma',    speed: 0.85 }, openai: { voice: 'alloy',   speed: 0.85 } },
+  'nihongi':                          { preprocess: preprocessTtsNihongi, browser: { rate: 0.82, pitch: 0.90 }, kokoro: { voice: 'jf_alpha',   speed: 0.82 }, openai: { voice: 'onyx',    speed: 0.82 } },
+};
+
 let isGenerating    = false;
 let currentGenre    = 'fantasy';
 let currentProvider      = 'gemini';
@@ -2153,6 +2204,7 @@ function renderSkeleton(sk) {
 
 function renderOutput(sk, output) {
   npcPortraitData = {};
+  const showNarrate = ttsProvider !== 'off';
 
   const tagHTML = output.tags.map(t => `<span class="tag-pill">${t}</span>`).join('');
 
@@ -2188,6 +2240,7 @@ function renderOutput(sk, output) {
             </div>
             <div class="field-meta">
               <span class="char-count" id="cc-npc-${safeName}">${entry.length} / 1000</span>
+              ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('npc-entry-${safeName}').value)">🔊</button>` : ''}
               <button class="btn-copy" onclick="copyField('npc-entry-${safeName}', this)">Copy</button>
             </div>
           </div>
@@ -2203,6 +2256,10 @@ function renderOutput(sk, output) {
   <div class="card" id="card-scenario">
     <div class="card-header">
       <span class="card-title">⚙ AI Generated Scenario</span>
+      <div class="field-meta" style="gap:0.4rem;">
+        ${showNarrate ? `<button class="btn-narrate" onclick="narrateAll()">🔊 Narrate All</button>` : ''}
+        <button id="btn-tts-stop" hidden onclick="stopNarration()">⏹ Stop</button>
+      </div>
     </div>
     <div class="card-body">
 
@@ -2249,6 +2306,7 @@ function renderOutput(sk, output) {
           <span class="field-label">Details: Description</span>
           <div class="field-meta">
             <span class="char-count" id="cc-desc">${output.description.length} / 5000</span>
+            ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('field-desc').value)">🔊</button>` : ''}
             <button class="btn-copy" onclick="copyField('field-desc',this)">Copy</button>
           </div>
         </div>
@@ -2262,6 +2320,7 @@ function renderOutput(sk, output) {
           <span class="field-label">Plot: Plot Essentials</span>
           <div class="field-meta">
             <span class="char-count" id="cc-plot">${output.plotEssentials.length} / 2000</span>
+            ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('field-plot').value)">🔊</button>` : ''}
             <button class="btn-copy" onclick="copyField('field-plot',this)">Copy</button>
           </div>
         </div>
@@ -2275,6 +2334,7 @@ function renderOutput(sk, output) {
           <span class="field-label">Style: Author's Note</span>
           <div class="field-meta">
             <span class="char-count" id="cc-authornote">${output.authorNote.length} / 500</span>
+            ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('field-authornote').value)">🔊</button>` : ''}
             <button class="btn-copy" onclick="copyField('field-authornote',this)">Copy</button>
           </div>
         </div>
@@ -2287,6 +2347,7 @@ function renderOutput(sk, output) {
           <span class="field-label">Details: Opening (Append to end of Description)</span>
           <div class="field-meta">
             <span class="char-count" id="cc-opening">${output.opening.length} / 4000</span>
+            ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('field-opening').value)">🔊</button>` : ''}
             <button class="btn-copy" onclick="copyField('field-opening',this)">Copy</button>
           </div>
         </div>
@@ -2312,6 +2373,7 @@ function renderOutput(sk, output) {
           </div>
           <div class="field-meta">
             <span class="char-count" id="cc-protagonist">${output.characterEntry.length} / 1000</span>
+            ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('field-protagonist').value)">🔊</button>` : ''}
             <button class="btn-copy" onclick="copyField('field-protagonist',this)">Copy</button>
           </div>
         </div>
@@ -2854,12 +2916,16 @@ async function generateNpcPortrait(npcName) {
 
 // ── Key persistence (localStorage) ────────────────────────────────────────
 const KEY_FIELDS = [
-  { id: 'api-key',        store: 'gof_api_key'        },
-  { id: 'gemini-api-key', store: 'gof_gemini_api_key' },
-  { id: 'ollama-url',     store: 'gof_ollama_url'     },
-  { id: 'ollama-model',   store: 'gof_ollama_model'   },
-  { id: 'sd-url',         store: 'gof_sd_url'         },
-  { id: 'img-api-key',    store: 'gof_img_api_key'    },
+  { id: 'api-key',            store: 'gof_api_key'            },
+  { id: 'gemini-api-key',     store: 'gof_gemini_api_key'     },
+  { id: 'ollama-url',         store: 'gof_ollama_url'         },
+  { id: 'ollama-model',       store: 'gof_ollama_model'       },
+  { id: 'sd-url',             store: 'gof_sd_url'             },
+  { id: 'img-api-key',        store: 'gof_img_api_key'        },
+  { id: 'tts-kokoro-url',     store: 'gof_tts_kokoro_url'     },
+  { id: 'tts-openai-key',     store: 'gof_tts_openai_key'     },
+  { id: 'tts-voice-override', store: 'gof_tts_voice_override' },
+  { id: 'tts-speed-override', store: 'gof_tts_speed_override' },
 ];
 
 document.addEventListener('click', e => {
@@ -2914,6 +2980,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const nsfwEl = document.getElementById('include-nsfw');
   nsfwEl.checked = localStorage.getItem('gof_include_nsfw') === 'true';
   nsfwEl.addEventListener('change', e => localStorage.setItem('gof_include_nsfw', e.target.checked));
+
+  // TTS provider persistence
+  const savedTtsProvider = localStorage.getItem('gof_tts_provider') || 'off';
+  setTtsProvider(savedTtsProvider);
 });
 
 function openSettings() {
@@ -2964,11 +3034,165 @@ function updateStatsDisplay() {
     </div>`;
 }
 
+// ── TTS preprocessors ──────────────────────────────────────────────────────
+function preprocessTts(text) {
+  return text
+    .replace(/STR\s+\d+[^|]*(\|[^|]*)+/g, '')
+    .replace(/\(Append to end of Description\)/gi, '')
+    .replace(/\n{3,}/g, '\n\n')
+    .replace(/—/g, ' — ')
+    .trim();
+}
+function preprocessTtsNihongi(text) {
+  return preprocessTts(text)
+    .replace(/\bkami\b/gi, 'kami,')
+    .replace(/\bYomi\b/g, 'Yoh-mee')
+    .replace(/\bkegare\b/gi, 'keh-gah-reh')
+    .replace(/\bgory[oō]\b/gi, 'gohr-yoh')
+    .replace(/\bmisogi\b/gi, 'mee-soh-gee')
+    .replace(/\bkitsune\b/gi, 'kit-sue-neh');
+}
+function preprocessTtsManga(text) {
+  return preprocessTts(text).replace(/!{2,}/g, '!');
+}
+
+// ── TTS provider / config ──────────────────────────────────────────────────
+function setTtsProvider(val) {
+  ttsProvider = val;
+  localStorage.setItem('gof_tts_provider', val);
+  document.getElementById('tts-provider').value = val;
+}
+
+function getEffectiveTtsConfig() {
+  const base    = GENRE_TTS_CONFIG[currentGenre] ?? GENRE_TTS_CONFIG['modern'];
+  const voiceOv = document.getElementById('tts-voice-override')?.value.trim() || null;
+  const speedOv = parseFloat(document.getElementById('tts-speed-override')?.value) || null;
+  const cfg     = { ...base };
+  if (voiceOv || speedOv) {
+    cfg.kokoro = { ...cfg.kokoro, ...(voiceOv && { voice: voiceOv }), ...(speedOv && { speed: speedOv }) };
+    cfg.openai = { ...cfg.openai, ...(voiceOv && { voice: voiceOv }), ...(speedOv && { speed: speedOv }) };
+    cfg.browser = { ...cfg.browser, ...(speedOv && { rate: speedOv }) };
+  }
+  return cfg;
+}
+
+// ── Core narrate / stop ────────────────────────────────────────────────────
+function stopNarration() {
+  ttsAllActive = false;
+  ttsSpeaking  = false;
+  if (ttsAudio) { ttsAudio.pause(); ttsAudio = null; }
+  if (typeof speechSynthesis !== 'undefined') speechSynthesis.cancel();
+  const stopBtn = document.getElementById('btn-tts-stop');
+  if (stopBtn) stopBtn.hidden = true;
+}
+
+function narrate(text) {
+  if (ttsProvider === 'off') return;
+  stopNarration();
+  const cfg  = getEffectiveTtsConfig();
+  const clean = (cfg.preprocess ?? preprocessTts)(text);
+  if (!clean) return;
+  ttsSpeaking = true;
+  const stopBtn = document.getElementById('btn-tts-stop');
+  if (stopBtn) stopBtn.hidden = false;
+  if (ttsProvider === 'browser')  narrateBrowser(clean, cfg.browser);
+  else if (ttsProvider === 'kokoro')  narrateKokoro(clean, cfg.kokoro);
+  else if (ttsProvider === 'openai')  narrateOpenAI(clean, cfg.openai);
+}
+
+function narrateBrowser(text, cfg) {
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.rate  = cfg.rate  ?? 1.0;
+  utt.pitch = cfg.pitch ?? 1.0;
+  utt.onend = utt.onerror = () => {
+    ttsSpeaking = false;
+    const stopBtn = document.getElementById('btn-tts-stop');
+    if (stopBtn) stopBtn.hidden = true;
+  };
+  speechSynthesis.speak(utt);
+}
+
+async function narrateKokoro(text, cfg) {
+  const url = document.getElementById('tts-kokoro-url')?.value.trim();
+  if (!url) { showError('Kokoro URL not set — add it in Settings › Narration.'); ttsSpeaking = false; return; }
+  try {
+    const res = await fetch(`${url.replace(/\/$/, '')}/v1/audio/speech`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'kokoro', input: text, voice: cfg.voice, speed: cfg.speed ?? 1.0 }),
+    });
+    if (!res.ok) throw new Error(`Kokoro ${res.status}`);
+    const blob = await res.blob();
+    ttsAudio = new Audio(URL.createObjectURL(blob));
+    ttsAudio.onended = ttsAudio.onerror = () => {
+      ttsSpeaking = false;
+      const stopBtn = document.getElementById('btn-tts-stop');
+      if (stopBtn) stopBtn.hidden = true;
+    };
+    ttsAudio.play();
+  } catch (err) {
+    ttsSpeaking = false;
+    showError(`Kokoro TTS failed: ${err.message}`);
+  }
+}
+
+async function narrateOpenAI(text, cfg) {
+  const key = document.getElementById('tts-openai-key')?.value.trim();
+  if (!key) { showError('OpenAI key not set — add it in Settings › Narration.'); ttsSpeaking = false; return; }
+  try {
+    const res = await fetch('https://api.openai.com/v1/audio/speech', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
+      body: JSON.stringify({ model: 'tts-1', input: text, voice: cfg.voice, speed: cfg.speed ?? 1.0 }),
+    });
+    if (!res.ok) throw new Error(`OpenAI TTS ${res.status}`);
+    const blob = await res.blob();
+    ttsAudio = new Audio(URL.createObjectURL(blob));
+    ttsAudio.onended = ttsAudio.onerror = () => {
+      ttsSpeaking = false;
+      const stopBtn = document.getElementById('btn-tts-stop');
+      if (stopBtn) stopBtn.hidden = true;
+    };
+    ttsAudio.play();
+  } catch (err) {
+    ttsSpeaking = false;
+    showError(`OpenAI TTS failed: ${err.message}`);
+  }
+}
+
+function waitForTts() {
+  return new Promise(resolve => {
+    const poll = () => { if (!ttsSpeaking) resolve(); else setTimeout(poll, 200); };
+    setTimeout(poll, 100);
+  });
+}
+
+async function narrateAll() {
+  if (ttsProvider === 'off') return;
+  ttsAllActive = true;
+  const ids = ['field-desc', 'field-opening', 'field-plot', 'field-authornote', 'field-protagonist'];
+  const npcIds = Array.from(document.querySelectorAll('[id^="npc-entry-"]')).map(el => el.id);
+  for (const id of [...ids, ...npcIds]) {
+    if (!ttsAllActive) break;
+    const el = document.getElementById(id);
+    if (!el || !el.value?.trim()) continue;
+    narrate(el.value);
+    await waitForTts();
+  }
+  ttsAllActive = false;
+}
+
+function switchSettingsTab(tab) {
+  document.querySelectorAll('.settings-tab').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  document.querySelectorAll('.settings-tab-panel').forEach(p => p.classList.toggle('active', p.id === `tab-${tab}`));
+}
+
 // Expose module functions to inline HTML event handlers
 Object.assign(window, {
   runGenerate, runAIPhase, setGenre, setProvider, setImageProvider, toggleHelp, openSettings, closeSettings,
   copyField, copyAll, copySkeletonText, copyTags,
   generatePortrait, generateNpcPortrait, toggleNpcPortraitMenu, updateCount, downloadPackage,
+  narrate, stopNarration, narrateAll, setTtsProvider, switchSettingsTab,
 });
 </script>
 </body>
