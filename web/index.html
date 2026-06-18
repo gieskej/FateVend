@@ -106,12 +106,16 @@
           </div>
           <div class="settings-group-heading">Voice</div>
           <div class="settings-field">
-            <label for="tts-voice-override">Voice <span class="settings-hint">(blank = genre default)</span></label>
-            <input id="tts-voice-override" class="api-input" type="text" placeholder="nova / af_bella / onyx …" autocomplete="off" spellcheck="false">
+            <label for="tts-voice-override">Voice</label>
+            <select id="tts-voice-override" class="api-input" disabled
+              onchange="localStorage.setItem('gof_tts_voice_override',this.value)">
+              <option value="">— select a provider first —</option>
+            </select>
           </div>
           <div class="settings-field">
-            <label for="tts-speed-override">Speed <span class="settings-hint">(0.5 – 2.0, blank = genre default)</span></label>
-            <input id="tts-speed-override" class="api-input" type="number" min="0.5" max="2" step="0.05" placeholder="1.0">
+            <label for="tts-speed-override">Speed <span class="settings-hint">(0.5 – 2.0)</span></label>
+            <input id="tts-speed-override" class="api-input" type="number" min="0.5" max="2" step="0.05" placeholder="1.0"
+              oninput="localStorage.setItem('gof_tts_speed_override',this.value)">
           </div>
         </div>
 
@@ -1451,10 +1455,11 @@ let currentGeneratedAt = null;
 let currentStats       = null;
 let npcPortraitData       = {};
 let npcPortraitGenerating = false;
-let ttsProvider  = 'off';
-let ttsAudio     = null;
-let ttsSpeaking  = false;
-let ttsAllActive = false;
+let ttsProvider    = 'off';
+let ttsAudio       = null;
+let ttsSpeaking    = false;
+let ttsAllActive   = false;
+let ttsNarrateBtn  = null;
 
 const GENRE_PORTRAIT_STYLES = {
   'modern':                           'modern cinematic style, natural lighting, detailed digital illustration, centered subject, clean composition, contemporary realism, muted urban palette, grounded atmosphere',
@@ -2240,7 +2245,7 @@ function renderOutput(sk, output) {
             </div>
             <div class="field-meta">
               <span class="char-count" id="cc-npc-${safeName}">${entry.length} / 1000</span>
-              ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('npc-entry-${safeName}').value)">🔊</button>` : ''}
+              ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('npc-entry-${safeName}').value,this)">🔊</button>` : ''}
               <button class="btn-copy" onclick="copyField('npc-entry-${safeName}', this)">Copy</button>
             </div>
           </div>
@@ -2306,7 +2311,7 @@ function renderOutput(sk, output) {
           <span class="field-label">Details: Description</span>
           <div class="field-meta">
             <span class="char-count" id="cc-desc">${output.description.length} / 5000</span>
-            ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('field-desc').value)">🔊</button>` : ''}
+            ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('field-desc').value,this)">🔊</button>` : ''}
             <button class="btn-copy" onclick="copyField('field-desc',this)">Copy</button>
           </div>
         </div>
@@ -2320,7 +2325,7 @@ function renderOutput(sk, output) {
           <span class="field-label">Plot: Plot Essentials</span>
           <div class="field-meta">
             <span class="char-count" id="cc-plot">${output.plotEssentials.length} / 2000</span>
-            ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('field-plot').value)">🔊</button>` : ''}
+            ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('field-plot').value,this)">🔊</button>` : ''}
             <button class="btn-copy" onclick="copyField('field-plot',this)">Copy</button>
           </div>
         </div>
@@ -2334,7 +2339,7 @@ function renderOutput(sk, output) {
           <span class="field-label">Style: Author's Note</span>
           <div class="field-meta">
             <span class="char-count" id="cc-authornote">${output.authorNote.length} / 500</span>
-            ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('field-authornote').value)">🔊</button>` : ''}
+            ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('field-authornote').value,this)">🔊</button>` : ''}
             <button class="btn-copy" onclick="copyField('field-authornote',this)">Copy</button>
           </div>
         </div>
@@ -2347,7 +2352,7 @@ function renderOutput(sk, output) {
           <span class="field-label">Details: Opening (Append to end of Description)</span>
           <div class="field-meta">
             <span class="char-count" id="cc-opening">${output.opening.length} / 4000</span>
-            ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('field-opening').value)">🔊</button>` : ''}
+            ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('field-opening').value,this)">🔊</button>` : ''}
             <button class="btn-copy" onclick="copyField('field-opening',this)">Copy</button>
           </div>
         </div>
@@ -2373,7 +2378,7 @@ function renderOutput(sk, output) {
           </div>
           <div class="field-meta">
             <span class="char-count" id="cc-protagonist">${output.characterEntry.length} / 1000</span>
-            ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('field-protagonist').value)">🔊</button>` : ''}
+            ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('field-protagonist').value,this)">🔊</button>` : ''}
             <button class="btn-copy" onclick="copyField('field-protagonist',this)">Copy</button>
           </div>
         </div>
@@ -2922,10 +2927,8 @@ const KEY_FIELDS = [
   { id: 'ollama-model',       store: 'gof_ollama_model'       },
   { id: 'sd-url',             store: 'gof_sd_url'             },
   { id: 'img-api-key',        store: 'gof_img_api_key'        },
-  { id: 'tts-kokoro-url',     store: 'gof_tts_kokoro_url'     },
-  { id: 'tts-openai-key',     store: 'gof_tts_openai_key'     },
-  { id: 'tts-voice-override', store: 'gof_tts_voice_override' },
-  { id: 'tts-speed-override', store: 'gof_tts_speed_override' },
+  { id: 'tts-kokoro-url', store: 'gof_tts_kokoro_url' },
+  { id: 'tts-openai-key', store: 'gof_tts_openai_key' },
 ];
 
 document.addEventListener('click', e => {
@@ -2981,9 +2984,16 @@ document.addEventListener('DOMContentLoaded', () => {
   nsfwEl.checked = localStorage.getItem('gof_include_nsfw') === 'true';
   nsfwEl.addEventListener('change', e => localStorage.setItem('gof_include_nsfw', e.target.checked));
 
-  // TTS provider persistence
+  // TTS provider persistence — setTtsProvider must run first to populate the voice select options
   const savedTtsProvider = localStorage.getItem('gof_tts_provider') || 'off';
   setTtsProvider(savedTtsProvider);
+  // Restore saved voice/speed on top of genre defaults (silently ignored if not a valid option)
+  const savedVoice = localStorage.getItem('gof_tts_voice_override');
+  const ttsVoiceEl = document.getElementById('tts-voice-override');
+  if (savedVoice && ttsVoiceEl && !ttsVoiceEl.disabled) ttsVoiceEl.value = savedVoice;
+  const savedSpeed = localStorage.getItem('gof_tts_speed_override');
+  const ttsSpeedEl = document.getElementById('tts-speed-override');
+  if (savedSpeed && ttsSpeedEl) ttsSpeedEl.value = savedSpeed;
 });
 
 function openSettings() {
@@ -3057,64 +3067,136 @@ function preprocessTtsManga(text) {
 }
 
 // ── TTS provider / config ──────────────────────────────────────────────────
+const KOKORO_VOICES = [
+  { value: 'af_bella',      label: 'af_bella — American Female (Bella)'    },
+  { value: 'af_sky',        label: 'af_sky — American Female (Sky)'        },
+  { value: 'af_nicole',     label: 'af_nicole — American Female (Nicole)'  },
+  { value: 'am_adam',       label: 'am_adam — American Male (Adam)'        },
+  { value: 'am_michael',    label: 'am_michael — American Male (Michael)'  },
+  { value: 'bf_emma',       label: 'bf_emma — British Female (Emma)'       },
+  { value: 'bf_isabella',   label: 'bf_isabella — British Female (Isabella)'},
+  { value: 'bm_george',     label: 'bm_george — British Male (George)'     },
+  { value: 'bm_lewis',      label: 'bm_lewis — British Male (Lewis)'       },
+  { value: 'jf_alpha',      label: 'jf_alpha — Japanese Female (Alpha)'    },
+  { value: 'jf_gongitsune', label: 'jf_gongitsune — Japanese Female (Gongitsune)' },
+  { value: 'jm_kumo',       label: 'jm_kumo — Japanese Male (Kumo)'        },
+];
+
+const OPENAI_VOICES = [
+  { value: 'alloy',   label: 'alloy — neutral'      },
+  { value: 'echo',    label: 'echo — male'           },
+  { value: 'fable',   label: 'fable — storyteller'  },
+  { value: 'nova',    label: 'nova — female'         },
+  { value: 'onyx',    label: 'onyx — deep male'      },
+  { value: 'shimmer', label: 'shimmer — soft female' },
+];
+
 function setTtsProvider(val) {
   ttsProvider = val;
   localStorage.setItem('gof_tts_provider', val);
-  document.getElementById('tts-provider').value = val;
+  const provEl = document.getElementById('tts-provider');
+  if (provEl) provEl.value = val;
+
+  const voiceEl = document.getElementById('tts-voice-override');
+  const speedEl = document.getElementById('tts-speed-override');
+  const cfg = GENRE_TTS_CONFIG[currentGenre] ?? GENRE_TTS_CONFIG['modern'];
+
+  if (val === 'kokoro') {
+    if (voiceEl) {
+      voiceEl.innerHTML = KOKORO_VOICES.map(v => `<option value="${v.value}">${v.label}</option>`).join('');
+      voiceEl.disabled = false;
+      voiceEl.value = cfg.kokoro.voice;
+    }
+    if (speedEl) speedEl.value = cfg.kokoro.speed ?? 1.0;
+  } else if (val === 'openai') {
+    if (voiceEl) {
+      voiceEl.innerHTML = OPENAI_VOICES.map(v => `<option value="${v.value}">${v.label}</option>`).join('');
+      voiceEl.disabled = false;
+      voiceEl.value = cfg.openai.voice;
+    }
+    if (speedEl) speedEl.value = cfg.openai.speed ?? 1.0;
+  } else if (val === 'browser') {
+    if (voiceEl) {
+      voiceEl.innerHTML = '<option value="">System default</option>';
+      voiceEl.disabled = true;
+    }
+    if (speedEl) speedEl.value = cfg.browser.rate ?? 1.0;
+  } else {
+    if (voiceEl) {
+      voiceEl.innerHTML = '<option value="">— select a provider first —</option>';
+      voiceEl.disabled = true;
+    }
+    if (speedEl) speedEl.value = '';
+  }
 }
 
 function getEffectiveTtsConfig() {
-  const base    = GENRE_TTS_CONFIG[currentGenre] ?? GENRE_TTS_CONFIG['modern'];
-  const voiceOv = document.getElementById('tts-voice-override')?.value.trim() || null;
-  const speedOv = parseFloat(document.getElementById('tts-speed-override')?.value) || null;
-  const cfg     = { ...base };
-  if (voiceOv || speedOv) {
-    cfg.kokoro = { ...cfg.kokoro, ...(voiceOv && { voice: voiceOv }), ...(speedOv && { speed: speedOv }) };
-    cfg.openai = { ...cfg.openai, ...(voiceOv && { voice: voiceOv }), ...(speedOv && { speed: speedOv }) };
-    cfg.browser = { ...cfg.browser, ...(speedOv && { rate: speedOv }) };
-  }
-  return cfg;
+  const base  = GENRE_TTS_CONFIG[currentGenre] ?? GENRE_TTS_CONFIG['modern'];
+  const voice = document.getElementById('tts-voice-override')?.value || null;
+  const speed = parseFloat(document.getElementById('tts-speed-override')?.value) || null;
+  return {
+    preprocess: base.preprocess,
+    browser: { ...base.browser, ...(speed && { rate: speed }) },
+    kokoro:  { voice: voice ?? base.kokoro.voice, speed: speed ?? base.kokoro.speed },
+    openai:  { voice: voice ?? base.openai.voice, speed: speed ?? base.openai.speed },
+  };
 }
 
 // ── Core narrate / stop ────────────────────────────────────────────────────
+function setNarrateButtonState(btn, state) {
+  if (!btn) return;
+  btn.classList.remove('loading', 'speaking');
+  if (state === 'loading') {
+    btn.textContent = '◌';
+    btn.classList.add('loading');
+  } else if (state === 'speaking') {
+    btn.textContent = '⏸';
+    btn.classList.add('speaking');
+  } else {
+    btn.textContent = '🔊';
+  }
+}
+
 function stopNarration() {
   ttsAllActive = false;
   ttsSpeaking  = false;
+  setNarrateButtonState(ttsNarrateBtn, 'idle');
+  ttsNarrateBtn = null;
   if (ttsAudio) { ttsAudio.pause(); ttsAudio = null; }
   if (typeof speechSynthesis !== 'undefined') speechSynthesis.cancel();
   const stopBtn = document.getElementById('btn-tts-stop');
   if (stopBtn) stopBtn.hidden = true;
 }
 
-function narrate(text) {
+function narrate(text, btn = null) {
   if (ttsProvider === 'off') return;
+  if (btn && btn === ttsNarrateBtn && ttsSpeaking) { stopNarration(); return; }
   stopNarration();
-  const cfg  = getEffectiveTtsConfig();
+  const cfg   = getEffectiveTtsConfig();
   const clean = (cfg.preprocess ?? preprocessTts)(text);
   if (!clean) return;
-  ttsSpeaking = true;
+  ttsNarrateBtn = btn;
+  ttsSpeaking   = true;
+  setNarrateButtonState(btn, 'loading');
   const stopBtn = document.getElementById('btn-tts-stop');
   if (stopBtn) stopBtn.hidden = false;
-  if (ttsProvider === 'browser')  narrateBrowser(clean, cfg.browser);
+  if (ttsProvider === 'browser')      narrateBrowser(clean, cfg.browser);
   else if (ttsProvider === 'kokoro')  narrateKokoro(clean, cfg.kokoro);
   else if (ttsProvider === 'openai')  narrateOpenAI(clean, cfg.openai);
 }
 
 function narrateBrowser(text, cfg) {
+  setNarrateButtonState(ttsNarrateBtn, 'speaking');
   const utt = new SpeechSynthesisUtterance(text);
   utt.rate  = cfg.rate  ?? 1.0;
   utt.pitch = cfg.pitch ?? 1.0;
-  utt.onend = utt.onerror = () => {
-    ttsSpeaking = false;
-    const stopBtn = document.getElementById('btn-tts-stop');
-    if (stopBtn) stopBtn.hidden = true;
-  };
+  utt.onend = utt.onerror = () => { stopNarration(); };
   speechSynthesis.speak(utt);
 }
 
 async function narrateKokoro(text, cfg) {
   const url = document.getElementById('tts-kokoro-url')?.value.trim();
-  if (!url) { showError('Kokoro URL not set — add it in Settings › Narration.'); ttsSpeaking = false; return; }
+  if (!url) { showError('Kokoro URL not set — add it in Settings › Narration.'); stopNarration(); return; }
   try {
     const res = await fetch(`${url.replace(/\/$/, '')}/v1/audio/speech`, {
       method: 'POST',
@@ -3123,22 +3205,20 @@ async function narrateKokoro(text, cfg) {
     });
     if (!res.ok) throw new Error(`Kokoro ${res.status}`);
     const blob = await res.blob();
+    if (!ttsSpeaking) return;
     ttsAudio = new Audio(URL.createObjectURL(blob));
-    ttsAudio.onended = ttsAudio.onerror = () => {
-      ttsSpeaking = false;
-      const stopBtn = document.getElementById('btn-tts-stop');
-      if (stopBtn) stopBtn.hidden = true;
-    };
+    setNarrateButtonState(ttsNarrateBtn, 'speaking');
+    ttsAudio.onended = ttsAudio.onerror = () => { stopNarration(); };
     ttsAudio.play();
   } catch (err) {
-    ttsSpeaking = false;
+    stopNarration();
     showError(`Kokoro TTS failed: ${err.message}`);
   }
 }
 
 async function narrateOpenAI(text, cfg) {
   const key = document.getElementById('tts-openai-key')?.value.trim();
-  if (!key) { showError('OpenAI key not set — add it in Settings › Narration.'); ttsSpeaking = false; return; }
+  if (!key) { showError('OpenAI key not set — add it in Settings › Narration.'); stopNarration(); return; }
   try {
     const res = await fetch('https://api.openai.com/v1/audio/speech', {
       method: 'POST',
@@ -3147,15 +3227,13 @@ async function narrateOpenAI(text, cfg) {
     });
     if (!res.ok) throw new Error(`OpenAI TTS ${res.status}`);
     const blob = await res.blob();
+    if (!ttsSpeaking) return;
     ttsAudio = new Audio(URL.createObjectURL(blob));
-    ttsAudio.onended = ttsAudio.onerror = () => {
-      ttsSpeaking = false;
-      const stopBtn = document.getElementById('btn-tts-stop');
-      if (stopBtn) stopBtn.hidden = true;
-    };
+    setNarrateButtonState(ttsNarrateBtn, 'speaking');
+    ttsAudio.onended = ttsAudio.onerror = () => { stopNarration(); };
     ttsAudio.play();
   } catch (err) {
-    ttsSpeaking = false;
+    stopNarration();
     showError(`OpenAI TTS failed: ${err.message}`);
   }
 }
