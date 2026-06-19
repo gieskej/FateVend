@@ -1,5 +1,5 @@
 """
-Shared core for Gears of Fate icon-generation scripts.
+Shared core for FateVend icon-generation scripts.
 Import run() from a genre-specific generate_icons.py wrapper.
 """
 

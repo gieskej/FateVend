@@ -1,6 +1,6 @@
 # /test-ui
 
-Run a full end-to-end UI test of the Gears of Fate generator at `http://localhost:8080/`. Tests the complete two-phase generation flow and verifies key UI features.
+Run a full end-to-end UI test of the FateVend generator at `http://localhost:8080/`. Tests the complete two-phase generation flow and verifies key UI features.
 
 ## Steps
 

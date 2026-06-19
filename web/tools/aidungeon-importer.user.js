@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name         GearsOfFate → AI Dungeon
+// @name         FateVend → AI Dungeon
 // @namespace    https://play.aidungeon.com/
 // @version      1.1.0
-// @description  One-click import of GearsOfFate scenario JSON into AI Dungeon Create Scenario
-// @author       GearsOfFate
+// @description  One-click import of FateVend scenario JSON into AI Dungeon Create Scenario
+// @author       FateVend
 // @match        https://play.aidungeon.com/*
 // @grant        none
 // @run-at       document-idle
@@ -180,9 +180,9 @@
     overlay.innerHTML = `
       <div id="gof-modal">
         <button id="gof-close" title="Close">×</button>
-        <h2>⚙ GearsOfFate Import</h2>
+        <h2>⚙ FateVend Import</h2>
         <p class="sub">
-          In GearsOfFate, click <strong>Copy Full Scenario Package</strong>, then paste here:
+          In FateVend, click <strong>Copy Full Scenario Package</strong>, then paste here:
         </p>
         <textarea id="gof-paste" placeholder='{ "scenario": { "title": "..." }, "characters": { ... } }'></textarea>
         <button id="gof-parse-btn">Parse →</button>

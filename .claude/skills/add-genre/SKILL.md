@@ -1,6 +1,6 @@
 # /add-genre
 
-Scaffold a new genre for the Gears of Fate generator. A genre is a self-contained folder under `web/generator/genres/<name>/` that provides all curated tables and a prompt template. The same tables power both the module API and the inline `index.html`.
+Scaffold a new genre for the FateVend generator. A genre is a self-contained folder under `web/generator/genres/<name>/` that provides all curated tables and a prompt template. The same tables power both the module API and the inline `index.html`.
 
 ## Usage
 

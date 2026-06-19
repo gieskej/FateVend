@@ -1,4 +1,4 @@
-# Gears of Fate — RPG Character Generator
+# FateVend — RPG Character Generator
 
 A personality-first RPG character generator for AI Dungeon scenarios. Rolls stats, seeds a full character skeleton from curated tables, then calls an AI API (Claude or Gemini) to generate terse behavioral prose — character entries, a scenario description, opening, and tags — ready to copy-paste into AI Dungeon.
 

@@ -1,4 +1,4 @@
-# Gears of Fate — Requirements & Design
+# FateVend — Requirements & Design
 
 ## Overview
 
