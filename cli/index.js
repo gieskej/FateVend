@@ -1,43 +1,154 @@
 #!/usr/bin/env node
-// cli/index.js
-// Thin CLI wrapper around the generator library.
-// Calls generateCharacter and prints results to stdout.
+// cli/index.js — FateVend CLI
+// Reads .env from the project root for API keys.
 //
 // Usage:
-//   ANTHROPIC_API_KEY=sk-ant-... node cli/index.js
-//   ANTHROPIC_API_KEY=sk-ant-... node cli/index.js --skeleton-only
-//   ANTHROPIC_API_KEY=sk-ant-... node cli/index.js --json
+//   node cli/index.js [options]
+//
+// Options:
+//   --genre <genre>        modern (default), fantasy, sci-fi, paleolithic,
+//                          manga-osaka-highschool1987,
+//                          historical-korea-joseon-dynasty, nihongi
+//   --provider <provider>  claude (default), gemini, ollama
+//   --ollama-url <url>     Ollama base URL (default: http://localhost:11434)
+//   --ollama-model <name>  Ollama model name (default: llama3.2)
+//   --skeleton-only        Skip AI call, print character skeleton only
+//   --json                 Output machine-readable JSON
 
+import { readFileSync } from 'fs';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
 import { generateCharacter } from '../web/generator/index.js';
+import { callGeminiAPI } from '../web/generator/api-client.js';
 
-const args       = process.argv.slice(2);
-const skeletonOnly = args.includes('--skeleton-only');
-const jsonMode     = args.includes('--json');
-const apiKey       = process.env.ANTHROPIC_API_KEY ?? null;
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
-if (!skeletonOnly && !apiKey) {
-  console.error('Error: ANTHROPIC_API_KEY environment variable is required.');
-  console.error('Run with --skeleton-only to skip the AI call.');
+// Exit cleanly when stdout pipe closes (e.g. piping into `head`)
+process.stdout.on('error', err => { if (err.code === 'EPIPE') process.exit(0); });
+
+// ── Load .env (before reading process.env) ─────────────────────────────────
+function loadEnv() {
+  try {
+    const text = readFileSync(resolve(__dirname, '../.env'), 'utf8');
+    for (const line of text.split(/\r?\n/)) {
+      const t = line.trim();
+      if (!t || t.startsWith('#')) continue;
+      const eq = t.indexOf('=');
+      if (eq === -1) continue;
+      const key = t.slice(0, eq).trim();
+      let val = t.slice(eq + 1).trim();
+      if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'")))
+        val = val.slice(1, -1);
+      if (key && !(key in process.env)) process.env[key] = val;
+    }
+  } catch { /* .env is optional — fall through to env vars */ }
+}
+loadEnv();
+
+// ── Parse CLI args ─────────────────────────────────────────────────────────
+function flag(name) {
+  const i = process.argv.indexOf(name);
+  if (i !== -1 && i + 1 < process.argv.length && !process.argv[i + 1].startsWith('--'))
+    return process.argv[i + 1];
+  const prefix = process.argv.find(a => a.startsWith(`${name}=`));
+  return prefix ? prefix.slice(name.length + 1) : null;
+}
+const has = name => process.argv.includes(name);
+
+const genre        = flag('--genre')        ?? 'modern';
+const provider     = flag('--provider')     ?? 'claude';
+const ollamaUrl    = flag('--ollama-url')   ?? process.env.OLLAMA_URL   ?? 'http://localhost:11434';
+const ollamaModel  = flag('--ollama-model') ?? process.env.OLLAMA_MODEL ?? 'llama3.2';
+const skeletonOnly = has('--skeleton-only');
+const jsonMode     = has('--json');
+
+const anthropicKey = process.env.ANTHROPIC_API_KEY ?? null;
+const geminiKey    = process.env.GEMINI_API_KEY    ?? null;
+
+// ── Validate ───────────────────────────────────────────────────────────────
+const VALID_GENRES = [
+  'modern', 'fantasy', 'sci-fi', 'paleolithic',
+  'manga-osaka-highschool1987', 'historical-korea-joseon-dynasty', 'nihongi',
+];
+
+if (!VALID_GENRES.includes(genre)) {
+  console.error(`Error: Unknown genre "${genre}".`);
+  console.error(`Valid genres: ${VALID_GENRES.join(', ')}`);
   process.exit(1);
 }
 
-async function main() {
-  console.error('Generating character...');
+if (!skeletonOnly) {
+  if (provider === 'claude' && !anthropicKey) {
+    console.error('Error: ANTHROPIC_API_KEY not set. Add it to .env or export it.');
+    process.exit(1);
+  }
+  if (provider === 'gemini' && !geminiKey) {
+    console.error('Error: GEMINI_API_KEY not set. Add it to .env or export it.');
+    process.exit(1);
+  }
+  if (!['claude', 'gemini', 'ollama'].includes(provider)) {
+    console.error(`Error: Unknown provider "${provider}". Valid: claude, gemini, ollama`);
+    process.exit(1);
+  }
+}
 
-  const { skeleton, output } = await generateCharacter({
-    genre:  'modern',
-    apiKey: skeletonOnly ? null : apiKey,
-    skipAI: skeletonOnly,
+// ── Ollama call ────────────────────────────────────────────────────────────
+async function callOllamaAPI(skeleton, baseUrl, model, genreId) {
+  const tmpl = await import(`../web/generator/genres/${genreId}/prompt-template.js`);
+  const prompt = 'Return raw JSON only — no markdown, no code fences, no commentary.\n\n'
+    + tmpl.buildPrompt(skeleton);
+
+  const res = await fetch(`${baseUrl.replace(/\/+$/, '')}/api/chat`, {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model,
+      messages: [
+        { role: 'system', content: tmpl.SYSTEM_PROMPT },
+        { role: 'user',   content: prompt },
+      ],
+      stream: false,
+    }),
   });
 
+  if (!res.ok) {
+    const err = await res.text().catch(() => '(no body)');
+    throw new Error(`Ollama error ${res.status}: ${err}`);
+  }
+
+  const data   = await res.json();
+  const raw    = data.message?.content ?? '';
+  const parsed = tmpl.parseResponse(raw);
+  if (!parsed) throw new Error('Failed to parse Ollama response as JSON');
+  return parsed;
+}
+
+// ── Main ───────────────────────────────────────────────────────────────────
+async function main() {
+  const providerLabel = skeletonOnly ? 'skeleton only' : provider;
+  console.error(`Generating character… (genre: ${genre}, provider: ${providerLabel})`);
+
+  let skeleton, output;
+
+  if (provider === 'claude' && !skeletonOnly) {
+    ({ skeleton, output } = await generateCharacter({ genre, apiKey: anthropicKey }));
+  } else {
+    ({ skeleton } = await generateCharacter({ genre, skipAI: true }));
+    if (!skeletonOnly) {
+      if (provider === 'gemini') {
+        output = await callGeminiAPI(skeleton, geminiKey, genre);
+      } else if (provider === 'ollama') {
+        output = await callOllamaAPI(skeleton, ollamaUrl, ollamaModel, genre);
+      }
+    }
+  }
+
   if (jsonMode) {
-    // Machine-readable output
-    console.log(JSON.stringify({ skeleton, output }, null, 2));
+    console.log(JSON.stringify({ skeleton, output: output ?? null }, null, 2));
     return;
   }
 
-  // ── HUMAN-READABLE OUTPUT ─────────────────────────────────────────────
-
+  // ── Human-readable output ──────────────────────────────────────────────
   const hr = '─'.repeat(60);
 
   console.log(`\n${hr}`);
@@ -48,7 +159,7 @@ async function main() {
   console.log(`Gender:      ${skeleton.gender} (${skeleton.pronouns})`);
   console.log(`Orientation: ${skeleton.orientation}`);
   console.log(`Ethnicity:   ${skeleton.ethnicityBroad}`);
-  console.log(`Appearance:  ${[skeleton.appearance.build, skeleton.appearance.hair, skeleton.appearance.distinguishingFeature].filter(Boolean).join('; ')}`);
+  console.log(`Appearance:  ${[skeleton.appearance?.build, skeleton.appearance?.hair, skeleton.appearance?.distinguishingFeature].filter(Boolean).join('; ')}`);
   console.log(`Quirk:       ${skeleton.quirk}`);
   console.log('');
   console.log('STATS');
@@ -76,10 +187,11 @@ async function main() {
     console.log(`\n${hr}`);
     console.log('AI DUNGEON — SCENARIO');
     console.log(hr);
+
     console.log(`\nTITLE (${output.title.length}/70 chars):`);
     console.log(output.title);
 
-    console.log(`\nTAGS:`);
+    console.log('\nTAGS:');
     console.log(output.tags.join(', '));
 
     console.log(`\nDESCRIPTION (${output.description.length}/5000 chars):`);
@@ -95,7 +207,7 @@ async function main() {
     console.log(`\n${skeleton.name} — PROTAGONIST (${output.characterEntry.length}/1000 chars):`);
     console.log(output.characterEntry);
 
-    for (const [npcName, entry] of Object.entries(output.npcEntries)) {
+    for (const [npcName, entry] of Object.entries(output.npcEntries ?? {})) {
       console.log(`\n${npcName} (${entry.length}/1000 chars):`);
       console.log(entry);
     }

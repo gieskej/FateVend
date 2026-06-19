@@ -2,6 +2,12 @@
 
 ## 2026-06-18
 
+### Fix: Nihongi AI Output Missing Spaces Between Words
+**What changed:** Removed a broken `.replace()` in `parseResponse()` in `genres/nihongi/prompt-template.js`.
+**Why:** The regex `/[ -]/g` was interpreted as a character range from space (U+0020) to hyphen (U+002D), stripping every space from the Claude API response before JSON parsing. All words in the AI-generated scenario ran together with no whitespace.
+**Gameplay impact:** Nihongi character descriptions, openings, NPC entries, and titles now display correctly.
+**Root cause:** `[ -]` in a regex character class is a range, not "space or hyphen". The `\n`/`\t` guard in the callback was dead code — those chars fall outside the matched range.
+
 ### Project Renamed: Gears of Fate → FateVend
 **What changed:** All display names, titles, and code references updated from "Gears of Fate" / "GearsOfFate" to "FateVend".
 **Why:** Trademark avoidance.

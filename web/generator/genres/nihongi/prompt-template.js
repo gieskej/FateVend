@@ -93,10 +93,7 @@ export function parseResponse(rawText) {
   try {
     const fenced = rawText.match(/```(?:json)?\s*([\s\S]*?)```/);
     const jsonStr = fenced ? fenced[1] : rawText;
-    const clean = jsonStr
-      .replace(/[ -]/g, c => c === '\n' || c === '\t' ? c : '')
-      .trim();
-    return JSON.parse(clean);
+    return JSON.parse(jsonStr.trim());
   } catch {
     const start = rawText.indexOf('{');
     const end   = rawText.lastIndexOf('}');
