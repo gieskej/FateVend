@@ -656,10 +656,20 @@ function buildCast(protName, protLast, ethnicityBroad, familyStructure, tables, 
   const MAX = 6;
   const pc = familyStructure.parentCount ?? 0;
 
+  const usedFirstNames = new Set([protName.split(' ')[0]]);
+  function uniqueFirst(genderId, pool) {
+    for (let i = 0; i < 15; i++) {
+      const fn = pickFirst(genderId, pool);
+      if (!usedFirstNames.has(fn)) { usedFirstNames.add(fn); return fn; }
+    }
+    const fn = pickFirst(genderId, pool);
+    usedFirstNames.add(fn);
+    return fn;
+  }
+
   function _parentName(isMother) {
     const pool = namePools[ethnicityBroad] ?? namePools['default'];
-    const fn = isMother ? uniformPick(pool.fem) : uniformPick(pool.masc);
-    return fn;
+    return uniqueFirst(isMother ? 'woman' : 'man', pool);
   }
   function _buildParent(role, structure) {
     let status;
@@ -706,7 +716,7 @@ function buildCast(protName, protLast, ethnicityBroad, familyStructure, tables, 
   if (relStatusId && PARTNER_HAS_NPC.has(relStatusId) && cast.length < MAX) {
     const pGid     = loveInterestGenderId(protagonistGenderId, protagonistOrientation);
     const pPool    = namePools[ethnicityBroad] ?? namePools['default'];
-    const pFirst   = pGid === 'man' || pGid === 'trans_man' ? uniformPick(pPool.masc) : uniformPick(pPool.fem);
+    const pFirst   = uniqueFirst(pGid, pPool);
     const lastOpts = pPool.last.filter(n => n !== protLast);
     const pLast    = uniformPick(lastOpts.length ? lastOpts : pPool.last);
     const pDyns    = PARTNER_DYNAMICS[relStatusId] ?? PARTNER_DYNAMICS.complicated;
@@ -727,7 +737,7 @@ function buildCast(protName, protLast, ethnicityBroad, familyStructure, tables, 
     const dyn = uniformPick(SIBLING_DYN);
     const genderId = Math.random() < 0.5 ? 'man' : 'woman';
     const pool = namePools[ethnicityBroad] ?? namePools['default'];
-    const firstName = genderId === 'man' ? uniformPick(pool.masc) : uniformPick(pool.fem);
+    const firstName = uniqueFirst(genderId, pool);
     const isOlder = ['protective_older','golden_child'].includes(dyn.id);
     const isYounger = dyn.id === 'younger_dependent';
     cast.push({
@@ -743,8 +753,10 @@ function buildCast(protName, protLast, ethnicityBroad, familyStructure, tables, 
 
   const friendSlots = Math.min(randomInt(1,2), MAX - cast.length - 1);
   for (let i = 0; i < friendSlots; i++) {
-    const fGid = neutralGenderId();
-    const { fullName:fName, broad:fBroad } = nameForGender(fGid, namePools);
+    const fGid   = neutralGenderId();
+    const fBroad = randomBroadFrom(namePools);
+    const fPool  = namePools[fBroad] ?? namePools['default'];
+    const fName  = `${uniqueFirst(fGid, fPool)} ${uniformPick(fPool.last)}`;
     cast.push({ name:fName, role:'best friend', status:'present and close', gender:GENDER_LABELS[fGid], race:fBroad, traits:pickTraits(3), dynamic:fillD(uniformPick(FRIEND_DYNAMICS), protName) });
   }
 
@@ -755,7 +767,9 @@ function buildCast(protName, protLast, ethnicityBroad, familyStructure, tables, 
     const foilGid     = foilType.role === 'love interest'
       ? loveInterestGenderId(protagonistGenderId, protagonistOrientation)
       : neutralGenderId();
-    const { fullName:foilName, broad:foilBroad } = nameForGender(foilGid, namePools);
+    const foilBroad = randomBroadFrom(namePools);
+    const foilNPool = namePools[foilBroad] ?? namePools['default'];
+    const foilName  = `${uniqueFirst(foilGid, foilNPool)} ${uniformPick(foilNPool.last)}`;
     cast.push({ name:foilName, role:foilType.role, status:'present', gender:GENDER_LABELS[foilGid], race:foilBroad, traits:pickTraits(2), dynamic:fillD(uniformPick(foilType.dynamics), protName) });
   }
   return cast;
