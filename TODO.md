@@ -2,7 +2,7 @@
 
 ## Bugs
 - The aidungeon-importer needs to import the tags.
-- If I click Narrate All button, it only narrates the first text blob.  It should read out everything, including the section titles (e.g. character names).
+- The aidungeon-importer is flaky about uploading the portrait image.  Sometimes it works, sometimes it does not.
 - In the Narration Settings, the Voice pick list seems static.  It should query the TTS provider for its installed voices.
 - Synthetic constructs need special handling:
     - Industrial Androids should have no gender, orientation, relationship, or family background.
@@ -17,6 +17,7 @@
 ---
 
 ## Fixed Bugs
+- If I click Narrate All button, it only narrates the first text blob.  It should read out everything, including the section titles (e.g. character names).  If possible, it is desirable to make multiple TTS calls since it takes a long time to generate.
 - Clicking on Spin The Reels should abort any music or sound effect currently playing.
 - When generating NPC's, do NOT allow two characters with the same first name.  It just makes game play easier.
 - The Copy To Clipboard builder needs to also add the Plot Essentials and Author's Notes sections.

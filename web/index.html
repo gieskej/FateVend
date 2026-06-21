@@ -2412,7 +2412,7 @@ function renderOutput(sk, output) {
       ↓ Download Package (.zip)
     </button>
     <button class="btn-copy-all" id="btn-import-ai-dungeon" onclick="importToAIDungeon(this)" style="margin-top:0.5rem;display:none;">
-      ↑ Import to AI Dungeon
+      ↑ Import to AI Dungeon (Beta)
     </button>
     <div class="bottom-actions">
       <button class="btn-go-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Go to Top</button>
@@ -3320,26 +3320,127 @@ async function narrateOpenAI(text, cfg) {
   }
 }
 
-function waitForTts() {
-  return new Promise(resolve => {
-    const poll = () => { if (!ttsSpeaking) resolve(); else setTimeout(poll, 200); };
-    setTimeout(poll, 100);
+// Split text into sentence-boundary chunks for pipelined TTS
+function splitNarrationChunks(text, maxLen = 350) {
+  const sentences = text.match(/[^.!?]+[.!?]+\s*/g) ?? [text];
+  const chunks = [];
+  let cur = '';
+  for (const s of sentences) {
+    if (cur.length + s.length > maxLen && cur) { chunks.push(cur.trim()); cur = s; }
+    else cur += s;
+  }
+  if (cur.trim()) chunks.push(cur.trim());
+  return chunks.filter(Boolean);
+}
+
+// Fetch a TTS audio blob from the configured cloud provider
+async function _fetchTtsBlob(text, cfg) {
+  if (ttsProvider === 'kokoro') {
+    const url = document.getElementById('tts-kokoro-url')?.value.trim();
+    if (!url) throw new Error('Kokoro URL not set — add it in Settings › Narration.');
+    const res = await fetch(`${url.replace(/\/$/, '')}/v1/audio/speech`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'kokoro', input: text, voice: cfg.kokoro.voice, speed: cfg.kokoro.speed ?? 1.0 }),
+    });
+    if (!res.ok) throw new Error(`Kokoro ${res.status}`);
+    return res.blob();
+  }
+  if (ttsProvider === 'openai') {
+    const key = document.getElementById('tts-openai-key')?.value.trim();
+    if (!key) throw new Error('OpenAI key not set — add it in Settings › Narration.');
+    const res = await fetch('https://api.openai.com/v1/audio/speech', {
+      method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
+      body: JSON.stringify({ model: 'tts-1', input: text, voice: cfg.openai.voice, speed: cfg.openai.speed ?? 1.0 }),
+    });
+    if (!res.ok) throw new Error(`OpenAI TTS ${res.status}`);
+    return res.blob();
+  }
+}
+
+// Play a blob and resolve when playback ends
+function _playAudioBlob(blob) {
+  return new Promise((resolve, reject) => {
+    if (ttsAudio) { ttsAudio.pause(); ttsAudio = null; }
+    ttsAudio = new Audio(URL.createObjectURL(blob));
+    ttsAudio.onended = () => { ttsAudio = null; resolve(); };
+    ttsAudio.onerror = () => { ttsAudio = null; reject(new Error('Audio playback error')); };
+    ttsAudio.play().catch(reject);
   });
+}
+
+// Narrate one text block via browser TTS (chunked, sequential)
+async function _narrateAllBrowser(text, cfg) {
+  for (const chunk of splitNarrationChunks(text, 500)) {
+    if (!ttsAllActive) break;
+    await new Promise(resolve => {
+      const utt = new SpeechSynthesisUtterance(chunk);
+      utt.rate  = cfg.browser?.rate  ?? 1.0;
+      utt.pitch = cfg.browser?.pitch ?? 1.0;
+      utt.onend = utt.onerror = resolve;
+      speechSynthesis.speak(utt);
+    });
+  }
+}
+
+// Narrate one text block via cloud TTS with prefetch pipeline
+async function _narrateAllCloud(text, cfg) {
+  const chunks = splitNarrationChunks(text, 350);
+  if (!chunks.length) return;
+  // Start fetching first chunk immediately so it's ready when we need it
+  let nextFetch = _fetchTtsBlob(chunks[0], cfg);
+  for (let i = 0; i < chunks.length; i++) {
+    if (!ttsAllActive) break;
+    const currentFetch = nextFetch;
+    // Kick off the next fetch in parallel while we await the current blob
+    nextFetch = i + 1 < chunks.length ? _fetchTtsBlob(chunks[i + 1], cfg) : null;
+    try {
+      const blob = await currentFetch;
+      if (!ttsAllActive || !blob) break;
+      await _playAudioBlob(blob);
+    } catch (err) {
+      showError(`TTS failed: ${err.message}`);
+      break;
+    }
+  }
 }
 
 async function narrateAll() {
   if (ttsProvider === 'off') return;
+  stopNarration();      // kill any active individual narration first
   ttsAllActive = true;
-  const ids = ['field-desc', 'field-opening', 'field-plot', 'field-authornote', 'field-protagonist'];
-  const npcIds = Array.from(document.querySelectorAll('[id^="npc-entry-"]')).map(el => el.id);
-  for (const id of [...ids, ...npcIds]) {
-    if (!ttsAllActive) break;
+  const stopBtn = document.getElementById('btn-tts-stop');
+  if (stopBtn) stopBtn.hidden = false;
+
+  // Build the reading sequence: label + content for each section
+  const sequence = [];
+  const fieldDefs = [
+    { id: 'field-desc',        label: 'Description' },
+    { id: 'field-opening',     label: 'Opening' },
+    { id: 'field-plot',        label: 'Plot Essentials' },
+    { id: 'field-authornote',  label: "Author's Note" },
+    { id: 'field-protagonist', label: currentOutput?.title ?? 'Protagonist' },
+  ];
+  for (const { id, label } of fieldDefs) {
     const el = document.getElementById(id);
-    if (!el || !el.value?.trim()) continue;
-    narrate(el.value);
-    await waitForTts();
+    if (el?.value?.trim()) sequence.push(`${label}. ${el.value.trim()}`);
   }
+  document.querySelectorAll('.npc-section').forEach(section => {
+    const name = section.querySelector('.npc-section-name')?.textContent?.trim();
+    const text = section.querySelector('textarea')?.value?.trim();
+    if (name && text) sequence.push(`${name}. ${text}`);
+  });
+
+  for (const text of sequence) {
+    if (!ttsAllActive) break;
+    const cfg   = getEffectiveTtsConfig();
+    const clean = (cfg.preprocess ?? preprocessTts)(text);
+    if (!clean) continue;
+    if (ttsProvider === 'browser') await _narrateAllBrowser(clean, cfg);
+    else                           await _narrateAllCloud(clean, cfg);
+  }
+
   ttsAllActive = false;
+  if (stopBtn) stopBtn.hidden = true;
 }
 
 function switchSettingsTab(tab) {
