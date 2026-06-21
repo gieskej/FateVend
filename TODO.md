@@ -4,7 +4,6 @@
 - The aidungeon-importer needs to import the tags.
 - If I click Narrate All button, it only narrates the first text blob.  It should read out everything, including the section titles (e.g. character names).
 - In the Narration Settings, the Voice pick list seems static.  It should query the TTS provider for its installed voices.
-- Clicking on Spin The Reels should abort any music or sound effect currently playing.
 - Synthetic constructs need special handling:
     - Industrial Androids should have no gender, orientation, relationship, or family background.
     - Plastic Androids may have a gender for appearances, but are asexual and do not have relationships.
@@ -18,6 +17,7 @@
 ---
 
 ## Fixed Bugs
+- Clicking on Spin The Reels should abort any music or sound effect currently playing.
 - When generating NPC's, do NOT allow two characters with the same first name.  It just makes game play easier.
 - The Copy To Clipboard builder needs to also add the Plot Essentials and Author's Notes sections.
 - In the skeleton builder, add the NSFW attribute.

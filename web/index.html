@@ -2638,6 +2638,13 @@ async function runGenerate() {
   currentOutput = null;
   showError('');
   closeSettings();
+
+  // Stop any audio that may be playing
+  stopNarration();
+  for (const sfx of [_bellSfx, _overtureSfx, _slotMachineSfx]) {
+    sfx.pause();
+    sfx.currentTime = 0;
+  }
   const btn = document.getElementById('btn-generate');
   btn.disabled = true;
   btn.classList.add('spinning');
