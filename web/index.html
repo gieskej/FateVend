@@ -2450,11 +2450,13 @@ async function copyAll(btn) {
   const payload = {
     skeleton: { ...currentSkeleton, stats: annotatedStats },
     scenario: {
-      title:           currentOutput.title,
-      description:     currentOutput.description,
-      tags:            currentOutput.tags,
-      opening:         currentOutput.opening,
+      title:            currentOutput.title,
+      description:      currentOutput.description,
+      tags:             currentOutput.tags,
+      opening:          currentOutput.opening,
       appearancePrompt: currentOutput.appearancePrompt,
+      plotEssentials:   currentOutput.plotEssentials  ?? '',
+      authorNote:       currentOutput.authorNote       ?? '',
     },
     characters: {
       [currentSkeleton.name]: currentOutput.characterEntry,
