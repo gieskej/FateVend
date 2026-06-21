@@ -2398,6 +2398,9 @@ function renderOutput(sk, output) {
     <button class="btn-copy-all" onclick="downloadPackage(this)" style="margin-top:0.5rem;">
       ↓ Download Package (.zip)
     </button>
+    <button class="btn-copy-all" id="btn-import-ai-dungeon" onclick="importToAIDungeon(this)" style="margin-top:0.5rem;display:none;">
+      ↑ Import to AI Dungeon
+    </button>
     <div class="bottom-actions">
       <button class="btn-go-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Go to Top</button>
       <button class="btn-generate btn-generate-secondary" onclick="runGenerate()">
@@ -2531,6 +2534,60 @@ async function downloadPackage(btn) {
     console.error('Download failed:', err);
     btn.textContent = 'Error';
     setTimeout(() => { btn.textContent = origText; btn.disabled = false; }, 2000);
+  }
+}
+
+async function checkImportServer() {
+  const btn = document.getElementById('btn-import-ai-dungeon');
+  if (!btn) return;
+  try {
+    const r = await fetch('http://localhost:7432/ping', { signal: AbortSignal.timeout(1500) });
+    btn.style.display = r.ok ? '' : 'none';
+  } catch {
+    btn.style.display = 'none';
+  }
+}
+
+async function importToAIDungeon(btn) {
+  if (!currentOutput || !currentSkeleton) return;
+  const origText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = '⚙ Launching…';
+  try {
+    const portraitImg = document.querySelector('#portrait-wrap img');
+    const portraitBase64 = portraitImg?.src?.startsWith('data:image/')
+      ? portraitImg.src.split(',')[1] : null;
+
+    const payload = {
+      scenario: {
+        title:            currentOutput.title,
+        description:      currentOutput.description,
+        tags:             currentOutput.tags,
+        opening:          currentOutput.opening,
+        appearancePrompt: currentOutput.appearancePrompt,
+        plotEssentials:   currentOutput.plotEssentials  ?? '',
+        authorNote:       currentOutput.authorNote       ?? '',
+      },
+      characters: {
+        [currentSkeleton.name]: currentOutput.characterEntry,
+        ...currentOutput.npcEntries,
+      },
+      portraitBase64,
+    };
+
+    const r = await fetch('http://localhost:7432/import', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(payload),
+    });
+    if (!r.ok) throw new Error(`Server returned ${r.status}`);
+
+    btn.textContent = '✓ Import launched';
+    setTimeout(() => { btn.textContent = origText; btn.disabled = false; }, 3000);
+  } catch (err) {
+    console.error('AI Dungeon import failed:', err);
+    btn.textContent = 'Server not reachable';
+    setTimeout(() => { btn.textContent = origText; btn.disabled = false; }, 3000);
   }
 }
 
@@ -2696,6 +2753,7 @@ async function runAIPhase() {
     document.getElementById('ai-placeholder')?.remove();
 
     outputArea.innerHTML += renderOutput(currentSkeleton, output);
+    checkImportServer();
     await sleep(50);
     document.querySelectorAll('.card:not(.revealed)').forEach((c, i) => {
       setTimeout(() => c.classList.add('revealed'), i * 150);
@@ -3273,6 +3331,7 @@ Object.assign(window, {
   copyField, copyAll, copySkeletonText, copyTags,
   generatePortrait, generateNpcPortrait, toggleNpcPortraitMenu, updateCount, downloadPackage,
   narrate, stopNarration, narrateAll, setTtsProvider, switchSettingsTab,
+  importToAIDungeon, checkImportServer,
 });
 </script>
 </body>

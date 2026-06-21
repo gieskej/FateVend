@@ -2,6 +2,18 @@
 
 ## 2026-06-20
 
+### feat: "Import to AI Dungeon" Button in Web UI
+**What changed:** Added `web/tools/aidungeon-server.mjs` — a companion HTTP server on `localhost:7432` — and an "Import to AI Dungeon" button in the web app that appears only when the server is reachable.
+**Why:** Previously the user had to download a `.zip`, extract it, and run the importer manually. With the server running, one button click sends the current scenario directly to the Playwright importer.
+**How to use:**
+1. Run `node web/tools/aidungeon-server.mjs` in a terminal and keep it open.
+2. Generate a scenario in the web app. The "Import to AI Dungeon" button appears below the Download button.
+3. Click it — the Playwright browser opens and imports automatically.
+**What is sent:** Same payload as the download package — `scenario.*` fields, `characters{}`, and portrait base64 if one was generated. The server writes a temp folder and spawns `aidungeon-importer.mjs --headed`.
+**Technical:** Server at `http://localhost:7432`; `GET /ping` for availability check; `POST /import` with JSON body. CORS is open (`*`) since this is a local tool. The button is hidden by default and shown via `checkImportServer()` called after output renders.
+
+
+
 ### Fix: AI Dungeon Importer — Story Cards Now Created Individually
 **What changed:** Replaced the "Import Story Cards" file-upload flow with individual card creation via the "CREATE STORY CARD" button.
 **Why:** The file-import dialog uses a dynamically-created `<input type="file">` whose `change` event requires `isTrusted: true`. Playwright's programmatic `setFiles()` and all `dispatchEvent()` approaches produce `isTrusted: false`, which AI Dungeon's handler rejects silently. Manually uploading the same JSON file worked fine — confirming the format was correct, only the automation path was broken.

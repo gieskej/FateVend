@@ -27,4 +27,14 @@ out.write_text(
 print(f'config.js written (anthropic key length: {len(keys.get("ANTHROPIC_API_KEY",""))}, gemini key length: {len(keys.get("GEMINI_API_KEY",""))})')
 PY
 
+# Start the AI Dungeon import server in the background (requires Node.js + Playwright).
+# The web app shows an "Import to AI Dungeon" button only when this is reachable.
+if command -v node &>/dev/null; then
+  node tools/aidungeon-server.mjs &
+  AIDUNGEON_SERVER_PID=$!
+  trap 'kill $AIDUNGEON_SERVER_PID 2>/dev/null' EXIT
+else
+  echo "node not found — AI Dungeon import server not started."
+fi
+
 python3 -m http.server 8080 --bind 0.0.0.0
