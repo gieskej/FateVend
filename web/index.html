@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -216,18 +216,18 @@
 
     <!-- Text provider (hidden until at least one source configured) -->
     <div id="provider-selector" style="text-align:center;display:none;">
-      <div style="font-family:var(--font-display);font-size:0.62rem;letter-spacing:0.16em;color:var(--brass-light);text-transform:uppercase;margin-bottom:0.6rem;">Text Provider</div>
+      <div style="font-family:var(--font-display);font-size: 0.8rem;letter-spacing:0.16em;color:var(--brass-light);text-transform:uppercase;margin-bottom:0.6rem;">Text Provider</div>
       <div style="display:inline-flex;gap:0;border:1px solid var(--brass-dark);border-radius:var(--radius);overflow:hidden;">
         <button id="provider-claude" onclick="setProvider('claude')"
-          style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s,opacity 0.15s;">
+          style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size: 0.8rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s,opacity 0.15s;">
           Claude
         </button>
         <button id="provider-gemini" onclick="setProvider('gemini')"
-          style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s,opacity 0.15s;">
+          style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size: 0.8rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s,opacity 0.15s;">
           Gemini
         </button>
         <button id="provider-ollama" onclick="setProvider('ollama')"
-          style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s,opacity 0.15s;display:none;">
+          style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size: 0.8rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s,opacity 0.15s;display:none;">
           Ollama
         </button>
       </div>
@@ -235,14 +235,14 @@
 
     <!-- Image provider (hidden until at least one source configured) -->
     <div id="img-provider-selector" style="text-align:center;display:none;">
-      <div style="font-family:var(--font-display);font-size:0.62rem;letter-spacing:0.16em;color:var(--brass-light);text-transform:uppercase;margin-bottom:0.6rem;">Image Provider</div>
+      <div style="font-family:var(--font-display);font-size: 0.8rem;letter-spacing:0.16em;color:var(--brass-light);text-transform:uppercase;margin-bottom:0.6rem;">Image Provider</div>
       <div style="display:inline-flex;gap:0;border:1px solid var(--brass-dark);border-radius:var(--radius);overflow:hidden;">
         <button id="img-provider-sd" onclick="setImageProvider('sd')"
-          style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s,opacity 0.15s;">
+          style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size: 0.8rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s,opacity 0.15s;">
           Stable Diffusion
         </button>
         <button id="img-provider-stability" onclick="setImageProvider('stability')"
-          style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s,opacity 0.15s;">
+          style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size: 0.8rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s,opacity 0.15s;">
           Stability AI
         </button>
       </div>
@@ -252,9 +252,8 @@
 
   <!-- GENRE SELECTOR -->
   <div style="text-align:center;margin-bottom:1.25rem;">
-    <div style="font-family:var(--font-display);font-size:0.62rem;letter-spacing:0.16em;color:var(--brass-light);text-transform:uppercase;margin-bottom:0.6rem;">Genre</div>
-    <select id="genre-select" onchange="setGenre(this.value)"
-      style="font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.5rem 2rem 0.5rem 1rem;background:rgba(26,18,8,0.6);color:var(--brass-light);border:1px solid var(--brass-dark);border-radius:var(--radius);cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%228%22 viewBox=%220 0 12 8%22><path d=%22M1 1l5 5 5-5%22 stroke=%22%23c9a84c%22 stroke-width=%221.8%22 fill=%22none%22 stroke-linecap=%22round%22/></svg>');background-repeat:no-repeat;background-position:right 0.75rem center;">
+    <div style="font-family:var(--font-display);font-size: 0.8rem;letter-spacing:0.16em;color:var(--brass-light);text-transform:uppercase;margin-bottom:0.6rem;">Genre</div>
+    <select id="genre-select" class="genre-select" onchange="setGenre(this.value)">
       <option value="fantasy" selected>Fantasy</option>
       <option value="historical-korea-joseon-dynasty">Joseon Korea</option>
       <option value="modern">Modern</option>
@@ -269,7 +268,7 @@
   <div class="generate-wrap">
     <button id="btn-generate" class="btn-generate" onclick="runGenerate()">
       <span class="gear-icon">⚙</span>
-      Turn the Gears
+      Spin the Reels
     </button>
   </div>
 
@@ -2116,7 +2115,7 @@ function renderSkeleton(sk) {
 
       <!-- Stats -->
       <div style="margin-bottom:1.25rem;">
-        <div style="font-family:var(--font-display);font-size:0.62rem;letter-spacing:0.16em;color:var(--brass-dark);text-transform:uppercase;margin-bottom:0.5rem;">Stats</div>
+        <div style="font-family:var(--font-display);font-size: 0.8rem;letter-spacing:0.16em;color:var(--brass-dark);text-transform:uppercase;margin-bottom:0.5rem;">Stats</div>
         <div class="stat-grid" id="stat-grid">
           ${['strength','intelligence','wisdom','charisma','dexterity','constitution'].map(stat => `
           <div class="stat-cell">
@@ -2294,7 +2293,7 @@ function renderOutput(sk, output) {
       ${output.appearancePrompt ? `
       <div class="output-field">
         <div class="field-header">
-          <span class="field-label">Portrait Prompt <span style="font-size:0.75rem;color:var(--ink-faint);font-style:italic;font-family:var(--font-body)">(text-to-image)</span></span>
+          <span class="field-label">Portrait Prompt <span style="font-size: 0.8rem;color:var(--ink-faint);font-style:italic;font-family:var(--font-body)">(text-to-image)</span></span>
           <div class="field-meta">
             <span class="char-count" id="cc-appearance">${output.appearancePrompt.length} / 500</span>
             <button class="btn-copy" onclick="copyField('field-appearance',this)">Copy</button>
@@ -2404,7 +2403,7 @@ function renderOutput(sk, output) {
     <div class="bottom-actions">
       <button class="btn-go-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Go to Top</button>
       <button class="btn-generate btn-generate-secondary" onclick="runGenerate()">
-        <span class="gear-icon">⚙</span> Turn the Gears
+        <span class="gear-icon">⚙</span> Spin the Reels
       </button>
     </div>
   </div>

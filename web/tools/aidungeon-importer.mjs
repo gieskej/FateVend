@@ -252,7 +252,9 @@ try {
   console.log(`Story cards created: ${storyCards.length}.`);
 
   // ── Portrait upload ───────────────────────────────────────────────────────
-  if (existsSync(portraitPath)) {
+  if (scenario.nsfw) {
+    console.log('Skipping portrait upload — scenario is marked NSFW.');
+  } else if (existsSync(portraitPath)) {
     await clickTab('DETAILS');
     await page.waitForTimeout(800);
     await page.evaluate(() => window.scrollTo(0, 0));

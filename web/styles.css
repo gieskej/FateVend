@@ -1,4 +1,4 @@
-/* ── DESIGN TOKENS ─────────────────────────────────────────────────── */
+﻿/* ── DESIGN TOKENS ─────────────────────────────────────────────────── */
 :root {
   --brass:        #b87333;
   --brass-light:  #d4956a;
@@ -133,7 +133,7 @@ body::before {
   border-radius: var(--radius);
   color: var(--brass-light);
   font-family: var(--font-display);
-  font-size: 0.62rem;
+  font-size: 0.8rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   padding: 0.4rem 1.2rem;
@@ -189,7 +189,7 @@ body::before {
 }
 .settings-modal-title {
   font-family: var(--font-display);
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.18em;
   color: var(--ink);
@@ -224,7 +224,7 @@ body::before {
   border-bottom: 2px solid transparent;
   color: var(--brass-light);
   font-family: var(--font-display);
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   cursor: pointer;
@@ -237,7 +237,7 @@ body::before {
 .settings-tab-panel.active { display: block; }
 .settings-group-heading {
   font-family: var(--font-display);
-  font-size: 0.65rem;
+  font-size: 0.8rem;
   letter-spacing: 0.14em;
   color: var(--gold);
   text-transform: uppercase;
@@ -248,7 +248,7 @@ body::before {
 .settings-field label {
   display: block;
   font-family: var(--font-display);
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   letter-spacing: 0.1em;
   color: var(--brass-light);
   text-transform: uppercase;
@@ -261,7 +261,7 @@ body::before {
 }
 .settings-options-heading {
   font-family: var(--font-display);
-  font-size: 0.68rem;
+  font-size: 0.8rem;
   letter-spacing: 0.14em;
   color: var(--brass-light);
   text-transform: uppercase;
@@ -283,7 +283,7 @@ body::before {
 }
 .settings-option-row label {
   font-family: var(--font-display);
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   letter-spacing: 0.1em;
   color: var(--brass-light);
   text-transform: uppercase;
@@ -291,7 +291,7 @@ body::before {
 }
 .settings-hint {
   font-style: italic;
-  font-size: 0.68rem;
+  font-size: 0.8rem;
   color: var(--ink-faint);
   text-transform: none;
   letter-spacing: 0;
@@ -310,7 +310,7 @@ body::before {
   border-radius: var(--radius);
   color: var(--brass-light);
   font-family: var(--font-display);
-  font-size: 0.62rem;
+  font-size: 0.8rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   padding: 0.5rem 2.5rem;
@@ -328,7 +328,7 @@ body::before {
   border-radius: var(--radius);
   color: var(--ink);
   font-family: var(--font-display);
-  font-size: 0.62rem;
+  font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -359,6 +359,28 @@ body::before {
 }
 .api-input:focus { border-color: var(--brass); }
 .api-input::placeholder { color: var(--ink-faint); opacity: 0.6; }
+
+/* ── GENRE SELECTOR ────────────────────────────────────────────────── */
+.genre-select {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.5rem 2.25rem 0.5rem 1rem;
+  background-color: #1a1208;
+  color: var(--gold-light);
+  border: 1px solid var(--brass);
+  border-radius: var(--radius);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%228%22 viewBox=%220 0 12 8%22><path d=%22M1 1l5 5 5-5%22 stroke=%22%23c9a84c%22 stroke-width=%221.8%22 fill=%22none%22 stroke-linecap=%22round%22/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+}
+.genre-select:hover  { border-color: var(--gold); }
+.genre-select:focus  { outline: none; border-color: var(--gold); }
+.genre-select option { background: #1a1208; color: var(--gold-light); }
 
 /* ── GENERATE BUTTON ───────────────────────────────────────────────── */
 .generate-wrap {
@@ -425,7 +447,7 @@ body::before {
 }
 .continue-bar-label {
   font-family: var(--font-display);
-  font-size: 0.62rem;
+  font-size: 0.8rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--brass-light);
@@ -481,7 +503,7 @@ body::before {
   gap: 0;
   margin: 1rem 0 2rem;
   font-family: var(--font-display);
-  font-size: 0.62rem;
+  font-size: 0.8rem;
   letter-spacing: 0.1em;
 }
 
@@ -501,7 +523,7 @@ body::before {
   left: -0.5rem;
   top: 0.85rem;
   color: var(--brass-dark);
-  font-size: 0.7rem;
+  font-size: 0.8rem;
 }
 .phase-step.active  { color: var(--gold); }
 .phase-step.done    { color: var(--brass-light); }
@@ -536,7 +558,7 @@ body::before {
   border-radius: var(--radius);
   color: var(--brass-light);
   font-family: var(--font-display);
-  font-size: 0.68rem;
+  font-size: 0.8rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   padding: 0.4rem 1rem;
@@ -628,7 +650,7 @@ body::before {
 }
 .card-title {
   font-family: var(--font-display);
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.18em;
   color: var(--parchment);
@@ -653,7 +675,7 @@ body::before {
 
 .stat-name {
   font-family: var(--font-display);
-  font-size: 0.6rem;
+  font-size: 0.8rem;
   letter-spacing: 0.15em;
   color: var(--ink-faint);
   text-transform: uppercase;
@@ -672,7 +694,7 @@ body::before {
 
 .stat-adj {
   font-family: var(--font-body);
-  font-size: 0.6rem;
+  font-size: 0.8rem;
   font-style: italic;
   color: var(--ink-faint);
   display: block;
@@ -700,7 +722,7 @@ body::before {
 }
 .slot-header {
   font-family: var(--font-display);
-  font-size: 0.48rem;
+  font-size: 0.8rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ink-faint);
@@ -742,7 +764,7 @@ body::before {
   box-shadow: 0 0 12px rgba(184,115,51,0.45), inset 0 0 6px rgba(184,115,51,0.1);
 }
 .slot-label {
-  font-size: 0.56rem;
+  font-size: 0.8rem;
   text-align: center;
   color: var(--brass-light);
   margin-top: 4px;
@@ -755,7 +777,7 @@ body::before {
 }
 .slot.landed .slot-label { opacity: 1; }
 .slot-sublabel {
-  font-size: 0.5rem;
+  font-size: 0.8rem;
   text-align: center;
   color: var(--ink-faint);
   max-width: 80px;
@@ -798,7 +820,7 @@ body::before {
 }
 .identity-label {
   font-family: var(--font-display);
-  font-size: 0.58rem;
+  font-size: 0.8rem;
   letter-spacing: 0.14em;
   color: var(--ink-faint);
   text-transform: uppercase;
@@ -841,7 +863,7 @@ body::before {
 
 .skeleton-key {
   font-family: var(--font-display);
-  font-size: 0.6rem;
+  font-size: 0.8rem;
   letter-spacing: 0.14em;
   color: var(--brass-dark);
   text-transform: uppercase;
@@ -859,7 +881,7 @@ body::before {
 .severity-badge {
   display: inline-block;
   font-family: var(--font-display);
-  font-size: 0.55rem;
+  font-size: 0.8rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   padding: 0.15rem 0.5rem;
@@ -892,14 +914,14 @@ body::before {
   margin-bottom: 0.15rem;
 }
 .cast-role {
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   font-style: italic;
   color: var(--ink-faint);
   margin-bottom: 0.4rem;
 }
 .cast-status-badge {
   display: inline-block;
-  font-size: 0.65rem;
+  font-size: 0.8rem;
   font-family: var(--font-display);
   letter-spacing: 0.08em;
   color: var(--brass-dark);
@@ -917,7 +939,7 @@ body::before {
 }
 .cast-identity-badge {
   display: inline-block;
-  font-size: 0.62rem;
+  font-size: 0.8rem;
   font-family: var(--font-display);
   letter-spacing: 0.06em;
   color: var(--ink-light);
@@ -952,7 +974,7 @@ body::before {
 }
 .field-label {
   font-family: var(--font-display);
-  font-size: 0.62rem;
+  font-size: 0.8rem;
   letter-spacing: 0.16em;
   color: var(--brass-dark);
   text-transform: uppercase;
@@ -964,7 +986,7 @@ body::before {
 }
 .char-count {
   font-family: monospace;
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   color: var(--ink-faint);
 }
 .char-count.over { color: var(--rust); font-weight: bold; }
@@ -1008,7 +1030,7 @@ body::before {
 .tag-pill {
   display: inline-block;
   font-family: var(--font-display);
-  font-size: 0.62rem;
+  font-size: 0.8rem;
   letter-spacing: 0.08em;
   padding: 0.25rem 0.65rem;
   background: rgba(184,115,51,0.12);
@@ -1030,7 +1052,7 @@ body::before {
   border-radius: var(--radius);
   color: var(--brass);
   font-family: var(--font-display);
-  font-size: 0.58rem;
+  font-size: 0.8rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   padding: 0.25rem 0.65rem;
@@ -1054,7 +1076,7 @@ body::before {
   border-radius: var(--radius);
   color: var(--brass-dark);
   font-family: var(--font-display);
-  font-size: 0.68rem;
+  font-size: 0.8rem;
   letter-spacing: 0.05em;
   padding: 0.25rem 0.5rem;
   cursor: pointer;
@@ -1147,7 +1169,7 @@ body::before {
   width: 100%;
   padding: 0.35rem 0.55rem;
   text-align: left;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   font-family: var(--font-body);
   background: transparent;
   border: none;
@@ -1166,14 +1188,14 @@ body::before {
 
 .npc-section-name {
   font-family: var(--font-display);
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.1em;
   color: var(--brass-dark);
   margin-bottom: 0.15rem;
 }
 .npc-entry-meta {
-  font-size: 0.68rem;
+  font-size: 0.8rem;
   color: var(--ink-faint);
   font-style: italic;
   margin-bottom: 0.3rem;
@@ -1193,7 +1215,7 @@ body::before {
   border-radius: var(--radius);
   color: var(--gold);
   font-family: var(--font-display);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   padding: 0.65rem 2rem;
@@ -1220,7 +1242,7 @@ body::before {
   border-radius: var(--radius);
   color: var(--ink-faint);
   font-family: var(--font-display);
-  font-size: 0.68rem;
+  font-size: 0.8rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   padding: 0.55rem 1.25rem;
@@ -1253,7 +1275,7 @@ body::before {
 }
 .gen-stats-title {
   font-family: var(--font-display);
-  font-size: 0.55rem;
+  font-size: 0.8rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: rgba(184,115,51,0.4);
@@ -1264,13 +1286,13 @@ body::before {
   align-items: center;
   gap: 0.5rem;
   font-family: var(--font-mono, monospace);
-  font-size: 0.65rem;
+  font-size: 0.8rem;
   color: rgba(184,115,51,0.45);
   flex-wrap: wrap;
   justify-content: center;
 }
 .gen-stats-icon   { opacity: 0.5; }
-.gen-stats-label  { font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; font-size: 0.6rem; }
+.gen-stats-label  { font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; font-size: 0.8rem; }
 .gen-stats-model  { opacity: 0.7; }
 .gen-stats-sep    { opacity: 0.3; }
 .gen-stats-time   { color: rgba(184,115,51,0.65); }
@@ -1356,7 +1378,7 @@ body::before {
 }
 .help-panel-title {
   font-family: var(--font-display);
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.18em;
   color: var(--parchment);
@@ -1382,7 +1404,7 @@ body::before {
 
 .help-section-title {
   font-family: var(--font-display);
-  font-size: 0.68rem;
+  font-size: 0.8rem;
   letter-spacing: 0.16em;
   color: var(--brass-dark);
   text-transform: uppercase;
@@ -1430,7 +1452,7 @@ body::before {
 .help-steps li::before {
   content: counter(step);
   font-family: var(--font-display);
-  font-size: 0.6rem;
+  font-size: 0.8rem;
   font-weight: 700;
   color: var(--parchment);
   background: var(--brass-dark);
@@ -1450,7 +1472,7 @@ body::before {
   margin: 2.5rem auto 1.5rem;
   padding: 0 1rem;
   text-align: center;
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   font-style: italic;
   color: var(--ink-faint);
   opacity: 0.65;

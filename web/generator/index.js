@@ -271,6 +271,7 @@ export async function generateCharacter({
   genre   = 'modern',
   apiKey  = null,
   skipAI  = false,
+  nsfw    = false,
 } = {}) {
   if (!GENRE_TABLES[genre]) {
     throw new Error(`Genre "${genre}" is not supported. Available: ${SUPPORTED_GENRES.join(', ')}`);
@@ -289,7 +290,7 @@ export async function generateCharacter({
   const mbti = assignMBTI(stats);
 
   // ── PHASE 3: Build skeleton ──────────────────────────────────────────
-  const skeleton = buildSkeleton(stats, mbti, tables);
+  const skeleton = buildSkeleton(stats, mbti, tables, { nsfw });
 
   // ── PHASE 4: AI narrative (optional) ────────────────────────────────
   let output = null;
@@ -321,12 +322,12 @@ export function rerollStat(currentStats, statName) {
  * @param {string} [genre='modern']
  * @returns {import('./types.js').CharacterSkeleton}
  */
-export function regenerateSkeleton(stats, genre = 'modern') {
+export function regenerateSkeleton(stats, genre = 'modern', opts = {}) {
   if (!GENRE_TABLES[genre]) {
     throw new Error(`Genre "${genre}" is not supported. Available: ${SUPPORTED_GENRES.join(', ')}`);
   }
   const mbti = assignMBTI(stats);
-  return buildSkeleton(stats, mbti, GENRE_TABLES[genre]);
+  return buildSkeleton(stats, mbti, GENRE_TABLES[genre], opts);
 }
 
 /**

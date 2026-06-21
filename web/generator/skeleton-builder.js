@@ -75,9 +75,10 @@ function assembleTags(profession, tension, citySettings, secretSeverity, tagPool
  *     GENDERS, ORIENTATIONS, RACES_OR_ETHNICITIES,
  *     BUILDS, HAIR, DISTINGUISHING_FEATURES, QUIRKS,
  *     NAME_POOLS }
+ * @param {{ nsfw?: boolean }} [opts]
  * @returns {import('./types.js').CharacterSkeleton}
  */
-export function buildSkeleton(stats, mbti, tables) {
+export function buildSkeleton(stats, mbti, tables, opts = {}) {
   const {
     PROFESSIONS, LIFE_EVENTS, FAMILY_STRUCTURES, TENSIONS, SECRETS,
     ECONOMIC_TIERS, CITY_SETTINGS, TAG_POOLS,
@@ -110,6 +111,11 @@ export function buildSkeleton(stats, mbti, tables) {
     const _az  = Math.sqrt(-2 * Math.log(_au1)) * Math.cos(2 * Math.PI * Math.random());
     age = Math.min(75, Math.max(15, Math.round(25 + 8 * _az)));
   }
+
+  // ── NSFW ──────────────────────────────────────────────────────────────
+  // NSFW professions (p.nsfw === true) are only included when the caller
+  // opts in AND the character is an adult.
+  const allowNSFW = (opts.nsfw === true) && age >= 18;
 
   // ── APPEARANCE ────────────────────────────────────────────────────────
   // Filter builds to those compatible with actual STR before weighted pick,
@@ -144,9 +150,10 @@ export function buildSkeleton(stats, mbti, tables) {
   const quirkEntry = statWeightedPick(QUIRKS, stats);
 
   // ── PROFESSION ────────────────────────────────────────────────────────
+  const profBase = allowNSFW ? PROFESSIONS : PROFESSIONS.filter(p => !p.nsfw);
   const clanProfPool = identity.allowedIndustries
-    ? PROFESSIONS.filter(p => identity.allowedIndustries.includes(p.industry))
-    : PROFESSIONS;
+    ? profBase.filter(p => identity.allowedIndustries.includes(p.industry))
+    : profBase;
   const isNBGender = gender.id === 'non_binary' || gender.id === 'genderfluid';
   const genderProfPool = clanProfPool.filter(p =>
     !p.allowedGenders || isNBGender || p.allowedGenders.includes(gender.id)
@@ -221,5 +228,6 @@ export function buildSkeleton(stats, mbti, tables) {
     secretSeverity:  secret.severity,
     tags,
     cast,
+    nsfw: allowNSFW,
   };
 }
