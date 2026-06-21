@@ -46,9 +46,10 @@ import {
   parseResponse as nihongiParseResponse,
 } from './genres/nihongi/prompt-template.js';
 
-const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
-const MODEL             = 'claude-sonnet-4-5';
-const MAX_TOKENS        = 8192;
+const ANTHROPIC_API_URL  = 'https://api.anthropic.com/v1/messages';
+const MODEL              = 'claude-sonnet-4-5';
+const CLAUDE_MAX_TOKENS  = 16384;
+const GEMINI_MAX_TOKENS  = 32768;
 
 // ── OUTPUT LIMITS ─────────────────────────────────────────────────────────
 // AI Dungeon field limits: https://help.aidungeon.com
@@ -154,7 +155,7 @@ export async function callClaudeAPI(skeleton, apiKey, genre = 'modern') {
 
   const requestBody = {
     model:      MODEL,
-    max_tokens: MAX_TOKENS,
+    max_tokens: CLAUDE_MAX_TOKENS,
     system:     template.systemPrompt,
     messages: [
       { role: 'user', content: userPrompt },
@@ -218,7 +219,7 @@ export async function callGeminiAPI(skeleton, apiKey, genre = 'modern') {
     body: JSON.stringify({
       systemInstruction: { parts: [{ text: template.systemPrompt }] },
       contents: [{ role: 'user', parts: [{ text: 'Return raw JSON only — no markdown, no code fences, no commentary.\n\n' + template.buildPrompt(skeleton) }] }],
-      generationConfig: { maxOutputTokens: MAX_TOKENS, temperature: 0.9, responseMimeType: 'application/json' },
+      generationConfig: { maxOutputTokens: GEMINI_MAX_TOKENS, temperature: 0.9, responseMimeType: 'application/json' },
     }),
   });
 

@@ -1,0 +1,26 @@
+[
+  {
+    "keys": "Omar",
+    "value": "Omar Cruz. Best friend, worst enabler, anxiety made flesh. Bounces between shamelessly enthusiastic and full-blown panic with no middle ground. Works dataport repair in the same worker block as Reva Papadopoulos, keeps spare furniture bolted down in case he needs to move fast, which he will, because his side hustles are spectacularly ill-conceived. Got into grey-market firmware trading. Got out before the raid. Barely. Still flinches at unexpected knocks. Asks Reva \"are you sure about this?\" at least twice per conversation, usually while helping her do the thing anyway. Smells like solder flux and cheap stimulants. Keeps a duffel bag packed. Knows more about her bounty than she does — he looked into it, she asked him not to, he did it anyway because that's what anxious people do. Right more often than he's wrong. She wishes he weren't.",
+    "type": "character",
+    "title": "Omar Cruz",
+    "description": "",
+    "useForCharacterCreation": false
+  },
+  {
+    "keys": "Reva, Reva Papadopoulos",
+    "value": "Reva Papadopoulos, 29 female human.  Hetero, ENFJ, wage serf.  Pleasure droid maintenance tech. Keeps the undercity's synthetic companions running when their owners can't afford corp service rates. Average build, bald head polished to a mirror finish — chrome clean, corp-citizen clean, the kind of hygiene that doesn't belong three levels below the filtered zones. Always wearing a respirator. Indoors, outdoors, doesn't matter. Never explains it. Counts breathing — four in, hold, four out — when the jobs get messy or the bounty hunters get close. Moves through grey-market bazaars with the uncanny social ease of someone raised in managed spaces, smiling at strangers who'd sell her out for rent money. Omar keeps asking if she's sure about the jobs she takes. She's never sure. Takes them anyway. Luca showed up last week. Reva still hasn't decided if that's a problem or a solution. The respirator hisses. The count continues. The work pays just enough to stay ahead of what's hunting her.",
+    "type": "character",
+    "title": "Reva Papadopoulos",
+    "description": "",
+    "useForCharacterCreation": false
+  },
+  {
+    "keys": "Luca",
+    "value": "Luca Kelly. Former ally. The word 'estranged' is doing heavy work. Vanished eighteen months ago, mid-job, no explanation, reappeared last week like nothing happened. Works salvage now — pulls parts from decommissioned stations, sells to whoever's buying. Emotionally closed in the way of people who've seen the thing that breaks you and decided never to talk about it. Means well. Executes poorly. Offered Reva Papadopoulos a cut on a salvage run, didn't mention the station was quarantined until they were docked. That kind of poorly. Wears an environment suit even in pressurized zones, visor up but ready. Competent with tools, terrible with timing. Could get her out of the bounty situation. Could also get her killed faster. Reva genuinely doesn't know which. Luca probably doesn't either.",
+    "type": "character",
+    "title": "Luca Kelly",
+    "description": "",
+    "useForCharacterCreation": false
+  }
+]

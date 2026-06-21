@@ -1,4 +1,7 @@
 {
   "name": "FateVend",
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "playwright": "^1.61.0"
+  }
 }

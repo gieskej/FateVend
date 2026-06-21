@@ -2485,6 +2485,8 @@ async function downloadPackage(btn) {
         tags:             currentOutput.tags,
         opening:          currentOutput.opening,
         appearancePrompt: currentOutput.appearancePrompt,
+        plotEssentials:   currentOutput.plotEssentials   ?? '',
+        authorNote:       currentOutput.authorNote        ?? '',
       },
       characters: {
         [currentSkeleton.name]: currentOutput.characterEntry,

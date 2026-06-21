@@ -1,0 +1,181 @@
+{
+  "skeleton": {
+    "name": "Jeong-nyeo Jeong",
+    "age": 15,
+    "gender": "Woman",
+    "pronouns": "she/her",
+    "orientation": "Straight",
+    "relationshipStatus": "Single",
+    "plotArchetype": "Forbidden Hearts",
+    "plotArchetypeDesc": "Love that the social order has made illegal: across class lines, between rival clans, or in a form the Confucian code names as impossible",
+    "ethnicityBroad": "Common Folk",
+    "ethnicityFlavor": "Farmer, potter, weaver — the backbone of Joseon, bearing its taxes and its hungers with patient endurance",
+    "appearance": {
+      "build": "thin, underfed-looking",
+      "hair": "rough topknot hastily bound — no gat, no ceremony, no apology",
+      "distinguishingFeature": "a quality of complete stillness when seated — the composure of someone long accustomed to being watched",
+      "statNotes": [
+        "looks worn, running on less",
+        "well-groomed, easy confidence"
+      ]
+    },
+    "quirk": "Carries a worn, folded letter in their sleeve at all times — has never shown it to anyone; grows visibly tense if someone reaches toward it",
+    "stats": {
+      "strength": "43 (average)",
+      "intelligence": "64 (sharp)",
+      "wisdom": "80 (perceptive)",
+      "charisma": "66 (charming)",
+      "dexterity": "50 (nimble)",
+      "constitution": "25 (sickly)"
+    },
+    "mbti": "ENTP",
+    "mbtiLabel": "The Debater",
+    "profession": "Mudang (Shaman)",
+    "industry": "Spiritual",
+    "economicTier": 2,
+    "economicLabel": "Subsistence",
+    "economicMarkers": [
+      "plain hanbok patched and re-patched at the elbows",
+      "meals are barley and millet; rice is for festivals and illness"
+    ],
+    "housing": "one-room home with the ondol heated only on the coldest nights",
+    "transport": "walks every road in the region and knows them all by feel",
+    "cityLabel": "Northern Frontier Fortress",
+    "cityFlavor": "A garrison post facing Manchuria: cold, isolated, and home to soldiers who have stopped expecting to be remembered by the capital",
+    "sentiment": "perceptive",
+    "lifeEvent": "Read something — a Catholic text, a secret history, a technical document from Japan — that the state would prefer had never been read",
+    "tension": "Carries specific memories of the Japanese invasion that they have never been able to set down — affects sleep, judgment, and reaction",
+    "secret": "Has ongoing commercial relationships with Japanese merchants outside the licensed trade posts — silver, silks, goods that move without official knowledge",
+    "secretSeverity": "high",
+    "tags": [
+      "joseon",
+      "korea",
+      "historical",
+      "confucian",
+      "dynasty",
+      "shaman",
+      "medicine",
+      "ritual",
+      "buddhist",
+      "secrets"
+    ],
+    "cast": [
+      {
+        "name": "Chun-nyeo Jeong",
+        "role": "mother",
+        "status": "Father is a posted official in another province (absent)",
+        "gender": "Woman",
+        "race": "Common Folk",
+        "traits": [
+          "embarrassingly earnest",
+          "idealistic"
+        ],
+        "dynamic": "Proud of Jeong-nyeo Jeong in ways they mostly express sideways, at inconvenient moments"
+      },
+      {
+        "name": "Gwi-dong Jeong",
+        "role": "father",
+        "status": "Parent remarried — stepparent in the household",
+        "gender": "Man",
+        "race": "Common Folk",
+        "traits": [
+          "annoyingly optimistic",
+          "hot-tempered but quick to apologise"
+        ],
+        "dynamic": "Jeong-nyeo Jeong inherited exactly the traits they were hoping to avoid"
+      },
+      {
+        "name": "Geum-soon Jeong",
+        "role": "sibling",
+        "status": "Older brother died — inherited the role and the ghost",
+        "gender": "Woman",
+        "race": "Common Folk",
+        "traits": [
+          "hot-tempered but quick to apologise",
+          "fiercely loyal"
+        ],
+        "dynamic": "Part of Jeong-nyeo Jeong's story in ways that are hard to untangle"
+      },
+      {
+        "name": "Cheol-soon Jeong",
+        "role": "sibling",
+        "status": "Older brother died — inherited the role and the ghost",
+        "gender": "Man",
+        "race": "Common Folk",
+        "traits": [
+          "the most reliable person alive",
+          "protective"
+        ],
+        "dynamic": "Part of Jeong-nyeo Jeong's story in ways that are hard to untangle"
+      },
+      {
+        "name": "Bok-nyeo Choi",
+        "role": "best friend",
+        "status": "present and close",
+        "gender": "Woman",
+        "race": "Common Folk",
+        "traits": [
+          "means well, executes poorly",
+          "quietly broken",
+          "embarrassingly earnest"
+        ],
+        "dynamic": "Has their own chaos, but shows up for Jeong-nyeo Jeong anyway"
+      },
+      {
+        "name": "Mi-ok Seo",
+        "role": "rival",
+        "status": "present",
+        "gender": "Woman",
+        "race": "Civil Yangban",
+        "traits": [
+          "cynical",
+          "charming and unreliable"
+        ],
+        "dynamic": "The only person who can beat Jeong-nyeo Jeong — which Jeong-nyeo Jeong finds both infuriating and motivating"
+      }
+    ],
+    "_slots": {
+      "species": "common_folk",
+      "race": "Farmer, potter, weaver",
+      "gender": "woman",
+      "orient": "straight",
+      "relStatus": "single",
+      "plot": "forbidden_hearts",
+      "mbti": "ENTP",
+      "prof": "mudang_shaman",
+      "sentiment": "perceptive",
+      "econ": "tier2",
+      "city": "northern_frontier",
+      "family": "nobi_household",
+      "lifeEvent": "forbidden_knowledge",
+      "tension": "haunted_by_imjin"
+    }
+  },
+  "scenario": {
+    "title": "The Mudang's Forbidden Letter — Northern Ice and Unlawful Hearts",
+    "description": "You are Jeong-nyeo Jeong, fifteen, mudang of the northern frontier garrison where Manchurian wind cuts through walls and memory cuts deeper. Common-born, mud-stained, spirit-touched — the kind of girl yangban scholars don't see until they need something from the unseen world. Your hands know potter's clay, weaving shuttles, and the precise angle to hold spirit bells for a cleansing kut. Your mother Chun-nyeo writes earnest letters from the south about virtue and endurance. Your father Gwi-dong rages and apologizes in the same breath, terrified you've inherited his inability to bow low enough. Your brothers Geum-soon and Cheol-soon circle you like you're the elder — one all fire, one all steady patience, both entangled in your story past unknitting. Bok-nyeo stumbles beside you with loyal chaos. Mi-ok beats you at divination and makes you want to be better. The fortress remembers 1592 — Japanese blades, burning villages, the smell you can't forget no matter how many cleansing rituals you perform. So do you. Sleep is unreliable. Certain sounds make you flinch. You carry a letter in your sleeve, folded small, never shown. From someone the social order says you have no right to love. Someone whose very existence in your heart is an accusable offense. And the silver — the unofficial trade with Japanese merchants that flows through your hands and keeps your family from starvation — that's another kind of treason entirely. The spirits speak whether you're ready or not. The heart wants what the law forbids. Winter is coming and the garrison remembers everything.",
+    "tags": [
+      "joseon korea",
+      "historical drama",
+      "forbidden romance",
+      "shamanism",
+      "frontier life",
+      "class struggle",
+      "imjin war trauma",
+      "political intrigue",
+      "coming of age",
+      "spiritual calling"
+    ],
+    "opening": "The kut ceremony ended an hour ago but you can still smell the incense clinging to your patched hemp hanbok — smoky pine and mugwort, the bitter scent of purification that never quite purifies. Your knees ache from kneeling on the frozen courtyard stones. The garrison commander's concubine paid you three mal of millet to drive out the restless spirit haunting her chamber — cheap, but you're sangmin, a mudang, fifteen, and in no position to negotiate. The spirit went. They always do, eventually. Your fingers find the letter in your sleeve without thinking, the paper soft as skin from constant touch, folded so small it disappears in your palm. You haven't opened it in three days. The words haven't changed. They won't change. Mi-ok watches from across the courtyard, grinding cinnabar for talismans, grinning because she knows you botched the third chant. She's right. You did. Bok-nyeo appears at your elbow, breathless, flour-dusted from her father's grain house, eyes too wide. 'Jeong-nyeo. The Japanese trading party — they're here early. A week early. And they're asking for you.' Your heart stops. The official trade happens twice a year under strict supervision, licensed and logged and watched by officials who don't miss anything. But the unofficial trade — the silver and silk that move through your hands in darkness, the connections that keep your family fed through winter — that's different. That's the kind of different that ends in questioning. In records. In exposure. The letter in your sleeve feels suddenly heavy as a millstone. Bok-nyeo grabs your wrist. 'One of them has a letter. For you. From—' She stops. Looks around. Lowers her voice to nothing. 'From across the border.' Manchuria. Or further. Your mouth goes dry. The wind cuts across the fortress yard, carrying the smell of pine smoke and distant snow and something else — horses, travel, the particular scent of people who've crossed frozen rivers in winter. You can see them now, the trading party, dismounting near the commander's hall. Dark traveling robes, breath steaming, and yes — one figure, smaller than the others, turning to scan the courtyard with a face you'd know across any distance, any border, any law. Your heart fractures and rebuilds itself in the same breath. What do you do?",
+    "appearancePrompt": "portrait of Jeong-nyeo Jeong, 15-year-old Joseon common woman, sangmin class mudang shaman, thin underfed build, worn rough topknot bound with cotton cord, no gat, patched hemp hanbok in faded indigo and gray, clay-stained fingers, weaver's calluses, quality of complete stillness, eyes that see spirits and secrets, northern frontier garrison setting, winter pine smoke background, face of young Kim Tae-ri in period role, Joseon minhwa folk painting style, mineral pigment and ink on mulberry…"
+  },
+  "characters": {
+    "Jeong-nyeo Jeong": "Jeong-nyeo Jeong. Sangmin — common-born. Mudang, though she never announces it. Fifteen and already worn thin as mulberry paper left too long in the sun. Topknot bound with a scrap of cotton, no gat, no ceremony. Fingers stained from potter's clay and weaving shuttles. Moves through the northern garrison town with the unhurried certainty of someone who knows every frozen road by moonlight. Keeps a folded letter in her sleeve — won't say from whom, won't let it be touched. Her mother Chun-nyeo speaks of her with sideways pride; her father Gwi-dong rages and apologizes in equal measure; her siblings Geum-soon and Cheol-soon orbit her like she's the elder. Bok-nyeo Choi stumbles beside her with loyal chaos. Mi-ok Seo beats her at divination and grins about it. The spirits speak to her whether she wants them to or not. The fortress remembers the Imjin War. So does she, in ways that wake her at night. Silver moves through her hands that shouldn't.",
+    "Chun-nyeo Jeong": "Forty-two, spine straight as a scholar's brush despite two decades of fieldwork. Hair pulled back in the simplest married woman's style, no ornament but a wooden binyeo worn smooth. Hands rope-scarred from hemp weaving, knuckles swollen in winter. Speaks softly but never hesitates — the kind of certainty that comes from surviving occupation and famine both. Embarrassingly earnest: still bows to the old village shrine the yangban claim doesn't exist, still believes the king will hear petitions if they're written clearly enough. Proud of Jeong-nyeo in ways that ambush the girl at odd moments — a hand on her shoulder when she's mixing clay, an extra portion of rice slipped into her bowl. Never directly praises. Once whispered 'you see more clearly than I ever did' and hasn't mentioned it since. Posted far south where her yangban employer keeps meticulous household records. Writes letters Jeong-nyeo doesn't always answer. Smells of mugwort and barley steam.",
+    "Gwi-dong Jeong": "Fifty-one but moves like sixty, back bent from years carrying tax grain to the fortress stores. Remarried after Jeong-nyeo's birth mother died — the household has never quite settled. Face weathered the color of old pine bark, laugh lines deep despite everything. Hot-tempered: will shout at a yangban tax collector for exactly ten seconds before his survival instinct catches up, then bow so low his forehead touches frost. Apologizes with the same explosive energy he rages with — brings home wild chestnuts, mends Jeong-nyeo's sandals without being asked, then pretends he hasn't. She inherited his quick tongue and his inability to leave injustice alone, which terrifies him. Drinks makgeolli on bad nights and mutters about the Imjin War — he was a child then, remembers fleeing south with nothing. Watches Jeong-nyeo perform kut ceremonies with something between awe and dread. Knows about the letter in her sleeve, has never asked. The optimism is defensive, a choice made every morning.",
+    "Geum-soon Jeong": "Nineteen, built like their father but taller, with shoulders broadened by farmwork. The deliberate hothead: gets angry on principle, apologizes strategically, never forgets a slight. Topknot tied with military precision though he'll never pass the武科 military exam — common blood disqualifies him before he draws a bow. Fiercely loyal in ways that complicate Jeong-nyeo's life: punched a soldier's son for mocking her mudang work, spent three days in the garrison stocks, came home grinning. Part of her story like a second shadow — he remembers their birth mother, won't speak of her, leaves offerings at her grave that he thinks no one sees. Knows Jeong-nyeo trades with Japanese merchants, hasn't said a word, would die before betraying her. Works the northern fields in summer, hauls firewood in winter, keeps the ondol heated when their father forgets. Treats her pronouncements from the spirits with absolute seriousness even when skeptical. The protectiveness is almost parental.",
+    "Cheol-soon Jeong": "Seventeen, quiet as pine snow, reliable as the north star. Narrow build, moves with careful economy like someone rationing energy for a long winter. The one who remembers to set aside seed grain, mend the roof before the rain, check on Jeong-nyeo when she's been too still too long. Never hot-tempered — instead goes silent and immovable as a boundary stone. Lost their older brother to fever when Jeong-nyeo was nine; inherited both the eldest's work and his ghost, which he carries without complaint. Protective in subtle ways: positions himself between her and trouble, changes conversation when it drifts toward her mudang practice in mixed company, once hid her spirit bells when the garrison commander's aide came asking questions. Part of her story because he made himself indispensable — she can't imagine the household without his steady presence. Knows something is badly wrong about her nightmares, the way she jolts at certain sounds. Doesn't pry. Just stays close.",
+    "Bok-nyeo Choi": "Sixteen, round-faced and wind-chapped, eyes too large for her face in a way that makes her look perpetually startled. Daughter of the garrison's grain merchant — jungin class, technically above Jeong-nyeo but has never once pulled rank. Means desperately well: brings Jeong-nyeo extra millet cakes, offers advice that's catastrophically wrong, tries to learn divination and sets her own sleeve on fire with ritual candles. Executes poorly but shows up anyway, which is the whole friendship. Quietly broken in ways she doesn't name — something about her mother's death, something about the merchant house's books not balancing, something she saw during a Japanese trading party's visit that she won't describe. Embarrassingly earnest: still believes yangban when they make promises, still thinks petitions work, cries at public executions. Has her own chaos: a secret poetry habit, a half-finished scheme to learn Chinese that's going nowhere, a crush on a soldier who doesn't know she exists.",
+    "Mi-ok Seo": "Eighteen, daughter of a disgraced chungin official clinging to the northern frontier by his fingernails. Sharp-featured, beautiful in a way that looks expensive even in patched cotton. Cynical as a winter crow: trusts nothing, believes no one, predicts disaster with gleeful accuracy. Charming when it suits her, unreliable as spring ice. Also a mudang — better trained, better connected to the shamanic networks, annoyingly better at divination. Beats Jeong-nyeo at reading fortunes three times out of four and grins like she's won silver. The only person who can match Jeong-nyeo's wit and doesn't bother hiding her intelligence. Rivalry is real but clean: they sharpen each other like whetstones. Knows about the Japanese trade, probably knows about the letter, definitely knows about the invasion nightmares — sees too much, says too little. Uses her looks strategically, flirts with soldiers for information, sells protective talismans at three times what they're worth."
+  }
+}

@@ -1,5 +1,33 @@
 # Changelog
 
+## 2026-06-20
+
+### Fix: AI Dungeon Importer — Story Cards Now Created Individually
+**What changed:** Replaced the "Import Story Cards" file-upload flow with individual card creation via the "CREATE STORY CARD" button.
+**Why:** The file-import dialog uses a dynamically-created `<input type="file">` whose `change` event requires `isTrusted: true`. Playwright's programmatic `setFiles()` and all `dispatchEvent()` approaches produce `isTrusted: false`, which AI Dungeon's handler rejects silently. Manually uploading the same JSON file worked fine — confirming the format was correct, only the automation path was broken.
+**How it works now:** For each character in `scenario.characters`, the script clicks CREATE STORY CARD, fills the NAME ("Enter a name…"), ENTRY (`aria-label="Value"`, 1000-char limit), and TRIGGERS fields, then clicks the modal FINISH.
+**Key selectors:** NAME = `getByPlaceholder(/enter a name/i)`; ENTRY = `[aria-label="Value"]`; TRIGGERS = `getByPlaceholder(/comma separated.*trigger/i)`; save = last `role="button" name="Finish"` (dialog is last in DOM order); scenario save = `.first()` (rendered before the dialog portal).
+
+## 2026-06-19
+
+### Fix: Gemini Generation Fails with 6 NPCs (Token Limit)
+**What changed:** `api-client.js` now uses separate token limits: `CLAUDE_MAX_TOKENS = 16384` and `GEMINI_MAX_TOKENS = 32768`, replacing the shared `MAX_TOKENS = 8192`.
+**Why:** With 6 NPCs, Gemini's response exceeded 8192 tokens mid-JSON, producing an unparseable truncated response. Gemini 2.5 Flash supports up to 65K output tokens; the old cap was unnecessarily tight. Claude's limit is also raised to 16384 to match the inline `index.html` calls.
+**Gameplay impact:** Generation with large casts (5–6 NPCs) should now complete without parse errors.
+
+### Fix: Export Package Missing plotEssentials and authorNote
+**What changed:** `downloadPackage` in `web/index.html` now includes `scenario.plotEssentials` and `scenario.authorNote` in the exported `scenario.json`.
+**Why:** The AI generates these fields and they are displayed in the UI, but they were silently dropped from the zip package — making it impossible to import them into AI Dungeon automatically.
+**Gameplay impact:** Existing zips won't have these fields; the importer treats them as optional and skips blank values.
+
+### feat: AI Dungeon Importer (Playwright) — Verified Working
+**What changed:** Added `web/tools/aidungeon-importer.mjs` — a Node.js CLI script that drives a browser via Playwright to import a FateVend scenario package into AI Dungeon's Create Scenario form.
+**Why:** The previous TamperMonkey approach (`aidungeon-importer.user.js`) only filled the description field and could not trigger native file dialogs (needed for story cards JSON import and portrait upload) or drive multi-step tab navigation reliably.
+**What it does:** Signs in, navigates Play → Create a Scenario → Empty template, fills Title and Description, switches to the Plot tab and adds Story Summary / Plot Essentials / Author's Note components, imports story cards JSON via the "Story card actions" → "Import Story Cards" flow, uploads the portrait PNG via the Images modal Upload sidebar, then clicks FINISH.
+**Usage:** `node web/tools/aidungeon-importer.mjs --input <folder> [--headed] [--slowmo 200]`
+**Dependencies:** `npm install --save-dev playwright && npx playwright install chromium`
+**Key selectors:** `/scenario/create` redirects to home — must navigate via Play menu; portrait container uses `dispatchEvent` to bypass tab overlays; story cards import uses `[aria-label="Story card actions"]` dropdown; portrait file upload uses `input[type="file"]` directly.
+
 ## 2026-06-18
 
 ### Fix: Nihongi AI Output Missing Spaces Between Words
@@ -55,3 +83,12 @@
 **What changed:** Renamed `PROFESSION#sex_worker#1.webp` → `PROFESSION#sex_worker.webp` in the fantasy icons directory.
 **Why:** The icon was generated but left with its variant-number suffix, causing a 404 when the profession was selected.
 **Gameplay impact:** Fantasy sex_worker profession now displays its icon correctly.
+
+### Settings Modal — Font Size and Color Fixes
+**What changed:** Increased font sizes for four settings UI elements and lightened the group heading color.
+- `.settings-group-heading`: `0.56rem` → `0.65rem`; color `--brass-dark` → `--gold` (was too dark against parchment background)
+- `.settings-field label`: `0.6rem` → `0.72rem`
+- `.settings-option-row label`: `0.6rem` → `0.72rem`
+- `.settings-hint`: `0.58rem` → `0.68rem`
+**Why:** Labels were difficult to read at small sizes; group headings were nearly invisible against the brown background.
+**Gameplay impact:** None — readability improvement only.
