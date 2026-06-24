@@ -1,10 +1,10 @@
-key.txt
-.env
-web/.env
-web/generator/config.js
-old
+__pycache__
+2026-*
 *.bak
 bad-icons.txt
+.env
 node_modules
-2026-*
-__pycache__
+old
+tmp
+web/.env
+web/generator/config.js

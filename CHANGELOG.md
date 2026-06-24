@@ -1,5 +1,53 @@
 # Changelog
 
+## 2026-06-24
+
+### fix: importToAIDungeon Button Not Responding
+**What changed:** `importToAIDungeon` and `checkImportServer` were defined inside a `<script type="module">` and therefore not in the global scope. Added both to the `Object.assign(window, {...})` export block.
+**Impact:** The "↑ Import to AI Dungeon" button now fires correctly when clicked.
+
+### fix: Narrate All Only Played First Section
+**What changed:** Rewrote `narrateAll` to use its own internal playback pipeline instead of calling `narrate()`. The old code called `narrate()` in a loop, which called `stopNarration()` at the start of each call, resetting `ttsAllActive = false` and breaking the loop after the first field.
+**Also added:**
+- Section titles read aloud before each field ("Description. …", "Opening. …", protagonist title, each NPC name)
+- Text chunked into sentence-boundary segments (~350 chars for cloud, ~500 for browser) so each TTS call is short and fast
+- Cloud TTS prefetch pipeline: next chunk starts fetching while the current one plays, minimising gap between chunks
+**Impact:** Full scenario narration now reads all fields in order including section labels. Cloud TTS latency between chunks is nearly zero.
+
+### feat: AI Dungeon Importer — Tags Import
+**What changed:** After filling the title and description, the importer now adds each tag from `scenario.tags` one at a time using the tag input (`placeholder="dragons, magic, etc."`) and the `+` button (`[role="button"][aria-label*="Add"]`). Waits for `aria-disabled` to clear before each click.
+**Impact:** Tags are now fully imported alongside all other scenario fields.
+
+### fix: AI Dungeon Importer — Skip Portrait if NSFW
+**What changed:** Portrait upload is skipped when `scenario.nsfw` is `true`.
+**Impact:** Prevents NSFW portraits from being uploaded to AI Dungeon's content servers.
+
+### feat: Skeleton Builder — NSFW Flag
+**What changed:** `buildSkeleton` now accepts `opts = { nsfw }`. Derives `allowNSFW = opts.nsfw && age >= 18`, filters professions flagged `p.nsfw`, and includes `nsfw: allowNSFW` in the returned skeleton. `generateCharacter` and `regenerateSkeleton` in `generator/index.js` both thread the option through.
+**Impact:** NSFW professions are suppressed by default; opt-in is required and restricted to adult characters.
+
+### fix: Unique NPC First Names
+**What changed:** `buildCast` now tracks used first names in a Set seeded with the protagonist's first name. All NPC name picks (parents, partner, siblings, friends, foil) go through a `uniqueFirst()` helper that retries up to 15 times to avoid duplicates.
+**Impact:** No two characters in a generated cast share a first name.
+
+### fix: Spin the Reels Stops Audio
+**What changed:** `runGenerate` now calls `stopNarration()` and pauses `_bellSfx`, `_overtureSfx`, and `_slotMachineSfx` before starting a new generation.
+**Impact:** Any playing music, sound effect, or TTS narration is silenced immediately when a new spin begins.
+
+### fix: Copy Full Text Missing plotEssentials and authorNote
+**What changed:** `copyAll` payload now includes `plotEssentials` and `authorNote` in the `scenario` object, matching `downloadPackage`.
+**Impact:** JSON clipboard export now contains the full scenario data.
+
+### fix: Genre Selector Hard to Read
+**What changed:** Replaced the dense inline style on `#genre-select` with a `.genre-select` CSS class: solid dark background (`#1a1208`), `--gold-light` text, `--brass` border, hover/focus states, and font size raised to `0.85rem`.
+
+### fix: Minimum Font Size 0.8rem
+**What changed:** All `font-size` values below `0.8rem` in `styles.css` and `index.html` bumped to `0.8rem`. Title bar (`clamp(1.8rem…)`) unchanged.
+**Impact:** Consistent, readable text throughout the UI.
+
+### fix: Button Label — "Spin the Reels"
+**What changed:** Renamed "Turn the Gears" → "Spin the Reels" in the generate button and status message.
+
 ## 2026-06-20
 
 ### feat: "Import to AI Dungeon" Button in Web UI

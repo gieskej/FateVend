@@ -172,6 +172,36 @@ try {
   const descInput = page.getByPlaceholder(/provide a brief description/i);
   await fill(descInput, scenario.description);
   await validate(descInput, 'Description', scenario.description);
+
+  // ── Tags ──────────────────────────────────────────────────────────────────
+  const tags = scenario.tags ?? [];
+  if (tags.length > 0) {
+    console.log(`Adding ${tags.length} tags…`);
+    const tagInput = page.getByPlaceholder(/dragons, magic/i);
+    if (await tagInput.count() > 0) {
+      // The + button is aria-labelled "Add undefined" (their bug) and may render + via CSS.
+      // Find it by aria-label; fall back to Enter key if the button never appears.
+      const addBtn = page.locator('[role="button"][aria-label*="Add"]');
+      for (const tag of tags) {
+        await tagInput.fill(tag);
+        // Wait for the button to leave its disabled state
+        await page.waitForFunction(
+          () => document.querySelector('[role="button"][aria-label*="Add"]')?.getAttribute('aria-disabled') !== 'true',
+          { timeout: 3_000 }
+        ).catch(() => {});
+        const btnVisible = await addBtn.count() > 0;
+        if (btnVisible) {
+          await addBtn.click();
+        } else {
+          await tagInput.press('Enter');
+        }
+        await page.waitForTimeout(300);
+      }
+      console.log('Tags added.');
+    } else {
+      console.warn('Tag input not found — skipping tags.');
+    }
+  }
   console.log('Details filled.');
 
   // ── Plot tab ──────────────────────────────────────────────────────────────
