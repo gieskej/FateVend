@@ -81,9 +81,9 @@ ${castLines}
 
 OUTPUT RULES:
 
-"characterEntry": MAX 1000 chars. Terse behavioral prose. Lead with name, year (first/second/third year), archetype. Use sentence fragments. Ground in 1987 Osaka specifics: the sound of a walkman leaking Boøwy, the weight of a club bag, the particular quality of afternoon light through a school window. Reference key cast members by name. End on something that creates forward momentum. Make the reader want to be this person, at least for one school day.
+"characterEntry": MAX 1000 chars. Open with one sentence: "[Full name] is a [age]-year-old [school year] [orientation] [gender] with [hair length] [hair color] [hair style], [eye color] eyes, [skin tone] skin[, and any piercings, yankii accessories, or notable jewelry if applicable], wearing [school uniform or street clothes typical for their archetype and social group]." Then describe personality, quirks, habits, school role, and relationships with family and key cast members by name. Do not repeat the situation, conflict, or plot already covered in the description, opening, or plot essentials.
 
-"npcEntries": An object where every key is an NPC name and every value is a PLAIN STRING (not a nested object). Each string ~1000 chars — use the full length. Open with physical presence: name, archetype, how they look in uniform, how they carry themselves in the hallway. Then personality through behavior — how they speak, their tells, what gives them away. Reference the protagonist by name. These people should feel like the supporting cast of a real manga.
+"npcEntries": An object where every key is an NPC name and every value is a PLAIN STRING (not a nested object). Each string MAX 1000 chars. Open with one sentence: "[Full name] is a [age]-year-old [school year] [orientation] [gender] with [hair length] [hair color] [hair style], [eye color] eyes, [skin tone] skin[, and any piercings, yankii accessories, or notable jewelry if applicable], wearing [school uniform or street clothes typical for their archetype]." Then describe personality, quirks, habits, school role, and their relationship with the protagonist and others by name. Do not repeat the situation or plot.
 
 "title": MAX 70 chars. Hook the player. Specific, evocative, grounded in the setting. Can be a manga chapter title style.
 

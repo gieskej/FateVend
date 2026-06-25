@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-06-24 (continued)
+
+### fix: Story Card Format — Structured Physical Description
+**What changed:** Updated `characterEntry` and `npcEntries` output rules in all 7 genre prompt templates (fantasy, modern, sci-fi, paleolithic, joseon, manga, nihongi) and the fallback inline prompt in `index.html`. All story cards now open with a standardised sentence: "[Full name] is a [age]-year-old [orientation] [gender] [race] with [hair description], [eye color] eyes, [skin tone] skin[, accessories/marks if notable], wearing [outfit suited to occupation]." followed by personality, quirks, habits, occupation, and family/friend relationships. Cards explicitly must not repeat situation or plot already in description/opening/plotEssentials.
+**Impact:** Story cards imported into AI Dungeon will be immediately scannable — the AI knows exactly who each character is physically before the prose begins, and won't duplicate plot context.
+
 ## 2026-06-24
 
 ### fix: importToAIDungeon Button Not Responding

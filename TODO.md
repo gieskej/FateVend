@@ -1,10 +1,8 @@
 # TODO
 
 ## Bugs
-- The aidungeon-importer is flaky about uploading the portrait image.  Sometimes it works, sometimes it does not.
 - In the Narration Settings, the Voice pick list seems static.  It should query the TTS provider for its installed voices.
 - If I click Narrate All button, it plays the sections out in wrong order.  It should be title, description, opening, plot essentials, authors note, 
-- All story cards (protagonist and NPCs) should follow the pattern: {full name} is a {age} year old {orientation} {gender} {race} with {hair length} {hair color} {hair style}, {eye color}, {skin color}, {jewelry/piercings/tattoos/scars (if any)}, wearing {typical outfit appropriate for their gender/race/occupation}.  Then describe personality, quirks, habbits, occupation, family and friends.  Do not repeat the situation already covered in the description, opening, plot essentials.
 - Plot essentials should be short bullet points, not wordy prose.  Ideally around 1000 characters, maximum 1500 characters.
 - Change the tone of the Paleolithic genre in Authors Notes - It should be more sitcom/comedy of errors mixed with dark humor that you'll likely be eaten by a predator.  Also make it 100000 BC, more Neanderthal period, less language, more wild, anything goes.
 - Change the tone of the Joseon genre in Authors Notes - It should be more about palace intrigue.
@@ -17,11 +15,17 @@
     - Plastic Androids may have a gender for appearances, but are asexual and do not have relationships.
     - Biomechanical Androids should have gender, orientation and relationship.
 
+- Redo the UI title bar and selectors.  It occupies too much vertical space.  Selectors should move to a single line toolbar.
+- Think of a better name.
+
+### Low Priority Bugs
+- The aidungeon-importer is flaky about uploading the portrait image.  Sometimes it works, sometimes it does not.
 
 ## New Features
 - Enable scripts and add auto-cards
 - Update the skeleton with a new "metadata" section with name and version of the text and image provider, generation datetime, commit hash
 - Add a button that creates a promo video for the scenario using the character portraits, overture, name overlays, "Starring YOU as xxx".
+- Make genre selector a carosel, and each Genre should get a thumbnail and brief description like "Nihongi - Japanese horror"
 
 
 ---

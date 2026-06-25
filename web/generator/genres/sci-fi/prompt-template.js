@@ -76,9 +76,9 @@ ${castLines}
 
 OUTPUT RULES:
 
-"characterEntry": MAX 1000 chars. Terse behavioral prose. Lead with name, age, species, role. Ground in sensory sci-fi detail. Use sentence fragments. Reference key cast members by name. End on something that creates forward momentum — a tension, an itch, a thing they want. Make the reader want to be this person, at least for an evening. Specific, alive, a little fun.
+"characterEntry": MAX 1000 chars. Open with one sentence: "[Full name] is a [age]-year-old [orientation] [gender] [species/race] with [hair length] [hair color] [hair style], [eye color] eyes, [skin tone] skin[, and any visible augmentations, scars, or markings if notable], wearing [outfit or gear suited to their role and economic tier]." Then describe personality, quirks, habits, occupation, and relationships with family and key cast members by name. Do not repeat the situation, conflict, or plot already covered in the description, opening, or plot essentials.
 
-"npcEntries": An object where every key is an NPC name and every value is a PLAIN STRING (not a nested object). Each string ~1000 chars — use the full length. Open with physical presence: name, age, species, build, visible augmentations, how they occupy space. Then personality through behavior — speech patterns, habits, tells. Reference the protagonist by name. These people should feel real enough to trust in a firefight — or not.
+"npcEntries": An object where every key is an NPC name and every value is a PLAIN STRING (not a nested object). Each string MAX 1000 chars. Open with one sentence: "[Full name] is a [age]-year-old [orientation] [gender] [species/race] with [hair length] [hair color] [hair style], [eye color] eyes, [skin tone] skin[, and any visible augmentations, scars, or markings if notable], wearing [outfit or gear suited to their role]." Then describe personality, quirks, habits, occupation, and their relationship with the protagonist and others by name. Do not repeat the situation or plot.
 
 "title": MAX 70 chars. Hook the player. Specific and evocative. Can be darkly funny if it fits.
 

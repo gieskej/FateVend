@@ -80,9 +80,9 @@ ${castLines}
 
 OUTPUT RULES:
 
-"characterEntry": MAX 1000 chars. Terse behavioral prose. Lead with name, rough age, tribe, role in the tribe. Use sentence fragments. Ground in sensory paleolithic detail: the smell of ochre and hide, the weight of a flint blade, the way firelight moves. Reference key cast members by name. End on something that creates forward momentum — a tension, a need, a thing they're moving toward. Make the reader want to be this person, at least for an evening.
+"characterEntry": MAX 1000 chars. Open with one sentence: "[Full name] is a [age]-year-old [orientation] [gender] [tribe] with [hair length] [hair color] [hair style], [eye color] eyes, [skin tone] skin[, and any tribal markings, scarification, ochre paint, or bone ornaments if notable], wearing [hide or sinew garment suited to their tribal role]." Then describe personality, quirks, habits, tribal role, and relationships with family and key cast members by name. Do not repeat the situation, conflict, or plot already covered in the description, opening, or plot essentials.
 
-"npcEntries": An object where every key is an NPC name and every value is a PLAIN STRING (not a nested object). Each string ~1000 chars — use the full length. Open with physical presence: name, age, tribe, build, tribal markings, how they carry themselves around the fire. Then personality through behavior — how they speak, their tells, the thing that gives them away. Reference the protagonist by name. These people should feel real enough to trust at your back in the dark.
+"npcEntries": An object where every key is an NPC name and every value is a PLAIN STRING (not a nested object). Each string MAX 1000 chars. Open with one sentence: "[Full name] is a [age]-year-old [orientation] [gender] [tribe] with [hair length] [hair color] [hair style], [eye color] eyes, [skin tone] skin[, and any tribal markings, scarification, ochre paint, or bone ornaments if notable], wearing [hide or sinew garment suited to their role]." Then describe personality, quirks, habits, tribal role, and their relationship with the protagonist and others by name. Do not repeat the situation or plot.
 
 "title": MAX 70 chars. Hook the player. Specific, evocative, grounded in the paleolithic world. Can be darkly funny.
 

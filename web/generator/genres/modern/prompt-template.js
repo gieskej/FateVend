@@ -70,9 +70,9 @@ ${castLines}
 
 OUTPUT RULES:
 
-"characterEntry": MAX 1000 chars. Terse behavioral prose. Lead with name, age, race, role. Use sentence fragments. Reference key cast members by name. End on something that creates forward momentum — a tension, an itch, a thing they want. Make the reader want to be this person, at least for an evening. Specific, alive, a little fun.
+"characterEntry": MAX 1000 chars. Open with one sentence: "[Full name] is a [age]-year-old [orientation] [gender] [race] with [hair length] [hair color] [hair style], [eye color] eyes, [skin tone] skin[, and any jewelry/piercings/tattoos/scars if notable], wearing [outfit suited to their job and lifestyle]." Then describe personality, quirks, habits, occupation, and relationships with family and key cast members by name. Do not repeat the situation, conflict, or plot already covered in the description, opening, or plot essentials.
 
-"npcEntries": An object where every key is an NPC name and every value is a PLAIN STRING (not a nested object). Each string ~1000 chars — use the full length. Open with physical presence: name, age, race, build, distinguishing features, how they carry themselves in a room. Then personality through behavior — speech patterns, habits, tells, the thing you notice the third time you meet them. Reference the protagonist by name. These people should feel real enough to run into at a gas station.
+"npcEntries": An object where every key is an NPC name and every value is a PLAIN STRING (not a nested object). Each string MAX 1000 chars. Open with one sentence: "[Full name] is a [age]-year-old [orientation] [gender] [race] with [hair length] [hair color] [hair style], [eye color] eyes, [skin tone] skin[, and any jewelry/piercings/tattoos/scars if notable], wearing [outfit suited to their job and lifestyle]." Then describe personality, quirks, habits, occupation, and their relationship with the protagonist and others by name. Do not repeat the situation or plot.
 
 "title": MAX 70 chars. Hook the player. Specific and evocative. Can be darkly funny if it fits.
 
