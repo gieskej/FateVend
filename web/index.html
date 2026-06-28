@@ -998,7 +998,7 @@ Output only the JSON structure requested. No preamble, no commentary, no markdow
 
 function buildPrompt(sk, genre) {
   const castLines = sk.cast.map(npc =>
-    `  - ${npc.name} (${npc.role}, ${npc.status}): ${npc.traits.join(', ')}. ${npc.dynamic}`
+    `  - ${npc.name} (${npc.role}, ${npc.status}, ${npc.gender}, ${npc.race}): ${npc.traits.join(', ')}. ${npc.dynamic}`
   ).join('\n');
   const appParts = [sk.appearance.build, sk.appearance.hair, sk.appearance.distinguishingFeature, ...(sk.appearance.statNotes ?? [])].filter(Boolean).join('; ');
   const identityLabel  = genre === 'fantasy' ? 'Race' : genre === 'sci-fi' ? 'Species' : genre === 'paleolithic' ? 'Tribe' : genre === 'manga-osaka-highschool1987' ? 'Archetype' : genre === 'historical-korea-joseon-dynasty' ? 'Class' : genre === 'nihongi' ? 'Clan' : 'Ethnicity';
