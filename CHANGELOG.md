@@ -2,6 +2,16 @@
 
 ## 2026-06-27
 
+### feat: Synthetic construct identity rules for sci-fi androids
+**What changed:** Added `syntheticType` property to all four android race entries in `genres/sci-fi/races.js`:
+- `android_synth` (Biomechanical) → `'biomechanical'` — full person; gender, orientation, and relationship generated normally
+- `android_standard` (Plastic) → `'plastic'` — gender generated for appearances; orientation forced to Asexual; relationship forced to Single (no partner in cast); also renamed flavor text from "Mechanical Android" to "Plastic Android"
+- `android_industrial` (Industrial) → `'industrial'` — no gender (N/A / it/its), no orientation (N/A), no relationship (N/A); no partner generated
+- `android_combat` (Combat) → `'industrial'` — same rules as industrial (weapons platform, not a person)
+
+In `skeleton-builder.js`, moved the `identity` pick to before gender/orientation/relationship, then branches on `syntheticType` to enforce the correct attribute set. `'single'` relationship status is passed to `buildCast` for plastic/industrial androids, which naturally blocks partner NPC generation via `PARTNER_HAS_NPC`.
+**Impact:** Industrial and Combat Androids no longer get gender, sexual orientation, romantic relationships, or family. Plastic Androids get a gender presentation but are always asexual and unpartnered. Biomechanical Androids are fully human-equivalent in these attributes.
+
 ### feat: Human-readable Kokoro voice labels
 **What changed:** Replaced the `{ value, label }` object array in `KOKORO_VOICES` with a plain string array of voice IDs. Added `kokoroVoiceLabel(id)` which parses the `prefix_name` format and returns e.g. `"Lewis (British Male)"` for `bm_lewis`. Applied to both the static fallback list and live-fetched voices from the Kokoro server. Unknown ID formats fall back to displaying the raw ID.
 **Impact:** Voice names in the Settings dropdown are readable instead of showing raw identifiers like `bm_lewis`.

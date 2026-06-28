@@ -881,10 +881,11 @@ function buildSkeleton(stats, mbti, tables) {
   const genderPool   = includeLGBQ ? G : G.filter(g => g.id === 'man' || g.id === 'woman');
   const orientPool   = includeLGBQ ? O : O.filter(o => o.id === 'straight');
   const identity           = statAndWeightPick(ROE, stats);
-  const gender             = statAndWeightPick(genderPool, stats);
+  const syntheticType      = identity.syntheticType ?? null;
+  let   gender             = statAndWeightPick(genderPool, stats);
   const nsfwPool     = allowNSFW ? P : P.filter(p => !p.nsfw);
   const profPool     = (() => {
-    const isNB = gender.id === 'non_binary' || gender.id === 'genderfluid';
+    const isNB = gender.id === 'non_binary' || gender.id === 'genderfluid' || gender.id === 'genderless';
     const byIndustry = identity.allowedIndustries
       ? nsfwPool.filter(p => identity.allowedIndustries.includes(p.industry))
       : nsfwPool;
@@ -892,8 +893,19 @@ function buildSkeleton(stats, mbti, tables) {
     const byGender = base.filter(p => !p.allowedGenders || isNB || p.allowedGenders.includes(gender.id));
     return byGender.length > 0 ? byGender : base;
   })();
-  const orientation        = weightedPick(orientPool);
-  const relStatus          = uniformPick(RS.flatMap(r => Array(r.weight).fill(r)));
+  let   orientation        = weightedPick(orientPool);
+  let   relStatus          = uniformPick(RS.flatMap(r => Array(r.weight).fill(r)));
+
+  // Synthetic construct overrides — must run after identity is known
+  if (syntheticType === 'industrial') {
+    gender      = { id: 'genderless', label: 'Genderless', pronouns: 'it/its' };
+    orientation = { id: 'asexual',    label: 'N/A' };
+    relStatus   = { id: 'single',     label: 'N/A' };
+  } else if (syntheticType === 'plastic') {
+    // Gender stays as rolled (outward appearance only); always asexual; no relationships
+    orientation = O.find(o => o.id === 'asexual') ?? { id: 'asexual', label: 'Asexual' };
+    relStatus   = RS.find(r => r.id === 'single')  ?? { id: 'single',  label: 'Single'  };
+  }
   const plotArchetypeEntry = uniformPick(PA.flatMap(p => Array(p.weight).fill(p)));
   const namePool    = NP[identity.broad] ?? NP['default'];
   const nameResult  = protoName(gender.id, namePool);

@@ -59,10 +59,15 @@ export const RACES = [
   },
 
   // ── ANDROID ───────────────────────────────────────────────────────────
+  // syntheticType controls which identity attributes are generated:
+  //   'biomechanical' — full person: gender, orientation, relationship
+  //   'plastic'       — gender for appearances only; forced asexual; no relationships
+  //   'industrial'    — no gender, no orientation, no relationship
   {
     id: 'android_synth',
     broad: 'Android',
-    flavor: 'Biomechanical — nearly human, fully synthetic, designed to pass all but deep medscans; the question of personhood is legally unsettled and they are aware of this',
+    syntheticType: 'biomechanical',
+    flavor: 'Biomechanical Android — nearly human, fully synthetic, designed to pass all but deep medscans; the question of personhood is legally unsettled and they are aware of this',
     weight: 6,
     iconPrompt: 'sci-fi rpg icon, beautiful woman with blue bobcut hair and blue eyes, flawless skin, face of a fashion model, covered shoulders, medium shot, digital concept art',
     iconPath: 'generator/genres/sci-fi/icons/SPECIES#android_synth.webp'
@@ -70,7 +75,8 @@ export const RACES = [
   {
     id: 'android_standard',
     broad: 'Android',
-    flavor: 'Mechanical Android — Sorta human-like caricature, but obviously synthetic, designed to perform routine tasks in public spaces',
+    syntheticType: 'plastic',
+    flavor: 'Plastic Android — human-shaped but obviously synthetic; designed for customer-facing roles where a familiar form helps, but no one mistakes them for a person',
     weight: 6,
     iconPrompt: 'sci-fi rpg icon, public transit space, a cute plastic android in neutral service attire standing in crowd, medium shot, digital concept art',
     iconPath: 'generator/genres/sci-fi/icons/SPECIES#android_standard.webp'
@@ -78,7 +84,8 @@ export const RACES = [
   {
     id: 'android_industrial',
     broad: 'Android',
-    flavor: 'Industrial Android — Purpose built mechanical androids designed for heavy labor and industrial work, with little regard for aesthetics or social integration',
+    syntheticType: 'industrial',
+    flavor: 'Industrial Android — purpose-built for heavy labor and industrial work, with no regard for aesthetics or social integration; treated as equipment',
     weight: 6,
     iconPrompt: 'sci-fi rpg icon, a bipedal heavy loader android with large pinchers at a construction site, medium shot, digital concept art',
     iconPath: 'generator/genres/sci-fi/icons/SPECIES#android_industrial.webp'
@@ -86,7 +93,8 @@ export const RACES = [
   {
     id: 'android_combat',
     broad: 'Android',
-    flavor: 'Combat Android — Purpose built mechanical androids designed for combat and military operations, with advanced weaponry and armor',
+    syntheticType: 'plastic',
+    flavor: 'Combat Android — purpose-built for combat and military operations, with advanced weaponry and armor; classified as a weapons platform, not a person',
     weight: 6,
     iconPrompt: 'sci-fi rpg icon, a combat android with exposed joints, holding laser rifle, wearing powered armor, rocket pack, multiple eyes, medium shot, digital concept art',
     iconPath: 'generator/genres/sci-fi/icons/SPECIES#android_combat.webp'

@@ -88,11 +88,31 @@ export function buildSkeleton(stats, mbti, tables, opts = {}) {
   } = tables;
 
   // ── IDENTITY ──────────────────────────────────────────────────────────
-  const gender             = statAndWeightPick(GENDERS, stats);
-  const orientation        = uniformPick(ORIENTATIONS.flatMap(o => Array(o.weight).fill(o)));
-  const relationshipStatus = uniformPick(RELATIONSHIP_STATUSES.flatMap(r => Array(r.weight).fill(r)));
+  // Identity must be resolved first — syntheticType on android races controls
+  // which of gender / orientation / relationship are generated.
+  const identity       = statAndWeightPick(RACES_OR_ETHNICITIES, stats);
+  const syntheticType  = identity.syntheticType ?? null;  // 'biomechanical' | 'plastic' | 'industrial' | null
+
   const plotArchetypeEntry = uniformPick(PLOT_ARCHETYPES.flatMap(p => Array(p.weight).fill(p)));
-  const identity    = statAndWeightPick(RACES_OR_ETHNICITIES, stats);  // works for both race and ethnicity
+
+  let gender, orientation, relationshipStatus;
+
+  if (syntheticType === 'industrial') {
+    // No gender, orientation, or relationship — treated as equipment
+    gender             = { id: 'genderless', label: 'Genderless', pronouns: 'it/its' };
+    orientation        = { id: 'asexual',    label: 'N/A' };
+    relationshipStatus = { id: 'single',     label: 'N/A' };
+  } else if (syntheticType === 'plastic') {
+    // Gender for appearances only; always asexual; no relationships
+    gender             = statAndWeightPick(GENDERS, stats);
+    orientation        = ORIENTATIONS.find(o => o.id === 'asexual') ?? { id: 'asexual', label: 'Asexual' };
+    relationshipStatus = RELATIONSHIP_STATUSES.find(r => r.id === 'single') ?? { id: 'single', label: 'Single' };
+  } else {
+    // Biomechanical androids and all non-android identities — full picks
+    gender             = statAndWeightPick(GENDERS, stats);
+    orientation        = uniformPick(ORIENTATIONS.flatMap(o => Array(o.weight).fill(o)));
+    relationshipStatus = uniformPick(RELATIONSHIP_STATUSES.flatMap(r => Array(r.weight).fill(r)));
+  }
 
   // ── NAME (ethnicity/race-matched) ─────────────────────────────────────
   const namePool = poolFor(NAME_POOLS, identity.broad);
@@ -154,7 +174,7 @@ export function buildSkeleton(stats, mbti, tables, opts = {}) {
   const clanProfPool = identity.allowedIndustries
     ? profBase.filter(p => identity.allowedIndustries.includes(p.industry))
     : profBase;
-  const isNBGender = gender.id === 'non_binary' || gender.id === 'genderfluid';
+  const isNBGender = gender.id === 'non_binary' || gender.id === 'genderfluid' || gender.id === 'genderless';
   const genderProfPool = clanProfPool.filter(p =>
     !p.allowedGenders || isNBGender || p.allowedGenders.includes(gender.id)
   );
