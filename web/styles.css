@@ -1074,7 +1074,7 @@ body::before {
   background: transparent;
   border: 1px solid var(--brass-dark);
   border-radius: var(--radius);
-  color: var(--brass-dark);
+  color: var(--brass-light);
   font-family: var(--font-display);
   font-size: 0.8rem;
   letter-spacing: 0.05em;

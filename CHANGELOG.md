@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-06-27
+
+### feat: Narration Provider Selector in Main UI
+**What changed:** Added a Narration button group to the provider selectors area (alongside Text Provider and Image Provider). Buttons: Off, Browser, Kokoro, OpenAI. Kokoro and OpenAI buttons are hidden until their URL/key is entered in Settings. Selecting a button calls `setTtsProvider()`, which now also syncs the button highlight state. Added `updateNarrationProviderSelector()` — called on settings input and on page load — to show/hide provider buttons and auto-fall-back to Browser if credentials are removed.
+**Impact:** Players can switch narration on/off and change providers directly from the main UI without opening Settings.
+
+### fix: Narration button 🔊 icon replaced with brass-light SVG
+**What changed:** Replaced the `🔊` emoji on all narrate buttons (6 field buttons + Narrate All) with an inline SVG speaker icon using `fill="currentColor"`, inheriting the button's CSS color. Defined `SVG_NARRATE_ICON` constant; `setNarrateButtonState` idle branch now uses `innerHTML` instead of `textContent`.
+**Impact:** Narration buttons match the brass color scheme instead of showing an OS-rendered emoji.
+
+### fix: Narration provider selection not persisted across sessions
+**What changed:** `updateNarrationProviderSelector()` was calling `setTtsProvider(ttsProvider)` unconditionally, which wrote the default `'off'` value to localStorage before the saved provider was read from storage. Removed that redundant call (button highlighting is already handled inside `setTtsProvider`). Moved the init call to `updateNarrationProviderSelector()` to after `setTtsProvider(savedTtsProvider)` so credentials are visible and the saved provider is already active when visibility is evaluated.
+**Impact:** Choosing Kokoro (or any provider) is now remembered across page loads.
+
 ## 2026-06-24 (continued)
 
 ### fix: Story Card Format — Structured Physical Description

@@ -248,6 +248,29 @@
       </div>
     </div>
 
+    <!-- Narration provider (always visible; Kokoro/OpenAI shown when configured) -->
+    <div id="narration-provider-selector" style="text-align:center;">
+      <div style="font-family:var(--font-display);font-size: 0.8rem;letter-spacing:0.16em;color:var(--brass-light);text-transform:uppercase;margin-bottom:0.6rem;">Narration</div>
+      <div style="display:inline-flex;gap:0;border:1px solid var(--brass-dark);border-radius:var(--radius);overflow:hidden;">
+        <button id="narration-provider-off" onclick="setTtsProvider('off')"
+          style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size: 0.8rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s,opacity 0.15s;">
+          Off
+        </button>
+        <button id="narration-provider-browser" onclick="setTtsProvider('browser')"
+          style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size: 0.8rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s,opacity 0.15s;">
+          Browser
+        </button>
+        <button id="narration-provider-kokoro" onclick="setTtsProvider('kokoro')"
+          style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size: 0.8rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s,opacity 0.15s;display:none;">
+          Kokoro
+        </button>
+        <button id="narration-provider-openai" onclick="setTtsProvider('openai')"
+          style="padding:0.5rem 1.5rem;font-family:var(--font-display);font-size: 0.8rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;background:rgba(26,18,8,0.6);color:var(--brass-light);transition:background 0.15s,color 0.15s,opacity 0.15s;display:none;">
+          OpenAI
+        </button>
+      </div>
+    </div>
+
   </div>
 
   <!-- GENRE SELECTOR -->
@@ -1459,6 +1482,21 @@ function updateImageProviderSelector() {
   }
 }
 
+function updateNarrationProviderSelector() {
+  const hasKokoro = !!document.getElementById('tts-kokoro-url')?.value.trim();
+  const hasOpenAI = !!document.getElementById('tts-openai-key')?.value.trim();
+
+  const kokoroBtn = document.getElementById('narration-provider-kokoro');
+  const openaiBtn = document.getElementById('narration-provider-openai');
+
+  if (kokoroBtn) kokoroBtn.style.display = hasKokoro ? 'inline-block' : 'none';
+  if (openaiBtn) openaiBtn.style.display = hasOpenAI ? 'inline-block' : 'none';
+
+  // Auto-switch away from a provider whose credentials were removed
+  if (ttsProvider === 'kokoro' && !hasKokoro) setTtsProvider('browser');
+  else if (ttsProvider === 'openai' && !hasOpenAI) setTtsProvider('browser');
+}
+
 // ═══════════════════════════════════════════════════════════════════════════
 // UI STATE
 // ═══════════════════════════════════════════════════════════════════════════
@@ -1473,6 +1511,8 @@ let ttsAudio       = null;
 let ttsSpeaking    = false;
 let ttsAllActive   = false;
 let ttsNarrateBtn  = null;
+
+const SVG_NARRATE_ICON = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>`;
 
 const GENRE_PORTRAIT_STYLES = {
   'modern':                           'modern cinematic style, natural lighting, detailed digital illustration, centered subject, clean composition, contemporary realism, muted urban palette, grounded atmosphere',
@@ -2258,7 +2298,7 @@ function renderOutput(sk, output) {
             </div>
             <div class="field-meta">
               <span class="char-count" id="cc-npc-${safeName}">${entry.length} / 1000</span>
-              ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('npc-entry-${safeName}').value,this)">🔊</button>` : ''}
+              ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('npc-entry-${safeName}').value,this)">${SVG_NARRATE_ICON}</button>` : ''}
               <button class="btn-copy" onclick="copyField('npc-entry-${safeName}', this)">Copy</button>
             </div>
           </div>
@@ -2275,7 +2315,7 @@ function renderOutput(sk, output) {
     <div class="card-header">
       <span class="card-title">⚙ AI Generated Scenario</span>
       <div class="field-meta" style="gap:0.4rem;">
-        ${showNarrate ? `<button class="btn-narrate" onclick="narrateAll()">🔊 Narrate All</button>` : ''}
+        ${showNarrate ? `<button class="btn-narrate" onclick="narrateAll()">${SVG_NARRATE_ICON} Narrate All</button>` : ''}
         <button id="btn-tts-stop" hidden onclick="stopNarration()">⏹ Stop</button>
       </div>
     </div>
@@ -2324,7 +2364,7 @@ function renderOutput(sk, output) {
           <span class="field-label">Details: Description</span>
           <div class="field-meta">
             <span class="char-count" id="cc-desc">${output.description.length} / 5000</span>
-            ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('field-desc').value,this)">🔊</button>` : ''}
+            ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('field-desc').value,this)">${SVG_NARRATE_ICON}</button>` : ''}
             <button class="btn-copy" onclick="copyField('field-desc',this)">Copy</button>
           </div>
         </div>
@@ -2338,7 +2378,7 @@ function renderOutput(sk, output) {
           <span class="field-label">Plot: Plot Essentials</span>
           <div class="field-meta">
             <span class="char-count" id="cc-plot">${output.plotEssentials.length} / 2000</span>
-            ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('field-plot').value,this)">🔊</button>` : ''}
+            ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('field-plot').value,this)">${SVG_NARRATE_ICON}</button>` : ''}
             <button class="btn-copy" onclick="copyField('field-plot',this)">Copy</button>
           </div>
         </div>
@@ -2352,7 +2392,7 @@ function renderOutput(sk, output) {
           <span class="field-label">Style: Author's Note</span>
           <div class="field-meta">
             <span class="char-count" id="cc-authornote">${output.authorNote.length} / 500</span>
-            ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('field-authornote').value,this)">🔊</button>` : ''}
+            ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('field-authornote').value,this)">${SVG_NARRATE_ICON}</button>` : ''}
             <button class="btn-copy" onclick="copyField('field-authornote',this)">Copy</button>
           </div>
         </div>
@@ -2365,7 +2405,7 @@ function renderOutput(sk, output) {
           <span class="field-label">Details: Opening (Append to end of Description)</span>
           <div class="field-meta">
             <span class="char-count" id="cc-opening">${output.opening.length} / 4000</span>
-            ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('field-opening').value,this)">🔊</button>` : ''}
+            ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('field-opening').value,this)">${SVG_NARRATE_ICON}</button>` : ''}
             <button class="btn-copy" onclick="copyField('field-opening',this)">Copy</button>
           </div>
         </div>
@@ -2391,7 +2431,7 @@ function renderOutput(sk, output) {
           </div>
           <div class="field-meta">
             <span class="char-count" id="cc-protagonist">${output.characterEntry.length} / 1000</span>
-            ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('field-protagonist').value,this)">🔊</button>` : ''}
+            ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('field-protagonist').value,this)">${SVG_NARRATE_ICON}</button>` : ''}
             <button class="btn-copy" onclick="copyField('field-protagonist',this)">Copy</button>
           </div>
         </div>
@@ -3046,6 +3086,7 @@ document.addEventListener('DOMContentLoaded', () => {
       else   localStorage.removeItem(store);
       if (id === 'api-key' || id === 'gemini-api-key' || id === 'ollama-url') updateProviderSelector();
       if (id === 'sd-url' || id === 'img-api-key') updateImageProviderSelector();
+      if (id === 'tts-kokoro-url' || id === 'tts-openai-key') updateNarrationProviderSelector();
     });
   });
 
@@ -3069,6 +3110,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // TTS provider persistence — setTtsProvider must run first to populate the voice select options
   const savedTtsProvider = localStorage.getItem('gof_tts_provider') || 'off';
   setTtsProvider(savedTtsProvider);
+  updateNarrationProviderSelector(); // show/hide Kokoro+OpenAI buttons after provider is restored
   // Restore saved voice/speed on top of genre defaults (silently ignored if not a valid option)
   const savedVoice = localStorage.getItem('gof_tts_voice_override');
   const ttsVoiceEl = document.getElementById('tts-voice-override');
@@ -3179,6 +3221,16 @@ function setTtsProvider(val) {
   const provEl = document.getElementById('tts-provider');
   if (provEl) provEl.value = val;
 
+  // Sync narration provider button group
+  const narrationBtnIds = { off: 'narration-provider-off', browser: 'narration-provider-browser', kokoro: 'narration-provider-kokoro', openai: 'narration-provider-openai' };
+  for (const [key, id] of Object.entries(narrationBtnIds)) {
+    const btn = document.getElementById(id);
+    if (!btn) continue;
+    const active = key === val;
+    btn.style.background = active ? 'var(--brass)' : 'rgba(26,18,8,0.6)';
+    btn.style.color      = active ? 'var(--ink)'   : 'var(--brass-light)';
+  }
+
   const voiceEl = document.getElementById('tts-voice-override');
   const speedEl = document.getElementById('tts-speed-override');
   const cfg = GENRE_TTS_CONFIG[currentGenre] ?? GENRE_TTS_CONFIG['modern'];
@@ -3235,7 +3287,7 @@ function setNarrateButtonState(btn, state) {
     btn.textContent = '⏸';
     btn.classList.add('speaking');
   } else {
-    btn.textContent = '🔊';
+    btn.innerHTML = SVG_NARRATE_ICON;
   }
 }
 
