@@ -2,6 +2,10 @@
 
 ## 2026-06-27
 
+### feat: Human-readable Kokoro voice labels
+**What changed:** Replaced the `{ value, label }` object array in `KOKORO_VOICES` with a plain string array of voice IDs. Added `kokoroVoiceLabel(id)` which parses the `prefix_name` format and returns e.g. `"Lewis (British Male)"` for `bm_lewis`. Applied to both the static fallback list and live-fetched voices from the Kokoro server. Unknown ID formats fall back to displaying the raw ID.
+**Impact:** Voice names in the Settings dropdown are readable instead of showing raw identifiers like `bm_lewis`.
+
 ### feat: Narration Provider Selector in Main UI
 **What changed:** Added a Narration button group to the provider selectors area (alongside Text Provider and Image Provider). Buttons: Off, Browser, Kokoro, OpenAI. Kokoro and OpenAI buttons are hidden until their URL/key is entered in Settings. Selecting a button calls `setTtsProvider()`, which now also syncs the button highlight state. Added `updateNarrationProviderSelector()` — called on settings input and on page load — to show/hide provider buttons and auto-fall-back to Browser if credentials are removed.
 **Impact:** Players can switch narration on/off and change providers directly from the main UI without opening Settings.
@@ -9,6 +13,14 @@
 ### fix: Narration button 🔊 icon replaced with brass-light SVG
 **What changed:** Replaced the `🔊` emoji on all narrate buttons (6 field buttons + Narrate All) with an inline SVG speaker icon using `fill="currentColor"`, inheriting the button's CSS color. Defined `SVG_NARRATE_ICON` constant; `setNarrateButtonState` idle branch now uses `innerHTML` instead of `textContent`.
 **Impact:** Narration buttons match the brass color scheme instead of showing an OS-rendered emoji.
+
+### fix: NPC gender and race omitted from fallback AI prompt
+**What changed:** The inline `buildPrompt()` in `index.html` was formatting cast lines as `name (role, status): traits` — dropping `gender` and `race`. Updated to match the genre prompt files: `name (role, status, gender, race): traits`.
+**Impact:** The AI now receives all canonical NPC attributes in the fallback prompt path, reducing contradictions between rolled attributes and generated descriptions.
+
+### feat: Voice pick list queries TTS provider for installed voices
+**What changed:** Added `populateKokoroVoices(voiceEl, genreDefault)` — async, fetches `GET /v1/audio/voices` from the configured Kokoro URL, falls back to the static list on any error. Added `populateBrowserVoices(voiceEl)` — populates from `speechSynthesis.getVoices()` with a "System default" first option, handles the async `voiceschanged` event. Both functions restore the saved voice override from localStorage after populating. `getEffectiveTtsConfig` now passes `voiceURI` into the browser config; `narrateBrowser` applies it to the utterance. OpenAI voice list remains static (API voices are fixed).
+**Impact:** Kokoro voice list reflects what is actually installed on the server. Browser voice list shows all OS/browser voices and the selection is applied during playback.
 
 ### fix: Narration provider selection not persisted across sessions
 **What changed:** `updateNarrationProviderSelector()` was calling `setTtsProvider(ttsProvider)` unconditionally, which wrote the default `'off'` value to localStorage before the saved provider was read from storage. Removed that redundant call (button highlighting is already handled inside `setTtsProvider`). Moved the init call to `updateNarrationProviderSelector()` to after `setTtsProvider(savedTtsProvider)` so credentials are visible and the saved provider is already active when visibility is evaluated.

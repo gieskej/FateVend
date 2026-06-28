@@ -1,7 +1,6 @@
 # TODO
 
 ## Bugs
-- In the Narration Settings, the Voice pick list seems static.  It should query the TTS provider for its installed voices.
 - If I click Narrate All button, it plays the sections out in wrong order.  It should be title, description, opening, plot essentials, authors note, 
 - Plot essentials should be short bullet points, not wordy prose.  Ideally around 1000 characters, maximum 1500 characters.
 - Change the tone of the Paleolithic genre in Authors Notes - It should be more sitcom/comedy of errors mixed with dark humor that you'll likely be eaten by a predator.  Also make it 100000 BC, more Neanderthal period, less language, more wild, anything goes.
@@ -31,6 +30,7 @@
 ---
 
 ## Fixed Bugs
+- In the Narration Settings, the Voice pick list seems static.  It should query the TTS provider for its installed voices.
 - The aidungeon-importer needs to import the skeleton.tags after setting the title.  Each tag must be entered one at a time after pressing the "+" button.  The input field has placeholder="dragons, magic, etc."  The Add button: locator('[role="button"]:has-text("+"))
 - If I click Narrate All button, it only narrates the first text blob.  It should read out everything, including the section titles (e.g. character names).  If possible, it is desirable to make multiple TTS calls since it takes a long time to generate.
 - Clicking on Spin The Reels should abort any music or sound effect currently playing.
