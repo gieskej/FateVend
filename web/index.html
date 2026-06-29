@@ -3547,6 +3547,7 @@ async function narrateAll() {
 
   // Build the reading sequence: label + content for each section
   const sequence = [];
+  if (currentOutput?.title) sequence.push(currentOutput.title);
   const fieldDefs = [
     { id: 'field-desc',        label: 'Description' },
     { id: 'field-opening',     label: 'Opening' },

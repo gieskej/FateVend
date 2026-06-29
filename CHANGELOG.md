@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-06-28
+
+### fix: Narrate All section playback order
+**What changed:** Added `currentOutput?.title` as the first item spoken in `narrateAll()` before iterating `fieldDefs`. Sections now play in the correct order: title → description → opening → plot essentials → author's note → protagonist → NPCs.
+**Impact:** The Narrate All button reads sections in the intended narrative sequence.
+
 ## 2026-06-27
 
 ### feat: Synthetic construct identity rules for sci-fi androids

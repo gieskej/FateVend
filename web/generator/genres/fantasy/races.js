@@ -8,7 +8,7 @@ export const RACES = [
   {
     id: 'human_common',
     broad: 'Human',
-    flavor: 'common folk, unremarkable features, built for endurance',
+    flavor: 'common folk — unremarkable features, built for endurance',
     weight: 30,
     iconPrompt: 'Fantasy RPG icon. A sturdy human with weathered hands and a tired but warm face, wearing simple practical clothes bearing the quiet marks of years of honest, unremarkable labor.',
     iconPath: 'generator/genres/fantasy/icons/RACE#human_common.webp'
@@ -16,7 +16,7 @@ export const RACES = [
   {
     id: 'human_noble',
     broad: 'Human',
-    flavor: 'finer features suggesting distant noble blood — probably means nothing',
+    flavor: 'distant noble blood — probably means nothing',
     weight: 10,
     iconPrompt: 'Fantasy RPG icon. A human with refined angular features hinting at distant noble blood, wearing well-cut but not extravagant clothing, carrying the quiet confidence of someone who knows their lineage even if no one else cares.',
     iconPath: 'generator/genres/fantasy/icons/RACE#human_noble.webp'

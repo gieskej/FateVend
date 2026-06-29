@@ -4,12 +4,12 @@
 // and by the UI to label stat cells.
 
 export const STAT_ADJECTIVES = {
-  strength:     ['feeble',    'weak',      'average',    'strong',     'mighty'    ],
-  intelligence: ['dim',       'slow',      'capable',    'sharp',      'brilliant' ],
-  wisdom:       ['reckless',  'naive',     'grounded',   'perceptive', 'sage'      ],
-  charisma:     ['repellent', 'awkward',   'personable', 'charming',   'magnetic'  ],
-  dexterity:    ['clumsy',    'sluggish',  'nimble',     'agile',      'acrobatic' ],
-  constitution: ['frail',     'sickly',    'hardy',      'tough',      'resilient' ],
+  strength:     ['feeble',    'weak',             'average strength',      'strong',     'mighty'    ],
+  intelligence: ['dim',       'slow minded',      'average intellegence',  'sharp',      'brilliant' ],
+  wisdom:       ['reckless',  'naive',            'average wisdom',        'perceptive', 'sage'      ],
+  charisma:     ['repellent', 'socially awkward', 'personable',            'charming',   'magnetic personality'  ],
+  dexterity:    ['clumsy',    'sluggish',         'nimble',                'agile',      'acrobatic' ],
+  constitution: ['frail',     'sickly',           'hardy',                 'tough',      'resilient' ],
 };
 
 /**
