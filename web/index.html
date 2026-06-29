@@ -15,6 +15,34 @@
 .page-wrap { max-width: 100%; padding: 0; }
 .content-inner { max-width: 900px; margin: 0 auto; padding: 1.5rem 1.5rem 6rem; }
 
+@media (max-width: 599px) {
+  .site-title, .site-subtitle { padding: 0 60px; }
+}
+
+/* ── TITLEBAR GEAR ICONS ──────────────────────────────────────────── */
+.site-header::before,
+.site-header::after {
+  content: '';
+  display: block;
+  width: 160px;
+  height: 160px;
+  background-image: url('android-chrome-192x192.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.3;
+  font-size: unset;
+  color: unset;
+}
+.site-header::before {
+  left: 0;
+  transform: translateX(-50%) translateY(-50%);
+}
+.site-header::after {
+  right: 0;
+  transform: translateX(50%) translateY(-50%);
+}
+
 /* ── TOOLBAR ──────────────────────────────────────────────────────── */
 #toolbar-div {
   position: sticky;
@@ -34,13 +62,11 @@
 }
 .toolbar-field { display: flex; flex-direction: row; align-items: center; gap: 0.45rem; }
 .toolbar-label {
-  font-family: var(--font-display);
-  font-size: 0.7rem;
-  letter-spacing: 0.14em;
   color: var(--brass-light);
-  text-transform: uppercase;
   opacity: 0.8;
-  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 .toolbar-select {
   font-family: var(--font-display);
@@ -202,10 +228,9 @@
 }
 
 /* Desktop: side-by-side row */
-@media (min-width: 100px) {
+@media (min-width: 600px) {
   .genre-card {
     flex-direction: row;
-    width: 210px;
     height: 280px;
   }
   .genre-card-image-wrap {
@@ -259,8 +284,8 @@
   <div id="toolbar-div">
     <div class="toolbar-inner">
 
-      <div class="toolbar-field">
-        <div class="toolbar-label">Text</div>
+      <div class="toolbar-field" title="Text provider">
+        <div class="toolbar-label"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></div>
         <select class="toolbar-select" id="toolbar-text-provider" onchange="setProvider(this.value)">
           <option value="none">None</option>
           <option value="claude" id="toolbar-opt-claude">Claude</option>
@@ -269,8 +294,8 @@
         </select>
       </div>
 
-      <div class="toolbar-field">
-        <div class="toolbar-label">Image</div>
+      <div class="toolbar-field" title="Image provider">
+        <div class="toolbar-label"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
         <select class="toolbar-select" id="toolbar-image-provider" onchange="setImageProvider(this.value)">
           <option value="none">None</option>
           <option value="sd" id="toolbar-opt-sd">Stable Diffusion</option>
@@ -278,8 +303,8 @@
         </select>
       </div>
 
-      <div class="toolbar-field">
-        <div class="toolbar-label">Narration</div>
+      <div class="toolbar-field" title="Narration">
+        <div class="toolbar-label"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></div>
         <select class="toolbar-select" id="toolbar-narration" onchange="setTtsProvider(this.value)">
           <option value="off">Off</option>
           <option value="browser">Browser</option>
@@ -288,8 +313,8 @@
         </select>
       </div>
 
-      <div class="toolbar-field">
-        <div class="toolbar-label">Genre</div>
+      <div class="toolbar-field" title="Genre">
+        <div class="toolbar-label"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
         <select class="toolbar-select" id="genre-select" onchange="onToolbarGenreChange(this.value)">
           <option value="fantasy" selected>Fantasy</option>
           <option value="historical-korea-joseon-dynasty">Joseon Korea</option>
@@ -1744,8 +1769,8 @@ function renderCarouselCard() {
     <div class="genre-card">
       <div class="genre-card-image-wrap">
         <img class="genre-card-image"
-          src="generator/genres/${g.id}/icons/_genre.png"
-          onerror="this.parentNode.innerHTML='<div class=\\"genre-card-image-placeholder\\">⚙</div>'"
+          src="generator/genres/${g.id}/icons/_genre.webp"
+          onerror="this.parentNode.innerHTML='<div class=&quot;genre-card-image-placeholder&quot;>⚙</div>'"
           alt="${g.label}" />
       </div>
       <div class="genre-card-info">

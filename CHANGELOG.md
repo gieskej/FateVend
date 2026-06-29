@@ -1,5 +1,47 @@
 # Changelog
 
+## 2026-06-29
+
+### feat: New sticky toolbar + genre carousel UI
+**What changed:** Replaced the old floating provider button groups, standalone genre select, and generate button with a sticky toolbar. Toolbar contains icon-labeled dropdowns for Text, Image, Narration, and Genre providers, plus Settings and Spin The Reels buttons. Genre selection now also shows a full-width carousel below the toolbar with the genre artwork, title, and description. Carousel supports prev/next navigation buttons and dot indicators. Toolbar and carousel are always visible; content scrolls beneath them.
+**Impact:** All provider controls are always accessible without scrolling. Genre selection is more visual and discoverable on both mobile and desktop.
+
+### feat: Fixed bottom status bar
+**What changed:** Added a fixed `#statusbar` at the bottom of the viewport. Status messages, the disclaimer text, and (previously) token stats all live here. Removed the old `<footer>` element. Status bar is always visible regardless of scroll position.
+**Impact:** Generation status and disclaimer are always readable without scrolling to the bottom.
+
+### feat: Phase pipeline moved into status bar
+**What changed:** Removed the `#phase-pipeline` HTML element from the content area. `setPhase()` now renders an inline step indicator directly into `#status-bar` using brass/gold color coding: done steps show ✓ in brass, the active step shows ⚙ in gold, pending steps are dimmed. `clearPhases()` calls `setStatus('')`.
+**Impact:** Reduces visual clutter in the content area; generation progress is visible in the always-present status bar.
+
+### feat: Version number in Settings modal
+**What changed:** Moved the `v5197027` git hash from the status bar to the bottom-left of the Settings modal footer. Styled in faint brass monospace.
+**Impact:** Status bar is less cluttered; version is still discoverable.
+
+### feat: Toolbar labels replaced with SVG icons
+**What changed:** Replaced the text labels ("Text", "Image", "Narration", "Genre") in the toolbar with inline SVG icons (pen, image frame, speaker, book). Added `title` attributes to each `.toolbar-field` for accessibility. Updated `.toolbar-label` CSS to flex-align the SVG.
+**Impact:** Toolbar is significantly more compact on mobile, reducing wrapping from 3 rows to 2.
+
+### feat: Titlebar gear icons replaced with half-clipped PNG
+**What changed:** Overrode `.site-header::before` and `::after` in the inline `<style>` block to use `android-chrome-192x192.png` instead of the text `⚙` glyph. Icons are 160×160px, positioned at the header edges with `translateX(±50%)` so exactly half is visible. Added mobile padding (`90px`) on `.site-title` and `.site-subtitle` so text wraps inside the visible area on narrow screens.
+**Impact:** More visually striking titlebar decoration consistent with the app icon.
+
+### feat: Responsive genre carousel card layout
+**What changed:** Genre carousel cards are mobile-first column layout (image on top, text below) at viewports under 600px. At 600px+ they switch to a row layout (210px image on the left, title and description on the right) matching the mockup.
+**Impact:** Cards are readable on both mobile and desktop without horizontal scrolling.
+
+### fix: Carousel next/prev buttons not working
+**What changed:** Added `carouselStep`, `goToCarouselIndex`, and `onToolbarGenreChange` to the `Object.assign(window, {...})` export at the bottom of the module script. These functions were defined inside `<script type="module">` scope and were unreachable from inline `onclick` handlers.
+**Impact:** Carousel navigation buttons now work correctly.
+
+### fix: Genre card info panel appearing outside card border
+**What changed:** The `onerror` attribute on the genre card `<img>` used `\\"` (backslash-quote) for inner HTML escaping. In a double-quoted HTML attribute, `"` closes the attribute regardless of the preceding backslash, causing the HTML parser to split `.genre-card-info` out of `.genre-card` as a sibling. Fixed by replacing `\\"` with `&quot;` in the template literal. Also fixed a companion bug where `@media (min-width: 100px)` with `width: 210px` on `.genre-card` was clamping the card to the image width on all screen sizes; corrected to `min-width: 600px` with no explicit width override.
+**Impact:** Genre card title and description now display correctly inside the card border on desktop.
+
+### feat: Convert _genre.png to WebP
+**What changed:** Converted all 7 `_genre.png` genre artwork files to `_genre.webp` using ffmpeg at quality 90. Updated the carousel `renderCarouselCard()` src reference from `_genre.png` to `_genre.webp`.
+**Impact:** Genre images reduced from ~1.2MB each to ~130KB each (~90% smaller), significantly improving carousel load time.
+
 ## 2026-06-28
 
 ### fix: Narrate All section playback order
