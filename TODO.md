@@ -9,8 +9,12 @@
 
 - The text-to-image generator has no idea what an alien looks like, so we need specific alien features mentioned in their portrait prompts (e.g. unusual skin color, horns, scales, webbed fingers, forked tongue, pointed ears, etc).  Likewise, non-humanoid aliens should be even more unusual looking (e.g. four legs, no legs, amoeba, tenticals, insect, vapor, lava, jelly, etc)
 
-- Redo the UI title bar and selectors.  It occupies too much vertical space.  Selectors should move to a single line toolbar.
 - Think of a better name.
+- Update help with narration settings
+- Stop Narrate All button looks bad
+- Inject current git version from serve.sh
+- Settings - Narration tab is too tall and gets clipped by the status bar.  The modal should have fixed height and scroll vertically if necessary to show tall tabs.
+- Remove secondary Spin The Reels button
 
 ### Low Priority Bugs
 - The aidungeon-importer is flaky about uploading the portrait image.  Sometimes it works, sometimes it does not.
@@ -19,12 +23,14 @@
 - Enable scripts and add auto-cards
 - Update the skeleton with a new "metadata" section with name and version of the text and image provider, generation datetime, commit hash
 - Add a button that creates a promo video for the scenario using the character portraits, overture, name overlays, "Starring YOU as xxx".
-- Make genre selector a carousel, and each Genre should get a thumbnail and brief description like "Nihongi - Japanese horror"
 
 
 ---
 
 ## Fixed Bugs
+- BUG: Remove token stats completely from the status bar
+- BUG: Redo the UI title bar and selectors.  It occupies too much vertical space.  Selectors should move to a single line toolbar.
+- FEAT: Make genre selector a carousel, and each Genre should get a thumbnail and brief description like "Nihongi - Japanese horror"
 - Stat adjectives need some work so AI understand them better (e.g. use "average intelligence" instead of just "average").
 - Fantasy - Human - Common folk needs "—" to prevent long string shown in roller.
 - Synthetic constructs need special handling:

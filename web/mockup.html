@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FateVend — Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+
+/* ── MOCKUP OVERRIDES ─────────────────────────────────────────────── */
+
+/* Remove page-wrap's top padding — titlebar handles its own */
+.page-wrap {
+  padding-top: 0;
+  padding-bottom: 0;
+  max-width: 100%;
+}
+
+/* ── TITLEBAR ─────────────────────────────────────────────────────── */
+#titlebar-div {
+  margin: 0;
+  padding: 2.5rem 1.5rem 1.5rem;
+  text-align: center;
+  position: relative;
+}
+#titlebar-div::before,
+#titlebar-div::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 50%;
+  width: 160px;
+  height: 160px;
+  background-image: url('android-chrome-192x192.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.35;
+}
+#titlebar-div::before {
+  left: 0;
+  transform: translateX(-50%) translateY(-50%);
+}
+#titlebar-div::after {
+  right: 0;
+  transform: translateX(50%) translateY(-50%);
+}
+
+/* ── TOOLBAR ──────────────────────────────────────────────────────── */
+#toolbar-div {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: linear-gradient(180deg, rgba(18,10,4,0.98) 0%, rgba(14,9,4,0.98) 100%);
+  border-bottom: 1px solid var(--brass-dark);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.toolbar-inner {
+  margin: 0;
+  padding: 0.5rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.toolbar-field {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.toolbar-label {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  color: var(--brass-light);
+  text-transform: uppercase;
+  opacity: 0.8;
+  white-space: nowrap;
+}
+
+/* Compact select for toolbar */
+.toolbar-select {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.35rem 1.8rem 0.35rem 0.65rem;
+  background-color: rgba(26,18,8,0.85);
+  color: var(--gold-light);
+  border: 1px solid var(--brass-dark);
+  border-radius: var(--radius);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2210%22 height=%226%22 viewBox=%220 0 10 6%22><path d=%22M1 1l4 4 4-4%22 stroke=%22%23c9a84c%22 stroke-width=%221.5%22 fill=%22none%22 stroke-linecap=%22round%22/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  transition: border-color 0.15s;
+  min-width: 90px;
+}
+.toolbar-select:hover  { border-color: var(--brass); }
+.toolbar-select:focus  { outline: none; border-color: var(--gold); }
+.toolbar-select option { background: #1a1208; color: var(--gold-light); }
+
+/* Toolbar spacer */
+.toolbar-spacer { flex: 1; }
+
+/* Toolbar action buttons */
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+/* Toolbar-sized generate button */
+.btn-generate-toolbar {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, var(--brass-dark) 0%, var(--brass) 50%, var(--gold) 100%);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.45rem 1.25rem;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 2px 12px rgba(184,115,51,0.35), inset 0 1px 0 rgba(255,255,255,0.15);
+  white-space: nowrap;
+}
+.btn-generate-toolbar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 60%);
+  pointer-events: none;
+}
+.btn-generate-toolbar:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 18px rgba(184,115,51,0.45), inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.btn-generate-toolbar:active { transform: translateY(0); }
+
+.btn-settings-toolbar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: transparent;
+  border: 1px solid var(--brass-dark);
+  border-radius: var(--radius);
+  color: var(--brass-light);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.85rem;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+.btn-settings-toolbar:hover {
+  color: var(--gold);
+  border-color: var(--brass);
+  background: rgba(184,115,51,0.08);
+}
+
+/* ── GENRE CAROUSEL ───────────────────────────────────────────────── */
+#genre-carousel-wrap {
+  border-bottom: 1px solid rgba(184,115,51,0.15);
+  background: rgba(0,0,0,0.15);
+  display: flex;
+  align-items: stretch;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+}
+
+#genre-carousel {
+  flex: 1;
+  overflow: hidden;
+}
+
+.carousel-nav-btn {
+  flex-shrink: 0;
+  width: 2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--brass-dark);
+  border-radius: var(--radius);
+  color: var(--brass-light);
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  user-select: none;
+}
+.carousel-nav-btn:hover {
+  color: var(--gold);
+  border-color: var(--brass);
+  background: rgba(184,115,51,0.08);
+}
+.carousel-nav-btn:active {
+  background: rgba(184,115,51,0.15);
+}
+
+.carousel-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0 0.75rem;
+  background: rgba(0,0,0,0.15);
+  border-bottom: 1px solid rgba(184,115,51,0.15);
+}
+.carousel-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--brass-dark);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+.carousel-dot.active {
+  background: var(--gold);
+  transform: scale(1.4);
+}
+.carousel-dot:hover:not(.active) {
+  background: var(--brass);
+}
+
+.genre-card {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 280px;
+  border: 1px solid var(--gold);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: rgba(26,18,8,0.7);
+  box-shadow: 0 0 18px rgba(201,168,76,0.25), inset 0 0 0 1px rgba(201,168,76,0.1);
+  transition: opacity 0.18s ease;
+}
+.genre-card.fading { opacity: 0; }
+
+.genre-card-image-wrap {
+  flex-shrink: 0;
+  width: 210px;
+  height: 100%;
+  overflow: hidden;
+  background: rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.genre-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+.genre-card-image-placeholder {
+  font-size: 3rem;
+  opacity: 0.25;
+  color: var(--brass);
+}
+
+.genre-card-info {
+  flex: 1;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  overflow: hidden;
+}
+.genre-card-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  letter-spacing: 0.14em;
+  color: var(--gold-light);
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+.genre-card-desc {
+  font-size: 1.1rem;
+  font-family: var(--font-body);
+  font-style: italic;
+  color: var(--brass-light);
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+/* ── CONTENT PANEL ────────────────────────────────────────────────── */
+#content-div {
+  margin: 0;
+  padding: 1.5rem 1.5rem 6rem;
+  min-height: 50vh;
+}
+
+/* ── EMPTY STATE INLINE ───────────────────────────────────────────── */
+.empty-state-inline {
+  text-align: center;
+  padding: 5rem 2rem;
+}
+.empty-state-inline .empty-gear {
+  font-size: 3.5rem;
+  display: block;
+  margin-bottom: 1rem;
+  opacity: 0.25;
+  animation: slow-spin 20s linear infinite;
+}
+.empty-state-inline p {
+  font-style: italic;
+  color: var(--brass-dark);
+  opacity: 0.6;
+}
+
+/* ── PLACEHOLDER CARDS (to show content area) ─────────────────────── */
+.placeholder-section {
+  margin-bottom: 1.5rem;
+  opacity: 0.35;
+}
+.placeholder-bar {
+  height: 0.75rem;
+  background: var(--parchment-dark);
+  border-radius: 3px;
+  margin-bottom: 0.5rem;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+/* ── STATUS BAR (fixed bottom) ────────────────────────────────────── */
+#statusbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: linear-gradient(180deg, rgba(14,9,4,0.97) 0%, rgba(8,5,2,0.99) 100%);
+  border-top: 1px solid var(--brass-dark);
+  padding: 0.3rem 1.5rem 0.35rem;
+}
+
+.statusbar-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 1.6rem;
+}
+
+.statusbar-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-body);
+  font-style: italic;
+  color: var(--brass-light);
+  font-size: 0.88rem;
+  opacity: 0.85;
+}
+
+.statusbar-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--brass-dark);
+  flex-shrink: 0;
+}
+.statusbar-dot.active {
+  background: var(--gold);
+  box-shadow: 0 0 5px var(--gold);
+  animation: pulse-dot 1.2s ease-in-out infinite;
+}
+.statusbar-dot.done { background: var(--verdigris); }
+
+.statusbar-stats {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: monospace;
+  font-size: 0.78rem;
+  color: rgba(184,115,51,0.5);
+  white-space: nowrap;
+}
+.statusbar-stats-sep { opacity: 0.35; }
+
+.statusbar-disclaimer {
+  font-size: 0.72rem;
+  font-style: italic;
+  color: var(--brass-light);
+  opacity: 0.6;
+  text-align: center;
+  line-height: 1.3;
+  padding-top: 0.1rem;
+  border-top: 1px solid rgba(184,115,51,0.08);
+  margin-top: 0.2rem;
+}
+
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- TITLEBAR -->
+  <div id="titlebar-div">
+    <h1 class="site-title">Vend of Fate</h1>
+    <p class="site-subtitle">RPG Character Generator for <a target="_blank" href="https://play.aidungeon.com/" style="color:#c9a84c">AI Dungeon</a></p>
+  </div>
+
+  <!-- TOOLBAR (sticky) -->
+  <div id="toolbar-div">
+    <div class="toolbar-inner">
+
+      <div class="toolbar-field">
+        <div class="toolbar-label">Text</div>
+        <select class="toolbar-select" id="text-provider-select">
+          <option value="none">None</option>
+          <option value="claude">Claude</option>
+          <option value="gemini">Gemini</option>
+          <option value="ollama">Ollama</option>
+        </select>
+      </div>
+
+      <div class="toolbar-field">
+        <div class="toolbar-label">Image</div>
+        <select class="toolbar-select" id="image-provider-select">
+          <option value="none">None</option>
+          <option value="sd">Stable Diffusion</option>
+          <option value="stability">Stability AI</option>
+        </select>
+      </div>
+
+      <div class="toolbar-field">
+        <div class="toolbar-label">Narration</div>
+        <select class="toolbar-select" id="narration-select">
+          <option value="off">Off</option>
+          <option value="browser">Browser</option>
+          <option value="kokoro">Kokoro</option>
+          <option value="openai">OpenAI</option>
+        </select>
+      </div>
+
+      <div class="toolbar-field">
+        <div class="toolbar-label">Genre</div>
+        <select class="toolbar-select" id="genre-select" onchange="onToolbarGenreChange(this.value)">
+          <option value="fantasy">Fantasy</option>
+          <option value="historical-korea-joseon-dynasty">Joseon Korea</option>
+          <option value="modern">Modern</option>
+          <option value="nihongi">Nihongi</option>
+          <option value="manga-osaka-highschool1987">Osaka HS '87</option>
+          <option value="paleolithic">Paleolithic</option>
+          <option value="sci-fi">Sci-Fi</option>
+        </select>
+      </div>
+
+      <div class="toolbar-spacer"></div>
+
+      <div class="toolbar-actions">
+        <button class="btn-settings-toolbar">⚙ Settings</button>
+        <button class="btn-generate-toolbar">
+          <span class="gear-icon">⚙</span>
+          Spin The Reels
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- GENRE CAROUSEL -->
+  <div id="genre-carousel-wrap">
+    <button class="carousel-nav-btn" id="carousel-prev" onclick="carouselStep(-1)" aria-label="Previous genre">&#8249;</button>
+    <div id="genre-carousel"><!-- populated by JS --></div>
+    <button class="carousel-nav-btn" id="carousel-next" onclick="carouselStep(1)" aria-label="Next genre">&#8250;</button>
+  </div>
+  <div class="carousel-indicator" id="carousel-indicator"><!-- populated by JS --></div>
+
+  <!-- SCROLLABLE CONTENT PANEL -->
+  <div id="content-div">
+
+    <div class="empty-state-inline">
+      <span class="empty-gear">⚙</span>
+      <p>Your character awaits. Turn the gears.</p>
+    </div>
+
+    <!-- Placeholder slot machine area -->
+    <div class="placeholder-section">
+      <div class="card">
+        <div class="card-header"><span class="card-title">Slot Machine</span></div>
+        <div class="card-body" style="display:flex;gap:0.75rem;flex-wrap:wrap;justify-content:center;padding:1.5rem;">
+          <div class="slot"><div class="slot-window"><div class="slot-placeholder">⚙</div></div><div class="slot-header" style="margin-top:4px;">Race</div></div>
+          <div class="slot"><div class="slot-window"><div class="slot-placeholder">⚙</div></div><div class="slot-header" style="margin-top:4px;">Class</div></div>
+          <div class="slot"><div class="slot-window"><div class="slot-placeholder">⚙</div></div><div class="slot-header" style="margin-top:4px;">Gender</div></div>
+          <div class="slot"><div class="slot-window"><div class="slot-placeholder">⚙</div></div><div class="slot-header" style="margin-top:4px;">Build</div></div>
+          <div class="slot"><div class="slot-window"><div class="slot-placeholder">⚙</div></div><div class="slot-header" style="margin-top:4px;">Origin</div></div>
+          <div class="slot"><div class="slot-window"><div class="slot-placeholder">⚙</div></div><div class="slot-header" style="margin-top:4px;">Trait</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Placeholder skeleton -->
+    <div class="placeholder-section">
+      <div class="card">
+        <div class="card-header"><span class="card-title">Character Skeleton</span></div>
+        <div class="card-body">
+          <div class="placeholder-bar" style="width:45%;"></div>
+          <div class="placeholder-bar" style="width:70%;"></div>
+          <div class="placeholder-bar" style="width:55%;"></div>
+          <div class="placeholder-bar" style="width:80%;"></div>
+          <div class="placeholder-bar" style="width:40%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Placeholder generated output -->
+    <div class="placeholder-section">
+      <div class="card">
+        <div class="card-header"><span class="card-title">Generated Output</span></div>
+        <div class="card-body">
+          <div class="placeholder-bar" style="width:90%;"></div>
+          <div class="placeholder-bar" style="width:75%;"></div>
+          <div class="placeholder-bar" style="width:85%;"></div>
+          <div class="placeholder-bar" style="width:60%;"></div>
+          <div class="placeholder-bar" style="width:92%;"></div>
+          <div class="placeholder-bar" style="width:50%;"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div id="statusbar">
+  <div class="statusbar-main">
+    <div class="statusbar-status">
+      <div class="statusbar-dot done"></div>
+      <span>Ready — spin the reels to generate a character</span>
+    </div>
+    <div class="statusbar-stats">
+      <span>Claude 3.5 Sonnet</span>
+      <span class="statusbar-stats-sep">·</span>
+      <span>1.24s</span>
+      <span class="statusbar-stats-sep">·</span>
+      <span>3,240 tokens</span>
+      <span class="statusbar-stats-sep">·</span>
+      <span title="git commit 5197027">v5197027</span>
+    </div>
+  </div>
+  <div class="statusbar-disclaimer">
+    GenAI can make mistakes — text and images may ignore guidance from the game engine. Roll again or make manual corrections before importing into AI Dungeon.
+  </div>
+</div>
+
+<script>
+const GENRES = [
+  {
+    id: 'fantasy',
+    label: 'Fantasy',
+    desc: 'Swords, sorcery, and ancient prophecy. Classic high fantasy with knights, wizards, and realms where magic shapes destiny.',
+  },
+  {
+    id: 'historical-korea-joseon-dynasty',
+    label: 'Joseon Korea',
+    desc: 'Honor, ceremony, and hidden intrigue. Noble houses, court politics, and lives bound by Confucian duty.',
+  },
+  {
+    id: 'modern',
+    label: 'Modern',
+    desc: 'Contemporary life in all its complexity — careers, families, secrets, and the weight of ordinary days.',
+  },
+  {
+    id: 'nihongi',
+    label: 'Nihongi Shoki',
+    desc: 'Ancient Japan at the dawn of its mythology. Kami, clan wars, and the line between the human world and the divine.',
+  },
+  {
+    id: 'manga-osaka-highschool1987',
+    label: "Osaka HS '87",
+    desc: 'Manga-style high school drama in 1987 Osaka. Coming-of-age, friendships forged in crisis, and the intensity of being seventeen.',
+  },
+  {
+    id: 'paleolithic',
+    label: 'Paleolithic',
+    desc: 'Stone age survival at the edge of the known world. Tribe, hunt, spirit, and the slow unfolding of what it means to be human.',
+  },
+  {
+    id: 'sci-fi',
+    label: 'Sci-Fi',
+    desc: 'Faster-than-light travel, alien civilizations, and the technologies that define — or threaten — what humanity becomes.',
+  },
+];
+
+let activeIndex = 0;
+
+function renderCard() {
+  const g = GENRES[activeIndex];
+  document.getElementById('genre-carousel').innerHTML = `
+    <div class="genre-card">
+      <div class="genre-card-image-wrap">
+        <img class="genre-card-image"
+          src="generator/genres/${g.id}/icons/_genre.png"
+          onerror="this.parentNode.innerHTML='<div class=\\'genre-card-image-placeholder\\'>⚙</div>'"
+          alt="${g.label}" />
+      </div>
+      <div class="genre-card-info">
+        <div class="genre-card-title">${g.label}</div>
+        <div class="genre-card-desc">${g.desc}</div>
+      </div>
+    </div>
+  `;
+}
+
+function renderIndicator() {
+  document.getElementById('carousel-indicator').innerHTML = GENRES.map((g, i) => `
+    <div class="carousel-dot${i === activeIndex ? ' active' : ''}"
+         onclick="goToIndex(${i})"
+         title="${g.label}"></div>
+  `).join('');
+}
+
+function goToIndex(i, animate = true) {
+  if (i === activeIndex) return;
+  activeIndex = ((i % GENRES.length) + GENRES.length) % GENRES.length;
+  const card = document.querySelector('.genre-card');
+  if (animate && card) {
+    card.classList.add('fading');
+    setTimeout(() => {
+      renderCard();
+      renderIndicator();
+      syncToolbar();
+    }, 180);
+  } else {
+    renderCard();
+    renderIndicator();
+    syncToolbar();
+  }
+}
+
+function carouselStep(dir) {
+  goToIndex(activeIndex + dir);
+}
+
+function syncToolbar() {
+  document.getElementById('genre-select').value = GENRES[activeIndex].id;
+}
+
+function onToolbarGenreChange(value) {
+  const i = GENRES.findIndex(g => g.id === value);
+  if (i !== -1) goToIndex(i);
+}
+
+renderCard();
+renderIndicator();
+</script>
+</body>
+</html>
