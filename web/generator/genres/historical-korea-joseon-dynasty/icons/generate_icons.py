@@ -21,6 +21,14 @@ from generate_icons_core import run
 GENRE_DIR = Path(__file__).resolve().parent.parent   # genres/historical-korea-joseon-dynasty/
 ICON_DIR  = Path(__file__).resolve().parent          # genres/historical-korea-joseon-dynasty/icons/
 
+GENRE_PROMPT = (
+    "Ancient Joseon Korean king sitting on throne wearing royal red silk hanbok with gold dragon embroidery",
+    "and Won-yugwan crown, flanked by two eunic advisors wearing green hanbok with black ceremonial hats",
+    "cherry blossoms drifting, stone lanterns glowing at dusk, wooden pavilion with curved tile roof, "
+    "serene dignified atmosphere, minhwa folk art style,"
+    "detailed mineral pigments, decorative nature motifs"
+)
+
 STYLE = (
     "square icon, Joseon Dynasty Korean court painting style, "
     "minhwa folk art, clean flat colors with mineral pigments, traditional hanbok dress, "
@@ -41,4 +49,4 @@ PARAMS = dict(
 )
 
 run(GENRE_DIR, ICON_DIR, STYLE, PARAMS, description=__doc__,
-    exclude_filenames={'plot-archetypes.js'})
+    exclude_filenames={'plot-archetypes.js'}, genre_prompt=GENRE_PROMPT)

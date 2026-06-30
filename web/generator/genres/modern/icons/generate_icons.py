@@ -14,6 +14,10 @@ from generate_icons_core import run
 GENRE_DIR = Path(__file__).resolve().parent.parent   # genres/modern/
 ICON_DIR  = Path(__file__).resolve().parent          # genres/modern/icons/
 
+GENRE_PROMPT = (
+    "Illustration of a couple talking in a cafe, medium shot, painterly style"
+)
+
 STYLE = (
     "square icon, modern cinematic style, natural lighting, "
     "detailed digital illustration, centered subject, clean composition, "
@@ -33,4 +37,4 @@ PARAMS = dict(
 )
 
 run(GENRE_DIR, ICON_DIR, STYLE, PARAMS, description=__doc__,
-    exclude_filenames={'plot-archetypes.js'})
+    exclude_filenames={'plot-archetypes.js'}, genre_prompt=GENRE_PROMPT)

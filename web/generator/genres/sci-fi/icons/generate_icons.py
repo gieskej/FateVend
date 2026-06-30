@@ -21,6 +21,10 @@ from generate_icons_core import run
 GENRE_DIR = Path(__file__).resolve().parent.parent   # genres/sci-fi/
 ICON_DIR  = Path(__file__).resolve().parent          # genres/sci-fi/icons/
 
+GENRE_PROMPT = (
+    "A man kissing a blue alien girl with antennae, Neo Tokyo background, sci-fi digital art"
+)
+
 STYLE = (
     "square icon, dark sci-fi atmosphere, dramatic rim lighting, "
     "detailed digital illustration, centered subject, clean composition, "
@@ -40,4 +44,4 @@ PARAMS = dict(
 )
 
 run(GENRE_DIR, ICON_DIR, STYLE, PARAMS, description=__doc__,
-    exclude_filenames={'plot-archetypes.js'})
+    exclude_filenames={'plot-archetypes.js'}, genre_prompt=GENRE_PROMPT)

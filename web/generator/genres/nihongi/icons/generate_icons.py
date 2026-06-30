@@ -21,6 +21,10 @@ from generate_icons_core import run
 GENRE_DIR = Path(__file__).resolve().parent.parent   # genres/nihongi/
 ICON_DIR  = Path(__file__).resolve().parent          # genres/nihongi/icons/
 
+GENRE_PROMPT = (
+    "Illustration of a terrified Japanese elder bald Buddhist monk wearing saffron robe running from a Japanese female ghost with black eyes and long black hair tattered white robe floating chasing, moonlit temple, spooky theme, ancient japan, apparition, spirit, foxfire, kitsune, torii, fog, "
+)
+
 STYLE = (
     "square icon, ancient Japan yamato-e court painting style, "
     "minhwa-adjacent flat mineral pigments, traditional Japanese asuka court aesthetic, "
@@ -42,4 +46,4 @@ PARAMS = dict(
 )
 
 run(GENRE_DIR, ICON_DIR, STYLE, PARAMS, description=__doc__,
-    exclude_filenames={'plot-archetypes.js'})
+    exclude_filenames={'plot-archetypes.js'}, genre_prompt=GENRE_PROMPT)

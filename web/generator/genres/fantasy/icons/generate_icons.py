@@ -21,6 +21,11 @@ from generate_icons_core import run
 GENRE_DIR = Path(__file__).resolve().parent.parent   # genres/fantasy/
 ICON_DIR  = Path(__file__).resolve().parent          # genres/fantasy/icons/
 
+GENRE_PROMPT = (
+    "armored knight and a green orc locked in battle, dramatic stormy purple sky, "
+    "sigil flag, fantasy digital painting, warm amber torchlight"
+)
+
 STYLE = (
     "square icon, fantasy RPG art style, dramatic lighting, "
     "detailed digital illustration, centered subject, clean composition, "
@@ -40,4 +45,4 @@ PARAMS = dict(
 )
 
 run(GENRE_DIR, ICON_DIR, STYLE, PARAMS, description=__doc__,
-    exclude_filenames={'plot-archetypes.js'})
+    exclude_filenames={'plot-archetypes.js'}, genre_prompt=GENRE_PROMPT)

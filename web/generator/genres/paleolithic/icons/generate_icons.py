@@ -21,6 +21,13 @@ from generate_icons_core import run
 GENRE_DIR = Path(__file__).resolve().parent.parent   # genres/paleolithic/
 ICON_DIR  = Path(__file__).resolve().parent          # genres/paleolithic/icons/
 
+GENRE_PROMPT = (
+    "cave entrance at twilight, prehistoric hunter crouching with flint-tipped spear, "
+    "mammoth silhouette on distant rocky horizon, handprint and animal cave paintings on stone wall, "
+    "campfire glow casting orange light on rock face, sense of primal survival, "
+    "ochre and charcoal earth palette, rough stone texture, primitive naturalistic style"
+)
+
 STYLE = (
     "square icon, prehistoric cave painting art style, "
     "ochre and charcoal pigments on rough stone texture, "
@@ -41,4 +48,4 @@ PARAMS = dict(
 )
 
 run(GENRE_DIR, ICON_DIR, STYLE, PARAMS, description=__doc__,
-    exclude_filenames={'plot-archetypes.js'})
+    exclude_filenames={'plot-archetypes.js'}, genre_prompt=GENRE_PROMPT)

@@ -20,7 +20,7 @@ def extract_pairs(js_text):
 
 
 def run(genre_dir, icon_dir, style, params, description="", recursive=False,
-        extra_js_files=None, exclude_filenames=None):
+        extra_js_files=None, exclude_filenames=None, genre_prompt=None):
     """
     Collect iconPrompt/iconPath pairs from all JS files in genre_dir,
     generate images via SD WebUI Forge, and save to icon_dir/<timestamp>/.
@@ -34,6 +34,9 @@ def run(genre_dir, icon_dir, style, params, description="", recursive=False,
         recursive:         If True, scan all subdirectory PNGs when building the skip set.
         extra_js_files:    Optional iterable of additional JS file paths to scan.
         exclude_filenames: Optional set of filenames (e.g. {'plot-archetypes.js'}) to skip.
+        genre_prompt:      Optional prompt for the genre cover image (_genre.webp). When given,
+                           generates a single 512x512 image saved directly to icon_dir/_genre.webp.
+                           Skips if the file already exists (unless --missing matches it).
     """
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument(
@@ -94,6 +97,32 @@ def run(genre_dir, icon_dir, style, params, description="", recursive=False,
     skipped  = 0
     done     = 0
     errors   = []
+
+    if genre_prompt is not None:
+        genre_out = icon_dir / "_genre.webp"
+        genre_exists = genre_out.exists()
+        genre_is_placeholder = genre_exists and missing_bytes is not None and genre_out.read_bytes() == missing_bytes
+        if genre_exists and not genre_is_placeholder:
+            sys.stdout.write(f"skip  _genre.webp (exists)\n\n")
+        else:
+            sys.stdout.write(f"gen   _genre.webp...\n")
+            sys.stdout.flush()
+            try:
+                genre_params = {**params, "batch_size": 1, "width": 512, "height": 512}
+                r = requests.post(
+                    base + "/sdapi/v1/txt2img",
+                    json=dict(prompt=genre_prompt, **genre_params),
+                    timeout=360,
+                )
+                r.raise_for_status()
+                images = r.json()["images"]
+                png_bytes = base64.b64decode(images[0])
+                pil_img = Image.open(io.BytesIO(png_bytes))
+                pil_img.save(genre_out, "WEBP", quality=90)
+                sys.stdout.write(f"         {genre_out.stat().st_size:,}b\n\n")
+            except Exception as e:
+                sys.stdout.write(f"         ERROR: {e}\n\n")
+                errors.append("_genre")
 
     for i, (slug, prompt) in enumerate(items, 1):
         if slug in existing_slugs:

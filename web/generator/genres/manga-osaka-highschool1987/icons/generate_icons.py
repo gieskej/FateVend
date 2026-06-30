@@ -21,6 +21,12 @@ from generate_icons_core import run
 GENRE_DIR = Path(__file__).resolve().parent.parent   # genres/manga-osaka-highschool1987/
 ICON_DIR  = Path(__file__).resolve().parent          # genres/manga-osaka-highschool1987/icons/
 
+GENRE_PROMPT = (
+    "Illustration of a male student wearing black gakuran and female student wearing serafuku and pleated skirt, ",
+    "standing in front of high school gate,  holding hands, 1980s shounen manga illustration style, bold ink linework, ",
+    " nostalgic bittersweet atmosphere, medium wide shot"
+)
+
 STYLE = (
     "square icon, 1980s shounen manga illustration style, "
     "bold ink lines, high contrast black and white with spot color, "
@@ -41,4 +47,4 @@ PARAMS = dict(
 )
 
 run(GENRE_DIR, ICON_DIR, STYLE, PARAMS, description=__doc__,
-    exclude_filenames={'plot-archetypes.js'})
+    exclude_filenames={'plot-archetypes.js'}, genre_prompt=GENRE_PROMPT)

@@ -18,6 +18,9 @@
 
 ### Low Priority Bugs
 - The aidungeon-importer is flaky about uploading the portrait image.  Sometimes it works, sometimes it does not.
+- Sometimes generate_icons hangs and you have to restart the whole shell to recover.
+- Redo all of the Joseon icons.  The current icons are a cultural mashup of Chinese, Japanese, Vietnamese and Korean, so they are not accurate.
+- Redo all the missing icons in Fantasy
 
 ## New Features
 - Enable scripts and add auto-cards
