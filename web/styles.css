@@ -1092,6 +1092,22 @@ body::before {
   50%       { opacity: 0.85; }
 }
 
+#btn-tts-stop {
+  background: var(--rust, #8b3a3a);
+  border: 1px solid var(--rust, #8b3a3a);
+  border-radius: var(--radius);
+  color: var(--parchment);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+#btn-tts-stop:hover { opacity: 0.8; }
+
 /* ── NPC ENTRY SECTION ─────────────────────────────────────────────── */
 .npc-section { margin-bottom: 1rem; }
 

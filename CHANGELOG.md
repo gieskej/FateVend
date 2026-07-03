@@ -1,5 +1,22 @@
 # Changelog
 
+## 2026-07-03
+
+### fix: Narrate All read the protagonist entry twice
+**What changed:** The protagonist's character-entry wrapper in the Character Entries card reused the `.npc-section` class (with `.npc-section-name` for its label), which `narrateAll()` also queries via `document.querySelectorAll('.npc-section')` to build the NPC reading sequence. Since the protagonist was *also* added to the sequence explicitly via the `field-protagonist` entry in `fieldDefs`, it got read twice — once by name, once by the generic NPC loop. Renamed the protagonist wrapper's class from `npc-section` to `protagonist-section` (it already carries an inline `margin-bottom` override, so no CSS rule was needed for the rename) so the NPC loop no longer matches it.
+**Impact:** "Narrate All" and auto-play Narrate All now read the protagonist description exactly once.
+**Test cases:** (1) Click "Narrate All" — protagonist entry is read once, followed by each NPC once. (2) Individual protagonist narrate button (`field-protagonist`) still works standalone. (3) NPC portrait/story-card layout and spacing unchanged (protagonist section still has `margin-bottom:1.5rem`).
+
+### feat: Narrate All auto-scrolls to the section being read
+**What changed:** `narrateAll()`'s reading sequence changed from an array of plain strings to `{ text, el }` objects, where `el` is the source element for that entry (`.output-field` wrapper for Title/Description/Opening/Plot/Author's Note, `.protagonist-section` for the protagonist entry, `.npc-section` for each NPC). Before narrating each item, the loop now calls `item.el?.scrollIntoView({ behavior: 'smooth', block: 'center' })`, matching the smooth-scroll convention already used elsewhere in the app (e.g. the skeleton-roll slot animation).
+**Impact:** During "Narrate All" (manual or auto-play), the page now smoothly scrolls to keep the section currently being read centered in view, instead of leaving the user to scroll manually to follow along.
+**Test cases:** (1) Click "Narrate All" — page scrolls to Title, then Description, Opening, Plot, Author's Note, Protagonist, and each NPC in turn as narration progresses. (2) Clicking "Stop" mid-sequence halts narration without further scrolling. (3) Manual single-field narrate buttons (`narrate()`) are unaffected — no scroll behavior change there.
+
+### fix: Narrate All read the scenario title twice
+**What changed:** In `narrateAll()`'s `fieldDefs`, the protagonist entry's spoken label was `currentOutput?.title ?? 'Protagonist'` — the scenario title — so it was read once as the standalone first sequence item, then read again as the label prefix immediately before the protagonist's character entry. Changed the label to `currentSkeleton?.name ?? 'Protagonist'`, i.e. the character's own name, matching the label already shown on-screen (`${sk.name} — Protagonist`).
+**Impact:** The scenario title is now read exactly once, as the very first thing in the sequence; the protagonist entry is introduced by the character's name instead of a repeat of the title.
+**Test cases:** (1) Click "Narrate All" — title is spoken once at the start, protagonist entry is introduced by the character's name, not the title. (2) Auto-play Narrate All exhibits the same corrected sequence.
+
 ## 2026-07-02
 
 ### feat: Auto-generate NPC portraits option

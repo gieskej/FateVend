@@ -2723,7 +2723,7 @@ function renderOutput(sk, output) {
     </div>
     <div class="card-body">
 
-      <div class="npc-section" style="margin-bottom:1.5rem;">
+      <div class="protagonist-section" style="margin-bottom:1.5rem;">
         <div class="field-header">
           <div>
             <span class="npc-section-name" style="font-size:0.85rem;">${sk.name} — Protagonist</span>
@@ -3846,30 +3846,37 @@ async function narrateAll() {
   const stopBtn = document.getElementById('btn-tts-stop');
   if (stopBtn) stopBtn.hidden = false;
 
-  // Build the reading sequence: label + content for each section
+  // Build the reading sequence: label + content + source element for each section
   const sequence = [];
-  if (currentOutput?.title) sequence.push(currentOutput.title);
+  if (currentOutput?.title) {
+    const titleEl = document.getElementById('field-title');
+    sequence.push({ text: currentOutput.title, el: titleEl?.closest('.output-field') ?? titleEl });
+  }
   const fieldDefs = [
     { id: 'field-desc',        label: 'Description' },
     { id: 'field-opening',     label: 'Opening' },
     { id: 'field-plot',        label: 'Plot Essentials' },
     { id: 'field-authornote',  label: "Author's Note" },
-    { id: 'field-protagonist', label: currentOutput?.title ?? 'Protagonist' },
+    { id: 'field-protagonist', label: currentSkeleton?.name ?? 'Protagonist' },
   ];
   for (const { id, label } of fieldDefs) {
     const el = document.getElementById(id);
-    if (el?.value?.trim()) sequence.push(`${label}. ${el.value.trim()}`);
+    if (el?.value?.trim()) {
+      const container = el.closest('.output-field') ?? el.closest('.protagonist-section') ?? el;
+      sequence.push({ text: `${label}. ${el.value.trim()}`, el: container });
+    }
   }
   document.querySelectorAll('.npc-section').forEach(section => {
     const name = section.querySelector('.npc-section-name')?.textContent?.trim();
     const text = section.querySelector('textarea')?.value?.trim();
-    if (name && text) sequence.push(`${name}. ${text}`);
+    if (name && text) sequence.push({ text: `${name}. ${text}`, el: section });
   });
 
-  for (const text of sequence) {
+  for (const item of sequence) {
     if (!ttsAllActive) break;
+    item.el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     const cfg   = getEffectiveTtsConfig();
-    const clean = (cfg.preprocess ?? preprocessTts)(text);
+    const clean = (cfg.preprocess ?? preprocessTts)(item.text);
     if (!clean) continue;
     if (ttsProvider === 'browser') await _narrateAllBrowser(clean, cfg);
     else                           await _narrateAllCloud(clean, cfg);
