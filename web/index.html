@@ -2338,7 +2338,8 @@ function renderSlotMachine(genre) {
 
 const _bellSfx       = new Audio('audio/u_omspjqprot-bell-222490.mp3');
 const _overtureSfx   = new Audio('audio/overture_dark.mid.mp3');
-const _slotMachineSfx = new Audio('audio/slot_machine.mp3');
+const _slotMachinePullSfx = new Audio('audio/slotmachine-pull.mp3');
+const _slotMachineReelStopSfx = new Audio('audio/slotmachine-reelstop.mp3');
 
 function fadeOutAudio(audio, duration = 5000) {
   if (audio.paused) return Promise.resolve();
@@ -2365,12 +2366,12 @@ async function animateSlots(skeleton, genre) {
   const slots = skeleton._slots;
   if (!slots) return;
 
-  _slotMachineSfx.currentTime = 0;
-  _slotMachineSfx.play().catch(() => {});
-
   const intervals = {};
   const indices   = {};
+  const startSpin = {};
 
+  // Assign each slot's first real frame synchronously — an <img> left at src=""
+  // fires onerror (swapping in the ⚙ placeholder) if we yield to the event loop first.
   cfg.defs.forEach(def => {
     const entries = cfg.catalog[def.cat] ?? [];
     if (!entries.length) return;
@@ -2386,18 +2387,29 @@ async function animateSlots(skeleton, genre) {
     };
     showFrame();
 
-    intervals[def.key] = setInterval(() => {
-      indices[def.key] = (indices[def.key] + 1) % entries.length;
-      showFrame();
-    }, 90);
+    startSpin[def.key] = () => {
+      intervals[def.key] = setInterval(() => {
+        indices[def.key] = (indices[def.key] + 1) % entries.length;
+        showFrame();
+      }, 90);
+    };
   });
+
+  _slotMachinePullSfx.currentTime = 0;
+  _slotMachinePullSfx.play().catch(() => {});
+  await sleep(500);
+
+  Object.values(startSpin).forEach(start => start());
 
   // Land each slot with a stagger
   for (let i = 0; i < cfg.defs.length; i++) {
-    await sleep(i === 0 ? 1000 : 300);
+    await sleep(i === 0 ? 1000 : 650);
 
     const def      = cfg.defs[i];
     clearInterval(intervals[def.key]);
+
+    _slotMachineReelStopSfx.currentTime = 0;
+    _slotMachineReelStopSfx.play().catch(() => {});
 
     const entries  = cfg.catalog[def.cat] ?? [];
     const dataSlug = slots[def.key];
@@ -2426,6 +2438,7 @@ async function animateSlots(skeleton, genre) {
     }
 
     if (i === cfg.defs.length - 1) {
+      await sleep(900);
       _bellSfx.currentTime = 0;
       _bellSfx.play().catch(() => {});
     }
@@ -2981,7 +2994,7 @@ async function runGenerate() {
 
   // Stop any audio that may be playing
   stopNarration();
-  for (const sfx of [_bellSfx, _overtureSfx, _slotMachineSfx]) {
+  for (const sfx of [_bellSfx, _overtureSfx, _slotMachinePullSfx, _slotMachineReelStopSfx]) {
     sfx.pause();
     sfx.currentTime = 0;
   }
