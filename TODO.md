@@ -9,10 +9,8 @@
 
 - Think of a better name.
 - Update help with narration settings
-- Stop Narrate All button looks bad
 - Inject current git version from serve.sh
 - Settings - Narration tab is too tall and gets clipped by the status bar.  The modal should have fixed height and scroll vertically if necessary to show tall tabs.
-- Remove secondary Spin The Reels button
 
 ### Low Priority Bugs
 - The aidungeon-importer is flaky about uploading the portrait image.  Sometimes it works, sometimes it does not.
@@ -29,6 +27,9 @@
 ---
 
 ## Fixed Bugs
+- BUG: Remove secondary Spin The Reels button
+- BUG: For genders, change "man" to "male" and "woman" to "female"
+- BUG: Stop Narrate All button looks bad
 - FEAT: Add an option to auto play Narrate All
 - FEAT: Add an option to auto generate NPC portraits.
 - BUG: Remove token stats completely from the status bar

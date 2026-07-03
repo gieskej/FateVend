@@ -32,7 +32,7 @@ The test must cover **both phases**:
 | 1 | Page loads | HTTP 200 on `/` |
 | 2 | Phase 1 completes | `#btn-continue` visible after clicking `#btn-generate` |
 | 3 | Phase 2 completes | `.copy-all-wrap` appears within 90s |
-| 4 | Bottom buttons present | `.btn-go-top` and `.btn-generate-secondary` both visible |
+| 4 | Bottom button present | `.btn-go-top` visible |
 | 5 | Go to Top works | click `.btn-go-top` → `window.scrollY < 50` |
 | 6 | No error box visible | `#error-box` does not have class `visible` |
 | 7 | Character sheet rendered | `.character-sheet` element exists and has non-empty text |
