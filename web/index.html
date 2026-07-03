@@ -452,6 +452,10 @@
             <input id="auto-npc-portraits" type="checkbox">
             <label for="auto-npc-portraits">Auto-generate NPC portraits <span class="settings-hint">(generates a portrait for every NPC after scenario generation; requires an image backend)</span></label>
           </div>
+          <div class="settings-option-row">
+            <input id="auto-narrate-all" type="checkbox">
+            <label for="auto-narrate-all">Auto-play Narrate All <span class="settings-hint">(starts reading the full scenario aloud as soon as generation finishes; requires a narration provider)</span></label>
+          </div>
         </div>
 
       </div>
@@ -2337,20 +2341,23 @@ const _overtureSfx   = new Audio('audio/overture_dark.mid.mp3');
 const _slotMachineSfx = new Audio('audio/slot_machine.mp3');
 
 function fadeOutAudio(audio, duration = 5000) {
-  if (audio.paused) return;
+  if (audio.paused) return Promise.resolve();
   const steps    = 40;
   const decrement = audio.volume / steps;
-  const timer = setInterval(() => {
-    if (audio.volume > decrement) {
-      audio.volume -= decrement;
-    } else {
-      audio.volume = 0;
-      audio.pause();
-      audio.currentTime = 0;
-      audio.volume = 1;
-      clearInterval(timer);
-    }
-  }, duration / steps);
+  return new Promise(resolve => {
+    const timer = setInterval(() => {
+      if (audio.volume > decrement) {
+        audio.volume -= decrement;
+      } else {
+        audio.volume = 0;
+        audio.pause();
+        audio.currentTime = 0;
+        audio.volume = 1;
+        clearInterval(timer);
+        resolve();
+      }
+    }, duration / steps);
+  });
 }
 
 async function animateSlots(skeleton, genre) {
@@ -3116,14 +3123,16 @@ async function runAIPhase() {
     // Auto-generate portrait if a backend is configured — portrait's finally will fade the music
     const hasPortraitBackend = output.appearancePrompt &&
       (document.getElementById('sd-url').value.trim() || document.getElementById('img-api-key').value.trim());
-    if (hasPortraitBackend) {
-      generatePortrait(null);
-    } else {
-      fadeOutAudio(_overtureSfx);
-    }
+    const musicFadeDone = hasPortraitBackend
+      ? generatePortrait(null)
+      : fadeOutAudio(_overtureSfx);
 
     if (hasPortraitBackend && document.getElementById('auto-npc-portraits')?.checked) {
       autoGenerateAllNpcPortraits(Object.keys(output.npcEntries));
+    }
+
+    if (ttsProvider !== 'off' && document.getElementById('auto-narrate-all')?.checked) {
+      musicFadeDone.then(() => narrateAll());
     }
 
   } catch(err) {
@@ -3223,7 +3232,7 @@ async function generatePortrait(btn) {
     wrapEl.innerHTML = `<div class="portrait-error">Portrait failed: ${err.message}</div>`;
   } finally {
     if (portraitBtn) { portraitBtn.disabled = false; portraitBtn.innerHTML = '⚙ Generate Portrait'; }
-    fadeOutAudio(_overtureSfx);
+    await fadeOutAudio(_overtureSfx);
   }
 }
 
@@ -3406,6 +3415,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const autoNpcEl = document.getElementById('auto-npc-portraits');
   autoNpcEl.checked = localStorage.getItem('gof_auto_npc_portraits') === 'true';
   autoNpcEl.addEventListener('change', e => localStorage.setItem('gof_auto_npc_portraits', e.target.checked));
+
+  // Auto-play Narrate All checkbox persistence
+  const autoNarrateEl = document.getElementById('auto-narrate-all');
+  autoNarrateEl.checked = localStorage.getItem('gof_auto_narrate_all') === 'true';
+  autoNarrateEl.addEventListener('change', e => localStorage.setItem('gof_auto_narrate_all', e.target.checked));
 
   // Init genre carousel
   carouselIndex = Math.max(0, GENRE_CAROUSEL_DATA.findIndex(g => g.id === currentGenre));

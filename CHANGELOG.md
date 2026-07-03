@@ -7,6 +7,16 @@
 **Impact:** Users no longer have to open each NPC's portrait menu and click "Generate Portrait" individually — cast portraits populate automatically alongside the protagonist portrait when the option is on. Off by default, so existing behavior (manual per-NPC generation) is unchanged unless opted in.
 **Test cases:** (1) Option off — NPC thumbnails remain silhouettes after generation, same as before. (2) Option on, no image backend configured — no NPC portraits attempt (matches existing protagonist portrait gating). (3) Option on with SD/Stability configured — each NPC thumbnail fills in sequentially without overlapping "already generating" errors.
 
+### feat: Auto-play Narrate All option
+**What changed:** Added an "Auto-play Narrate All" checkbox to the Settings modal Options tab, alongside the other auto-behavior toggles (`#auto-narrate-all`, persisted to `localStorage` as `gof_auto_narrate_all`). When enabled and a TTS provider is selected (anything other than "Off"), `runAIPhase()` now calls `narrateAll()` right after the scenario renders, so playback starts automatically without the user clicking the "Narrate All" button.
+**Impact:** Users who want hands-free playback no longer have to manually start narration after every generation. Off by default, so existing behavior (manual "Narrate All" click) is unchanged unless opted in.
+**Test cases:** (1) Option off — narration does not start automatically after generation, "Narrate All" button still works manually. (2) Option on, TTS provider set to "Off" — no auto-play attempt. (3) Option on with a TTS provider configured — narration begins automatically once the scenario cards render, and the Stop button appears/behaves the same as a manual "Narrate All" click.
+
+### fix: Auto-play Narrate All now waits for the overture music to fade out
+**What changed:** `fadeOutAudio()` now returns a `Promise` that resolves once the fade completes (or immediately if the audio was already paused), instead of firing a `setInterval` with no completion signal. `generatePortrait()`'s `finally` block now `await`s it, and `runAIPhase()` captures whichever fade path ran (portrait generation or the direct no-backend fade) as `musicFadeDone`, chaining the auto-narrate trigger with `musicFadeDone.then(() => narrateAll())` instead of calling `narrateAll()` immediately.
+**Impact:** Auto-play Narrate All no longer talks over the overture — narration now starts only after the background music has finished fading out, matching the manual "Narrate All" button's implicit expectation that the scene is quiet first.
+**Test cases:** (1) Auto-narrate on, no image backend configured — music fades (~5s) then narration starts, not before. (2) Auto-narrate on with an image backend configured — narration waits for the protagonist portrait to finish generating and its music fade to complete. (3) Manual "Narrate All" / "Regenerate" portrait clicks still behave as before (fire-and-forget, no new blocking).
+
 ## 2026-06-29
 
 ### feat: New sticky toolbar + genre carousel UI
