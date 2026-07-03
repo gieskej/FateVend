@@ -81,6 +81,7 @@ Attributes seeded from static curated tables before the AI call. Tables are weig
 **Optional settings (user-configurable):**
 - **LGBQ:** toggles inclusion of non-binary genders and queer orientations in rolls (on by default)
 - **NSFW:** toggles inclusion of adult professions and alters portrait prompt (off by default); automatically suppressed when rolled age < 18 regardless of the toggle
+- **Auto-generate NPC portraits:** when on, generates a portrait for every NPC automatically after scenario generation (off by default); requires an image backend (local SD or Stability AI), and NPC portraits render one at a time
 
 **Android / synthetic species:**
 - Family structure is always set to the `android_origin` entry (N/A — synthetic construct)

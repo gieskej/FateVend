@@ -4,7 +4,6 @@
 - Plot essentials should be short bullet points, not wordy prose.  Ideally around 1000 characters, maximum 1500 characters.
 - Change the tone of the Paleolithic genre in Authors Notes - It should be more sitcom/comedy of errors mixed with dark humor that you'll likely be eaten by a predator.  Also make it 100000 BC, more Neanderthal period, less language, more wild, anything goes.
 - Change the tone of the Joseon genre in Authors Notes - It should be more about palace intrigue.
-- Add an option to auto generate NPC portraits.
 - Add an option to auto play Narrate All
 
 - The text-to-image generator has no idea what an alien looks like, so we need specific alien features mentioned in their portrait prompts (e.g. unusual skin color, horns, scales, webbed fingers, forked tongue, pointed ears, etc).  Likewise, non-humanoid aliens should be even more unusual looking (e.g. four legs, no legs, amoeba, tenticals, insect, vapor, lava, jelly, etc)
@@ -31,6 +30,7 @@
 ---
 
 ## Fixed Bugs
+- FEAT: Add an option to auto generate NPC portraits.
 - BUG: Remove token stats completely from the status bar
 - BUG: Redo the UI title bar and selectors.  It occupies too much vertical space.  Selectors should move to a single line toolbar.
 - FEAT: Make genre selector a carousel, and each Genre should get a thumbnail and brief description like "Nihongi - Japanese horror"

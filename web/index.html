@@ -448,6 +448,10 @@
             <input id="include-nsfw" type="checkbox">
             <label for="include-nsfw">NSFW <span class="settings-hint">(include adult professions; alters portrait prompt)</span></label>
           </div>
+          <div class="settings-option-row">
+            <input id="auto-npc-portraits" type="checkbox">
+            <label for="auto-npc-portraits">Auto-generate NPC portraits <span class="settings-hint">(generates a portrait for every NPC after scenario generation; requires an image backend)</span></label>
+          </div>
         </div>
 
       </div>
@@ -3118,6 +3122,10 @@ async function runAIPhase() {
       fadeOutAudio(_overtureSfx);
     }
 
+    if (hasPortraitBackend && document.getElementById('auto-npc-portraits')?.checked) {
+      autoGenerateAllNpcPortraits(Object.keys(output.npcEntries));
+    }
+
   } catch(err) {
     document.getElementById('ai-placeholder')?.remove();
     showError(`Generation failed: ${err.message}`);
@@ -3321,6 +3329,13 @@ async function generateNpcPortrait(npcName) {
   }
 }
 
+// Runs NPC portraits one at a time — generateNpcPortrait rejects overlapping calls
+async function autoGenerateAllNpcPortraits(npcNames) {
+  for (const name of npcNames) {
+    await generateNpcPortrait(name);
+  }
+}
+
 // ── Key persistence (localStorage) ────────────────────────────────────────
 const KEY_FIELDS = [
   { id: 'api-key',            store: 'gof_api_key'            },
@@ -3386,6 +3401,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const nsfwEl = document.getElementById('include-nsfw');
   nsfwEl.checked = localStorage.getItem('gof_include_nsfw') === 'true';
   nsfwEl.addEventListener('change', e => localStorage.setItem('gof_include_nsfw', e.target.checked));
+
+  // Auto NPC portraits checkbox persistence
+  const autoNpcEl = document.getElementById('auto-npc-portraits');
+  autoNpcEl.checked = localStorage.getItem('gof_auto_npc_portraits') === 'true';
+  autoNpcEl.addEventListener('change', e => localStorage.setItem('gof_auto_npc_portraits', e.target.checked));
 
   // Init genre carousel
   carouselIndex = Math.max(0, GENRE_CAROUSEL_DATA.findIndex(g => g.id === currentGenre));

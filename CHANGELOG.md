@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-07-02
+
+### feat: Auto-generate NPC portraits option
+**What changed:** Added an "Auto-generate NPC portraits" checkbox to the Settings modal Options tab (`#auto-npc-portraits`, persisted to `localStorage` as `gof_auto_npc_portraits`). When enabled and an image backend (local SD or Stability AI) is configured, `runAIPhase()` now calls a new `autoGenerateAllNpcPortraits()` helper after scenario generation, which awaits `generateNpcPortrait()` for each NPC in sequence (NPC portrait generation guards against overlapping calls via `npcPortraitGenerating`, so they can't run concurrently).
+**Impact:** Users no longer have to open each NPC's portrait menu and click "Generate Portrait" individually — cast portraits populate automatically alongside the protagonist portrait when the option is on. Off by default, so existing behavior (manual per-NPC generation) is unchanged unless opted in.
+**Test cases:** (1) Option off — NPC thumbnails remain silhouettes after generation, same as before. (2) Option on, no image backend configured — no NPC portraits attempt (matches existing protagonist portrait gating). (3) Option on with SD/Stability configured — each NPC thumbnail fills in sequentially without overlapping "already generating" errors.
+
 ## 2026-06-29
 
 ### feat: New sticky toolbar + genre carousel UI
