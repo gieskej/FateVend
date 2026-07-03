@@ -31,7 +31,7 @@
  * @property {string}   name
  * @property {string}   role      e.g. 'best friend', 'older sibling', 'mother', 'rival'
  * @property {string}   status    e.g. 'present and close', 'estranged', 'deceased'
- * @property {string}   gender    e.g. 'Man', 'Woman', 'Non-binary'
+ * @property {string}   gender    e.g. 'Male', 'Female', 'Non-binary'
  * @property {string}   race      broad identity label e.g. 'Latino', 'Black', 'Elf', 'Human'
  * @property {string[]} traits    2–3 short trait descriptors
  * @property {string}   dynamic   one-line relationship dynamic to protagonist
@@ -41,7 +41,7 @@
  * @typedef {Object} CharacterSkeleton
  * @property {string}            name
  * @property {number}            age
- * @property {string}            gender              e.g. 'Man', 'Woman', 'Non-binary'
+ * @property {string}            gender              e.g. 'Male', 'Female', 'Non-binary'
  * @property {string}            pronouns            e.g. 'he/him', 'they/them'
  * @property {string}            orientation         e.g. 'Bisexual'
  * @property {string}            ethnicityBroad      e.g. 'Latino'

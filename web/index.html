@@ -949,7 +949,7 @@ function buildCast(protName, protLast, ethnicityBroad, familyStructure, tables, 
     const dynamic = isDeceased
       ? `${protName} still catches themselves thinking "I should call" before remembering`
       : fillD(uniformPick(PARENT_DYNAMICS_ALIVE), protName);
-    return { name:`${firstName} ${lastName}`, role:isMother?'mother':'father', status:status.label, gender:isMother?'Woman':'Man', race:ethnicityBroad, traits:pickTraits(2), dynamic };
+    return { name:`${firstName} ${lastName}`, role:isMother?'mother':'father', status:status.label, gender:isMother?'Female':'Male', race:ethnicityBroad, traits:pickTraits(2), dynamic };
   }
 
   if (pc === 2) {
@@ -1045,7 +1045,7 @@ function protoName(genderId, pool) {
   return { first, last, full: `${first} ${last}` };
 }
 
-const GENDER_LABELS = { man:'Man', trans_man:'Trans man', woman:'Woman', trans_woman:'Trans woman', non_binary:'Non-binary', genderfluid:'Genderfluid' };
+const GENDER_LABELS = { man:'Male', trans_man:'Trans male', woman:'Female', trans_woman:'Trans female', non_binary:'Non-binary', genderfluid:'Genderfluid' };
 
 function randomBroadFrom(namePools) {
   const keys = Object.keys(namePools).filter(k => k !== 'default');
@@ -2000,9 +2000,9 @@ function preloadGenreIcons(genre) {
 function getSlotConfig(genre) {
   // Common categories shared across all genres (icons in generator/common/icons/)
   const GENDERS_CAT = [
-    ['man','man','Man'],['woman','woman','Woman'],
+    ['man','man','Male'],['woman','woman','Female'],
     ['non_binary','non-binary','Non-binary'],
-    ['trans_man','trans_man','Trans man'],['trans_woman','trans_woman','Trans woman'],
+    ['trans_man','trans_man','Trans male'],['trans_woman','trans_woman','Trans female'],
     ['genderfluid','genderfluid','Genderfluid'],['genderless','genderless','Genderless'],
     ['androgyne','androgyne','Androgyne'],['custom_gendered','man','Custom'],
   ];

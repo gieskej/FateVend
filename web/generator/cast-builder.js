@@ -17,8 +17,8 @@ import { poolFor, pickFirstName }               from './skeleton-builder.js';
 
 // Gender id → display label (mirrors common/genders.js without the import)
 const GENDER_LABELS = {
-  man: 'Man', trans_man: 'Trans man', woman: 'Woman',
-  trans_woman: 'Trans woman', non_binary: 'Non-binary', genderfluid: 'Genderfluid',
+  man: 'Male', trans_man: 'Trans male', woman: 'Female',
+  trans_woman: 'Trans female', non_binary: 'Non-binary', genderfluid: 'Genderfluid',
 };
 
 // Picks a random broad identity key from namePools (excluding 'default' fallback).
