@@ -2,6 +2,16 @@
 
 ## 2026-07-03
 
+### fix: Consolidated the four duplicate squash.sh scripts into one
+**What changed:** `web/generator/genres/{fantasy,modern,sci-fi}/icons/squash.sh` and `web/generator/common/icons/squash.sh` were near-identical copies (fantasy, modern, and common were byte-identical; sci-fi had one stray extra blank `echo`) that strip numeric disambiguator suffixes from icon filenames (e.g. `PROFESSIONS#slug#3.webp` -> `PROFESSIONS#slug.webp`). Consolidated into a single `web/generator/squash.sh` that takes an optional target directory argument (defaults to current directory), matching the pattern used by the recently-merged `resize.sh`. Deleted all four per-genre/common copies.
+**Impact:** One shared script for squashing disambiguated icon filenames across all genres instead of four diverging copies. Run it as `web/generator/squash.sh path/to/genre/icons`.
+**Test cases:** (1) Run against a directory containing a `NAME#slug#2.webp` file with no existing `NAME#slug.webp` — it's renamed to `NAME#slug.webp`. (2) Run against a directory containing a `NAME#slug#2.webp` file where `NAME#slug.webp` already exists — the numbered file overwrites it (matches prior `mv -f` behavior). (3) Files without a numeric `#N` suffix are left untouched.
+
+### fix: Merged the two divergent icon resize scripts into one
+**What changed:** `web/generator/genres/fantasy/icons/resize.sh` and `web/generator/genres/sci-fi/icons/resize.bash` had drifted into different (and partly buggy) behavior — fantasy's shrunk images to fit within 256x256 preserving aspect ratio and converted jpg/png to webp; sci-fi's forced every image to an exact 256x256 square (distorting non-square sources) and left formats untouched. Consolidated both into a single `web/generator/resize.sh` that takes an optional target directory argument, only touches `CATEGORY#slug` icon-named files, converts jpg/jpeg/png/gif sources to webp (quality 80) before resizing, and always shrinks-to-fit rather than forcing a square (no distortion). Deleted both of the old per-genre scripts.
+**Impact:** One shared script for resizing icons across all genres instead of two diverging copies. Run it as `web/generator/resize.sh path/to/genre/icons`.
+**Test cases:** (1) Run against a directory with oversized webp icons — they're shrunk to fit within 256x256 with aspect ratio preserved. (2) Run against a directory with jpg/png icons — they're converted to webp, resized, and the original file is removed. (3) Non-icon files (no `#` in the name) are left untouched.
+
 ### fix: Removed redundant secondary "Spin the Reels" button
 **What changed:** Removed the second "Spin the Reels" button from the bottom-actions bar (shown below the generated scenario output), leaving only "↑ Go to Top" there. Also removed the now-dead `.btn-generate-secondary` CSS rule and updated the `test-ui` skill's stale assertion that checked for the removed button.
 **Impact:** One less redundant control — the toolbar's "Spin The Reels" button (always visible, sticky) already covers re-rolling; the bottom copy no longer duplicates it. `.bottom-actions` is `justify-content: center`, so "Go to Top" re-centers on its own with no layout changes needed.
