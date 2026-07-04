@@ -2,6 +2,11 @@
 
 ## 2026-07-03
 
+### feat: Joseon Author's Note now leans into palace intrigue
+**What changed:** Rewrote the `authorNote` output-rules directive in `web/generator/genres/historical-korea-joseon-dynasty/prompt-template.js` (line ~100). Previously it asked only for literary behavioral prose with sensory anchors and honorific dialogue. It now explicitly directs the AI to maintain an atmosphere of palace/faction intrigue every turn — every courtier has an agenda, alliances are provisional, silence and eye contact carry weight, someone is always watching or reporting, and nothing should be stated plainly that could instead be implied.
+**Impact:** The AI Dungeon Author's Note (injected every turn) will steer scenes toward court scheming, hidden agendas, and watchful tension rather than purely descriptive/sensory prose, matching the genre's Bungdang faction-politics setting rules already present in the system prompt.
+**Test cases:** (1) Generate a Joseon character — inspect the `authorNote` field for intrigue-oriented language (agendas, alliances, being watched/reported) rather than only sensory description. (2) Confirm it still respects the 500-char limit and omits character names and plot details, per the existing constraints.
+
 ### fix: Consolidated the four duplicate squash.sh scripts into one
 **What changed:** `web/generator/genres/{fantasy,modern,sci-fi}/icons/squash.sh` and `web/generator/common/icons/squash.sh` were near-identical copies (fantasy, modern, and common were byte-identical; sci-fi had one stray extra blank `echo`) that strip numeric disambiguator suffixes from icon filenames (e.g. `PROFESSIONS#slug#3.webp` -> `PROFESSIONS#slug.webp`). Consolidated into a single `web/generator/squash.sh` that takes an optional target directory argument (defaults to current directory), matching the pattern used by the recently-merged `resize.sh`. Deleted all four per-genre/common copies.
 **Impact:** One shared script for squashing disambiguated icon filenames across all genres instead of four diverging copies. Run it as `web/generator/squash.sh path/to/genre/icons`.

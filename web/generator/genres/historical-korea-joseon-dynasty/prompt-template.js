@@ -97,7 +97,7 @@ OUTPUT RULES:
 
 "plotEssentials": MAX 2000 chars. Using "${sk.plotArchetype}" as the primary story engine, write the plot overview for this Joseon Korea scenario. Cover: what triggers the story (the inciting incident, rooted in the specific mechanisms of Joseon society — a gwageo result, a factional accusation, a jokbo investigation), the central objective, the main obstacle or antagonist (could be a faction enemy, a social law, a secret), and what's at stake if the character fails. Ground it specifically in this character's class, profession, cast, and setting. The background tension ("${sk.tension}") is a secondary thread — weave it in. Write for a GM who needs to run this session tonight: concrete, specific, actionable.
 
-"authorNote": MAX 500 chars. Style directive for AI Dungeon's Author's Note field — injected every AI turn. Terse imperatives. Tailor to this character: literary behavioral prose with elevated register, 1–2 sensory anchors specific to Joseon and this character's station (mulberry paper, ondol heat, silk rustling, specific sounds of their world), honorific atmosphere in all dialogue. No names, no plot.`;
+"authorNote": MAX 500 chars. Style directive for AI Dungeon's Author's Note field — injected every AI turn. Terse imperatives. Tailor to this character: maintain an atmosphere of palace/faction intrigue at all times — every courtier has an agenda, alliances are provisional, silence and eye contact carry as much weight as speech, someone is always watching or reporting. 1 sensory anchor specific to Joseon and this character's station (mulberry paper, ondol heat, silk rustling). Honorific atmosphere in dialogue; nothing stated plainly that could instead be implied. No names, no plot.`;
 }
 
 function coerceEntry(v) {

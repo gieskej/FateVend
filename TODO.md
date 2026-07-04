@@ -3,8 +3,6 @@
 ## Bugs
 - Plot essentials should be short bullet points, not wordy prose.  Ideally around 1000 characters, maximum 1500 characters.
 - Change the tone of the Paleolithic genre in Authors Notes - It should be more sitcom/comedy of errors mixed with dark humor that you'll likely be eaten by a predator.  Also make it 100000 BC, more Neanderthal period, less language, more wild, anything goes.
-- Change the tone of the Joseon genre in Authors Notes - It should be more about palace intrigue.
-
 - The text-to-image generator has no idea what an alien looks like, so we need specific alien features mentioned in their portrait prompts (e.g. unusual skin color, horns, scales, webbed fingers, forked tongue, pointed ears, etc).  Likewise, non-humanoid aliens should be even more unusual looking (e.g. four legs, no legs, amoeba, tenticals, insect, vapor, lava, jelly, etc)
 
 - Think of a better name.
@@ -27,6 +25,7 @@
 ---
 
 ## Fixed Bugs
+- BUG: Change the tone of the Joseon genre in Authors Notes - It should be more about palace intrigue.
 - BUG: Remove secondary Spin The Reels button
 - BUG: For genders, change "man" to "male" and "woman" to "female"
 - BUG: Stop Narrate All button looks bad
