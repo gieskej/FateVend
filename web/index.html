@@ -517,10 +517,10 @@
           <div class="help-section-title">Local Stable Diffusion (Portraits — Priority)</div>
           <p>A local Stable Diffusion instance is used for portrait generation and takes priority over the Stability AI cloud service. Generates portraits on your own hardware with no per-image cost.</p>
           <ol class="help-steps">
-            <li>Install <a href="https://github.com/AUTOMATIC1111/stable-diffusion-webui" target="_blank" rel="noopener">AUTOMATIC1111 WebUI</a> or <a href="https://github.com/comfyanonymous/ComfyUI" target="_blank" rel="noopener">ComfyUI</a>.</li>
+            <li>Install <a href="https://github.com/lllyasviel/stable-diffusion-webui-forge" target="_blank" rel="noopener">Stable Diffusion WebUI Forge</a> — recommended for its native Flux1-dev support.</li>
             <li>Launch with the <code>--api</code> flag enabled: add <code>--api</code> to your launch arguments or <code>webui-user.bat</code>.</li>
             <li>The default URL is <code>http://localhost:7860</code>. If running on another machine, use its IP address, e.g. <code>http://192.168.1.50:7860</code>.</li>
-            <li>Paste the URL into the <strong>Local SD URL</strong> field above. The app calls the <code>/sdapi/v1/txt2img</code> endpoint (AUTOMATIC1111 format).</li>
+            <li>Paste the URL into the <strong>Local SD URL</strong> field above. The app calls the <code>/sdapi/v1/txt2img</code> endpoint (AUTOMATIC1111-compatible format, which Forge implements).</li>
           </ol>
           <p>Install a Flux1-dev or SDXL model for best results. The portrait prompts are optimised for Flux1-dev with danbooru-style tags.</p>
         </div>
@@ -534,6 +534,45 @@
             <li>Click <strong>Create API Key</strong>, copy it, and paste into the <strong>Stability AI Key</strong> field above. Keys start with <code>sk-</code>.</li>
           </ol>
           <p>Image generation costs credits. New accounts receive a small free allocation.</p>
+        </div>
+
+        <div class="help-section">
+          <div class="help-section-title">Browser Narration (Text-to-Speech — Built-in, Free)</div>
+          <p>Uses your browser's built-in speech synthesis to read the character entries aloud. No key or server required — works offline.</p>
+          <ol class="help-steps">
+            <li>Select <strong>Browser (built-in)</strong> in the Narration Provider selector.</li>
+            <li>Pick a voice in the <strong>Voice</strong> dropdown — available voices depend on your OS and browser.</li>
+          </ol>
+          <p>Quality and voice selection vary a lot by platform (Chrome, Edge, and Safari all ship different voice sets).</p>
+        </div>
+
+        <div class="help-section">
+          <div class="help-section-title">Kokoro LAN (Text-to-Speech — Local)</div>
+          <p>Run a local Kokoro TTS server for higher-quality narration on your own hardware, no per-request cost.</p>
+          <ol class="help-steps">
+            <li>Run a Kokoro server that exposes the OpenAI-compatible <code>/v1/audio/speech</code> endpoint (e.g. <a href="https://github.com/remsky/Kokoro-FastAPI" target="_blank" rel="noopener">Kokoro-FastAPI</a>). Default port is <code>8880</code>.</li>
+            <li>If running on another machine, use its IP address, e.g. <code>http://192.168.1.50:8880</code>.</li>
+            <li>Paste the URL into the <strong>Kokoro URL</strong> field above, then select <strong>Kokoro LAN</strong> in the Narration Provider selector.</li>
+            <li>The <strong>Voice</strong> dropdown auto-populates from the server's <code>/v1/audio/voices</code> endpoint if reachable, otherwise falls back to a built-in voice list.</li>
+          </ol>
+        </div>
+
+        <div class="help-section">
+          <div class="help-section-title">OpenAI TTS (Text-to-Speech — Cloud)</div>
+          <p>Cloud-based narration using OpenAI's text-to-speech API. Requires a paid OpenAI account with API access.</p>
+          <ol class="help-steps">
+            <li>Go to <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener">platform.openai.com/api-keys</a> and sign in or create an account.</li>
+            <li>Click <strong>Create new secret key</strong>, copy it, and paste into the <strong>OpenAI TTS Key</strong> field above. Keys start with <code>sk-</code>.</li>
+            <li>Select <strong>OpenAI</strong> in the Narration Provider selector, then choose a voice in the <strong>Voice</strong> dropdown.</li>
+          </ol>
+          <p>Billed per character of text sent. This is a separate key/account from the Anthropic key used for text generation.</p>
+        </div>
+
+        <div class="help-section">
+          <div class="help-section-title">Narration Options</div>
+          <p>Once a Narration Provider is selected (Settings → Narration tab), each generated scenario shows narrate buttons next to the description, opening, plot, protagonist, and each NPC entry, plus a <strong>Narrate All</strong> button that reads the whole scenario in sequence and auto-scrolls to whichever section is currently being read.</p>
+          <p><strong>Voice</strong> and <strong>Speed</strong> (Narration tab) override the genre's default voice/pace for whichever provider is selected.</p>
+          <p><strong>Auto-play Narrate All</strong> (Settings → Options tab) automatically starts reading the full scenario aloud as soon as generation finishes, once the intro music fades out — no need to click Narrate All manually.</p>
         </div>
 
       </div>

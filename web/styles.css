@@ -1385,6 +1385,7 @@ body::before {
   justify-content: space-between;
   position: sticky;
   top: 0;
+  z-index: 2;
 }
 .help-panel-title {
   font-family: var(--font-display);
@@ -1452,8 +1453,8 @@ body::before {
 }
 .help-steps li {
   counter-increment: step;
-  display: flex;
-  gap: 0.65rem;
+  position: relative;
+  padding-left: 1.95rem;
   font-size: 0.9rem;
   color: var(--ink);
   line-height: 1.5;
@@ -1461,6 +1462,9 @@ body::before {
 }
 .help-steps li::before {
   content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0.1em;
   font-family: var(--font-display);
   font-size: 0.8rem;
   font-weight: 700;
@@ -1472,8 +1476,6 @@ body::before {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-  margin-top: 0.1em;
 }
 
 /* ── SITE DISCLAIMER ───────────────────────────────────────────────── */

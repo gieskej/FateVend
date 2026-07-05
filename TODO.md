@@ -5,7 +5,6 @@
 - The text-to-image generator has no idea what an alien looks like, so we need specific alien features mentioned in their portrait prompts (e.g. unusual skin color, horns, scales, webbed fingers, forked tongue, pointed ears, etc).  Likewise, non-humanoid aliens should be even more unusual looking (e.g. four legs, no legs, amoeba, tenticals, insect, vapor, lava, jelly, etc)
 
 - Think of a better name.
-- Update help with narration settings
 - Inject current git version from serve.sh
 - Settings - Narration tab is too tall and gets clipped by the status bar.  The modal should have fixed height and scroll vertically if necessary to show tall tabs.
 
@@ -24,6 +23,7 @@
 ---
 
 ## Fixed Bugs
+- FEAT: Update help with narration settings
 - BUG: Change the tone of the Paleolithic genre in Authors Notes - It should be more sitcom/comedy of errors mixed with dark humor that you'll likely be eaten by a predator.  Also make it 100000 BC, more Neanderthal period, less language, more wild, anything goes.
 - BUG: Change the tone of the Joseon genre in Authors Notes - It should be more about palace intrigue.
 - BUG: Remove secondary Spin The Reels button
