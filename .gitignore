@@ -8,3 +8,5 @@ old
 tmp
 web/.env
 web/generator/config.js
+images.txt
+tools/regenerate-icons-gemini.py

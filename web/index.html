@@ -2691,7 +2691,7 @@ function renderOutput(sk, output) {
 
   const npcEntriesHTML = Object.entries(output.npcEntries).map(([name, entry]) => {
     const npc        = castByName[name];
-    const meta       = npc ? `<div class="npc-entry-meta">${npc.gender} · ${npc.race}</div>` : '';
+    const meta       = npc ? `<div class="npc-entry-meta">${npc.gender} · ${npc.role} · ${npc.race}</div>` : '';
     const safeName   = name.replace(/\s+/g,'_');
     const nameJS     = JSON.stringify(name);
     const safeFile   = name.replace(/[^a-zA-Z0-9]+/g,'-').replace(/^-|-$/g,'');
