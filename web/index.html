@@ -478,8 +478,40 @@
       </div>
       <div class="help-body">
 
+        <div class="help-group-heading">How to Use Vend of Fate</div>
+        <p class="help-group-intro">After rolling and generating a scenario, there are three ways to get it into AI Dungeon.</p>
+
         <div class="help-section">
-          <div class="help-section-title">Anthropic — Claude (Text Generation)</div>
+          <div class="help-section-title">Copy &amp; Paste (Side-by-Side)</div>
+          <p>Open Vend of Fate and AI Dungeon in separate windows side by side. Use the <strong>Copy</strong> button next to each field (Title, Description, Opening, Plot Essentials, Author's Note, and each character entry) to copy just that field, then paste it into the matching field while creating your scenario in AI Dungeon.</p>
+          <p>Or use <strong>⚙ Copy Full Text To Clipboard (JSON)</strong> at the bottom to copy everything at once as structured JSON, if you'd rather edit the output in your favorite editor.</p>
+        </div>
+
+        <div class="help-section">
+          <div class="help-section-title">Download Package (.zip)</div>
+          <p>Click <strong>↓ Download Package (.zip)</strong> to save the whole scenario — <code>scenario.json</code> plus the generated portrait — as a timestamped archive. Import it into AI Dungeon whenever you're ready, or keep it as a backup of a scenario you liked.</p>
+        </div>
+
+        <div class="help-section">
+          <div class="help-section-title">Auto Import (Beta)</div>
+          <p>One-click import via a local Playwright-driven script — no copy/paste required. Only available when running the app locally via <code>serve.sh</code>, since it depends on Node.js, Playwright, and a local Chromium install.</p>
+          <ol class="help-steps">
+            <li>Add <code>AIDUNGEON_EMAIL</code> and <code>AIDUNGEON_PASSWORD</code> to your <code>.env</code> file at the project root — these are your AI Dungeon login credentials.</li>
+            <li>Run <code>npm install</code> and <code>npx playwright install chromium</code> once, if you haven't already.</li>
+            <li>Start (or restart) <code>serve.sh</code> — it launches the import server on port <code>7432</code> alongside the web app automatically.</li>
+            <li>After generating a scenario, an <strong>↑ Import to AI Dungeon (Beta)</strong> button appears below the Download button. Click it — a browser window opens and fills in the title, description, plot, story cards, and portrait automatically.</li>
+          </ol>
+          <p>The button only appears once the local import server is detected running — if you don't see it, double-check <code>serve.sh</code> is running and Playwright is installed.</p>
+        </div>
+
+        <div class="help-group-heading">Setup</div>
+
+        <p class="help-intro">Vend of Fate requires at least a text provider to function. You may choose from various cloud-hosted models, or from a self-hosted Ollama instance.</p>
+
+        <div class="help-group-heading">Text Providers</div>
+
+        <div class="help-section">
+          <div class="help-section-title">Anthropic — Claude</div>
           <p>Claude writes the character entries, scenario description, opening, and NPC entries. Select it in the Text Provider selector after entering a key.</p>
           <ol class="help-steps">
             <li>Go to <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a> and sign in or create an account.</li>
@@ -491,7 +523,7 @@
         </div>
 
         <div class="help-section">
-          <div class="help-section-title">Google Gemini (Text Generation)</div>
+          <div class="help-section-title">Google Gemini</div>
           <p>Gemini writes the same content as Claude. Select it in the Text Provider selector after entering a key. Has a free tier with generous daily limits.</p>
           <ol class="help-steps">
             <li>Go to <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">aistudio.google.com/app/apikey</a> and sign in with your Google account.</li>
@@ -502,7 +534,7 @@
         </div>
 
         <div class="help-section">
-          <div class="help-section-title">Local Ollama (Text Generation — Local LLM)</div>
+          <div class="help-section-title">Ollama (Local LLM)</div>
           <p>Run text generation entirely on your own machine — no API key or internet required. Ollama serves open-weight models (Llama, Mistral, Gemma, etc.) via a local REST API.</p>
           <ol class="help-steps">
             <li>Install <a href="https://ollama.com" target="_blank" rel="noopener">Ollama</a> and run it. The default URL is <code>http://localhost:11434</code>.</li>
@@ -513,8 +545,11 @@
           <p>Quality varies by model size. Llama 3.2 (3B) works but a 7B–14B model will produce noticeably better results.</p>
         </div>
 
+        <div class="help-group-heading">Image Providers</div>
+        <p class="help-group-intro">Image providers render character and NPC portraits. It is optional — you may choose a cloud service or a self-hosted one.</p>
+
         <div class="help-section">
-          <div class="help-section-title">Local Stable Diffusion (Portraits — Priority)</div>
+          <div class="help-section-title">Local Stable Diffusion</div>
           <p>A local Stable Diffusion instance is used for portrait generation and takes priority over the Stability AI cloud service. Generates portraits on your own hardware with no per-image cost.</p>
           <ol class="help-steps">
             <li>Install <a href="https://github.com/lllyasviel/stable-diffusion-webui-forge" target="_blank" rel="noopener">Stable Diffusion WebUI Forge</a> — recommended for its native Flux1-dev support.</li>
@@ -526,7 +561,7 @@
         </div>
 
         <div class="help-section">
-          <div class="help-section-title">Stability AI (Portraits — Cloud Fallback)</div>
+          <div class="help-section-title">Stability AI</div>
           <p>Used for portrait generation when no local SD instance is reachable. Requires a paid Stability AI account.</p>
           <ol class="help-steps">
             <li>Go to <a href="https://platform.stability.ai" target="_blank" rel="noopener">platform.stability.ai</a> and sign in or create an account.</li>
@@ -537,7 +572,16 @@
         </div>
 
         <div class="help-section">
-          <div class="help-section-title">Browser Narration (Text-to-Speech — Built-in, Free)</div>
+          <div class="help-section-title">Image Options</div>
+          <p>Once an image backend is configured, the protagonist card shows a <strong>Generate Portrait</strong> button, and each NPC card shows a portrait menu with its own <strong>Generate Portrait</strong> option.</p>
+          <p><strong>Auto-generate NPC portraits</strong> (Settings → Options tab) automatically generates a portrait for every NPC right after scenario generation finishes — one at a time — instead of requiring you to open each NPC's portrait menu manually. Requires an image backend to be configured; off by default.</p>
+        </div>
+
+        <div class="help-group-heading">TTS Providers</div>
+        <p class="help-group-intro">Text-to-speech providers add an optional feature — reading the generated scenario aloud, to help you get into the story and decide if it's worth playing in AI Dungeon.</p>
+
+        <div class="help-section">
+          <div class="help-section-title">Browser Narration (Free)</div>
           <p>Uses your browser's built-in speech synthesis to read the character entries aloud. No key or server required — works offline.</p>
           <ol class="help-steps">
             <li>Select <strong>Browser (built-in)</strong> in the Narration Provider selector.</li>
@@ -547,7 +591,7 @@
         </div>
 
         <div class="help-section">
-          <div class="help-section-title">Kokoro LAN (Text-to-Speech — Local)</div>
+          <div class="help-section-title">Kokoro LAN (Local)</div>
           <p>Run a local Kokoro TTS server for higher-quality narration on your own hardware, no per-request cost.</p>
           <ol class="help-steps">
             <li>Run a Kokoro server that exposes the OpenAI-compatible <code>/v1/audio/speech</code> endpoint (e.g. <a href="https://github.com/remsky/Kokoro-FastAPI" target="_blank" rel="noopener">Kokoro-FastAPI</a>). Default port is <code>8880</code>.</li>
@@ -558,7 +602,7 @@
         </div>
 
         <div class="help-section">
-          <div class="help-section-title">OpenAI TTS (Text-to-Speech — Cloud)</div>
+          <div class="help-section-title">OpenAI TTS (Cloud)</div>
           <p>Cloud-based narration using OpenAI's text-to-speech API. Requires a paid OpenAI account with API access.</p>
           <ol class="help-steps">
             <li>Go to <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener">platform.openai.com/api-keys</a> and sign in or create an account.</li>
@@ -573,6 +617,21 @@
           <p>Once a Narration Provider is selected (Settings → Narration tab), each generated scenario shows narrate buttons next to the description, opening, plot, protagonist, and each NPC entry, plus a <strong>Narrate All</strong> button that reads the whole scenario in sequence and auto-scrolls to whichever section is currently being read.</p>
           <p><strong>Voice</strong> and <strong>Speed</strong> (Narration tab) override the genre's default voice/pace for whichever provider is selected.</p>
           <p><strong>Auto-play Narrate All</strong> (Settings → Options tab) automatically starts reading the full scenario aloud as soon as generation finishes, once the intro music fades out — no need to click Narrate All manually.</p>
+        </div>
+
+        <div class="help-group-heading">Local .env Setup (Optional)</div>
+        <p class="help-group-intro">If you run the app locally via <code>serve.sh</code>, you can pre-fill your cloud API keys from a <code>.env</code> file at the project root instead of typing them into Settings every time. Purely a convenience — entering keys directly in Settings always works too.</p>
+
+        <div class="help-section">
+          <div class="help-section-title">.env File</div>
+          <p><code>serve.sh</code> reads <code>.env</code> at the project root and writes the keys into <code>generator/config.js</code> on startup, so the browser can use them without the <code>.env</code> file itself ever being served.</p>
+          <ol class="help-steps">
+            <li>Create a <code>.env</code> file at the project root (next to the <code>web/</code> folder).</li>
+            <li>Add one <code>KEY=value</code> line per key you want pre-filled: <code>ANTHROPIC_API_KEY</code>, <code>GEMINI_API_KEY</code>, <code>STABILITY_API_KEY</code>, <code>SD_URL</code>.</li>
+            <li>Run <code>./serve.sh</code> — it regenerates <code>generator/config.js</code> from <code>.env</code> every time it starts.</li>
+          </ol>
+          <p>Ollama and narration provider settings (Kokoro/OpenAI TTS) aren't part of this mechanism — enter those directly in Settings, where they're saved to your browser's local storage.</p>
+          <p><code>AIDUNGEON_EMAIL</code> and <code>AIDUNGEON_PASSWORD</code> (used by Auto Import, above) work differently — they're read directly by the Node-side importer script and are never baked into <code>generator/config.js</code> or exposed to the browser.</p>
         </div>
 
       </div>
