@@ -6,7 +6,6 @@
 
 - Think of a better name.
 - Inject current git version from serve.sh
-- Settings - Narration tab is too tall and gets clipped by the status bar.  The modal should have fixed height and scroll vertically if necessary to show tall tabs.
 
 ### Low Priority Bugs
 - The aidungeon-importer is flaky about uploading the portrait image.  Sometimes it works, sometimes it does not.
@@ -23,6 +22,7 @@
 ---
 
 ## Fixed Bugs
+- BUG: On mobile browsers, Settings -> Narration tab is too tall and gets clipped by the status bar. The Settings modal should have fixed height and scroll vertically if necessary to show tall tabs.
 - FEAT: Update help with narration settings
 - BUG: Change the tone of the Paleolithic genre in Authors Notes - It should be more sitcom/comedy of errors mixed with dark humor that you'll likely be eaten by a predator.  Also make it 100000 BC, more Neanderthal period, less language, more wild, anything goes.
 - BUG: Change the tone of the Joseon genre in Authors Notes - It should be more about palace intrigue.

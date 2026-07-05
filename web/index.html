@@ -42,6 +42,14 @@
   right: 0;
   transform: translateX(50%) translateY(-50%);
 }
+/* Icons are 160px and spill 80px past each header edge (by design, for
+   desktop) — that overflow inflates the mobile layout viewport and drags
+   fixed-position modals along with it, so hide them below the breakpoint.
+   Must come after the rule above: an unconditional declaration later in
+   source order beats an earlier media-scoped one of equal specificity. */
+@media (max-width: 599px) {
+  .site-header::before, .site-header::after { display: none; }
+}
 
 /* ── TOOLBAR ──────────────────────────────────────────────────────── */
 #toolbar-div {
@@ -352,7 +360,7 @@
     <div class="settings-modal">
 
       <div class="settings-modal-header">
-        <span class="settings-modal-title">FateVend — Settings</span>
+        <span class="settings-modal-title">Vend of Fate — Settings</span>
         <button class="settings-modal-close" onclick="closeSettings()" aria-label="Close">✕</button>
       </div>
 
@@ -1862,7 +1870,7 @@ const GENRE_CAROUSEL_DATA = [
   { id: 'fantasy',                         label: 'Fantasy',       desc: 'Swords, sorcery, and ancient prophecy. Classic high fantasy with knights, wizards, and realms where magic shapes destiny.' },
   { id: 'historical-korea-joseon-dynasty', label: 'Joseon Korea',  desc: 'Honor, ceremony, and hidden intrigue. Noble houses, court politics, and lives bound by Confucian duty.' },
   { id: 'modern',                          label: 'Modern',        desc: 'Contemporary life in all its complexity — careers, families, secrets, and the weight of ordinary days.' },
-  { id: 'nihongi',                         label: 'Nihongi Shoki', desc: 'Ancient Japan at the dawn of its mythology. Kami, clan wars, and the line between the human world and the divine.' },
+  { id: 'nihongi',                         label: 'Nihon Shoki',   desc: 'Ancient Japan at the dawn of its mythology. Kami, clan wars, and the line between the human world and the divine.' },
   { id: 'manga-osaka-highschool1987',      label: "Osaka HS '87",  desc: 'Manga-style high school drama in 1987 Osaka. Coming-of-age, friendships forged in crisis, and the intensity of being seventeen.' },
   { id: 'paleolithic',                     label: 'Paleolithic',   desc: 'Stone age survival at the edge of the known world. Tribe, hunt, spirit, and the slow unfolding of what it means to be human.' },
   { id: 'sci-fi',                          label: 'Sci-Fi',        desc: 'Faster-than-light travel, alien civilizations, and the technologies that define — or threaten — what humanity becomes.' },
