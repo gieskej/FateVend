@@ -2442,10 +2442,81 @@ function renderSlotMachine(genre) {
   return `<div class="slot-machine" id="slot-machine">${slots}</div>`;
 }
 
-const _bellSfx       = new Audio('audio/u_omspjqprot-bell-222490.mp3');
-const _overtureSfx   = new Audio('audio/overture_dark.mid.mp3');
-const _slotMachinePullSfx = new Audio('audio/slotmachine-pull.mp3');
-const _slotMachineReelStopSfx = new Audio('audio/slotmachine-reelstop.mp3');
+const GENRE_MUSIC_PREFIX = {
+  'fantasy':                          'fantasy',
+  'historical-korea-joseon-dynasty':  'joseon',
+  'modern':                           'modern',
+  'nihongi':                          'nihongi',
+  'manga-osaka-highschool1987':       'manga',
+  'paleolithic':                      'paleolithic',
+  'sci-fi':                           'scifi',
+};
+
+const GENRE_MUSIC_TRACKS = {
+  fantasy: [
+    'fantasy-overture1.mp3',
+    'fantasy-overture_dark.mid.mp3',
+  ],
+  joseon: [
+    'joseon-A Name That Bloomed In The Moonlight-v1.mp3',
+    'joseon-A Name That Bloomed In The Moonlight-v2.mp3',
+    'joseon-A Name That Bloomed In The Moonlight-v3.mp3',
+    'joseon-A Red Letter Under the Moonlight.mp3',
+    'joseon-Rain Falls on the Palace-v1.mp3',
+    'joseon-Rain Falls on the Palace-v2.mp3',
+    'joseon-Shadow of the Throne-v1.mp3',
+    'joseon-Shadow of the Throne-v2.mp3',
+    'joseon-Shadow of the Throne-v3.mp3',
+  ],
+  manga: [
+    'manga-Neon Heart_en.mp3',
+    'manga-Neon Heart_en_jp.mp3',
+    'manga-Neon Kiss.mp3',
+  ],
+  modern: [
+    'modern-Bright Prelude.mp3',
+    'modern-Urban Keys.mp3',
+  ],
+  nihongi: [
+    'nihongi-Shadow of Yomi-v1.mp3',
+    'nihongi-Shadow of Yomi-v2.mp3',
+    'nihongi-Shadow of Yomi-v3.mp3',
+  ],
+  paleolithic: [
+    'paleolithic-Primal Dawn-v1.mp3',
+    'paleolithic-Primal Dawn-v2.mp3',
+    'paleolithic-Primal Hunt.mp3',
+  ],
+  scifi: [
+    'scifi-Neon Grandeur.mp3',
+    'scifi-Neon Horizon-v1.mp3',
+    'scifi-Neon Horizon-v2.mp3',
+    'scifi-Neon Noir.mp3',
+    'scifi-Neon Rain.mp3',
+    'scifi-Neon Requiem-v1.mp3',
+    'scifi-Neon Requiem-v2.mp3',
+    'scifi-Omega Requiem.mp3',
+    'scifi-Void Requiem.mp3',
+  ],
+};
+
+let _lastMusicTrack = null;
+function pickGenreTrack(genre) {
+  const prefix = GENRE_MUSIC_PREFIX[genre] || 'fantasy';
+  const tracks = GENRE_MUSIC_TRACKS[prefix] || GENRE_MUSIC_TRACKS.fantasy;
+  let choice = tracks[Math.floor(Math.random() * tracks.length)];
+  if (tracks.length > 1 && choice === _lastMusicTrack) {
+    choice = tracks[(tracks.indexOf(choice) + 1) % tracks.length];
+  }
+  _lastMusicTrack = choice;
+  return `audio/music/${encodeURIComponent(choice)}`;
+}
+
+const _bellSfx       = new Audio('audio/fx/u_omspjqprot-bell-222490.mp3');
+const _overtureSfx   = new Audio();
+_overtureSfx.preload = 'none';
+const _slotMachinePullSfx = new Audio('audio/fx/slotmachine-pull.mp3');
+const _slotMachineReelStopSfx = new Audio('audio/fx/slotmachine-reelstop.mp3');
 
 function fadeOutAudio(audio, duration = 5000) {
   if (audio.paused) return Promise.resolve();
@@ -3178,6 +3249,7 @@ async function runAIPhase() {
   isGenerating = true;
   showError('');
 
+  _overtureSfx.src = pickGenreTrack(currentGenre);
   _overtureSfx.currentTime = 0;
   _overtureSfx.play().catch(() => {});
 

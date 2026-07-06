@@ -15,11 +15,13 @@
 - Redo all of the Joseon icons.  The current icons are a cultural mashup of Chinese, Japanese, Vietnamese and Korean, so they are not accurate.
 - Redo all the missing icons in Fantasy
 
+
 ## New Features
 - Enable scripts and add auto-cards
 - Update the skeleton with a new "metadata" section with name and version of the text and image provider, generation datetime, commit hash
 - Add a button that creates a promo video for the scenario using the character portraits, overture, name overlays, "Starring YOU as xxx".
 - Add genertion of a couple of faction cards.
+- Add a NPC portrait Zoom to popup menu?
 
 ---
 
@@ -36,6 +38,7 @@
 - FEAT: Add an option to auto generate NPC portraits.
 - BUG: Remove token stats completely from the status bar
 - BUG: Redo the UI title bar and selectors.  It occupies too much vertical space.  Selectors should move to a single line toolbar.
+- FEAT: Add more music, and make it specific to the genre selected.
 - FEAT: Make genre selector a carousel, and each Genre should get a thumbnail and brief description like "Nihongi - Japanese horror"
 - Stat adjectives need some work so AI understand them better (e.g. use "average intelligence" instead of just "average").
 - Fantasy - Human - Common folk needs "—" to prevent long string shown in roller.

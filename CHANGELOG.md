@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-07-06
+
+### feat: Genre-specific random background music
+**What changed:** The "overture" track that plays during scenario generation (`_overtureSfx`) was a single hardcoded file (`fantasy-overture_dark.mid.mp3`) regardless of genre. Added a `GENRE_MUSIC_TRACKS` manifest listing each genre's uploaded tracks in `web/audio/music/` (fantasy, joseon, manga, modern, nihongi, paleolithic, scifi — each with 2-9 variants) plus a `GENRE_MUSIC_PREFIX` map reconciling the three genre keys that don't match their filename prefix 1:1 (`historical-korea-joseon-dynasty`→`joseon`, `manga-osaka-highschool1987`→`manga`, `sci-fi`→`scifi`). Added `pickGenreTrack(genre)`, which randomly picks a track from the current genre's pool (avoiding an immediate repeat of the last track played) and returns its URL-encoded path. `_overtureSfx` no longer preloads a fixed file at page load (`new Audio()` with `preload = 'none'`); instead `runAIPhase()` sets `_overtureSfx.src` via `pickGenreTrack(currentGenre)` right before playing, so only the one chosen mp3 is ever fetched — not all ~30 files across genres.
+**Impact:** Each genre now plays music that matches its tone, and repeated generations vary the track instead of always playing the same fantasy overture. No memory/network cost from the growing music library since only one track loads per generation.
+**Test cases:** (1) Generate a scenario in Sci-Fi, Joseon Korea, and Paleolithic — confirm the music audibly matches each genre and never crosses over. (2) Generate several times in a row in the same genre — confirm the track varies rather than repeating. (3) Check the Network tab during generation — confirm only the single selected mp3 is requested, not the whole `audio/music/` folder.
+
 ## 2026-07-03
 
 ### fix: Settings modal appeared cut off on mobile due to page-wide horizontal overflow
