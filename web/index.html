@@ -1948,18 +1948,36 @@ function setGenre(genre) {
 // UI HELPERS
 // ═══════════════════════════════════════════════════════════════════════════
 
-const PHASES = [
+const BASE_PHASES = [
   { id: 'phase-roll',     label: 'Rolling Stats' },
   { id: 'phase-mbti',     label: 'Personality' },
   { id: 'phase-skeleton', label: 'Fate' },
   { id: 'phase-ai',       label: 'Narrative' },
 ];
+const PORTRAIT_PHASE     = { id: 'phase-portrait',      label: 'Portrait' };
+const NPC_PORTRAIT_PHASE = { id: 'phase-npc-portraits', label: 'NPC Portraits' };
+
+let activePhases = BASE_PHASES;
+
+// Recomputed at the start of each generation so the bar reflects whichever
+// optional steps (portrait / NPC portraits) will actually run this time.
+function computeActivePhases() {
+  const hasImageBackend = !!(document.getElementById('sd-url')?.value.trim() || document.getElementById('img-api-key')?.value.trim());
+  const phases = [...BASE_PHASES];
+  if (hasImageBackend) {
+    phases.push(PORTRAIT_PHASE);
+    if (document.getElementById('auto-npc-portraits')?.checked) {
+      phases.push(NPC_PORTRAIT_PHASE);
+    }
+  }
+  return phases;
+}
 
 function setPhase(id) {
   const el = document.getElementById('status-bar');
   if (!el) return;
-  const activeIdx = PHASES.findIndex(p => p.id === id);
-  el.innerHTML = PHASES.map((p, i) => {
+  const activeIdx = activePhases.findIndex(p => p.id === id);
+  el.innerHTML = activePhases.map((p, i) => {
     if (i < activeIdx)   return `<span style="color:var(--brass);opacity:0.7">✓ ${p.label}</span>`;
     if (i === activeIdx) return `<span style="color:var(--gold)">⚙ ${p.label}</span>`;
     return `<span style="opacity:0.3">${p.label}</span>`;
@@ -3165,6 +3183,7 @@ async function runGenerate() {
   currentOutput = null;
   showError('');
   closeSettings();
+  activePhases = computeActivePhases();
 
   // Stop any audio that may be playing
   stopNarration();
@@ -3264,6 +3283,7 @@ async function runAIPhase() {
     // Remove Continue bar and insert shimmer placeholder
     document.getElementById('continue-bar')?.remove();
 
+    activePhases = computeActivePhases();
     setPhase('phase-ai');
 
     outputArea.insertAdjacentHTML('beforeend', `
@@ -3300,27 +3320,29 @@ async function runAIPhase() {
       setTimeout(() => c.classList.add('revealed'), i * 150);
     });
 
-    ['phase-roll','phase-mbti','phase-skeleton','phase-ai'].forEach(p => {
-      document.getElementById(p)?.classList.remove('active');
-      document.getElementById(p)?.classList.add('done');
-    });
-
-    setStatus('Your fate is sealed. Edit and copy as needed.');
     updateStatsDisplay();
 
     // Auto-generate portrait if a backend is configured — portrait's finally will fade the music
     const hasPortraitBackend = output.appearancePrompt &&
       (document.getElementById('sd-url').value.trim() || document.getElementById('img-api-key').value.trim());
-    const musicFadeDone = hasPortraitBackend
-      ? generatePortrait(null)
-      : fadeOutAudio(_overtureSfx);
 
-    if (hasPortraitBackend && document.getElementById('auto-npc-portraits')?.checked) {
-      autoGenerateAllNpcPortraits(Object.keys(output.npcEntries));
+    if (hasPortraitBackend) {
+      setPhase('phase-portrait');
+      await generatePortrait(null);
+
+      const npcNames = Object.keys(output.npcEntries);
+      if (npcNames.length && document.getElementById('auto-npc-portraits')?.checked) {
+        setPhase('phase-npc-portraits');
+        await autoGenerateAllNpcPortraits(npcNames);
+      }
+    } else {
+      await fadeOutAudio(_overtureSfx);
     }
 
+    setStatus('Your fate is sealed. Edit and copy as needed.');
+
     if (ttsProvider !== 'off' && document.getElementById('auto-narrate-all')?.checked) {
-      musicFadeDone.then(() => narrateAll());
+      narrateAll();
     }
 
   } catch(err) {

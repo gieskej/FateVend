@@ -1,27 +1,44 @@
 # TODO
 
+- Play scenarios from each genre and make sure they are fun, not just some grim chatbot trying to kill you or chat you to death.
+
 ## Bugs
 - Plot essentials should be short bullet points, not wordy prose.  Ideally around 1000 characters, maximum 1500 characters.
 - The text-to-image generator has no idea what an alien looks like, so we need specific alien features mentioned in their portrait prompts (e.g. unusual skin color, horns, scales, webbed fingers, forked tongue, pointed ears, etc).  Likewise, non-humanoid aliens should be even more unusual looking (e.g. four legs, no legs, amoeba, tenticals, insect, vapor, lava, jelly, etc)
 
-
-- Think of a better name.
 - Inject current git version from serve.sh
 - The Help says that the Settings->Narration->Voice overrides the genre default voice, but there is no way to choose "None" (e.g. use genre default voice).
+- The Modern genre is crap.  It is too general and open ended to be any fun.
+- Why does Modern character with name "Suzuki" get Asian/Indian?
+- Fix the genre card layout.  On PC, it is too wide.  On mobile, the image gets cropped.
+- Missing reel icons
+- Minors can't be married (or divorced or widowed)
+- Add more names to all genre pools.  There should be at least 50 first and last names in each category.
+- Rearrange the "⚙ AI Generated Scenario" so Title, Portrait Prompt , Description, Opening, Plot Essentials, Author's Note
+- Update add-genre skill to handle BGM and other new genre-related features.
+- NPC's sometimes get "non-binary" despite LGBQ option isn't enabled.
 
 ### Low Priority Bugs
 - The aidungeon-importer is flaky about uploading the portrait image.  Sometimes it works, sometimes it does not.
 - Sometimes generate_icons hangs and you have to restart the whole shell to recover.
-- Redo all of the Joseon icons.  The current icons are a cultural mashup of Chinese, Japanese, Vietnamese and Korean, so they are not accurate.
+- Redo all of the Joseon and Nihongi icons.  The current icons are a cultural mashup of Chinese, Japanese, Vietnamese and Korean, so they are not accurate.
 - Redo all the missing icons in Fantasy
+- Think of a better name.
 
 
 ## New Features
-- Enable scripts and add auto-cards
+- Enable AID scripting and automatically inject the latest auto-cards (https://github.com/LewdLeah/Auto-Cards)
 - Update the skeleton with a new "metadata" section with name and version of the text and image provider, generation datetime, commit hash
 - Add a button that creates a promo video for the scenario using the character portraits, overture, name overlays, "Starring YOU as xxx".
 - Add genertion of a couple of faction cards.
 - Add a NPC portrait Zoom to popup menu?
+- Add settings option to disable BGM.
+- Add currently playing BGM track in status bar
+- Kokoro'e english voices don't pronounce Japanese or Korean words properly, but the Japanese voices produce incomprehenible English.  So either we preprocess English -> Katakana so the Japanese voice works?  Or even better, extend the Kokoro service to do this heavy lifting.  Consider using CMU Pronouncing Dictionary (CMUdict)
+- As the auto-narrator reads sections, it auto-scolls to the section.  But it needs some visual cue too.
+
+## Open Questions
+- Should Plot Essentials be considers as spoilers, and therefore not automatically read by the narrator?
 
 ---
 
@@ -57,3 +74,4 @@
 - In the aidungeon-importer, don't upload the portrait if the NSFW flag is set in the scenario.json.
 - The Genre pick list style is hard to read.
 - The font sizes are inconsistent.  Except for the title bar, make all fonts at least 0.8rem.
+- BUG: The status bar says "* Narrative" and then "Your fate is sealed. Edit and copy as needed."  But there should be a step in between - "* Portrait".

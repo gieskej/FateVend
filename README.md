@@ -35,7 +35,7 @@ Seven genres:
   - Kokoro TTS (local or LAN)
     - https://github.com/remsky/Kokoro-FastAPI
   - OpenAI TTS cloud API key
-- Auto Importer requires node.js and playwrite and chrome
+- Auto Importer (an external script) requires node.js and playwrite and chromium
 
 ## Quick start
 
@@ -53,7 +53,7 @@ bash serve.sh
 - Open `http://localhost:8080/` in a browser. 
 - Enter at least one text AI key in **Settings**
 - Choose a genre
-- Click **Turn the Gears**.
+- Click **Spin the Reels**.
 - When the slot machine UI completes, a scenario template is generated.
 - If it looks interesting, Click **Generate Full Scenario**.
 - Wait a couple minutes to generate the text and, if an image provider is defined, a protagonist portrait.
@@ -74,7 +74,7 @@ There are a few ways to use the results:
   - This is great to capture the story for later editing while on mobile, or use in other games.
   - Available on all platforms
 - ↑ Import to AI Dungeon
-  - This option is only available on localhost because of its dependence on playwrite and chrome.
+  - This option is only available on localhost because of its dependence on playwrite and chromium.
   - Requires your AI Dungeon credentials
 
 You can also open `web/index.html` directly in a browser and enter keys manually.
