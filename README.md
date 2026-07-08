@@ -11,6 +11,68 @@ Seven genres:
 - **Joseon Dynasty**
 - **Nihongi (Ancient Japan)**
 
+## Screenshots
+
+<table>
+<tr>
+<td align="center" width="50%"><img src="docs/screenshots-desktop/1-genres-fantasy.webp" width="400"><br><sub>Pick a genre</sub></td>
+<td align="center" width="50%"><img src="docs/screenshots-desktop/2-reels-and-skeleton.webp" width="400"><br><sub>Spin the reels, roll a character + cast</sub></td>
+</tr>
+<tr>
+<td align="center"><img src="docs/screenshots-desktop/3-ai-generated-scenario.webp" width="400"><br><sub>Generate the full AI Dungeon scenario</sub></td>
+<td align="center"><img src="docs/screenshots-mobile/02-spin-reels.webp" width="200"><br><sub>Works on mobile too</sub></td>
+</tr>
+</table>
+
+<details>
+<summary>More screenshots (all genres, mobile flow, settings)</summary>
+
+**Desktop — other genres**
+
+<table>
+<tr>
+<td align="center"><img src="docs/screenshots-desktop/1-genres-modern.webp" width="200"><br><sub>Modern</sub></td>
+<td align="center"><img src="docs/screenshots-desktop/1-genres-scifi.webp" width="200"><br><sub>Sci-Fi</sub></td>
+<td align="center"><img src="docs/screenshots-desktop/1-genres-paleo.webp" width="200"><br><sub>Paleolithic</sub></td>
+</tr>
+<tr>
+<td align="center"><img src="docs/screenshots-desktop/1-genres-manga.webp" width="200"><br><sub>Manga</sub></td>
+<td align="center"><img src="docs/screenshots-desktop/1-genres-joseon.webp" width="200"><br><sub>Joseon Dynasty</sub></td>
+<td align="center"><img src="docs/screenshots-desktop/1-genres-nihongi.webp" width="200"><br><sub>Nihongi</sub></td>
+</tr>
+</table>
+
+**Mobile — full flow**
+
+<table>
+<tr>
+<td align="center"><img src="docs/screenshots-mobile/03-rolled-char-stats.webp" width="150"><br><sub>Rolled stats</sub></td>
+<td align="center"><img src="docs/screenshots-mobile/04-skeleton1.webp" width="150"><br><sub>Character skeleton</sub></td>
+<td align="center"><img src="docs/screenshots-mobile/04-skeleton2.webp" width="150"><br><sub>Character skeleton</sub></td>
+<td align="center"><img src="docs/screenshots-mobile/04-skeleton3.webp" width="150"><br><sub>Character skeleton</sub></td>
+</tr>
+<tr>
+<td align="center"><img src="docs/screenshots-mobile/05-rolled-npc1.webp" width="150"><br><sub>Supporting cast</sub></td>
+<td align="center"><img src="docs/screenshots-mobile/05-rolled-npc2.webp" width="150"><br><sub>Supporting cast</sub></td>
+<td align="center"><img src="docs/screenshots-mobile/06-ai-generation.webp" width="150"><br><sub>AI generation</sub></td>
+<td align="center"><img src="docs/screenshots-mobile/07-ai-scenario1.webp" width="150"><br><sub>Scenario</sub></td>
+</tr>
+<tr>
+<td align="center"><img src="docs/screenshots-mobile/07-ai-scenario2.webp" width="150"><br><sub>Scenario</sub></td>
+<td align="center"><img src="docs/screenshots-mobile/07-ai-scenario3.webp" width="150"><br><sub>Scenario</sub></td>
+<td align="center"><img src="docs/screenshots-mobile/07-ai-scenario4.webp" width="150"><br><sub>Scenario</sub></td>
+<td align="center"><img src="docs/screenshots-mobile/08-ai-storycards1.webp" width="150"><br><sub>Story cards</sub></td>
+</tr>
+<tr>
+<td align="center"><img src="docs/screenshots-mobile/08-ai-storycards2.webp" width="150"><br><sub>Story cards</sub></td>
+<td align="center"><img src="docs/screenshots-mobile/09-settings-options.webp" width="150"><br><sub>Settings</sub></td>
+<td align="center"><img src="docs/screenshots-mobile/09-settings-text.webp" width="150"><br><sub>Settings</sub></td>
+<td></td>
+</tr>
+</table>
+
+</details>
+
 ## Prerequisits
 - A laptop, PC or server to serve the HTML/JS/images.  Should work on any OS.
 - An AI text provider
