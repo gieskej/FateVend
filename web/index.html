@@ -4093,11 +4093,15 @@ async function narrateAll() {
   for (const item of sequence) {
     if (!ttsAllActive) break;
     item.el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const highlightEl = item.el?.querySelector('.field-textarea, .field-input') ?? item.el;
+    highlightEl?.classList.add('narrating');
     const cfg   = getEffectiveTtsConfig();
     const clean = (cfg.preprocess ?? preprocessTts)(item.text);
-    if (!clean) continue;
-    if (ttsProvider === 'browser') await _narrateAllBrowser(clean, cfg);
-    else                           await _narrateAllCloud(clean, cfg);
+    if (clean) {
+      if (ttsProvider === 'browser') await _narrateAllBrowser(clean, cfg);
+      else                           await _narrateAllCloud(clean, cfg);
+    }
+    highlightEl?.classList.remove('narrating');
   }
 
   ttsAllActive = false;

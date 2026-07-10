@@ -1004,7 +1004,7 @@ body::before {
   color: var(--ink);
   resize: vertical;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
   min-height: 80px;
 }
 .field-textarea:focus { border-color: var(--brass); }
@@ -1018,9 +1018,13 @@ body::before {
   font-size: 0.95rem;
   color: var(--ink);
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 .field-input:focus { border-color: var(--brass); }
+.field-textarea.narrating, .field-input.narrating {
+  border-color: var(--gold);
+  box-shadow: 0 0 14px rgba(201,168,76,0.65), inset 0 0 8px rgba(201,168,76,0.15);
+}
 
 /* ── TAGS ──────────────────────────────────────────────────────────── */
 .tags-wrap {
