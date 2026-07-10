@@ -80,7 +80,7 @@ Seven genres:
     - https://ollama.com/
   - Claude.ai cloud API key
     - https://platform.claude.com/settings/keys
-  - Google Gemini cloud API key
+  - Google Gemini cloud API key (Recommended for best creativity, even in free tier)
     - https://aistudio.google.com/api-keys
 
 ### Optional
@@ -88,8 +88,8 @@ Seven genres:
   - You could use the tool to generate scenarios for other games.  The tool only needs account credentials to auto import the custom scenario.
 - An AI text-to-image provider
   - Stable Diffusion WebUI Forge (local or on LAN) with a good model, such as Flux1-dev
-    - https://github.com/lllyasviel/stable-diffusion-webui-forge
-    - https://huggingface.co/black-forest-labs/FLUX.1-dev    
+    - [Stable Diffusion WebUI Forge](https://github.com/lllyasviel/stable-diffusion-webui-forge)
+    - [flux1-dev-bnb-nf4-v2.safetensors](https://huggingface.co/lllyasviel/flux1-dev-bnb-nf4/blob/main/flux1-dev-bnb-nf4-v2.safetensors)
   - Stability.ai cloud API key
     - https://platform.stability.ai/account/credits
 - A TTS provider

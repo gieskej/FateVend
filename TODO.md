@@ -15,14 +15,13 @@
 - Add more names to all genre pools.  There should be at least 50 first and last names in each category.
 - Rearrange the "⚙ AI Generated Scenario" so Title, Portrait Prompt , Description, Opening, Plot Essentials, Author's Note
 - Update add-genre skill to handle BGM and other new genre-related features.
-- NPC's sometimes get "non-binary" despite LGBQ option isn't enabled.
 
 ### Low Priority Bugs
 - The aidungeon-importer is flaky about uploading the portrait image.  Sometimes it works, sometimes it does not.
 - Sometimes generate_icons hangs and you have to restart the whole shell to recover.
 - Redo all of the Joseon and Nihongi icons.  The current icons are a cultural mashup of Chinese, Japanese, Vietnamese and Korean, so they are not accurate.
 - Redo all the missing icons in Fantasy
-- Think of a better name.
+- Think of a better project name.
 
 
 ## New Features
@@ -42,6 +41,7 @@
 ---
 
 ## Fixed Bugs
+- BUG: NPC's sometimes get "non-binary" despite LGBQ option isn't enabled.
 - BUG: The NPC Character Story Cards, add their relationship to the protagonist in the npc-entry-meta
 - BUG: On mobile browsers, Settings -> Narration tab is too tall and gets clipped by the status bar. The Settings modal should have fixed height and scroll vertically if necessary to show tall tabs.
 - FEAT: Update help with narration settings

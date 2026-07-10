@@ -1008,7 +1008,7 @@ const PARTNER_DYNAMICS = {
 };
 const PARTNER_HAS_NPC = new Set(['dating','engaged','married','separated','divorced','widowed','complicated']);
 
-function buildCast(protName, protLast, ethnicityBroad, familyStructure, tables, protagonistGenderId, protagonistOrientation, relStatusId) {
+function buildCast(protName, protLast, ethnicityBroad, familyStructure, tables, protagonistGenderId, protagonistOrientation, relStatusId, includeLGBQ = true) {
   const namePools = tables.NAME_POOLS;
   const SIBLING_DYN = tables.SIBLING_DYNAMICS;
   const PARENT_STAT = tables.PARENT_STATUSES;
@@ -1113,7 +1113,7 @@ function buildCast(protName, protLast, ethnicityBroad, familyStructure, tables, 
 
   const friendSlots = Math.min(randomInt(1,2), MAX - cast.length - 1);
   for (let i = 0; i < friendSlots; i++) {
-    const fGid   = neutralGenderId();
+    const fGid   = neutralGenderId(includeLGBQ);
     const fBroad = randomBroadFrom(namePools);
     const fPool  = namePools[fBroad] ?? namePools['default'];
     const fName  = `${uniqueFirst(fGid, fPool)} ${uniformPick(fPool.last)}`;
@@ -1126,7 +1126,7 @@ function buildCast(protName, protLast, ethnicityBroad, familyStructure, tables, 
     const foilType    = uniformPick(foilPool.length ? foilPool : FOIL_ROLES);
     const foilGid     = foilType.role === 'love interest'
       ? loveInterestGenderId(protagonistGenderId, protagonistOrientation)
-      : neutralGenderId();
+      : neutralGenderId(includeLGBQ);
     const foilBroad = randomBroadFrom(namePools);
     const foilNPool = namePools[foilBroad] ?? namePools['default'];
     const foilName  = `${uniqueFirst(foilGid, foilNPool)} ${uniformPick(foilNPool.last)}`;
@@ -1166,8 +1166,9 @@ function nameForGender(genderId, namePools) {
   return { fullName: `${firstName} ${lastName}`, broad };
 }
 
-function neutralGenderId() {
+function neutralGenderId(includeLGBQ = true) {
   const r = Math.random();
+  if (!includeLGBQ) return r < 0.5 ? 'man' : 'woman';
   return r < 0.45 ? 'man' : r < 0.90 ? 'woman' : 'non_binary';
 }
 
@@ -1267,7 +1268,7 @@ function buildSkeleton(stats, mbti, tables) {
   const tension  = statWeightedPick(T, stats);
   const secret   = statWeightedPick(S, stats);
   const city     = statWeightedPick(CS, stats);
-  const cast     = buildCast(name, lastName, identity.broad, famStruct, tables, gender.id, orientation.label, relStatus.id);
+  const cast     = buildCast(name, lastName, identity.broad, famStruct, tables, gender.id, orientation.label, relStatus.id, includeLGBQ);
 
   // assemble tags
   const tags = new Set(TP.always);
