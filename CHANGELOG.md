@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-07-09
+
+### fix: Narration Voice dropdown had no way to clear an override back to the genre default
+**What changed:** The Settings → Narration → Voice dropdown always showed a specific voice as selected for the Kokoro and OpenAI providers — either a saved override or the genre's default voice ID resolved in place — with no option meaning "no override." The Help text claimed Voice/Speed "override the genre's default," implying the override was optional, but the UI gave no way to actually clear one once set; a user had to know to manually delete the `gof_tts_voice_override` localStorage key. Added a `— Genre default —` option (`value=""`) as the first entry in both the Kokoro (`populateKokoroVoices`) and OpenAI (`setTtsProvider`) voice lists. Selecting it now calls a new `setTtsVoiceOverride(val)` helper that removes the `gof_tts_voice_override` key from localStorage instead of storing an empty string, so `getEffectiveTtsConfig()`'s existing `voice ?? base.voice` fallback correctly resumes using the genre's built-in voice. The Browser provider already had an equivalent `System default` option and was left as-is. Updated the matching Help paragraph to mention both "clear the override" options by name.
+**Impact:** Users can now explicitly opt back into a genre's default narration voice for Kokoro/OpenAI after having picked a specific one, without needing to touch browser storage by hand.
+**Test cases:** (1) Select OpenAI provider with no saved override — Voice dropdown shows `— Genre default —` selected. (2) Pick a specific voice, reload the page — the picked voice is still selected. (3) Switch back to `— Genre default —`, reload — it's still selected (confirms the override was removed from localStorage, not just re-set to a value matching the genre default). (4) Same sequence for Kokoro LAN with no server URL configured (static voice list). Verified all four with a scripted Playwright pass (10/10 checks) against the local dev server.
+
 ## 2026-07-06
 
 ### feat: Status bar now shows Portrait / NPC Portraits phases

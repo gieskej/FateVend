@@ -7,7 +7,6 @@
 - The text-to-image generator has no idea what an alien looks like, so we need specific alien features mentioned in their portrait prompts (e.g. unusual skin color, horns, scales, webbed fingers, forked tongue, pointed ears, etc).  Likewise, non-humanoid aliens should be even more unusual looking (e.g. four legs, no legs, amoeba, tenticals, insect, vapor, lava, jelly, etc)
 
 - Inject current git version from serve.sh
-- The Help says that the Settings->Narration->Voice overrides the genre default voice, but there is no way to choose "None" (e.g. use genre default voice).
 - The Modern genre is crap.  It is too general and open ended to be any fun.
 - Why does Modern character with name "Suzuki" get Asian/Indian?
 - Fix the genre card layout.  On PC, it is too wide.  On mobile, the image gets cropped.

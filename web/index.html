@@ -435,7 +435,7 @@
           <div class="settings-field">
             <label for="tts-voice-override">Voice</label>
             <select id="tts-voice-override" class="api-input" disabled
-              onchange="localStorage.setItem('gof_tts_voice_override',this.value)">
+              onchange="setTtsVoiceOverride(this.value)">
               <option value="">— select a provider first —</option>
             </select>
           </div>
@@ -623,7 +623,7 @@
         <div class="help-section">
           <div class="help-section-title">Narration Options</div>
           <p>Once a Narration Provider is selected (Settings → Narration tab), each generated scenario shows narrate buttons next to the description, opening, plot, protagonist, and each NPC entry, plus a <strong>Narrate All</strong> button that reads the whole scenario in sequence and auto-scrolls to whichever section is currently being read.</p>
-          <p><strong>Voice</strong> and <strong>Speed</strong> (Narration tab) override the genre's default voice/pace for whichever provider is selected.</p>
+          <p><strong>Voice</strong> and <strong>Speed</strong> (Narration tab) override the genre's default voice/pace for whichever provider is selected. Pick <strong>— Genre default —</strong> (Kokoro/OpenAI) or <strong>System default</strong> (Browser) in the Voice dropdown to clear the override and go back to the genre's built-in voice.</p>
           <p><strong>Auto-play Narrate All</strong> (Settings → Options tab) automatically starts reading the full scenario aloud as soon as generation finishes, once the intro music fades out — no need to click Narrate All manually.</p>
         </div>
 
@@ -3783,13 +3783,14 @@ function setTtsProvider(val) {
   const cfg = GENRE_TTS_CONFIG[currentGenre] ?? GENRE_TTS_CONFIG['modern'];
 
   if (val === 'kokoro') {
-    if (voiceEl) populateKokoroVoices(voiceEl, cfg.kokoro.voice);
+    if (voiceEl) populateKokoroVoices(voiceEl);
     if (speedEl) speedEl.value = cfg.kokoro.speed ?? 1.0;
   } else if (val === 'openai') {
     if (voiceEl) {
-      voiceEl.innerHTML = OPENAI_VOICES.map(v => `<option value="${v.value}">${v.label}</option>`).join('');
+      voiceEl.innerHTML = '<option value="">— Genre default —</option>' +
+        OPENAI_VOICES.map(v => `<option value="${v.value}">${v.label}</option>`).join('');
       voiceEl.disabled = false;
-      voiceEl.value = cfg.openai.voice;
+      voiceEl.value = localStorage.getItem('gof_tts_voice_override') || '';
     }
     if (speedEl) speedEl.value = cfg.openai.speed ?? 1.0;
   } else if (val === 'browser') {
@@ -3804,12 +3805,19 @@ function setTtsProvider(val) {
   }
 }
 
-async function populateKokoroVoices(voiceEl, genreDefault) {
+function setTtsVoiceOverride(val) {
+  if (val) localStorage.setItem('gof_tts_voice_override', val);
+  else localStorage.removeItem('gof_tts_voice_override');
+}
+
+async function populateKokoroVoices(voiceEl) {
+  const defaultOption = '<option value="">— Genre default —</option>';
   const kokoroUrl = document.getElementById('tts-kokoro-url')?.value.trim();
   if (!kokoroUrl) {
-    voiceEl.innerHTML = KOKORO_VOICES.map(id => `<option value="${id}">${kokoroVoiceLabel(id)}</option>`).join('');
+    voiceEl.innerHTML = defaultOption +
+      KOKORO_VOICES.map(id => `<option value="${id}">${kokoroVoiceLabel(id)}</option>`).join('');
     voiceEl.disabled = false;
-    voiceEl.value = localStorage.getItem('gof_tts_voice_override') || genreDefault;
+    voiceEl.value = localStorage.getItem('gof_tts_voice_override') || '';
     return;
   }
   voiceEl.innerHTML = '<option value="">Loading voices…</option>';
@@ -3820,17 +3828,17 @@ async function populateKokoroVoices(voiceEl, genreDefault) {
     const data = await res.json();
     const voices = Array.isArray(data) ? data : (data.voices ?? data.data ?? []);
     if (voices.length === 0) throw new Error('empty');
-    voiceEl.innerHTML = voices.map(v => {
+    voiceEl.innerHTML = defaultOption + voices.map(v => {
       const id = typeof v === 'string' ? v : (v.voice_id ?? v.id ?? v.name ?? String(v));
       return `<option value="${id}">${kokoroVoiceLabel(id)}</option>`;
     }).join('');
   } catch {
-    voiceEl.innerHTML = KOKORO_VOICES.map(id => `<option value="${id}">${kokoroVoiceLabel(id)}</option>`).join('');
+    voiceEl.innerHTML = defaultOption +
+      KOKORO_VOICES.map(id => `<option value="${id}">${kokoroVoiceLabel(id)}</option>`).join('');
   }
   voiceEl.disabled = false;
-  const target = localStorage.getItem('gof_tts_voice_override') || genreDefault || '';
-  if (target && [...voiceEl.options].some(o => o.value === target)) voiceEl.value = target;
-  else voiceEl.value = voiceEl.options[0]?.value ?? '';
+  const target = localStorage.getItem('gof_tts_voice_override') || '';
+  voiceEl.value = (target && [...voiceEl.options].some(o => o.value === target)) ? target : '';
 }
 
 function populateBrowserVoices(voiceEl) {
@@ -4106,7 +4114,7 @@ Object.assign(window, {
   runGenerate, runAIPhase, setGenre, setProvider, setImageProvider, toggleHelp, openSettings, closeSettings,
   copyField, copyAll, copySkeletonText, copyTags,
   generatePortrait, generateNpcPortrait, toggleNpcPortraitMenu, updateCount, downloadPackage,
-  narrate, stopNarration, narrateAll, setTtsProvider, switchSettingsTab,
+  narrate, stopNarration, narrateAll, setTtsProvider, setTtsVoiceOverride, switchSettingsTab,
   importToAIDungeon, checkImportServer,
   carouselStep, goToCarouselIndex, onToolbarGenreChange,
 });
