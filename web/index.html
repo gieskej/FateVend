@@ -3322,7 +3322,8 @@ async function runAIPhase() {
 
     updateStatsDisplay();
 
-    // Auto-generate portrait if a backend is configured — portrait's finally will fade the music
+    // Auto-generate portrait(s) if a backend is configured, then fade the music
+    // once all art — including auto NPC portraits, if enabled — is done.
     const hasPortraitBackend = output.appearancePrompt &&
       (document.getElementById('sd-url').value.trim() || document.getElementById('img-api-key').value.trim());
 
@@ -3335,9 +3336,8 @@ async function runAIPhase() {
         setPhase('phase-npc-portraits');
         await autoGenerateAllNpcPortraits(npcNames);
       }
-    } else {
-      await fadeOutAudio(_overtureSfx);
     }
+    await fadeOutAudio(_overtureSfx);
 
     setStatus('Your fate is sealed. Edit and copy as needed.');
 
@@ -3442,7 +3442,6 @@ async function generatePortrait(btn) {
     wrapEl.innerHTML = `<div class="portrait-error">Portrait failed: ${err.message}</div>`;
   } finally {
     if (portraitBtn) { portraitBtn.disabled = false; portraitBtn.innerHTML = '⚙ Generate Portrait'; }
-    await fadeOutAudio(_overtureSfx);
   }
 }
 

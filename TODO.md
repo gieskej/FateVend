@@ -34,7 +34,7 @@
 - Add settings option to disable BGM.
 - Add currently playing BGM track in status bar
 - Kokoro'e english voices don't pronounce Japanese or Korean words properly, but the Japanese voices produce incomprehenible English.  So either we preprocess English -> Katakana so the Japanese voice works?  Or even better, extend the Kokoro service to do this heavy lifting.  Consider using CMU Pronouncing Dictionary (CMUdict)
-- As the auto-narrator reads sections, it auto-scolls to the section.  But it needs some visual cue too.
+
 
 ## Open Questions
 - Should Plot Essentials be considers as spoilers, and therefore not automatically read by the narrator?
