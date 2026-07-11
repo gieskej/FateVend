@@ -40,6 +40,7 @@
 ---
 
 ## Fixed Bugs
+- BUG: All PLOT_ARCHETYPES icons lived in the common icons folder, even genre-specific archetypes — organized by genre.
 - BUG: Fix the genre card layout — genre card was too wide on PC and images were cropped instead of shown in full (they're square).
 - BUG: NPC's sometimes get "non-binary" despite LGBQ option isn't enabled.
 - BUG: The NPC Character Story Cards, add their relationship to the protagonist in the npc-entry-meta

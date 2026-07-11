@@ -41,12 +41,23 @@ fi
 # heuristic caching and can keep showing stale assets (e.g. edited genre icons)
 # after a file changes on disk. Force no-store so every request is fresh.
 python3 - <<'PY'
-import http.server
+import http.server, socketserver
 
 class NoCacheHandler(http.server.SimpleHTTPRequestHandler):
     def end_headers(self):
         self.send_header('Cache-Control', 'no-store')
         super().end_headers()
 
-http.server.test(HandlerClass=NoCacheHandler, port=8080, bind='0.0.0.0')
+class QuietThreadingHTTPServer(http.server.ThreadingHTTPServer):
+    # A cancelled image request (e.g. the browser switching genres mid-preload)
+    # closes the socket while we're still writing to it — a normal occurrence,
+    # not a bug. Suppress just that traceback; still log anything else.
+    def handle_error(self, request, client_address):
+        import sys
+        exc = sys.exc_info()[1]
+        if isinstance(exc, (BrokenPipeError, ConnectionResetError, ConnectionAbortedError)):
+            return
+        super().handle_error(request, client_address)
+
+http.server.test(HandlerClass=NoCacheHandler, ServerClass=QuietThreadingHTTPServer, port=8080, bind='0.0.0.0')
 PY

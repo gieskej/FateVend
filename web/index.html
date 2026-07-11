@@ -2165,16 +2165,23 @@ function idToLabel(id) {
   return id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
 }
 
+// Resolves the icon base folder for one catalog entry. Most "common" categories
+// are entirely common, so def.common covers them — but a catalog entry can carry
+// its own base as a 4th tuple element (see plotCat above) when a category mixes
+// common and genre-specific icons, which takes priority when present.
+function iconBaseFor(entry, def, cfg) {
+  return entry[3] ?? (def.common ? COMMON_ICON_BASE : cfg.iconBase);
+}
+
 // Preload all icon images for a genre into the browser cache so the slot
 // animation doesn't hammer the server with concurrent requests.
 function preloadGenreIcons(genre) {
   const cfg = getSlotConfig(genre);
   cfg.defs.forEach(def => {
     const entries = cfg.catalog[def.cat] ?? [];
-    const base    = def.common ? COMMON_ICON_BASE : cfg.iconBase;
-    entries.forEach(([, iconSlug]) => {
+    entries.forEach(entry => {
       const img = new Image();
-      img.src = iconPath(base, def.cat, iconSlug);
+      img.src = iconPath(iconBaseFor(entry, def, cfg), def.cat, entry[1]);
     });
   });
 }
@@ -2200,7 +2207,14 @@ function getSlotConfig(genre) {
   ];
   const MBTI_CAT = MBTI_TYPES.map(m => [m.type, m.type, m.type]);
   const RELSTATUS_CAT = RELATIONSHIP_STATUSES.map(r => [r.id, r.iconPath?.match(/#([^.]+)\.webp$/i)?.[1] ?? r.id, r.label]);
-  const plotCat = pool => pool.map(p => [p.id, p.iconPath?.match(/#([^.]+)\.webp$/i)?.[1] ?? p.id, p.label]);
+  // PLOT_ARCHETYPES mixes COMMON_PLOT_ARCHETYPES (icons in common/icons/) with
+  // genre-specific archetypes (icons in this genre's own icons/) — unlike every
+  // other "common" category, its icon base varies per entry, not per category.
+  // Carry the per-entry base as a 4th tuple element, read by iconBaseFor() below.
+  const plotCat = pool => pool.map(p => {
+    const m = p.iconPath?.match(/^(.*\/)PLOT_ARCHETYPES#([^.]+)\.webp$/i);
+    return [p.id, m?.[2] ?? p.id, p.label, m?.[1] ?? COMMON_ICON_BASE];
+  });
   // 'burned_out' → maps to 'burnt_out' filename; all others match
   const SENT_CAT = [
     ['proud','proud','Proud'],['resentful','resentful','Resentful'],
@@ -2638,10 +2652,9 @@ async function animateSlots(skeleton, genre) {
     const img  = document.getElementById(`slot-img-${def.key}`);
     if (!img) return;
 
-    const base = def.common ? COMMON_ICON_BASE : cfg.iconBase;
     const showFrame = () => {
-      const [, iconSlug] = entries[indices[def.key]];
-      img.src = iconPath(base, def.cat, iconSlug);
+      const entry = entries[indices[def.key]];
+      img.src = iconPath(iconBaseFor(entry, def, cfg), def.cat, entry[1]);
     };
     showFrame();
 
@@ -2677,11 +2690,10 @@ async function animateSlots(skeleton, genre) {
     const lblEl  = document.getElementById(`slot-lbl-${def.key}`);
     const slotEl = document.getElementById(`slot-${def.key}`);
 
-    const base = def.common ? COMMON_ICON_BASE : cfg.iconBase;
     const sublblEl = document.getElementById(`slot-sublbl-${def.key}`);
     if (entry) {
       const [, iconSlug, label] = entry;
-      if (img) img.src = iconPath(base, def.cat, iconSlug);
+      if (img) img.src = iconPath(iconBaseFor(entry, def, cfg), def.cat, iconSlug);
       if (lblEl) lblEl.textContent = label;
     } else {
       if (img) img.closest('.slot-window').innerHTML = '<div class="slot-placeholder">⚙</div>';
