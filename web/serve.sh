@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Serve from web/ so .env and other project files are never exposed.
-# App is at http://localhost:8080/
+# App is at http://localhost:8080/ (or the next free port, if 8080 is taken —
+# watch the "Serving HTTP on ..." line below for the actual port used).
 cd "$(dirname "$0")"
 
 # Write config.js from the root .env so the browser can read the API key
@@ -42,8 +43,10 @@ fi
 # Plain http.server sends no Cache-Control headers, so browsers fall back to
 # heuristic caching and can keep showing stale assets (e.g. edited genre icons)
 # after a file changes on disk. Force no-store so every request is fresh.
-python3 - <<'PY'
-import http.server, socketserver
+# -u: unbuffered stdout, so the port/URL message (and journalctl -f) show up
+# immediately instead of sitting in a buffer that's lost if the process is killed.
+python3 -u - <<'PY'
+import http.server, socket
 
 class NoCacheHandler(http.server.SimpleHTTPRequestHandler):
     def end_headers(self):
@@ -61,5 +64,22 @@ class QuietThreadingHTTPServer(http.server.ThreadingHTTPServer):
             return
         super().handle_error(request, client_address)
 
-http.server.test(HandlerClass=NoCacheHandler, ServerClass=QuietThreadingHTTPServer, port=8080, bind='0.0.0.0')
+def find_free_port(preferred, bind, tries=20):
+    port = preferred
+    for _ in range(tries):
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            try:
+                s.bind((bind, port))
+                return port
+            except OSError:
+                port += 1
+    raise RuntimeError(f'No free port found in range {preferred}-{port}')
+
+BIND = '0.0.0.0'
+PORT = find_free_port(8080, BIND)
+if PORT != 8080:
+    print(f'Port 8080 is already in use — using {PORT} instead.')
+print(f'App is at http://localhost:{PORT}/')
+
+http.server.test(HandlerClass=NoCacheHandler, ServerClass=QuietThreadingHTTPServer, port=PORT, bind=BIND)
 PY

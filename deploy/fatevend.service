@@ -4,10 +4,12 @@ After=network.target
 
 [Service]
 Type=simple
-# Edit these two before installing:
-User=YOUR_USERNAME
-WorkingDirectory=/home/YOUR_USERNAME/FateVend/web
-ExecStart=/bin/bash /home/YOUR_USERNAME/FateVend/web/serve.sh
+# __FATEVEND_USER__ / __FATEVEND_REPO__ are filled in by deploy/install.sh.
+# Installing by hand instead? Replace them yourself: __FATEVEND_USER__ with
+# the account to run as, __FATEVEND_REPO__ with this repo's absolute path.
+User=__FATEVEND_USER__
+WorkingDirectory=__FATEVEND_REPO__/web
+ExecStart=/bin/bash __FATEVEND_REPO__/web/serve.sh
 Restart=on-failure
 RestartSec=3
 Environment=PYTHONUNBUFFERED=1
