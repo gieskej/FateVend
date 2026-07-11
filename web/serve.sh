@@ -32,7 +32,9 @@ PY
 if command -v node &>/dev/null; then
   node tools/aidungeon-server.mjs &
   AIDUNGEON_SERVER_PID=$!
-  trap 'kill $AIDUNGEON_SERVER_PID 2>/dev/null' EXIT
+  # INT/TERM explicitly, not just EXIT — systemd stops services with SIGTERM,
+  # and without a handler for it bash kills the child but skips the EXIT trap.
+  trap 'kill $AIDUNGEON_SERVER_PID 2>/dev/null; exit 0' EXIT INT TERM
 else
   echo "node not found — AI Dungeon import server not started."
 fi

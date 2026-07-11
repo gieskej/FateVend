@@ -1,0 +1,16 @@
+[Unit]
+Description=Vend of Fate — RPG character generator (web/serve.sh)
+After=network.target
+
+[Service]
+Type=simple
+# Edit these two before installing:
+User=YOUR_USERNAME
+WorkingDirectory=/home/YOUR_USERNAME/FateVend/web
+ExecStart=/bin/bash /home/YOUR_USERNAME/FateVend/web/serve.sh
+Restart=on-failure
+RestartSec=3
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target

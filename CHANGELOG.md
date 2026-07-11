@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-07-11
+
+### feat: Added an optional systemd service for running serve.sh on Linux
+**What changed:** `serve.sh` previously only ran in the foreground of an interactive terminal, with no supported way to keep it alive across a reboot or crash on a Linux host. Added `deploy/fatevend.service`, a systemd unit (`Type=simple`, `Restart=on-failure`) that runs `serve.sh` directly — its `ExecStart`/`WorkingDirectory`/`User` fields use placeholder values (`YOUR_USERNAME`, `/home/YOUR_USERNAME/FateVend`) meant to be edited per install. Also hardened `serve.sh` itself: its cleanup trap for the AI Dungeon import server subprocess only ran on the `EXIT` signal, which systemd's `SIGTERM` on `stop` doesn't reliably trigger the same way an interactive Ctrl+C does — added explicit `INT TERM` to the trap (plus `exit 0`) so a `systemctl stop` always kills the import server subprocess and exits cleanly rather than leaving it orphaned. Documented both in `README.md`'s "Start server" section (install/enable commands, `journalctl` for logs) and in the project structure tree.
+**Impact:** `serve.sh` can now run as a persistent, auto-restarting background service on any systemd-based Linux distro, instead of only working in an attached terminal session.
+**Test cases:** Verified end-to-end against a real systemd (WSL2 Ubuntu, not just a syntax read-through): `systemd-analyze verify` passes; `systemctl start` brings up both the web app (port 8080, confirmed with `curl` including a moved genre icon) and the AI Dungeon import server (port 7432) under the service's cgroup; `systemctl stop` exits with `status=0/SUCCESS` and leaves zero orphaned processes or listening sockets; `systemctl restart` and the `enable`/`disable` boot-symlink lifecycle both work correctly.
+
 ## 2026-07-09
 
 ### fix: PLOT_ARCHETYPES icons were all dumped in the common folder, even genre-specific ones

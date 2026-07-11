@@ -111,6 +111,15 @@ bash serve.sh
 ### Start server
 `serve.sh` writes `generator/config.js` from your `.env`, starts a Python HTTP server on `:8080`, and (if Node is installed) starts the AI Dungeon import server on `:7432`.
 
+#### Optional: run as a systemd service (Linux)
+To keep `serve.sh` running in the background and auto-restart on boot/failure, edit `deploy/fatevend.service` — replace `YOUR_USERNAME` and the repo path in `User=`, `WorkingDirectory=`, and `ExecStart=` with your own — then install it:
+```bash
+sudo cp deploy/fatevend.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now fatevend.service
+```
+Logs via `journalctl -u fatevend -f`. Stop/restart with `sudo systemctl stop|restart fatevend`.
+
 ### Open Web Tool
 - Open `http://localhost:8080/` in a browser. 
 - Enter at least one text AI key in **Settings**
@@ -251,6 +260,9 @@ web/
 
 cli/
   index.js                        ← Thin CLI wrapper around the generator library
+
+deploy/
+  fatevend.service                ← Optional systemd unit for running serve.sh as a service
 ```
 
 
