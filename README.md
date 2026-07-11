@@ -76,7 +76,7 @@ Seven genres:
 ## Prerequisits
 - A laptop, PC or server to serve the HTML/JS/images.  Should work on any OS.
 - An AI text provider
-  - Ollama (local or on LAN) with a good LLM, such as Llama 3.x
+  - Ollama (local or on LAN)
     - https://ollama.com/
   - Claude.ai cloud API key
     - https://platform.claude.com/settings/keys
@@ -94,7 +94,7 @@ Seven genres:
     - https://platform.stability.ai/account/credits
 - A TTS provider
   - Browser built-in
-  - Kokoro TTS (local or LAN)
+  - Kokoro TTS (local or LAN) (Recommended)
     - https://github.com/remsky/Kokoro-FastAPI
   - OpenAI TTS cloud API key
 - Auto Importer (an external script) requires node.js and playwrite and chromium

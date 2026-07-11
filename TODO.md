@@ -9,7 +9,6 @@
 - Inject current git version from serve.sh
 - The Modern genre is crap.  It is too general and open ended to be any fun.
 - Why does Modern character with name "Suzuki" get Asian/Indian?
-- Fix the genre card layout.  On PC, it is too wide.  On mobile, the image gets cropped.
 - Missing reel icons
 - Minors can't be married (or divorced or widowed)
 - Add more names to all genre pools.  There should be at least 50 first and last names in each category.
@@ -41,6 +40,7 @@
 ---
 
 ## Fixed Bugs
+- BUG: Fix the genre card layout — genre card was too wide on PC and images were cropped instead of shown in full (they're square).
 - BUG: NPC's sometimes get "non-binary" despite LGBQ option isn't enabled.
 - BUG: The NPC Character Story Cards, add their relationship to the protagonist in the npc-entry-meta
 - BUG: On mobile browsers, Settings -> Narration tab is too tall and gets clipped by the status bar. The Settings modal should have fixed height and scroll vertically if necessary to show tall tabs.
