@@ -37,4 +37,16 @@ else
   echo "node not found — AI Dungeon import server not started."
 fi
 
-python3 -m http.server 8080 --bind 0.0.0.0
+# Plain http.server sends no Cache-Control headers, so browsers fall back to
+# heuristic caching and can keep showing stale assets (e.g. edited genre icons)
+# after a file changes on disk. Force no-store so every request is fresh.
+python3 - <<'PY'
+import http.server
+
+class NoCacheHandler(http.server.SimpleHTTPRequestHandler):
+    def end_headers(self):
+        self.send_header('Cache-Control', 'no-store')
+        super().end_headers()
+
+http.server.test(HandlerClass=NoCacheHandler, port=8080, bind='0.0.0.0')
+PY
