@@ -338,6 +338,37 @@
   border-top: 1px solid rgba(184,115,51,0.08);
   margin-top: 0.2rem;
 }
+.statusbar-player {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding-top: 0.15rem;
+  border-top: 1px solid rgba(184,115,51,0.08);
+  margin-top: 0.2rem;
+}
+.player-btn {
+  background: transparent;
+  border: 1px solid var(--brass-dark);
+  border-radius: var(--radius);
+  color: var(--brass-light);
+  font-size: 0.75rem;
+  line-height: 1;
+  padding: 0.15rem 0.5rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.player-btn:hover { background: var(--brass-dark); color: var(--parchment); }
+.player-track-title {
+  font-size: 0.72rem;
+  font-style: italic;
+  color: var(--brass-light);
+  opacity: 0.8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 60vw;
+}
 </style>
 </head>
 <body>
@@ -729,8 +760,15 @@
   <div class="statusbar-main">
     <div id="status-bar" class="status-bar"></div>
   </div>
-  <div class="statusbar-disclaimer">
+  <div id="statusbar-disclaimer" class="statusbar-disclaimer">
     GenAI can make mistakes — text and images may ignore guidance from the game engine. Roll again or make manual corrections before importing into AI Dungeon.
+  </div>
+  <div id="statusbar-player" class="statusbar-player" hidden>
+    <button type="button" class="player-btn" title="Previous track" onclick="playerPrev()">⏮</button>
+    <button type="button" class="player-btn" title="Play" onclick="playerPlay()">▶</button>
+    <button type="button" class="player-btn" title="Stop music" onclick="playerStop()">⏹</button>
+    <button type="button" class="player-btn" title="Next track" onclick="playerNext()">⏭</button>
+    <span id="player-track-title" class="player-track-title"></span>
   </div>
 </div>
 
@@ -2624,21 +2662,64 @@ const GENRE_MUSIC_TRACKS = {
   ],
 };
 
-let _lastMusicTrack = null;
+let _lastMusicTrack   = null;
+let _playerTrackIndex = -1;
+function currentGenreTracks() {
+  const prefix = GENRE_MUSIC_PREFIX[currentGenre] || 'fantasy';
+  return GENRE_MUSIC_TRACKS[prefix] || GENRE_MUSIC_TRACKS.fantasy;
+}
 function pickGenreTrack(genre) {
-  const prefix = GENRE_MUSIC_PREFIX[genre] || 'fantasy';
-  const tracks = GENRE_MUSIC_TRACKS[prefix] || GENRE_MUSIC_TRACKS.fantasy;
+  const tracks = currentGenreTracks();
   let choice = tracks[Math.floor(Math.random() * tracks.length)];
   if (tracks.length > 1 && choice === _lastMusicTrack) {
     choice = tracks[(tracks.indexOf(choice) + 1) % tracks.length];
   }
-  _lastMusicTrack = choice;
+  _lastMusicTrack   = choice;
+  _playerTrackIndex = tracks.indexOf(choice);
   return `audio/music/${encodeURIComponent(choice)}`;
 }
 
+// Human-readable track title from a filename like "joseon-A Red Letter Under the Moonlight.mp3"
+function trackTitleFromFilename(filename) {
+  return filename.replace(/\.mp3$/i, '').replace(/^[a-z0-9]+-/i, '').replace(/_/g, ' ');
+}
+
+function updatePlayerTitle(filename) {
+  const el = document.getElementById('player-track-title');
+  if (el) el.textContent = trackTitleFromFilename(filename);
+}
+
+// Shown while the generation-phase BGM plays; swaps places with the disclaimer.
+function showPlayer(filename) {
+  updatePlayerTitle(filename);
+  document.getElementById('statusbar-player').hidden     = false;
+  document.getElementById('statusbar-disclaimer').hidden = true;
+}
+function hidePlayer() {
+  document.getElementById('statusbar-player').hidden     = true;
+  document.getElementById('statusbar-disclaimer').hidden = false;
+}
+
+function playerLoadIndex(idx) {
+  const tracks = currentGenreTracks();
+  if (!tracks.length) return;
+  _playerTrackIndex = ((idx % tracks.length) + tracks.length) % tracks.length;
+  const file = tracks[_playerTrackIndex];
+  _lastMusicTrack = file;
+  _musicSfx.src         = `audio/music/${encodeURIComponent(file)}`;
+  _musicSfx.currentTime = 0;
+  _musicSfx.volume      = 1;
+  _musicSfx.play().catch(() => {});
+  updatePlayerTitle(file);
+}
+function playerPrev() { playerLoadIndex(_playerTrackIndex - 1); }
+function playerNext() { playerLoadIndex(_playerTrackIndex + 1); }
+function playerStop() { _musicSfx.pause(); }
+function playerPlay() { _musicSfx.play().catch(() => {}); }
+
 const _bellSfx       = new Audio('audio/fx/u_omspjqprot-bell-222490.mp3');
-const _overtureSfx   = new Audio();
-_overtureSfx.preload = 'none';
+const _musicSfx   = new Audio();
+_musicSfx.preload = 'none';
 const _slotMachinePullSfx = new Audio('audio/fx/slotmachine-pull.mp3');
 const _slotMachineReelStopSfx = new Audio('audio/fx/slotmachine-reelstop.mp3');
 
@@ -3293,10 +3374,11 @@ async function runGenerate() {
 
   // Stop any audio that may be playing
   stopNarration();
-  for (const sfx of [_bellSfx, _overtureSfx, _slotMachinePullSfx, _slotMachineReelStopSfx]) {
+  for (const sfx of [_bellSfx, _musicSfx, _slotMachinePullSfx, _slotMachineReelStopSfx]) {
     sfx.pause();
     sfx.currentTime = 0;
   }
+  hidePlayer();
   const btn = document.getElementById('btn-generate');
   btn.disabled = true;
   btn.classList.add('spinning');
@@ -3375,9 +3457,10 @@ async function runAIPhase() {
   isGenerating = true;
   showError('');
 
-  _overtureSfx.src = pickGenreTrack(currentGenre);
-  _overtureSfx.currentTime = 0;
-  _overtureSfx.play().catch(() => {});
+  _musicSfx.src = pickGenreTrack(currentGenre);
+  _musicSfx.currentTime = 0;
+  _musicSfx.play().catch(() => {});
+  showPlayer(_lastMusicTrack);
 
   const continueBtn = document.getElementById('btn-continue');
   const generateBtn = document.getElementById('btn-generate');
@@ -3444,7 +3527,8 @@ async function runAIPhase() {
         await autoGenerateAllNpcPortraits(npcNames);
       }
     }
-    await fadeOutAudio(_overtureSfx);
+    await fadeOutAudio(_musicSfx);
+    hidePlayer();
 
     setStatus('Your fate is sealed. Edit and copy as needed.');
 
@@ -3456,7 +3540,8 @@ async function runAIPhase() {
     document.getElementById('ai-placeholder')?.remove();
     showError(`Generation failed: ${err.message}`);
     setStatus('');
-    fadeOutAudio(_overtureSfx);
+    fadeOutAudio(_musicSfx);
+    hidePlayer();
     // Restore continue bar so they can try again
     outputArea.insertAdjacentHTML('beforeend', `
       <div id="continue-bar" class="continue-bar">
@@ -4249,6 +4334,7 @@ Object.assign(window, {
   narrate, stopNarration, narrateAll, setTtsProvider, setTtsVoiceOverride, switchSettingsTab,
   importToAIDungeon, checkImportServer,
   carouselStep, goToCarouselIndex, onToolbarGenreChange,
+  playerPrev, playerNext, playerStop, playerPlay,
 });
 </script>
 </body>

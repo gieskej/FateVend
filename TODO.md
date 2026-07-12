@@ -27,7 +27,6 @@
 - In the skeleton, add genertion of a couple of faction, location and object (if you are on a quest for a magic item, there should be a card to describe it) cards.  Add a section in the UI below the NPCs for these additional cards.  Also update the AI generation and auto import of these new types of cards.
 - Add a NPC portrait Zoom to popup menu?
 - Add settings option to disable BGM.
-- Add currently playing BGM track in status bar
 - Kokoro'e english voices don't pronounce Japanese or Korean words properly, but the Japanese voices produce incomprehenible English.  So either we preprocess English -> Katakana so the Japanese voice works?  Or even better, extend the Kokoro service to do this heavy lifting.  Consider using CMU Pronouncing Dictionary (CMUdict)
 
 
@@ -37,6 +36,7 @@
 ---
 
 ## Fixed Bugs
+- FEAT: Status bar now shows a mini media player (prev/stop/next + track title) in place of the disclaimer while the generation-phase BGM plays, reverting to the disclaimer once the scenario (and any portraits) finish generating. Prev/next cycle through the current genre's BGM pool.
 - BUG: Minor protagonists could roll a marriage-derived relationship status (married/separated/divorced/widowed) in every genre. Now withheld for characters under 18, except Paleolithic (opt-in via ALLOW_MINOR_MARRIAGE), where early marriage age fits the genre's tone.
 - BUG: On wide desktop screens, the slot machine reels always wrapped into a ~6-per-row grid regardless of available width, because they inherited the page's 900px reading-column max-width. The slot machine now breaks out of that column on screens ≥1000px wide, spreading reels across the full viewport instead.
 - BUG: Slot machine's Sentiment reel showed a gear-placeholder icon for most rolls in Nihongi/Joseon Dynasty — its catalog was a stale hardcoded 9-entry list disconnected from the real 79-entry SENTIMENTS data. Also fixed two profession entries referencing sentiment ids that never existed.
