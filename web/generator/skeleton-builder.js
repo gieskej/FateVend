@@ -9,6 +9,10 @@ import { statWeightedPick, statAndWeightPick, uniformPick } from './selector.js'
 import { buildCast } from './cast-builder.js';
 import { buildStatLabels } from './stat-adjectives.js';
 
+// Statuses that presuppose having been legally married — withheld from
+// minors by default (see ALLOW_MINOR_MARRIAGE in buildSkeleton).
+const MARRIAGE_DERIVED_STATUS_IDS = new Set(['married', 'separated', 'divorced', 'widowed']);
+
 // ── NAME POOL HELPERS ─────────────────────────────────────────────────────
 // Used by both buildSkeleton and cast-builder.
 // Exported so cast-builder can import them without circular dependency.
@@ -95,6 +99,20 @@ export function buildSkeleton(stats, mbti, tables, opts = {}) {
 
   const plotArchetypeEntry = uniformPick(PLOT_ARCHETYPES.flatMap(p => Array(p.weight).fill(p)));
 
+  // ── AGE ───────────────────────────────────────────────────────────────
+  // Resolved before relationshipStatus below, which needs it to keep minors
+  // out of marriage-derived statuses.
+  let age;
+  if (tables.AGE_RANGE) {
+    const [ageMin, ageMax] = tables.AGE_RANGE;
+    age = Math.floor(Math.random() * (ageMax - ageMin + 1)) + ageMin;
+  } else {
+    // Box-Muller normal distribution: mean=25, stddev=8, clamped to [15, 75]
+    const _au1 = Math.random() || 1e-10;
+    const _az  = Math.sqrt(-2 * Math.log(_au1)) * Math.cos(2 * Math.PI * Math.random());
+    age = Math.min(75, Math.max(15, Math.round(25 + 8 * _az)));
+  }
+
   let gender, orientation, relationshipStatus;
 
   if (syntheticType === 'industrial') {
@@ -108,10 +126,18 @@ export function buildSkeleton(stats, mbti, tables, opts = {}) {
     orientation        = ORIENTATIONS.find(o => o.id === 'asexual') ?? { id: 'asexual', label: 'Asexual' };
     relationshipStatus = RELATIONSHIP_STATUSES.find(r => r.id === 'single') ?? { id: 'single', label: 'Single' };
   } else {
-    // Biomechanical androids and all non-android identities — full picks
-    gender             = statAndWeightPick(GENDERS, stats);
-    orientation        = uniformPick(ORIENTATIONS.flatMap(o => Array(o.weight).fill(o)));
-    relationshipStatus = uniformPick(RELATIONSHIP_STATUSES.flatMap(r => Array(r.weight).fill(r)));
+    // Biomechanical androids and all non-android identities — full picks.
+    // Minors can't roll a marriage-derived status (married/separated/divorced/
+    // widowed all presuppose having been legally married) unless the genre
+    // opts out via ALLOW_MINOR_MARRIAGE (Paleolithic — early marriage age
+    // fits the genre's tone; see CHANGELOG).
+    gender      = statAndWeightPick(GENDERS, stats);
+    orientation = uniformPick(ORIENTATIONS.flatMap(o => Array(o.weight).fill(o)));
+    const isMinor = age < 18;
+    const relStatusPool = (isMinor && !tables.ALLOW_MINOR_MARRIAGE)
+      ? RELATIONSHIP_STATUSES.filter(r => !MARRIAGE_DERIVED_STATUS_IDS.has(r.id))
+      : RELATIONSHIP_STATUSES;
+    relationshipStatus = uniformPick(relStatusPool.flatMap(r => Array(r.weight).fill(r)));
   }
 
   // ── NAME (ethnicity/race-matched) ─────────────────────────────────────
@@ -119,18 +145,6 @@ export function buildSkeleton(stats, mbti, tables, opts = {}) {
   const firstName = pickFirstName(gender.id, namePool);
   const lastName  = uniformPick(namePool.last);
   const name      = `${firstName} ${lastName}`;
-
-  // ── AGE ───────────────────────────────────────────────────────────────
-  let age;
-  if (tables.AGE_RANGE) {
-    const [ageMin, ageMax] = tables.AGE_RANGE;
-    age = Math.floor(Math.random() * (ageMax - ageMin + 1)) + ageMin;
-  } else {
-    // Box-Muller normal distribution: mean=25, stddev=8, clamped to [15, 75]
-    const _au1 = Math.random() || 1e-10;
-    const _az  = Math.sqrt(-2 * Math.log(_au1)) * Math.cos(2 * Math.PI * Math.random());
-    age = Math.min(75, Math.max(15, Math.round(25 + 8 * _az)));
-  }
 
   // ── NSFW ──────────────────────────────────────────────────────────────
   // NSFW professions (p.nsfw === true) are only included when the caller

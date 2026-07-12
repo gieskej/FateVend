@@ -8,7 +8,6 @@
 
 - The Modern genre is crap.  It is too general and open ended to be any fun.
 - Why does Modern character with name "Suzuki" get Asian/Indian?
-- Minors can't be married (or divorced or widowed)
 - Rearrange the "⚙ AI Generated Scenario" so Title, Portrait Prompt , Description, Opening, Plot Essentials, Author's Note
 - Update add-genre skill to handle BGM and other new genre-related features.
 
@@ -38,6 +37,7 @@
 ---
 
 ## Fixed Bugs
+- BUG: Minor protagonists could roll a marriage-derived relationship status (married/separated/divorced/widowed) in every genre. Now withheld for characters under 18, except Paleolithic (opt-in via ALLOW_MINOR_MARRIAGE), where early marriage age fits the genre's tone.
 - BUG: On wide desktop screens, the slot machine reels always wrapped into a ~6-per-row grid regardless of available width, because they inherited the page's 900px reading-column max-width. The slot machine now breaks out of that column on screens ≥1000px wide, spreading reels across the full viewport instead.
 - BUG: Slot machine's Sentiment reel showed a gear-placeholder icon for most rolls in Nihongi/Joseon Dynasty — its catalog was a stale hardcoded 9-entry list disconnected from the real 79-entry SENTIMENTS data. Also fixed two profession entries referencing sentiment ids that never existed.
 - FEAT: Expanded every genre's name pools (Fantasy, Sci-Fi, Paleolithic, Modern, Manga, Joseon Dynasty, Nihongi) so each masc/fem/last array has at least 50 unique entries per identity/social-class group.

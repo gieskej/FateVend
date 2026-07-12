@@ -200,6 +200,7 @@ const GENRE_TABLES = {
     NAME_POOLS:             PA_NAME_POOLS,
     AGE_RANGE:              [13, 40],
     RELATIONSHIP_STATUSES,
+    ALLOW_MINOR_MARRIAGE:   true,
     PLOT_ARCHETYPES:        [...COMMON_PLOT_ARCHETYPES, ...PALEOLITHIC_PLOT_ARCHETYPES],
   },
   'historical-korea-joseon-dynasty': {

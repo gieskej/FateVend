@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-07-12
+
+### fix: Minors could roll a marriage-derived relationship status in every genre
+**What changed:** Character generation picks `relationshipStatus` from the shared `RELATIONSHIP_STATUSES` pool (single/dating/engaged/married/separated/divorced/widowed/complicated) independently of age, so a 15-year-old protagonist could roll `married`, `divorced`, or `widowed` — statuses that all presuppose having been legally married — in any genre. Fixed in the two places this logic actually lives: the browser's inline `buildSkeleton` in `index.html` (already computed `age` before `relStatus`, so only needed the filter) and the standalone `generator/skeleton-builder.js` module used by the documented `generateCharacter` Node API (README/requirements.md), where `age` had to be reordered to compute before `relationshipStatus` first. Both now exclude `married`/`separated`/`divorced`/`widowed` from the pick whenever the rolled character is under 18, unless the genre's table sets `ALLOW_MINOR_MARRIAGE: true` — set only for Paleolithic (`AGE_RANGE: [13, 40]`), where early marriage age fits the genre's established "100000 BC, more wild, anything goes" tone rather than being a bug.
+**Impact:** Modern, Fantasy, Sci-Fi, Joseon Dynasty, and Nihongi protagonists under 18 can no longer roll a marriage-derived relationship status (and therefore no longer generate a spouse/ex-spouse/late-spouse NPC in the cast). Paleolithic is unaffected — minors there can still roll any relationship status, as before. Manga Osaka Highschool '87 is also unaffected — it already statically excludes all marriage-derived statuses at the genre level regardless of the individual roll.
+**Test cases:** Extracted and executed the actual shipped filter logic from `index.html` (not a re-derivation) against the real `RELATIONSHIP_STATUSES` data, 5000 trials each: age 16 without the override never produced `married`/`separated`/`divorced`/`widowed` (only single/dating/engaged/complicated appeared); age 16 with Paleolithic's override reached all 8 statuses including all 4 marriage-derived ones; age 30 without the override also reached all 8, confirming adults are unaffected.
+
 ## 2026-07-11
 
 ### fix: Slot machine reels wrapped into a fixed ~6-per-row grid instead of using the full screen width

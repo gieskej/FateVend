@@ -867,6 +867,7 @@ function getGenreTables(genre) {
       NAME_POOLS:              PALEO_NAME_POOLS,
       AGE_RANGE:               [13, 40],
       RELATIONSHIP_STATUSES,
+      ALLOW_MINOR_MARRIAGE:    true,
       PLOT_ARCHETYPES:         PALEO_PLOTS_ALL,
     };
   }
@@ -1258,6 +1259,10 @@ function altLastName(currentLast, ethnicityBroad, namePools) {
 }
 
 // ── Skeleton builder ──────────────────────────────────────────────────────
+// Statuses that presuppose having been legally married — withheld from
+// minors by default (see ALLOW_MINOR_MARRIAGE in getGenreTables/paleolithic).
+const MARRIAGE_DERIVED_STATUS_IDS = new Set(['married', 'separated', 'divorced', 'widowed']);
+
 function buildSkeleton(stats, mbti, tables) {
   const { PROFESSIONS:P, LIFE_EVENTS:LE, TENSIONS:T, SECRETS:S, FAMILY_STRUCTURES:FS,
           ECONOMIC_TIERS:ET, CITY_SETTINGS:CS, TAG_POOLS:TP,
@@ -1293,7 +1298,11 @@ function buildSkeleton(stats, mbti, tables) {
     return byGender.length > 0 ? byGender : base;
   })();
   let   orientation        = weightedPick(orientPool);
-  let   relStatus          = uniformPick(RS.flatMap(r => Array(r.weight).fill(r)));
+  const isMinor      = age < 18;
+  const relStatusPool = (isMinor && !tables.ALLOW_MINOR_MARRIAGE)
+    ? RS.filter(r => !MARRIAGE_DERIVED_STATUS_IDS.has(r.id))
+    : RS;
+  let   relStatus          = uniformPick(relStatusPool.flatMap(r => Array(r.weight).fill(r)));
 
   // Synthetic construct overrides — must run after identity is known
   if (syntheticType === 'industrial') {
