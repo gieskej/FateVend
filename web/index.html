@@ -2282,7 +2282,7 @@ function getSlotConfig(genre) {
       iconBase: './generator/genres/manga-osaka-highschool1987/icons/',
       defs: [
         { key:'gender',    header:'Gender',       cat:'GENDERS',               common:true  },
-        { key:'species',   header:'Archetype',    cat:'ARCHETYPES',            common:false },
+        { key:'species',   header:'Archetype',    cat:'TRIBES',                common:false },
         { key:'orient',    header:'Orientation',  cat:'ORIENTATIONS',          common:true  },
         { key:'relStatus', header:'Relationship', cat:'RELATIONSHIP_STATUSES',  common:true  },
         { key:'mbti',      header:'Personality',  cat:'MBTI_TYPES',            common:true  },
@@ -2296,7 +2296,7 @@ function getSlotConfig(genre) {
         { key:'plot',      header:'Plot',          cat:'PLOT_ARCHETYPES',       common:true  },
       ],
       catalog: {
-        ARCHETYPES:            MANGA_HS_RACES.map(r => [r.id, r.id, r.broad]),
+        TRIBES:                MANGA_HS_RACES.map(r => [r.id, r.id, r.broad]),
         GENDERS:               GENDERS_CAT,
         ORIENTATIONS:          ORIENT_CAT,
         RELATIONSHIP_STATUSES: RELSTATUS_CAT,
@@ -2324,7 +2324,7 @@ function getSlotConfig(genre) {
       iconBase: './generator/genres/paleolithic/icons/',
       defs: [
         { key:'gender',    header:'Gender',       cat:'GENDERS',               common:true  },
-        { key:'species',   header:'Tribe',         cat:'TRIBES',                common:false },
+        { key:'species',   header:'Tribe',         cat:'RACES',                 common:false },
         { key:'orient',    header:'Orientation',  cat:'ORIENTATIONS',          common:true  },
         { key:'relStatus', header:'Relationship', cat:'RELATIONSHIP_STATUSES',  common:true  },
         { key:'mbti',      header:'Personality',  cat:'MBTI_TYPES',            common:true  },
@@ -2338,7 +2338,7 @@ function getSlotConfig(genre) {
         { key:'plot',      header:'Plot',          cat:'PLOT_ARCHETYPES',       common:true  },
       ],
       catalog: {
-        TRIBES:                PALEO_RACES.map(r => [r.id, r.id, r.broad]),
+        RACES:                 PALEO_RACES.map(r => [r.id, r.id, r.broad]),
         GENDERS:               GENDERS_CAT,
         ORIENTATIONS:          ORIENT_CAT,
         RELATIONSHIP_STATUSES: RELSTATUS_CAT,

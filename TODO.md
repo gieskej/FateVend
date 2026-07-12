@@ -8,11 +8,13 @@
 
 - The Modern genre is crap.  It is too general and open ended to be any fun.
 - Why does Modern character with name "Suzuki" get Asian/Indian?
-- Missing slot machine reel icons.  Test all genres and check for 404 errors, creating new blank images from web\generator\common\icons\none.webp
 - Minors can't be married (or divorced or widowed)
 - Add more names to all genre pools.  There should be at least 50 first and last names in each category.
 - Rearrange the "⚙ AI Generated Scenario" so Title, Portrait Prompt , Description, Opening, Plot Essentials, Author's Note
 - Update add-genre skill to handle BGM and other new genre-related features.
+- In the slot machine reels, under the Personality reel, we show a label comprised of the MBTI_TYPES.type.  Let change the UI label to show "{MBTI_TYPES.type} - {MBTI_TYPES.label}"
+- On desktop with a wide screen, let's expand the slot machine layout to use full width of the screen instead of 6x2 grid.
+
 
 ### Low Priority Bugs
 - The aidungeon-importer is flaky about uploading the portrait image.  Sometimes it works, sometimes it does not.
@@ -39,6 +41,7 @@
 ---
 
 ## Fixed Bugs
+- BUG: Missing slot machine reel icons — Paleolithic's Tribe reel and Manga's Archetype reel 404'd on every roll. Turned out to be a category-name mismatch in getSlotConfig() (not missing art) — the real hand-crafted icons already existed on disk under different filenames than the code was looking for.
 - BUG: The Generate Scenario button should be disabled if the text provider selector has chosen None.
 - FEAT: Inject current git version from serve.sh so we can show the current version in the Settings modal.
 - BUG: All PLOT_ARCHETYPES icons lived in the common icons folder, even genre-specific archetypes — organized by genre.
