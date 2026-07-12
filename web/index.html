@@ -1813,6 +1813,17 @@ function setProvider(p) {
   currentProvider = p;
   const sel = document.getElementById('toolbar-text-provider');
   if (sel) sel.value = p;
+  updateContinueButtonState();
+}
+
+// Keeps the "Generate Scenario" continue button (if currently shown) in sync
+// with the text provider selector — no point letting the user click through
+// to an AI call that has nowhere to go.
+function updateContinueButtonState() {
+  const btn = document.getElementById('btn-continue');
+  if (!btn) return;
+  btn.disabled = currentProvider === 'none';
+  btn.title = btn.disabled ? 'Select a text provider in Settings first' : '';
 }
 
 function updateProviderSelector() {
@@ -3316,6 +3327,7 @@ async function runGenerate() {
         </button>
       </div>
     `);
+    updateContinueButtonState();
 
     setStatus('Review the character sheet, then generate the scenario when ready.');
 
@@ -3434,6 +3446,7 @@ async function runAIPhase() {
         </button>
       </div>
     `);
+    updateContinueButtonState();
   } finally {
     isGenerating = false;
     generateBtn.disabled = false;

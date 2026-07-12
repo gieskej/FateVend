@@ -13,7 +13,6 @@
 - Add more names to all genre pools.  There should be at least 50 first and last names in each category.
 - Rearrange the "⚙ AI Generated Scenario" so Title, Portrait Prompt , Description, Opening, Plot Essentials, Author's Note
 - Update add-genre skill to handle BGM and other new genre-related features.
-- The Generate Scenario button should be disabled if the text provider selector has chosen None.
 
 ### Low Priority Bugs
 - The aidungeon-importer is flaky about uploading the portrait image.  Sometimes it works, sometimes it does not.
@@ -21,7 +20,7 @@
 - Redo all of the Joseon and Nihongi icons.  The current icons are a cultural mashup of Chinese, Japanese, Vietnamese and Korean, so they are not accurate.
 - Redo all the missing icons in Fantasy
 - Think of a better project name.
-
+- Refactor to make it easier to add new genres, ideally as downloadable extensions.
 
 ## New Features
 - Enable AID scripting and automatically inject the latest auto-cards (https://github.com/LewdLeah/Auto-Cards)
@@ -40,6 +39,7 @@
 ---
 
 ## Fixed Bugs
+- BUG: The Generate Scenario button should be disabled if the text provider selector has chosen None.
 - FEAT: Inject current git version from serve.sh so we can show the current version in the Settings modal.
 - BUG: All PLOT_ARCHETYPES icons lived in the common icons folder, even genre-specific archetypes — organized by genre.
 - BUG: Fix the genre card layout — genre card was too wide on PC and images were cropped instead of shown in full (they're square).
