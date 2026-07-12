@@ -19,6 +19,22 @@
   .site-title, .site-subtitle { padding: 0 60px; }
 }
 
+/* Slot machine breaks out of .content-inner's 900px reading column on wide
+   desktop screens, so its reels can spread across the full viewport width
+   instead of always wrapping into a ~6-per-row grid regardless of how much
+   space is actually available. */
+@media (min-width: 1000px) {
+  .slot-machine {
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    padding-left: 2rem;
+    padding-right: 2rem;
+    box-sizing: border-box;
+  }
+}
+
 /* ── TITLEBAR GEAR ICONS ──────────────────────────────────────────── */
 .site-header::before,
 .site-header::after {

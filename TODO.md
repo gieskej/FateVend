@@ -11,7 +11,6 @@
 - Minors can't be married (or divorced or widowed)
 - Rearrange the "⚙ AI Generated Scenario" so Title, Portrait Prompt , Description, Opening, Plot Essentials, Author's Note
 - Update add-genre skill to handle BGM and other new genre-related features.
-- On desktop with a wide screen, let's expand the slot machine layout to use full width of the screen instead of 6x2 grid.
 
 
 ### Low Priority Bugs
@@ -39,6 +38,8 @@
 ---
 
 ## Fixed Bugs
+- BUG: On wide desktop screens, the slot machine reels always wrapped into a ~6-per-row grid regardless of available width, because they inherited the page's 900px reading-column max-width. The slot machine now breaks out of that column on screens ≥1000px wide, spreading reels across the full viewport instead.
+- BUG: Slot machine's Sentiment reel showed a gear-placeholder icon for most rolls in Nihongi/Joseon Dynasty — its catalog was a stale hardcoded 9-entry list disconnected from the real 79-entry SENTIMENTS data. Also fixed two profession entries referencing sentiment ids that never existed.
 - FEAT: Expanded every genre's name pools (Fantasy, Sci-Fi, Paleolithic, Modern, Manga, Joseon Dynasty, Nihongi) so each masc/fem/last array has at least 50 unique entries per identity/social-class group.
 - FEAT: In the slot machine reels, the Personality reel label now shows "{MBTI_TYPES.type} - {MBTI_TYPES.label}" instead of just the type.
 - BUG: Missing slot machine reel icons — Paleolithic's Tribe reel and Manga's Archetype reel 404'd on every roll. Turned out to be a category-name mismatch in getSlotConfig() (not missing art) — the real hand-crafted icons already existed on disk under different filenames than the code was looking for.
