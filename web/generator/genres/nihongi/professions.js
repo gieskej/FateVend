@@ -126,7 +126,7 @@ export const PROFESSIONS = [
     economicTier: 4,
     nsfw: false,
     statAffinity: { intelligence: 1.5, wisdom: 1.3 },
-    sentiments: ['precise', 'worldly', 'calculating'],
+    sentiments: ['ritually_precise', 'worldly', 'calculating'],
     iconPrompt: 'ancient japanese onmyoji yin yang diviner continental cosmology calendar astronomical calculation court asuka period nihon shoki yamato-e painting',
     iconPath: 'generator/genres/nihongi/icons/PROFESSIONS#onmyoji.webp',
   },

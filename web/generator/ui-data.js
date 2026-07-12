@@ -190,6 +190,7 @@ export {
 
 // ── COMMON ──────────────────────────────────────────────────────────────────
 export { RELATIONSHIP_STATUSES } from './common/relationship-statuses.js';
+export { SENTIMENTS } from './common/sentiments.js';
 export { COMMON_PLOT_ARCHETYPES } from './common/plot-archetypes.js';
 export { MODERN_PLOT_ARCHETYPES } from './genres/modern/plot-archetypes.js';
 export { FANTASY_PLOT_ARCHETYPES } from './genres/fantasy/plot-archetypes.js';

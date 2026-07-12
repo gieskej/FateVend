@@ -56,7 +56,7 @@ export const PROFESSIONS = [
     industry: 'Transportation',
     economicTier: 3,
     statAffinity: { constitution: 1.3, wisdom: 1.1 },
-    sentiments: ['indifferent', 'quietly satisfied', 'lonely', 'burned out'],
+    sentiments: ['indifferent', 'quietly satisfied', 'homesick', 'burned out'],
     iconPrompt: 'Modern RPG icon. A long-haul truck driver at a rest stop at night, coffee in hand, studying a route on the dash — hours of road behind them, more ahead, comfortable in a way the job either teaches you or breaks you.',
     iconPath: 'generator/genres/modern/icons/PROFESSION#long_haul_truck_driver.webp'
   },

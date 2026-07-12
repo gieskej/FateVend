@@ -763,7 +763,7 @@ import {
   NIHONGI_PROFESSIONS, NIHONGI_LIFE_EVENTS, NIHONGI_TENSIONS, NIHONGI_SECRETS,
   NIHONGI_NAME_POOLS, NIHONGI_PARENT_STATUSES, NIHONGI_SIBLING_DYNAMICS, NIHONGI_FAMILY_STRUCTURES,
   // Shared
-  RELATIONSHIP_STATUSES,
+  RELATIONSHIP_STATUSES, SENTIMENTS,
   COMMON_PLOT_ARCHETYPES, MODERN_PLOT_ARCHETYPES, FANTASY_PLOT_ARCHETYPES, SCIFI_PLOT_ARCHETYPES, PALEOLITHIC_PLOT_ARCHETYPES, MANGA_HS_PLOT_ARCHETYPES, JOSEON_PLOT_ARCHETYPES, NIHONGI_PLOT_ARCHETYPES,
   STAT_ADJECTIVES, statAdjective,
   MBTI_TYPES,
@@ -2226,14 +2226,7 @@ function getSlotConfig(genre) {
     const m = p.iconPath?.match(/^(.*\/)PLOT_ARCHETYPES#([^.]+)\.webp$/i);
     return [p.id, m?.[2] ?? p.id, p.label, m?.[1] ?? COMMON_ICON_BASE];
   });
-  // 'burned_out' → maps to 'burnt_out' filename; all others match
-  const SENT_CAT = [
-    ['proud','proud','Proud'],['resentful','resentful','Resentful'],
-    ['indifferent','indifferent','Indifferent'],['passionate','passionate','Passionate'],
-    ['burned_out','burnt_out','Burned Out'],['desperate','desperate','Desperate'],
-    ['quietly_satisfied','quietly_satisfied','Quietly Satisfied'],
-    ['ashamed','ashamed','Ashamed'],['lost','lost','Lost'],
-  ];
+  const SENT_CAT = SENTIMENTS.map(s => [s.id, s.iconPath?.match(/#([^.]+)\.webp$/i)?.[1] ?? s.id, s.label]);
 
   if (genre === 'sci-fi') {
     return {
