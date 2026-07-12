@@ -1,6 +1,6 @@
 # TODO
 
-- Play scenarios from each genre and make sure they are fun, not just some grim chatbot trying to kill you or chat you to death.
+- Play scenarios from each genre and make sure they are fun, not just some grim chatbot trying to kill you or chat you to death.  Most of the genre's AI generated try to be factual, historical, and boring.
 
 ## Bugs
 - Plot essentials should be short bullet points, not wordy prose.  Ideally around 1000 characters, maximum 1500 characters.
@@ -9,7 +9,6 @@
 - The Modern genre is crap.  It is too general and open ended to be any fun.
 - Why does Modern character with name "Suzuki" get Asian/Indian?
 - Minors can't be married (or divorced or widowed)
-- Add more names to all genre pools.  There should be at least 50 first and last names in each category.
 - Rearrange the "⚙ AI Generated Scenario" so Title, Portrait Prompt , Description, Opening, Plot Essentials, Author's Note
 - Update add-genre skill to handle BGM and other new genre-related features.
 - On desktop with a wide screen, let's expand the slot machine layout to use full width of the screen instead of 6x2 grid.
@@ -40,6 +39,7 @@
 ---
 
 ## Fixed Bugs
+- FEAT: Expanded every genre's name pools (Fantasy, Sci-Fi, Paleolithic, Modern, Manga, Joseon Dynasty, Nihongi) so each masc/fem/last array has at least 50 unique entries per identity/social-class group.
 - FEAT: In the slot machine reels, the Personality reel label now shows "{MBTI_TYPES.type} - {MBTI_TYPES.label}" instead of just the type.
 - BUG: Missing slot machine reel icons — Paleolithic's Tribe reel and Manga's Archetype reel 404'd on every roll. Turned out to be a category-name mismatch in getSlotConfig() (not missing art) — the real hand-crafted icons already existed on disk under different filenames than the code was looking for.
 - BUG: The Generate Scenario button should be disabled if the text provider selector has chosen None.
