@@ -514,7 +514,7 @@
       </div>
 
       <div class="settings-modal-footer">
-        <span style="font-family:monospace;font-size:0.72rem;color:rgba(184,115,51,0.35);margin-right:auto;" title="git commit 5197027">v5197027</span>
+        <span id="settings-version" style="font-family:monospace;font-size:0.72rem;color:rgba(184,115,51,0.35);margin-right:auto;"></span>
         <button class="settings-btn-secondary" onclick="toggleHelp(true)">Help</button>
         <button class="settings-btn-primary" onclick="closeSettings()">Save</button>
       </div>
@@ -3648,6 +3648,16 @@ document.addEventListener('click', e => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Version stamp from serve.sh (git commit of the running checkout), shown
+  // in the Settings footer. Falls back to a static default when opened
+  // directly as a file:// URL (no serve.sh, so config.js never loaded).
+  const versionEl = document.getElementById('settings-version');
+  if (versionEl) {
+    const v = window.__GIT_VERSION__ || 'dev';
+    versionEl.textContent = `v${v}`;
+    versionEl.title = `git commit ${v}`;
+  }
+
   // Seed fields from serve.sh-generated config.js (takes priority — always
   // reflects the current .env key), then fall back to localStorage.
   const CONFIG_MAP = {
