@@ -2216,7 +2216,7 @@ function getSlotConfig(genre) {
     ['bisexual','bisexual','Bisexual'],['pansexual','pansexual','Pansexual'],
     ['asexual','asexual','Asexual'],['questioning','questioning','Questioning'],
   ];
-  const MBTI_CAT = MBTI_TYPES.map(m => [m.type, m.type, m.type]);
+  const MBTI_CAT = MBTI_TYPES.map(m => [m.type, m.type, `${m.type}<br/><i>${m.label}</i>`]);
   const RELSTATUS_CAT = RELATIONSHIP_STATUSES.map(r => [r.id, r.iconPath?.match(/#([^.]+)\.webp$/i)?.[1] ?? r.id, r.label]);
   // PLOT_ARCHETYPES mixes COMMON_PLOT_ARCHETYPES (icons in common/icons/) with
   // genre-specific archetypes (icons in this genre's own icons/) — unlike every
@@ -2705,7 +2705,9 @@ async function animateSlots(skeleton, genre) {
     if (entry) {
       const [, iconSlug, label] = entry;
       if (img) img.src = iconPath(iconBaseFor(entry, def, cfg), def.cat, iconSlug);
-      if (lblEl) lblEl.textContent = label;
+      // innerHTML (not textContent): MBTI_CAT's label embeds <br/>/<i> markup.
+      // Safe — every catalog label comes from our own static data files, never user input.
+      if (lblEl) lblEl.innerHTML = label;
     } else {
       if (img) img.closest('.slot-window').innerHTML = '<div class="slot-placeholder">⚙</div>';
       if (lblEl) lblEl.textContent = (dataSlug ?? '').replace(/_/g,' ');
