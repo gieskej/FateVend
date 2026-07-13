@@ -1,12 +1,24 @@
 """
 Shared core for FateVend icon-generation scripts.
 Import run() from a genre-specific generate_icons.py wrapper.
+
+--backend gemini requires: pip install google-genai python-dotenv
+(python-dotenv is already present in this environment; google-genai is not,
+installed separately).
 """
 
-import re, requests, base64, time, sys, argparse, io
-from PIL import Image
+import re, requests, base64, time, sys, argparse, io, os
+from PIL import Image, ImageOps
 from datetime import datetime
 from pathlib import Path
+
+DEFAULT_GEMINI_MODEL = "gemini-2.5-flash-image"
+GEMINI_MAX_RETRIES   = 3
+GEMINI_BACKOFF_BASE  = 2.0   # seconds; exponential: 2s, 4s, 8s
+# Gemini tends to render the "clean white background, subtle drop shadow" style
+# text as a literal framed card/badge rather than a full-bleed square scene.
+# Prepending this counters that tendency; SD doesn't have the same issue.
+GEMINI_PROMPT_PREFIX = "square, borderless, full bleed illustration, "
 
 
 def extract_pairs(js_text):
@@ -17,6 +29,74 @@ def extract_pairs(js_text):
     if len(prompts) != len(paths):
         raise ValueError(f"iconPrompt/iconPath count mismatch: {len(prompts)} vs {len(paths)}")
     return list(zip(prompts, paths))
+
+
+def _generate_sd(base, prompt, params, timeout=360):
+    """Calls the local SD WebUI Forge txt2img API. Returns a list of raw PNG bytes."""
+    r = requests.post(base + "/sdapi/v1/txt2img", json=dict(prompt=prompt, **params), timeout=timeout)
+    r.raise_for_status()
+    return [base64.b64decode(img_b64) for img_b64 in r.json()["images"]]
+
+
+def _init_gemini_client():
+    """Loads GEMINI_API_KEY from the repo-root .env and returns an authenticated genai.Client."""
+    from dotenv import load_dotenv
+    repo_root = Path(__file__).resolve().parents[4]
+    load_dotenv(dotenv_path=repo_root / ".env")
+    api_key = os.environ.get("GEMINI_API_KEY")
+    if not api_key:
+        sys.stderr.write("Error: GEMINI_API_KEY not set. Add it to .env or export it.\n")
+        sys.exit(1)
+    try:
+        from google import genai
+    except ImportError:
+        sys.stderr.write("Error: google-genai not installed. Run: pip install google-genai\n")
+        sys.exit(1)
+    return genai.Client(api_key=api_key)
+
+
+def _generate_gemini(client, model, prompt, count):
+    """Calls the Gemini image-generation API `count` times (no server-side batching).
+    Returns a list of raw image bytes. Retries transient rate-limit errors with backoff;
+    other failures (or exhausted retries) propagate to the caller's existing per-item
+    try/except, which logs the slug as failed and continues the batch."""
+    from google.genai import types
+    config = types.GenerateContentConfig(
+        response_modalities=["IMAGE"],
+        image_config=types.ImageConfig(aspect_ratio="1:1"),
+    )
+    full_prompt = GEMINI_PROMPT_PREFIX + prompt
+    results = []
+    for _ in range(count):
+        for attempt in range(GEMINI_MAX_RETRIES + 1):
+            try:
+                response = client.models.generate_content(model=model, contents=full_prompt, config=config)
+                part = next((p for p in response.candidates[0].content.parts if p.inline_data), None)
+                if part is None:
+                    raise RuntimeError("Gemini response contained no image part")
+                results.append(part.inline_data.data)
+                break
+            except Exception as e:
+                transient = "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e)
+                if attempt < GEMINI_MAX_RETRIES and transient:
+                    delay = GEMINI_BACKOFF_BASE * (2 ** attempt)
+                    sys.stdout.write(f"         rate-limited, retry {attempt+1}/{GEMINI_MAX_RETRIES} in {delay:.0f}s...\n")
+                    sys.stdout.flush()
+                    time.sleep(delay)
+                    continue
+                raise
+    return results
+
+
+def _save_webp(image_bytes, path, target_size=None):
+    """Saves raw image bytes as webp. If target_size is given and the image doesn't
+    already match, center-crop-then-resize to it first (guarantees exact pixel
+    dimensions regardless of what the source actually returned)."""
+    pil_img = Image.open(io.BytesIO(image_bytes))
+    if target_size is not None and pil_img.size != target_size:
+        pil_img = ImageOps.fit(pil_img, target_size, method=Image.LANCZOS)
+    pil_img.save(path, "WEBP", quality=90)
+    return path.stat().st_size
 
 
 def run(genre_dir, icon_dir, style, params, description="", recursive=False,
@@ -44,7 +124,21 @@ def run(genre_dir, icon_dir, style, params, description="", recursive=False,
         metavar="PATH",
         help="Path to the placeholder/default image. When given, only regenerate icons whose existing file is byte-identical to this image.",
     )
+    parser.add_argument(
+        "--backend", choices=["sd", "gemini"], default="sd",
+        help="Image generation backend (default: sd).",
+    )
+    parser.add_argument(
+        "--model", default=DEFAULT_GEMINI_MODEL,
+        help=f"Gemini model name, only used with --backend gemini (default: {DEFAULT_GEMINI_MODEL}).",
+    )
+    parser.add_argument(
+        "--limit", type=int, default=None, metavar="N",
+        help="Only attempt the first N not-already-skipped items (for smoke-testing before a full run).",
+    )
     args = parser.parse_args()
+
+    gemini_client = _init_gemini_client() if args.backend == "gemini" else None
 
     missing_bytes = None
     if args.missing:
@@ -108,18 +202,15 @@ def run(genre_dir, icon_dir, style, params, description="", recursive=False,
             sys.stdout.write(f"gen   _genre.webp...\n")
             sys.stdout.flush()
             try:
-                genre_params = {**params, "batch_size": 1, "width": 512, "height": 512}
-                r = requests.post(
-                    base + "/sdapi/v1/txt2img",
-                    json=dict(prompt=genre_prompt, **genre_params),
-                    timeout=360,
-                )
-                r.raise_for_status()
-                images = r.json()["images"]
-                png_bytes = base64.b64decode(images[0])
-                pil_img = Image.open(io.BytesIO(png_bytes))
-                pil_img.save(genre_out, "WEBP", quality=90)
-                sys.stdout.write(f"         {genre_out.stat().st_size:,}b\n\n")
+                if args.backend == "sd":
+                    genre_params = {**params, "batch_size": 1, "width": 512, "height": 512}
+                    raw = _generate_sd(base, genre_prompt, genre_params)[0]
+                    target_size = None
+                else:
+                    raw = _generate_gemini(gemini_client, args.model, genre_prompt, 1)[0]
+                    target_size = (512, 512)
+                webp_size = _save_webp(raw, genre_out, target_size=target_size)
+                sys.stdout.write(f"         {webp_size:,}b\n\n")
             except Exception as e:
                 sys.stdout.write(f"         ERROR: {e}\n\n")
                 errors.append("_genre")
@@ -131,24 +222,25 @@ def run(genre_dir, icon_dir, style, params, description="", recursive=False,
             skipped += 1
             continue
 
+        if args.limit is not None and done >= args.limit:
+            sys.stdout.write(f"[{i}/{total}] stop  --limit {args.limit} reached\n")
+            break
+
         out_paths = [outdir / f"{slug}#{v}.webp" for v in range(1, variants + 1)]
 
         sys.stdout.write(f"[{i}/{total}] gen   {slug}...\n")
         sys.stdout.flush()
         try:
-            r = requests.post(
-                base + "/sdapi/v1/txt2img",
-                json=dict(prompt=prompt, **params),
-                timeout=360,
-            )
-            r.raise_for_status()
-            images = r.json()["images"]
-            sizes  = []
-            for v, (img_b64, path) in enumerate(zip(images, out_paths), 1):
-                png_bytes = base64.b64decode(img_b64)
-                pil_img = Image.open(io.BytesIO(png_bytes))
-                pil_img.save(path, "WEBP", quality=90)
-                webp_size = path.stat().st_size
+            if args.backend == "sd":
+                raw_images  = _generate_sd(base, prompt, params)
+                target_size = None
+            else:
+                raw_images  = _generate_gemini(gemini_client, args.model, prompt, variants)
+                target_size = (params["width"], params["height"])
+
+            sizes = []
+            for v, (img_bytes, path) in enumerate(zip(raw_images, out_paths), 1):
+                webp_size = _save_webp(img_bytes, path, target_size=target_size)
                 sizes.append(f"#{v}:{webp_size:,}b")
             sys.stdout.write(f"         {' '.join(sizes)}\n")
             sys.stdout.flush()
@@ -158,7 +250,8 @@ def run(genre_dir, icon_dir, style, params, description="", recursive=False,
             sys.stdout.flush()
             errors.append(slug)
 
-        time.sleep(0.3)
+        if args.backend == "sd":
+            time.sleep(0.3)
 
     sys.stdout.write(f"\nDone. generated={done}  skipped={skipped}  errors={len(errors)}\n")
     sys.stdout.write(f"Output: {outdir}\n")

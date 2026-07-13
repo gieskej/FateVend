@@ -1,24 +1,32 @@
 # TODO
-
 - Play scenarios from each genre and make sure they are fun, not just some grim chatbot trying to kill you or chat you to death.  Most of the genre's AI generated try to be factual, historical, and boring.
 
 ## Bugs
 - Plot essentials should be short bullet points, not wordy prose.  Ideally around 1000 characters, maximum 1500 characters.
 - The text-to-image generator has no idea what an alien looks like, so we need specific alien features mentioned in their portrait prompts (e.g. unusual skin color, horns, scales, webbed fingers, forked tongue, pointed ears, etc).  Likewise, non-humanoid aliens should be even more unusual looking (e.g. four legs, no legs, amoeba, tenticals, insect, vapor, lava, jelly, etc)
 
-- The Modern genre is crap.  It is too general and open ended to be any fun.
+- Rearrange the "⚙ AI Generated Scenario" so it matches the order read out by the narrator: Title, Portrait Prompt , Description, Opening, Plot Essentials, Author's Note
+
+## Bugs - Fantasy
+- Redo all the missing icons in Fantasy
+## Bugs - Modern
+- The Modern genre is crap.  It is too general and open ended to be any fun.  Let's recast it to ...
 - Why does Modern character with name "Suzuki" get Asian/Indian?
-- Rearrange the "⚙ AI Generated Scenario" so Title, Portrait Prompt , Description, Opening, Plot Essentials, Author's Note
-- Update add-genre skill to handle BGM and other new genre-related features.
+## Bugs - Joseon
+- Redo all of the Joseon.  The current icons are a cultural mashup of Chinese, Japanese, Vietnamese and Korean, so they are not accurate.
+## Bugs - Nihongi
+- Redo all of the Nihongi icons.  The current icons are a cultural mashup of Chinese, Japanese, Vietnamese and Korean, so they are not accurate.
+## Bugs - Osaka
+## Bugs - Paleo
+## Bugs - Sci-Fi
 
 
 ### Low Priority Bugs
 - The aidungeon-importer is flaky about uploading the portrait image.  Sometimes it works, sometimes it does not.
 - Sometimes generate_icons hangs and you have to restart the whole shell to recover.
-- Redo all of the Joseon and Nihongi icons.  The current icons are a cultural mashup of Chinese, Japanese, Vietnamese and Korean, so they are not accurate.
-- Redo all the missing icons in Fantasy
 - Think of a better project name.
 - Refactor to make it easier to add new genres, ideally as downloadable extensions.
+- Update add-genre skill to handle BGM and other new genre-related features.
 
 ## New Features
 - Enable AID scripting and automatically inject the latest auto-cards (https://github.com/LewdLeah/Auto-Cards)
