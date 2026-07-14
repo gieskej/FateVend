@@ -35,7 +35,6 @@
 - Enable AID scripting and automatically inject the latest auto-cards (https://github.com/LewdLeah/Auto-Cards)
 - Update the skeleton with a new "metadata" section with name and version of the text and image provider, generation datetime, commit hash
 - Add a button that creates a promo video for the scenario using the character portraits, overture, name overlays, "Starring YOU as xxx".
-- In addition to character cards, AI Dungeon also supports class, race, location, faction, custom cards.  In the skeleton, add genertion of a couple of faction, location and object (if you are on a quest for a magic item, there should be a card to describe it) cards.  Add a section in the UI below the NPCs for these additional cards.  Also update the AI generation and auto import of these new types of cards.
 - Add a NPC portrait Zoom to popup menu?
 - Add settings option to disable BGM.
 - Kokoro'e english voices don't pronounce Japanese or Korean words properly, but the Japanese voices produce incomprehenible English.  So either we preprocess English -> Katakana so the Japanese voice works?  Or even better, extend the Kokoro service to do this heavy lifting.  Consider using CMU Pronouncing Dictionary (CMUdict)
@@ -47,6 +46,7 @@
 ---
 
 ## Fixed Bugs
+- FEAT: Added a "Preferred gender" / "Preferred orientation" option in Settings → Options — pins the protagonist's rolled gender/orientation instead of leaving it fully random, cascading naturally to the generated love-interest NPC. Defaults to "Any (random)", the prior behavior.
 - FEAT: Filled out static-cards.js content across genres — Fantasy locations/factions, Sci-Fi and Paleolithic classes/races/locations/factions (previously all empty), five invented student hangout spots for Manga-Osaka, and physical appearance/personality added to every Nihongi character and race entry.
 - FEAT: Added genre lore story cards (static-cards.js, currently Fantasy/Sci-Fi/Paleolithic/Manga/Modern/Nihongi) — the AI Dungeon importer now injects these as typed Story Cards (character/class/race/location/faction/custom) alongside NPC cards, and "Copy Full Text To Clipboard (JSON)" / "Download Package" both include them too via a new shared buildScenarioPayload() helper (previously the two had already drifted out of sync — download had `genre`, copy didn't).
 - FEAT: Status bar now shows a mini media player (prev/stop/next + track title) in place of the disclaimer while the generation-phase BGM plays, reverting to the disclaimer once the scenario (and any portraits) finish generating. Prev/next cycle through the current genre's BGM pool.

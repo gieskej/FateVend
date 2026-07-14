@@ -544,6 +544,26 @@
             <input id="include-lgbq" type="checkbox" checked>
             <label for="include-lgbq">LGBQ <span class="settings-hint">(include non-binary genders &amp; queer orientations when rolling)</span></label>
           </div>
+          <div class="settings-field">
+            <label for="pref-gender">Preferred gender <span class="settings-hint">(pins your protagonist's gender instead of rolling it)</span></label>
+            <select id="pref-gender" class="api-input">
+              <option value="any">Any (random)</option>
+              <option value="man">Male</option>
+              <option value="woman">Female</option>
+              <option value="non_binary">Non-binary</option>
+            </select>
+          </div>
+          <div class="settings-field">
+            <label for="pref-orientation">Preferred orientation <span class="settings-hint">(pins your protagonist's orientation instead of rolling it)</span></label>
+            <select id="pref-orientation" class="api-input">
+              <option value="any">Any (random)</option>
+              <option value="straight">Straight</option>
+              <option value="gay">Gay / Lesbian</option>
+              <option value="bisexual">Bisexual</option>
+              <option value="pansexual">Pansexual</option>
+              <option value="asexual">Asexual</option>
+            </select>
+          </div>
           <div class="settings-option-row">
             <input id="include-nsfw" type="checkbox">
             <label for="include-nsfw">NSFW <span class="settings-hint">(include adult professions; alters portrait prompt)</span></label>
@@ -1310,6 +1330,8 @@ function buildSkeleton(stats, mbti, tables) {
 
   const includeLGBQ  = document.getElementById('include-lgbq')?.checked ?? true;
   const includeNSFW  = document.getElementById('include-nsfw')?.checked ?? false;
+  const prefGender      = document.getElementById('pref-gender')?.value || 'any';
+  const prefOrientation = document.getElementById('pref-orientation')?.value || 'any';
   const age = (() => {
     if (tables.AGE_RANGE) {
       const [lo, hi] = tables.AGE_RANGE;
@@ -1320,8 +1342,12 @@ function buildSkeleton(stats, mbti, tables) {
     return Math.min(75, Math.max(15, Math.round(25 + 8 * _az)));
   })();
   const allowNSFW    = includeNSFW && age >= 18;
-  const genderPool   = includeLGBQ ? G : G.filter(g => g.id === 'man' || g.id === 'woman');
-  const orientPool   = includeLGBQ ? O : O.filter(o => o.id === 'straight');
+  const genderPool   = prefGender !== 'any'
+    ? G.filter(g => g.id === prefGender)
+    : (includeLGBQ ? G : G.filter(g => g.id === 'man' || g.id === 'woman'));
+  const orientPool   = prefOrientation !== 'any'
+    ? O.filter(o => o.id === prefOrientation)
+    : (includeLGBQ ? O : O.filter(o => o.id === 'straight'));
   const identity           = statAndWeightPick(ROE, stats);
   const syntheticType      = identity.syntheticType ?? null;
   let   gender             = statAndWeightPick(genderPool, stats);
@@ -3825,6 +3851,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const lgbqEl = document.getElementById('include-lgbq');
   lgbqEl.checked = localStorage.getItem('gof_include_lgbq') !== 'false';
   lgbqEl.addEventListener('change', e => localStorage.setItem('gof_include_lgbq', e.target.checked));
+
+  // Preferred gender / orientation persistence
+  const prefGenderEl = document.getElementById('pref-gender');
+  prefGenderEl.value = localStorage.getItem('gof_pref_gender') || 'any';
+  prefGenderEl.addEventListener('change', e => localStorage.setItem('gof_pref_gender', e.target.value));
+
+  const prefOrientationEl = document.getElementById('pref-orientation');
+  prefOrientationEl.value = localStorage.getItem('gof_pref_orientation') || 'any';
+  prefOrientationEl.addEventListener('change', e => localStorage.setItem('gof_pref_orientation', e.target.value));
 
   // NSFW checkbox persistence
   const nsfwEl = document.getElementById('include-nsfw');
