@@ -817,7 +817,7 @@ import {
   NIHONGI_PROFESSIONS, NIHONGI_LIFE_EVENTS, NIHONGI_TENSIONS, NIHONGI_SECRETS,
   NIHONGI_NAME_POOLS, NIHONGI_PARENT_STATUSES, NIHONGI_SIBLING_DYNAMICS, NIHONGI_FAMILY_STRUCTURES,
   // Shared
-  RELATIONSHIP_STATUSES, SENTIMENTS,
+  RELATIONSHIP_STATUSES, SENTIMENTS, STATIC_CARDS_BY_GENRE,
   COMMON_PLOT_ARCHETYPES, MODERN_PLOT_ARCHETYPES, FANTASY_PLOT_ARCHETYPES, SCIFI_PLOT_ARCHETYPES, PALEOLITHIC_PLOT_ARCHETYPES, MANGA_HS_PLOT_ARCHETYPES, JOSEON_PLOT_ARCHETYPES, NIHONGI_PLOT_ARCHETYPES,
   STAT_ADJECTIVES, statAdjective,
   MBTI_TYPES,
@@ -3188,14 +3188,35 @@ async function copyTags(btn) {
   await copyText(text, btn);
 }
 
-async function copyAll(btn) {
-  if (!currentOutput || !currentSkeleton) return;
+// Mirrors STATIC_CARD_TYPE_MAP in web/tools/aidungeon-importer.mjs — keep in sync.
+const STATIC_CARD_TYPE_MAP = {
+  STATIC_CHARACTERS: 'character',
+  STATIC_CLASSES:    'class',
+  STATIC_RACES:      'race',
+  STATIC_LOCATIONS:  'location',
+  STATIC_FACTIONS:   'faction',
+  STATIC_CUSTOM:     'custom',
+};
+
+// Shared by copyAll() and downloadPackage() so the two never drift out of sync.
+function buildScenarioPayload() {
   const annotatedStats = Object.fromEntries(
     Object.entries(currentSkeleton.stats).map(([k, v]) => [k, `${v} (${statAdjective(k, v)})`])
   );
-  const payload = {
+
+  const genreCards = STATIC_CARDS_BY_GENRE[currentGenre];
+  const staticCards = genreCards
+    ? Object.entries(STATIC_CARD_TYPE_MAP).flatMap(([exportName, type]) =>
+        (genreCards[exportName] ?? []).map(({ name, triggers, entry }) =>
+          ({ type, title: name, keys: triggers, value: entry })
+        )
+      )
+    : [];
+
+  return {
     skeleton: { ...currentSkeleton, stats: annotatedStats },
     scenario: {
+      genre:            currentGenre,
       title:            currentOutput.title,
       description:      currentOutput.description,
       tags:             currentOutput.tags,
@@ -3208,8 +3229,13 @@ async function copyAll(btn) {
       [currentSkeleton.name]: currentOutput.characterEntry,
       ...currentOutput.npcEntries,
     },
+    staticCards,
   };
-  await copyText(JSON.stringify(payload, null, 2), btn);
+}
+
+async function copyAll(btn) {
+  if (!currentOutput || !currentSkeleton) return;
+  await copyText(JSON.stringify(buildScenarioPayload(), null, 2), btn);
 }
 
 async function downloadPackage(btn) {
@@ -3224,25 +3250,7 @@ async function downloadPackage(btn) {
   btn.textContent = '⚙ Building…';
 
   try {
-    const annotatedStats = Object.fromEntries(
-      Object.entries(currentSkeleton.stats).map(([k, v]) => [k, `${v} (${statAdjective(k, v)})`])
-    );
-    const payload = {
-      skeleton: { ...currentSkeleton, stats: annotatedStats },
-      scenario: {
-        title:            currentOutput.title,
-        description:      currentOutput.description,
-        tags:             currentOutput.tags,
-        opening:          currentOutput.opening,
-        appearancePrompt: currentOutput.appearancePrompt,
-        plotEssentials:   currentOutput.plotEssentials   ?? '',
-        authorNote:       currentOutput.authorNote        ?? '',
-      },
-      characters: {
-        [currentSkeleton.name]: currentOutput.characterEntry,
-        ...currentOutput.npcEntries,
-      },
-    };
+    const payload = buildScenarioPayload();
 
     const zip = new JSZip();
     zip.file('scenario.json', JSON.stringify(payload, null, 2));

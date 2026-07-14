@@ -200,6 +200,26 @@ export { MANGA_HS_PLOT_ARCHETYPES }   from './genres/manga-osaka-highschool1987/
 export { JOSEON_PLOT_ARCHETYPES }     from './genres/historical-korea-joseon-dynasty/plot-archetypes.js';
 export { NIHONGI_PLOT_ARCHETYPES }   from './genres/nihongi/plot-archetypes.js';
 
+// ── STATIC STORY CARDS — genre lore for AI Dungeon (see aidungeon-importer.mjs) ──
+// Keyed by the same genre id used everywhere else (currentGenre, GENRE_MUSIC_PREFIX,
+// getGenreTables). Not every genre has a static-cards.js file yet.
+import * as FantasyStaticCards from './genres/fantasy/static-cards.js';
+import * as SciFiStaticCards   from './genres/sci-fi/static-cards.js';
+import * as PaleoStaticCards   from './genres/paleolithic/static-cards.js';
+import * as MangaHsStaticCards from './genres/manga-osaka-highschool1987/static-cards.js';
+import * as ModernStaticCards  from './genres/modern/static-cards.js';
+import * as NihongiStaticCards from './genres/nihongi/static-cards.js';
+// historical-korea-joseon-dynasty has no static-cards.js yet.
+
+export const STATIC_CARDS_BY_GENRE = {
+  fantasy:                          FantasyStaticCards,
+  'sci-fi':                         SciFiStaticCards,
+  paleolithic:                      PaleoStaticCards,
+  'manga-osaka-highschool1987':     MangaHsStaticCards,
+  modern:                           ModernStaticCards,
+  nihongi:                          NihongiStaticCards,
+};
+
 // ── STAT ADJECTIVES ─────────────────────────────────────────────────────────
 export { STAT_ADJECTIVES, statAdjective } from './stat-adjectives.js';
 

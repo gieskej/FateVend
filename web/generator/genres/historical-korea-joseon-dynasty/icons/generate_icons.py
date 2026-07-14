@@ -32,8 +32,7 @@ GENRE_PROMPT = (
 STYLE = (
     "square icon, Joseon Dynasty Korean court painting style, "
     "minhwa folk art, clean flat colors with mineral pigments, traditional hanbok dress, "
-    "decorative floral and nature motifs, centered subject, "
-    "white background, confident ink outline, warm earth and jewel tones"
+    "centered subject, confident ink outline, warm earth and jewel tones"
 )
 
 PARAMS = dict(

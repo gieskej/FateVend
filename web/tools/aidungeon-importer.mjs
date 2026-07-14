@@ -10,7 +10,7 @@
 
 import { readFileSync, writeFileSync, existsSync, unlinkSync } from 'node:fs';
 import { resolve, join, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { tmpdir } from 'node:os';
 
 // ── .env loader ───────────────────────────────────────────────────────────────
@@ -61,24 +61,68 @@ if (!email || !password) {
 // ── Story cards temp file ─────────────────────────────────────────────────────
 // AI Dungeon rejects imports if any card's value exceeds 1000 bytes.
 const MAX_CARD_BYTES = 1000;
-const storyCards = Object.entries(characters ?? {}).map(([fullName, value]) => {
+
+function toStoryCard({ keys, value, type, title }) {
   const encoded = new TextEncoder().encode(value);
   let truncated = value;
   if (encoded.length > MAX_CARD_BYTES) {
     // Truncate to MAX_CARD_BYTES bytes, then back to valid UTF-8 string boundary.
     truncated = new TextDecoder().decode(encoded.slice(0, MAX_CARD_BYTES - 1)).trimEnd() + '…';
-    console.warn(`  Truncated "${fullName}" from ${encoded.length} → ${MAX_CARD_BYTES} bytes`);
+    console.warn(`  Truncated "${title}" from ${encoded.length} → ${MAX_CARD_BYTES} bytes`);
   }
   return {
-    keys:                    `${fullName.split(' ')[0]}, ${fullName}`,
+    keys,
     value:                   truncated,
-    type:                    'character',
-    title:                   fullName,
+    type,
+    title,
     description:             '',
     useForCharacterCreation: false,
   };
-});
-console.log(`Story cards prepared: ${storyCards.length} cards.`);
+}
+
+// Each genre's static-cards.js export maps to an AI Dungeon story card "type".
+const STATIC_CARD_TYPE_MAP = {
+  STATIC_CHARACTERS: 'character',
+  STATIC_CLASSES:    'class',
+  STATIC_RACES:      'race',
+  STATIC_LOCATIONS:  'location',
+  STATIC_FACTIONS:   'faction',
+  STATIC_CUSTOM:     'custom',
+};
+
+// Loads generator/genres/<genre>/static-cards.js (if it exists) and flattens
+// its STATIC_* exports into { name, triggers, entry, type } entries.
+async function loadStaticCards(genre) {
+  if (!genre) {
+    console.warn('  No scenario.genre in scenario.json — skipping genre static cards.');
+    return [];
+  }
+  const staticCardsPath = join(projectRoot, 'web', 'generator', 'genres', genre, 'static-cards.js');
+  if (!existsSync(staticCardsPath)) {
+    console.warn(`  No static-cards.js for genre "${genre}" — skipping genre static cards.`);
+    return [];
+  }
+  const mod = await import(pathToFileURL(staticCardsPath).href);
+  const cards = [];
+  for (const [exportName, type] of Object.entries(STATIC_CARD_TYPE_MAP)) {
+    for (const item of mod[exportName] ?? []) {
+      cards.push({ ...item, type });
+    }
+  }
+  return cards;
+}
+
+const npcCards = Object.entries(characters ?? {}).map(([fullName, value]) =>
+  toStoryCard({ keys: `${fullName.split(' ')[0]}, ${fullName}`, value, type: 'character', title: fullName })
+);
+
+const genreStaticCards = await loadStaticCards(scenario.genre);
+const staticCards = genreStaticCards.map(({ name, triggers, entry, type }) =>
+  toStoryCard({ keys: triggers, value: entry, type, title: name })
+);
+
+const storyCards = [...npcCards, ...staticCards];
+console.log(`Story cards prepared: ${npcCards.length} character cards + ${staticCards.length} genre static cards (${storyCards.length} total).`);
 
 const tempCardsPath = join(tmpdir(), `fatevend-story-cards-${Date.now()}.json`);
 writeFileSync(tempCardsPath, JSON.stringify(storyCards, null, 2));
@@ -109,6 +153,24 @@ async function clickTab(label) {
   const tab = (await byRole.count()) > 0 ? byRole.first() : byText.first();
   await tab.click();
   await page.waitForTimeout(600);
+}
+
+// The New Story Card form's TYPE field is an ARIA combobox (role="combobox",
+// options rendered as role="option"). It is NOT wrapped in an element with
+// role="dialog" (verified live — zero role="dialog" elements on the page), so
+// that must not be used to scope this lookup. Options: Character, Class,
+// Race, Location, Faction, Custom. Only the FIRST card of a run defaults to
+// "Character" — the form remembers the last type selected, so this reads the
+// combobox's current value each time rather than assuming a fixed default.
+async function setCardType(type) {
+  const label = type.charAt(0).toUpperCase() + type.slice(1); // 'class' -> 'Class'
+  const combobox = page.getByRole('combobox').first();
+  const current = (await combobox.textContent())?.trim();
+  if (current === label) return; // already showing the type we want
+  await combobox.click();
+  await page.waitForTimeout(300);
+  await page.getByRole('option', { name: label, exact: true }).click();
+  await page.waitForTimeout(300);
 }
 
 // Read back a filled field and warn if it's empty or doesn't start with expected text.
@@ -254,6 +316,17 @@ try {
     await page.getByRole('button', { name: /create story card/i }).click();
     await page.waitForTimeout(800);
 
+    // TYPE field — defaults to "Character"; only needs changing for the rest.
+    await setCardType(card.type);
+
+    // "Custom" reveals an extra free-text sub-type field ("Enter a custom type...")
+    // with no equivalent in our data — fill it with a generic label rather than
+    // leave it blank.
+    if (card.type === 'custom') {
+      const customTypeField = page.getByPlaceholder(/enter a custom type/i);
+      if (await customTypeField.count() > 0) await fill(customTypeField, 'Lore');
+    }
+
     // NAME field — "Enter a name..."
     const nameField = page.getByPlaceholder(/enter a name/i);
     await nameField.waitFor({ timeout: 8_000 });
@@ -271,11 +344,12 @@ try {
       await fill(triggersField.first(), card.keys);
     }
 
-    // FINISH button inside the "New Story Card" dialog (rendered as a portal, so it is
-    // last in DOM order when the dialog is open; the scenario FINISH is first).
+    // FINISH button inside the "New Story Card" form (rendered as a portal, so it is
+    // last in DOM order when the form is open; the scenario FINISH is first).
     await page.getByRole('button', { name: /^finish$/i }).last().click();
-    // Wait for the dialog to close before moving on to the next card.
-    await page.locator('[role="dialog"]').waitFor({ state: 'detached', timeout: 5_000 }).catch(() => {});
+    // Wait for the form to close before opening the next card — the NAME field only
+    // exists while it's open (there's no role="dialog" wrapper to key off of here).
+    await nameField.waitFor({ state: 'detached', timeout: 5_000 }).catch(() => {});
     await page.waitForTimeout(300);
   }
 

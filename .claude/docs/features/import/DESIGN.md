@@ -21,7 +21,7 @@ node web/tools/aidungeon-importer.mjs --input <path-to-scenario-folder> [--heade
 
 ```
 <folder>/
-  scenario.json    ← title, description, opening, tags, plotEssentials, authorNote, characters{}
+  scenario.json    ← genre, title, description, opening, tags, plotEssentials, authorNote, characters{}
   portrait.png     ← protagonist portrait image
 ```
 
@@ -58,15 +58,31 @@ node web/tools/aidungeon-importer.mjs --input <path-to-scenario-folder> [--heade
 
 **Current approach: create each card individually via CREATE STORY CARD form.**
 
-For each entry in `scenario.characters`:
+Cards come from two sources, combined into one `storyCards` array:
+1. `scenario.characters` — the protagonist + generated NPCs, always `type: 'character'`.
+2. `web/generator/genres/<scenario.genre>/static-cards.js` (if it exists for that genre) — hand-written lore cards, one export per story-card type:
+
+   | Export              | Story card `type` |
+   |----------------------|--------------------|
+   | `STATIC_CHARACTERS`  | `character`        |
+   | `STATIC_CLASSES`     | `class`             |
+   | `STATIC_RACES`       | `race`              |
+   | `STATIC_LOCATIONS`   | `location`          |
+   | `STATIC_FACTIONS`    | `faction`           |
+   | `STATIC_CUSTOM`      | `custom`            |
+
+   Each entry is `{ name, triggers, entry }` — mapped to `title`/`keys`/`value` respectively. `scenario.genre` (added to the exported package specifically so the importer can find the right file) determines which genre folder to load; missing genre or missing `static-cards.js` just skips this source with a warning (not an error — Joseon doesn't have one yet).
+
+For each card in the combined array:
 
 1. Click `getByRole('button', { name: /create story card/i })`
-2. Wait 800ms for the "New Story Card" modal to open
-3. NAME field: `getByPlaceholder(/enter a name/i)` ← `character full name`
-4. ENTRY field: `[aria-label="Value"]` ← character description (truncated to 1000 chars)
-5. TRIGGERS field: `getByPlaceholder(/comma separated.*trigger/i)` ← `"FirstName, FullName"`
-6. Click FINISH — the modal's FINISH is last in DOM order (rendered as a portal after the scenario editor's FINISH)
-7. Wait for `[role="dialog"]` to detach before opening the next card
+2. Wait 800ms for the "New Story Card" form to open
+3. TYPE field: an ARIA combobox (`role="combobox"`, options rendered as `role="option"`) — **not** wrapped in an element with `role="dialog"` (confirmed live: zero `role="dialog"` elements exist on this page at all, so nothing in this flow may be scoped to it). Only the very first card of a run defaults to "Character" — the form remembers whatever type was last selected, so `setCardType()` reads the combobox's current text each time and only clicks through if it doesn't already match the target label. Selecting `custom` reveals an extra free-text sub-type field (`getByPlaceholder(/enter a custom type/i)`), filled with a generic `"Lore"` since our data has no per-item custom-type label.
+4. NAME field: `getByPlaceholder(/enter a name/i)` ← `title`
+5. ENTRY field: `[aria-label="Value"]` ← `value` (truncated to 1000 chars)
+6. TRIGGERS field: `getByPlaceholder(/comma separated.*trigger/i)` ← `keys`
+7. Click FINISH — the form's FINISH is last in DOM order (rendered as a portal after the scenario editor's FINISH)
+8. Wait for the NAME field to detach before opening the next card (there's no `role="dialog"` to key off of — see point 3)
 
 **Story card object structure** (for reference / future file-import retry):
 ```json
@@ -79,6 +95,10 @@ For each entry in `scenario.characters`:
   "useForCharacterCreation": false
 }
 ```
+
+> Verified end-to-end against the live site (2026-07-13): a real Nihongi scenario, 57 cards (7 NPC + 50 static across all 6 types), completed and saved successfully. Two bugs were caught and fixed during that run — both listed above are the corrected versions:
+> - The TYPE control has no `role="dialog"` wrapper at all; the original selector scoped to one and simply never matched anything, timing out on the very first non-character card.
+> - The form remembers the last-selected type rather than always resetting to "Character", so an approach that unconditionally clicks a "Character"-labeled control fails on the second consecutive card of a non-character type (it did — same error, one card later).
 
 ### 6. Portrait Upload
 - Click DETAILS tab
@@ -102,10 +122,12 @@ For each entry in `scenario.characters`:
 | Story Summary         | `scenario.opening`                                   |
 | Plot Essentials       | `scenario.plotEssentials` (skip if blank)            |
 | Author's Note         | `scenario.authorNote` (skip if blank)                |
-| Story Cards NAME      | character key (full name)                            |
-| Story Cards ENTRY     | character value (description, ≤ 1000 chars)          |
-| Story Cards TRIGGERS  | `"FirstName, FullName"`                              |
+| Story Cards TYPE      | `character` for NPCs; genre static cards use their STATIC_* export's mapped type (see table above) |
+| Story Cards NAME      | character key (full name), or a static card's `name`  |
+| Story Cards ENTRY     | character value (description, ≤ 1000 chars), or a static card's `entry` |
+| Story Cards TRIGGERS  | `"FirstName, FullName"` for NPCs; a static card's `triggers` string as-is |
 | Portrait              | `portrait.png`                                       |
+| Genre static cards    | `web/generator/genres/<scenario.genre>/static-cards.js` (skipped if missing) |
 
 ---
 
