@@ -8,6 +8,9 @@
 
 ## Bugs - Fantasy
 - Redo all the missing icons in Fantasy
+- The text-to-image prompt needs to handle special cases:
+  - Dragonborn: Illustration of a person with golden dragon scale skin, thin but muscular body, long dark hair, fiery golden eyes, sharp filed teeth, prominent facial scales, subtle horns protruding from hair
+
 ## Bugs - Modern
 - The Modern genre is crap.  It is too general and open ended to be any fun.  Let's recast it to ...
 - Why does Modern character with name "Suzuki" get Asian/Indian?
@@ -21,7 +24,9 @@
 ## Bugs - Osaka
 ## Bugs - Paleo
 ## Bugs - Sci-Fi
-- The text-to-image generator has no idea what an alien looks like, so we need specific alien features mentioned in their portrait prompts (e.g. unusual skin color, horns, scales, webbed fingers, forked tongue, pointed ears, etc).  Likewise, non-humanoid aliens should be even more unusual looking (e.g. four legs, no legs, amoeba, tenticals, insect, vapor, lava, jelly, etc)
+- The text-to-image prompt needs to handle special cases:
+  - Aliens: The text-to-image generator has no idea what an alien looks like, so we need specific alien features mentioned in their portrait prompts (e.g. unusual skin color, horns, scales, webbed fingers, forked tongue, pointed ears, etc).  Likewise, non-humanoid aliens should be even more unusual looking (e.g. four legs, no legs, amoeba, tenticals, insect, vapor, lava, jelly, etc)
+  - "Android — Industrial Android" are genderless machines, so they shouldn't have hair, age, clothes, tattoos, a face like (famous person) and should ignore the NSFW flag.
 
 
 ### Low Priority Bugs
@@ -46,6 +51,8 @@
 ---
 
 ## Fixed Bugs
+- BUG: The Story Card TYPE selector broke again after a live AI Dungeon UI change (role="combobox" removed entirely from the control) — rewrote `setCardType()` to locate it structurally instead of by ARIA role. Also fixed a separate bug found in the same investigation: the real "Import to AI Dungeon" button never sent `scenario.genre`, so genre lore cards silently never loaded through the actual UI (only through manually-built test packages). Added an opt-in `--debug-screenshots` flag to the importer for diagnosing this class of live-site-drift bug faster next time.
+- BUG: AI Dungeon import failures (bad credentials, a changed selector, a Playwright crash) were completely silent — the companion server responded "ok" the instant it spawned the importer, before anything could actually fail. It now holds the HTTP response open until the importer process exits and reports real success/failure/error text back to the button.
 - FEAT: Added a "Preferred gender" / "Preferred orientation" option in Settings → Options — pins the protagonist's rolled gender/orientation instead of leaving it fully random, cascading naturally to the generated love-interest NPC. Defaults to "Any (random)", the prior behavior.
 - FEAT: Filled out static-cards.js content across genres — Fantasy locations/factions, Sci-Fi and Paleolithic classes/races/locations/factions (previously all empty), five invented student hangout spots for Manga-Osaka, and physical appearance/personality added to every Nihongi character and race entry.
 - FEAT: Added genre lore story cards (static-cards.js, currently Fantasy/Sci-Fi/Paleolithic/Manga/Modern/Nihongi) — the AI Dungeon importer now injects these as typed Story Cards (character/class/race/location/faction/custom) alongside NPC cards, and "Copy Full Text To Clipboard (JSON)" / "Download Package" both include them too via a new shared buildScenarioPayload() helper (previously the two had already drifted out of sync — download had `genre`, copy didn't).

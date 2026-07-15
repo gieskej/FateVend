@@ -8,7 +8,9 @@
 //
 // The web app will show an "Import to AI Dungeon" button whenever this server
 // is reachable. Clicking it sends the current scenario here, which writes a
-// temp folder and spawns aidungeon-importer.mjs --headed.
+// temp folder and spawns aidungeon-importer.mjs --headed. The HTTP response
+// is held open until the importer process exits, then reports success or
+// failure (with captured stderr) back to the browser.
 
 import { createServer }           from 'node:http';
 import { writeFileSync, mkdirSync, existsSync } from 'node:fs';
@@ -75,13 +77,35 @@ const server = createServer(async (req, res) => {
     console.log(`  Temp folder: ${tmpDir}`);
 
     const child = spawn(process.execPath, [importerPath, '--input', tmpDir, '--headed'], {
-      stdio: ['ignore', 'inherit', 'inherit'],
-    });
-    child.on('exit', code => {
-      console.log(`◼ Import finished (exit ${code}).`);
+      stdio: ['ignore', 'pipe', 'pipe'],
     });
 
-    json(200, { ok: true });
+    // Mirror the importer's output to this server's own terminal live, while
+    // also buffering it (stderr especially) so a failure can be reported
+    // back to the browser instead of only ever showing up here.
+    let output = '';
+    const capture = data => {
+      process.stdout.write(data);
+      output += data.toString();
+      if (output.length > 8000) output = output.slice(-8000);
+    };
+    child.stdout.on('data', capture);
+    child.stderr.on('data', capture);
+
+    child.on('error', err => {
+      console.error(`◼ Failed to launch importer: ${err.message}`);
+      json(500, { ok: false, error: `Failed to launch importer: ${err.message}` });
+    });
+
+    child.on('exit', code => {
+      console.log(`◼ Import finished (exit ${code}).`);
+      if (code === 0) {
+        json(200, { ok: true });
+      } else {
+        json(200, { ok: false, error: output.trim() || `Importer exited with code ${code}` });
+      }
+    });
+
     return;
   }
 

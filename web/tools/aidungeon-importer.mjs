@@ -8,7 +8,7 @@
 //
 // Credentials: AIDUNGEON_EMAIL and AIDUNGEON_PASSWORD in .env at project root.
 
-import { readFileSync, writeFileSync, existsSync, unlinkSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, unlinkSync, mkdirSync } from 'node:fs';
 import { resolve, join, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { tmpdir } from 'node:os';
@@ -32,12 +32,13 @@ function opt(name) {
   return i !== -1 && args[i + 1] ? args[i + 1] : null;
 }
 
-const inputFolder = opt('--input');
-const headed      = flag('--headed');
-const slowMo      = parseInt(opt('--slowmo') ?? '0', 10);
+const inputFolder    = opt('--input');
+const headed         = flag('--headed');
+const slowMo         = parseInt(opt('--slowmo') ?? '0', 10);
+const debugScreenshotDir = opt('--debug-screenshots');
 
 if (!inputFolder) {
-  console.error('Usage: node aidungeon-importer.mjs --input <scenario-folder> [--headed] [--slowmo 200]');
+  console.error('Usage: node aidungeon-importer.mjs --input <scenario-folder> [--headed] [--slowmo 200] [--debug-screenshots <dir>]');
   process.exit(1);
 }
 
@@ -146,6 +147,15 @@ async function fill(locator, text) {
   await locator.fill(text);
 }
 
+// Opt-in debug screenshots (--debug-screenshots <dir>) — a no-op unless passed.
+if (debugScreenshotDir) mkdirSync(debugScreenshotDir, { recursive: true });
+let shotCount = 0;
+async function snap(label) {
+  if (!debugScreenshotDir) return;
+  const name = `${String(++shotCount).padStart(3, '0')}-${label}.png`;
+  await page.screenshot({ path: join(debugScreenshotDir, name), fullPage: true }).catch(() => {});
+}
+
 // Click a tab by its visible label text.
 async function clickTab(label) {
   const byRole = page.getByRole('tab', { name: new RegExp(label, 'i') });
@@ -155,19 +165,25 @@ async function clickTab(label) {
   await page.waitForTimeout(600);
 }
 
-// The New Story Card form's TYPE field is an ARIA combobox (role="combobox",
-// options rendered as role="option"). It is NOT wrapped in an element with
-// role="dialog" (verified live — zero role="dialog" elements on the page), so
-// that must not be used to scope this lookup. Options: Character, Class,
-// Race, Location, Faction, Custom. Only the FIRST card of a run defaults to
-// "Character" — the form remembers the last type selected, so this reads the
-// combobox's current value each time rather than assuming a fixed default.
+// The New Story Card form's TYPE field lost its role="combobox" in a live-site
+// update (verified 2026-07-14 — it's now a plain <button>, role: null, with no
+// ARIA semantics at all; the dropdown's options are still role="option" though,
+// role="listbox" for the list itself). It is NOT wrapped in an element with
+// role="dialog" either (verified live — zero role="dialog" elements on the
+// page), so that must not be used to scope this lookup. Instead, find the
+// button by its fixed position immediately after the "Type" label (the visible
+// "TYPE" is CSS text-transform:uppercase — the actual DOM text is "Type").
+// Options: Character, Class, Race, Location, Faction, Custom. Only the FIRST
+// card of a run defaults to "Character" — the form remembers the last type
+// selected, so this reads the button's current text each time (which also
+// includes a literal icon-ligature suffix like "Characterw_chevron_down",
+// hence startsWith rather than an exact match) rather than assuming a default.
 async function setCardType(type) {
   const label = type.charAt(0).toUpperCase() + type.slice(1); // 'class' -> 'Class'
-  const combobox = page.getByRole('combobox').first();
-  const current = (await combobox.textContent())?.trim();
-  if (current === label) return; // already showing the type we want
-  await combobox.click();
+  const typeButton = page.getByText('Type', { exact: true }).locator('xpath=following::button[1]');
+  const current = (await typeButton.textContent())?.trim();
+  if (current && current.startsWith(label)) return; // already showing the type we want
+  await typeButton.click();
   await page.waitForTimeout(300);
   await page.getByRole('option', { name: label, exact: true }).click();
   await page.waitForTimeout(300);
@@ -313,44 +329,57 @@ try {
     const card = storyCards[i];
     console.log(`  Creating card ${i + 1}/${storyCards.length}: ${card.title}`);
 
-    await page.getByRole('button', { name: /create story card/i }).click();
-    await page.waitForTimeout(800);
+    try {
+      await page.getByRole('button', { name: /create story card/i }).click();
+      await page.waitForTimeout(800);
+      await snap(`card${i}-00-form-opened`);
 
-    // TYPE field — defaults to "Character"; only needs changing for the rest.
-    await setCardType(card.type);
+      // TYPE field — defaults to "Character"; only needs changing for the rest.
+      await setCardType(card.type);
+      await snap(`card${i}-01-type-set-${card.type}`);
 
-    // "Custom" reveals an extra free-text sub-type field ("Enter a custom type...")
-    // with no equivalent in our data — fill it with a generic label rather than
-    // leave it blank.
-    if (card.type === 'custom') {
-      const customTypeField = page.getByPlaceholder(/enter a custom type/i);
-      if (await customTypeField.count() > 0) await fill(customTypeField, 'Lore');
+      // "Custom" reveals an extra free-text sub-type field ("Enter a custom type...")
+      // with no equivalent in our data — fill it with a generic label rather than
+      // leave it blank.
+      if (card.type === 'custom') {
+        const customTypeField = page.getByPlaceholder(/enter a custom type/i);
+        if (await customTypeField.count() > 0) await fill(customTypeField, 'Lore');
+      }
+
+      // NAME field — "Enter a name..."
+      const nameField = page.getByPlaceholder(/enter a name/i);
+      await nameField.waitFor({ timeout: 8_000 });
+      await fill(nameField, card.title);
+      await snap(`card${i}-02-name-filled`);
+
+      // ENTRY field — aria-label="Value", limit 1000 chars.
+      const valueField = page.locator('[aria-label="Value"]');
+      await fill(valueField, card.value);
+      await snap(`card${i}-03-value-filled`);
+
+      // TRIGGERS field — "Enter a comma separated list triggers..."
+      const triggersField = page.getByPlaceholder(/comma separated.*trigger|enter.*trigger/i)
+        .or(page.locator('[aria-label*="Trigger" i]'));
+      if (await triggersField.count() > 0) {
+        await triggersField.first().scrollIntoViewIfNeeded();
+        await fill(triggersField.first(), card.keys);
+      }
+      await snap(`card${i}-04-triggers-filled`);
+
+      // FINISH button inside the "New Story Card" form (rendered as a portal, so it is
+      // last in DOM order when the form is open; the scenario FINISH is first).
+      await page.getByRole('button', { name: /^finish$/i }).last().click();
+      await snap(`card${i}-05-finish-clicked`);
+      // Wait for the form to close before opening the next card — the NAME field only
+      // exists while it's open (there's no role="dialog" wrapper to key off of here).
+      await nameField.waitFor({ state: 'detached', timeout: 5_000 }).catch(() => {});
+      await page.waitForTimeout(300);
+      await snap(`card${i}-06-form-closed`);
+    } catch (err) {
+      await snap(`card${i}-ERROR`);
+      console.error(`  FAILED on card ${i + 1}/${storyCards.length} ("${card.title}", type=${card.type}): ${err.message}`);
+      throw err;
     }
-
-    // NAME field — "Enter a name..."
-    const nameField = page.getByPlaceholder(/enter a name/i);
-    await nameField.waitFor({ timeout: 8_000 });
-    await fill(nameField, card.title);
-
-    // ENTRY field — aria-label="Value", limit 1000 chars.
-    const valueField = page.locator('[aria-label="Value"]');
-    await fill(valueField, card.value);
-
-    // TRIGGERS field — "Enter a comma separated list triggers..."
-    const triggersField = page.getByPlaceholder(/comma separated.*trigger|enter.*trigger/i)
-      .or(page.locator('[aria-label*="Trigger" i]'));
-    if (await triggersField.count() > 0) {
-      await triggersField.first().scrollIntoViewIfNeeded();
-      await fill(triggersField.first(), card.keys);
-    }
-
-    // FINISH button inside the "New Story Card" form (rendered as a portal, so it is
-    // last in DOM order when the form is open; the scenario FINISH is first).
-    await page.getByRole('button', { name: /^finish$/i }).last().click();
-    // Wait for the form to close before opening the next card — the NAME field only
-    // exists while it's open (there's no role="dialog" wrapper to key off of here).
-    await nameField.waitFor({ state: 'detached', timeout: 5_000 }).catch(() => {});
-    await page.waitForTimeout(300);
   }
 
   console.log(`Story cards created: ${storyCards.length}.`);
