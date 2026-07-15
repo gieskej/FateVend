@@ -4,6 +4,38 @@
 # watch the "Serving HTTP on ..." line below for the actual port used).
 cd "$(dirname "$0")"
 
+STATIC_PID_FILE=".serve-static.pid"
+AIDUNGEON_PID_FILE=".serve-aidungeon.pid"
+
+# Stop anything left running from a previous run of this script before
+# starting new instances — a closed terminal or a killed shell doesn't always
+# take its background children with it, so a stale process can otherwise keep
+# running (and serving stale code) indefinitely.
+kill_stale() {
+  local pidfile="$1" label="$2"
+  if [ -f "$pidfile" ]; then
+    local pid
+    pid=$(cat "$pidfile" 2>/dev/null)
+    if [ -n "$pid" ]; then
+      echo "Stopping previous $label (PID $pid)…"
+      # Plain `kill` only reliably signals processes this same shell/MSYS
+      # runtime spawned itself (e.g. `node ... &` backgrounded in this
+      # script) — a PID that a *different* prior run wrote to disk (like a
+      # Python process's own self-reported native Windows PID) often isn't
+      # in bash's PID namespace at all, so `kill` silently no-ops on it.
+      # `taskkill` operates on real Windows PIDs directly and reliably
+      # catches that case; try both, ignore errors either way.
+      kill "$pid" 2>/dev/null
+      command -v taskkill &>/dev/null && taskkill //F //PID "$pid" >/dev/null 2>&1
+      sleep 0.3
+      kill -9 "$pid" 2>/dev/null
+    fi
+    rm -f "$pidfile"
+  fi
+}
+kill_stale "$AIDUNGEON_PID_FILE" "AI Dungeon import server"
+kill_stale "$STATIC_PID_FILE" "static file server"
+
 # Write config.js from the root .env so the browser can read the API key
 # without the .env file itself ever being served. Also stamps the current git
 # commit so the Settings modal can show which version is actually running.
@@ -49,9 +81,10 @@ PY
 if command -v node &>/dev/null; then
   node tools/aidungeon-server.mjs &
   AIDUNGEON_SERVER_PID=$!
+  echo "$AIDUNGEON_SERVER_PID" > "$AIDUNGEON_PID_FILE"
   # INT/TERM explicitly, not just EXIT — systemd stops services with SIGTERM,
   # and without a handler for it bash kills the child but skips the EXIT trap.
-  trap 'kill $AIDUNGEON_SERVER_PID 2>/dev/null; exit 0' EXIT INT TERM
+  trap 'kill $AIDUNGEON_SERVER_PID 2>/dev/null; rm -f "$AIDUNGEON_PID_FILE" "$STATIC_PID_FILE"; exit 0' EXIT INT TERM
 else
   echo "node not found — AI Dungeon import server not started."
 fi
@@ -62,7 +95,11 @@ fi
 # -u: unbuffered stdout, so the port/URL message (and journalctl -f) show up
 # immediately instead of sitting in a buffer that's lost if the process is killed.
 python3 -u - <<'PY'
-import http.server, socket
+import http.server, socket, os, pathlib
+
+# Record our own PID so the next run of serve.sh can stop us if we're
+# still around (e.g. this terminal got closed without a clean Ctrl+C).
+pathlib.Path('.serve-static.pid').write_text(str(os.getpid()))
 
 class NoCacheHandler(http.server.SimpleHTTPRequestHandler):
     def end_headers(self):

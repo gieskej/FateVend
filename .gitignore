@@ -8,5 +8,7 @@ old
 tmp
 web/.env
 web/generator/config.js
+web/.serve-static.pid
+web/.serve-aidungeon.pid
 images.txt
 tools/regenerate-icons-gemini.py
