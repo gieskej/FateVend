@@ -30,7 +30,6 @@
 
 
 ### Low Priority Bugs
-- The aidungeon-importer is flaky about uploading the portrait image.  Sometimes it works, sometimes it does not.
 - Sometimes generate_icons hangs and you have to restart the whole shell to recover.
 - Think of a better project name.
 - Refactor to make it easier to add new genres, ideally as downloadable extensions.
@@ -51,6 +50,7 @@
 ---
 
 ## Fixed Bugs
+- BUG: The aidungeon-importer's portrait upload was flaky (sometimes worked, sometimes silently landed on an unrelated stock image). Root cause: the code unconditionally clicked a "SELECT" button after uploading, but that button belongs to a *different* flow (choosing an existing image from the gallery grid) — a fresh upload actually finishes and closes the modal on its own, no confirm click needed. Depending on timing, clicking it could land on a random stock/template image instead of the real upload. Removed the click entirely; now waits for the Content Image element's own src to actually change.
 - BUG: Re-running serve.sh never stopped the previous run's background processes (aidungeon-server.mjs, the static file server) — a closed terminal left them running indefinitely. Both now write a PID file on startup that the next run stops first (via `kill` + a `taskkill` fallback, needed since plain `kill` can't reliably signal a PID a different prior process wrote to disk on this Windows setup).
 - BUG: The Story Card TYPE selector broke again after a live AI Dungeon UI change (role="combobox" removed entirely from the control) — rewrote `setCardType()` to locate it structurally instead of by ARIA role. Also fixed a separate bug found in the same investigation: the real "Import to AI Dungeon" button never sent `scenario.genre`, so genre lore cards silently never loaded through the actual UI (only through manually-built test packages). Added an opt-in `--debug-screenshots` flag to the importer for diagnosing this class of live-site-drift bug faster next time.
 - BUG: AI Dungeon import failures (bad credentials, a changed selector, a Playwright crash) were completely silent — the companion server responded "ok" the instant it spawned the importer, before anything could actually fail. It now holds the HTTP response open until the importer process exits and reports real success/failure/error text back to the button.

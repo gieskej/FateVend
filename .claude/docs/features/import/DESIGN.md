@@ -104,10 +104,11 @@ For each card in the combined array:
 
 ### 6. Portrait Upload
 - Click DETAILS tab
+- Capture the current `img[alt="Content Image"]` `src` before opening the modal (it stays present, just dimmed, behind the modal overlay — used below to detect the real change)
 - Click the portrait container via `page.evaluate()` + `dispatchEvent(MouseEvent)` — a tab overlay intercepts Playwright's native click on `img[alt="Content Image"]`
 - In the Images modal, click "Upload" sidebar item
 - Trigger the file chooser: `page.evaluate(() => document.querySelector('input[type="file"]')?.click())` — must use evaluate so the filechooser fires from a native browser click (React processes the result correctly)
-- Wait for `img[src*="aidungeon"]` preview to appear (upload complete), then click SELECT
+- Wait for the `img[alt="Content Image"]` element's own `src` to change to something new — **do not click SELECT.** For a freshly uploaded file, AI Dungeon applies it and closes the Images modal on its own with no confirm step; SELECT belongs to a different flow (confirming a pick from the existing gallery grid). Clicking it after a fresh upload was the root cause of a long-standing "flaky" bug — depending on timing it would land on a random unrelated stock/template image instead of the real upload, even though the upload itself always succeeded server-side (verified live 2026-07-15 via network logging: `uploads.aidungeon.com/upload-handler` always returned 200). An earlier, now-removed version of this fix waited for "any `img[src*='aidungeon']` to exist," which is also wrong — the modal's gallery view already has dozens of matches (the user's media library) before a file is ever picked.
 
 ### 7. Save
 - Click `getByRole('button', { name: /^finish$/i }).first()` — `.first()` guards against any lingering dialog portal

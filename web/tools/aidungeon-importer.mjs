@@ -392,6 +392,12 @@ try {
     await page.waitForTimeout(800);
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.waitForTimeout(400);
+    await snap('portrait-00-details-tab');
+
+    // Capture the Content Image's current src (its background/dimmed presence
+    // persists in the DOM even while the Images modal is open on top of it) so
+    // we can later detect the exact moment it actually changes to the new upload.
+    const contentImageBefore = await page.locator('img[alt="Content Image"]').first().getAttribute('src').catch(() => null);
 
     // The portrait container wraps img[alt="Content Image"].
     // Tab overlays intercept Playwright clicks so dispatch the event programmatically.
@@ -405,12 +411,14 @@ try {
       (el ?? img).dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
     });
     await page.waitForTimeout(800);
+    await snap('portrait-01-images-modal-opened');
 
     // "Images" modal — click "Upload" in the left sidebar.
     const uploadSidebar = page.getByText('Upload', { exact: true });
     await uploadSidebar.waitFor({ timeout: 8_000 });
     await uploadSidebar.click();
     await page.waitForTimeout(600);
+    await snap('portrait-02-upload-panel-opened');
 
     // Trigger the file chooser by programmatically clicking the hidden input.
     // This fires a real browser chooser event (unlike setInputFiles which bypasses React).
@@ -420,28 +428,40 @@ try {
     ]);
     await portraitChooser.setFiles(portraitPath);
 
-    // Wait for the upload preview to appear (the loading spinner disappears and an img shows).
-    // The preview img appears inside the upload area once the server has the file.
+    // Once the upload finishes, AI Dungeon applies it and closes the modal on its
+    // own — there is no confirm/SELECT step for a freshly uploaded file (verified
+    // live 2026-07-15: the Content Image banner updated and the modal closed with
+    // zero clicks after setFiles()). This was the actual cause of the historic
+    // "flaky" portrait uploads: the old code unconditionally clicked a "SELECT"
+    // button that belongs to a different flow (choosing an existing image from
+    // the gallery grid), landing on an unrelated stock/template image instead of
+    // the real upload depending on timing. Just wait for the Content Image's own
+    // src to actually change.
     try {
-      await page.locator('img[src*="aidungeon"]').last().waitFor({ timeout: 15_000 });
+      await page.waitForFunction(
+        (prevSrc) => {
+          const img = document.querySelector('img[alt="Content Image"]');
+          return !!img?.getAttribute('src') && img.getAttribute('src') !== prevSrc;
+        },
+        contentImageBefore,
+        { timeout: 20_000 },
+      );
+      await snap('portrait-03-content-image-updated');
+      console.log('Portrait uploaded.');
     } catch {
-      // Preview may not appear — wait a fixed 5s before confirming.
-      console.warn('  Portrait preview did not appear within 15s — clicking SELECT anyway.');
-      await page.waitForTimeout(5000);
+      await snap('portrait-03-ERROR-no-change-detected');
+      console.warn('  Content Image did not change within 20s — portrait upload may have failed. Continuing anyway.');
     }
-
-    // Confirm with SELECT button once the preview appears.
-    await page.getByRole('button', { name: /^select$/i }).click();
-    await page.waitForTimeout(800);
-    console.log('Portrait uploaded.');
   } else {
     console.warn('portrait.png not found — skipping portrait upload.');
   }
 
   // ── Save ──────────────────────────────────────────────────────────────────
+  await snap('portrait-05-before-final-finish');
   // The scenario editor always has one FINISH; use .first() in case any dialog is still animating.
   await page.getByRole('button', { name: /^finish$/i }).first().click();
   await page.waitForTimeout(2000);
+  await snap('portrait-06-after-final-finish');
   console.log('\nDone! Scenario URL:', page.url());
 
 } finally {
