@@ -844,6 +844,7 @@ import {
   NPC_TRAITS, FRIEND_DYNAMICS, PARENT_DYNAMICS_ALIVE, FOIL_ROLES,
 } from './generator/ui-data.js';
 import { rollStats, assignMBTI, buildSkeleton } from './generator/engine.js';
+import { GENRE_TABLES } from './generator/registry.js';
 
 // ── Combined plot archetype pools (common + genre) ─────────────────────────
 const MODERN_PLOTS_ALL  = [...COMMON_PLOT_ARCHETYPES, ...MODERN_PLOT_ARCHETYPES];
@@ -855,178 +856,6 @@ const JOSEON_PLOTS_ALL   = [...COMMON_PLOT_ARCHETYPES, ...JOSEON_PLOT_ARCHETYPES
 const NIHONGI_PLOTS_ALL  = [...COMMON_PLOT_ARCHETYPES, ...NIHONGI_PLOT_ARCHETYPES];
 
 // ── Genre routing ─────────────────────────────────────────────────────────
-function getGenreTables(genre) {
-  if (genre === 'fantasy') {
-    return {
-      PROFESSIONS:           FANTASY_PROFESSIONS,
-      LIFE_EVENTS:           FANTASY_LIFE_EVENTS,
-      TENSIONS:              FANTASY_TENSIONS,
-      SECRETS:               FANTASY_SECRETS,
-      FAMILY_STRUCTURES:     FANTASY_FAMILY_STRUCTURES,
-      PARENT_STATUSES:       FANTASY_PARENT_STATUSES,
-      SIBLING_DYNAMICS:      FANTASY_SIBLING_DYNAMICS,
-      ECONOMIC_TIERS:        FANTASY_ECONOMIC_TIERS,
-      CITY_SETTINGS:         FANTASY_CITY_SETTINGS,
-      TAG_POOLS:             FANTASY_TAG_POOLS,
-      RACES_OR_ETHNICITIES:  FANTASY_RACES,
-      GENDERS:               FANTASY_GENDERS,
-      ORIENTATIONS:          FANTASY_ORIENTATIONS,
-      BUILDS:                FANTASY_BUILDS,
-      HAIR:                  FANTASY_HAIR,
-      DISTINGUISHING_FEATURES: FANTASY_DISTINGUISHING_FEATURES,
-      QUIRKS:                FANTASY_QUIRKS,
-      NAME_POOLS:            FANTASY_NAME_POOLS,
-      RELATIONSHIP_STATUSES,
-      PLOT_ARCHETYPES:       FANTASY_PLOTS_ALL,
-    };
-  }
-  if (genre === 'sci-fi') {
-    return {
-      PROFESSIONS:             SCIFI_PROFESSIONS,
-      LIFE_EVENTS:             SCIFI_LIFE_EVENTS,
-      TENSIONS:                SCIFI_TENSIONS,
-      SECRETS:                 SCIFI_SECRETS,
-      FAMILY_STRUCTURES:       SCIFI_FAMILY_STRUCTURES,
-      PARENT_STATUSES:         SCIFI_PARENT_STATUSES,
-      SIBLING_DYNAMICS:        SCIFI_SIBLING_DYNAMICS,
-      ECONOMIC_TIERS:          SCIFI_ECONOMIC_TIERS,
-      CITY_SETTINGS:           SCIFI_CITY_SETTINGS,
-      TAG_POOLS:               SCIFI_TAG_POOLS,
-      RACES_OR_ETHNICITIES:    SCIFI_SPECIES,
-      GENDERS:                 SCIFI_GENDERS,
-      ORIENTATIONS:            SCIFI_ORIENTATIONS,
-      BUILDS:                  SCIFI_BUILDS,
-      HAIR:                    SCIFI_HAIR.map(h => ({ label: typeof h === 'string' ? h : h.label })),
-      DISTINGUISHING_FEATURES: SCIFI_DISTINGUISHING_FEATURES,
-      QUIRKS:                  SCIFI_QUIRKS,
-      NAME_POOLS:              SCIFI_NAME_POOLS,
-      RELATIONSHIP_STATUSES,
-      PLOT_ARCHETYPES:         SCIFI_PLOTS_ALL,
-    };
-  }
-  if (genre === 'paleolithic') {
-    return {
-      PROFESSIONS:             PALEO_PROFESSIONS,
-      LIFE_EVENTS:             PALEO_LIFE_EVENTS,
-      TENSIONS:                PALEO_TENSIONS,
-      SECRETS:                 PALEO_SECRETS,
-      FAMILY_STRUCTURES:       PALEO_FAMILY_STRUCTURES,
-      PARENT_STATUSES:         PALEO_PARENT_STATUSES,
-      SIBLING_DYNAMICS:        PALEO_SIBLING_DYNAMICS,
-      ECONOMIC_TIERS:          PALEO_ECONOMIC_TIERS,
-      CITY_SETTINGS:           PALEO_CITY_SETTINGS,
-      TAG_POOLS:               PALEO_TAG_POOLS,
-      RACES_OR_ETHNICITIES:    PALEO_RACES,
-      GENDERS:                 PALEO_GENDERS,
-      ORIENTATIONS:            PALEO_ORIENTATIONS,
-      BUILDS:                  PALEO_BUILDS,
-      HAIR:                    PALEO_HAIR.map(h => ({ label: typeof h === 'string' ? h : h.label })),
-      DISTINGUISHING_FEATURES: PALEO_DISTINGUISHING_FEATURES,
-      QUIRKS:                  PALEO_QUIRKS,
-      NAME_POOLS:              PALEO_NAME_POOLS,
-      AGE_RANGE:               [13, 40],
-      RELATIONSHIP_STATUSES,
-      ALLOW_MINOR_MARRIAGE:    true,
-      PLOT_ARCHETYPES:         PALEO_PLOTS_ALL,
-    };
-  }
-  if (genre === 'manga-osaka-highschool1987') {
-    return {
-      PROFESSIONS:             MANGA_HS_PROFESSIONS,
-      LIFE_EVENTS:             MANGA_HS_LIFE_EVENTS,
-      TENSIONS:                MANGA_HS_TENSIONS,
-      SECRETS:                 MANGA_HS_SECRETS,
-      FAMILY_STRUCTURES:       MANGA_HS_FAMILY_STRUCTURES,
-      PARENT_STATUSES:         MANGA_HS_PARENT_STATUSES,
-      SIBLING_DYNAMICS:        MANGA_HS_SIBLING_DYNAMICS,
-      ECONOMIC_TIERS:          MANGA_HS_ECONOMIC_TIERS,
-      CITY_SETTINGS:           MANGA_HS_CITY_SETTINGS,
-      TAG_POOLS:               MANGA_HS_TAG_POOLS,
-      RACES_OR_ETHNICITIES:    MANGA_HS_RACES,
-      GENDERS:                 MANGA_HS_GENDERS,
-      ORIENTATIONS:            MANGA_HS_ORIENTATIONS,
-      BUILDS:                  MANGA_HS_BUILDS,
-      HAIR:                    MANGA_HS_HAIR.map(h => ({ label: typeof h === 'string' ? h : h.label })),
-      DISTINGUISHING_FEATURES: MANGA_HS_DISTINGUISHING_FEATURES,
-      QUIRKS:                  MANGA_HS_QUIRKS,
-      NAME_POOLS:              MANGA_HS_NAME_POOLS,
-      AGE_RANGE:               [15, 18],
-      RELATIONSHIP_STATUSES:   RELATIONSHIP_STATUSES.filter(r => ['single','dating','complicated'].includes(r.id)),
-      PLOT_ARCHETYPES:         MANGA_HS_PLOTS_ALL,
-    };
-  }
-  if (genre === 'historical-korea-joseon-dynasty') {
-    return {
-      PROFESSIONS:           JOSEON_PROFESSIONS,
-      LIFE_EVENTS:           JOSEON_LIFE_EVENTS,
-      TENSIONS:              JOSEON_TENSIONS,
-      SECRETS:               JOSEON_SECRETS,
-      FAMILY_STRUCTURES:     JOSEON_FAMILY_STRUCTURES,
-      PARENT_STATUSES:       JOSEON_PARENT_STATUSES,
-      SIBLING_DYNAMICS:      JOSEON_SIBLING_DYNAMICS,
-      ECONOMIC_TIERS:        JOSEON_ECONOMIC_TIERS,
-      CITY_SETTINGS:         JOSEON_CITY_SETTINGS,
-      TAG_POOLS:             JOSEON_TAG_POOLS,
-      RACES_OR_ETHNICITIES:  JOSEON_RACES,
-      GENDERS:               JOSEON_GENDERS,
-      ORIENTATIONS:          JOSEON_ORIENTATIONS,
-      BUILDS:                JOSEON_BUILDS,
-      HAIR:                  JOSEON_HAIR.map(h => ({ label: typeof h === 'string' ? h : h.label })),
-      DISTINGUISHING_FEATURES: JOSEON_DISTINGUISHING_FEATURES,
-      QUIRKS:                JOSEON_QUIRKS,
-      NAME_POOLS:            JOSEON_NAME_POOLS,
-      RELATIONSHIP_STATUSES,
-      PLOT_ARCHETYPES:       JOSEON_PLOTS_ALL,
-    };
-  }
-  if (genre === 'nihongi') {
-    return {
-      PROFESSIONS:           NIHONGI_PROFESSIONS,
-      LIFE_EVENTS:           NIHONGI_LIFE_EVENTS,
-      TENSIONS:              NIHONGI_TENSIONS,
-      SECRETS:               NIHONGI_SECRETS,
-      FAMILY_STRUCTURES:     NIHONGI_FAMILY_STRUCTURES,
-      PARENT_STATUSES:       NIHONGI_PARENT_STATUSES,
-      SIBLING_DYNAMICS:      NIHONGI_SIBLING_DYNAMICS,
-      ECONOMIC_TIERS:        NIHONGI_ECONOMIC_TIERS,
-      CITY_SETTINGS:         NIHONGI_CITY_SETTINGS,
-      TAG_POOLS:             NIHONGI_TAG_POOLS,
-      RACES_OR_ETHNICITIES:  NIHONGI_RACES,
-      GENDERS:               NIHONGI_GENDERS,
-      ORIENTATIONS:          NIHONGI_ORIENTATIONS,
-      BUILDS:                NIHONGI_BUILDS,
-      HAIR:                  NIHONGI_HAIR.map(h => ({ label: typeof h === 'string' ? h : h.label })),
-      DISTINGUISHING_FEATURES: NIHONGI_DISTINGUISHING_FEATURES,
-      QUIRKS:                NIHONGI_QUIRKS,
-      NAME_POOLS:            NIHONGI_NAME_POOLS,
-      RELATIONSHIP_STATUSES,
-      PLOT_ARCHETYPES:       NIHONGI_PLOTS_ALL,
-    };
-  }
-  // Default: modern
-  return {
-    PROFESSIONS,
-    LIFE_EVENTS,
-    TENSIONS,
-    SECRETS,
-    FAMILY_STRUCTURES,
-    PARENT_STATUSES,
-    SIBLING_DYNAMICS,
-    ECONOMIC_TIERS,
-    CITY_SETTINGS,
-    TAG_POOLS,
-    RACES_OR_ETHNICITIES: ETHNICITIES,
-    GENDERS,
-    ORIENTATIONS,
-    BUILDS,
-    HAIR: HAIR.map(h => ({ label: typeof h === 'string' ? h : h.label })),
-    DISTINGUISHING_FEATURES,
-    QUIRKS,
-    NAME_POOLS,
-    RELATIONSHIP_STATUSES,
-    PLOT_ARCHETYPES:      MODERN_PLOTS_ALL,
-  };
-}
 
 // ═══════════════════════════════════════════════════════════════════════════
 // GENERATOR ENGINE — now in ./generator/engine.js (imported above).
@@ -3003,7 +2832,7 @@ async function runGenerate() {
     // Phase 3 — Skeleton
     setPhase('phase-skeleton');
     await sleep(300);
-    const tables = getGenreTables(currentGenre);
+    const tables = GENRE_TABLES[currentGenre] ?? GENRE_TABLES['modern'];
     const skeleton = buildSkeleton(stats, mbti, tables, {
       includeLGBQ:     document.getElementById('include-lgbq')?.checked ?? true,
       includeNSFW:     document.getElementById('include-nsfw')?.checked ?? false,
