@@ -576,6 +576,14 @@
             <input id="auto-narrate-all" type="checkbox">
             <label for="auto-narrate-all">Auto-play Narrate All <span class="settings-hint">(starts reading the full scenario aloud as soon as generation finishes; requires a narration provider)</span></label>
           </div>
+
+          <div class="settings-group-heading" style="margin-top:1rem;">Genre Packs</div>
+          <div class="settings-field">
+            <label>Import a genre pack <span class="settings-hint">(a .json or .zip pack adds a new playable genre to the carousel)</span></label>
+            <input id="genre-pack-file" type="file" accept=".json,.zip,application/json,application/zip" class="api-input" style="padding:0.4rem;">
+            <div id="genre-pack-status" class="settings-hint" style="margin-top:0.35rem;min-height:1em;"></div>
+          </div>
+          <div id="genre-pack-list" style="margin-top:0.25rem;"></div>
         </div>
 
       </div>
@@ -1128,6 +1136,41 @@ const SVG_NARRATE_ICON = `<svg width="14" height="14" viewBox="0 0 24 24" fill="
 // base for uploaded packs. Populated by registerGenrePack().
 const PACK_ASSET_BASE = {};
 
+// Uploaded-pack assets resolve to blob: URLs (built-ins resolve to real files).
+// PACK_ICON_URLS[id] maps a logical icon filename ("CAT#slug.webp" or
+// "_genre.webp") → blob URL; PACK_AUDIO_URLS[id] maps a track filename → blob URL.
+const PACK_ICON_URLS  = {};
+const PACK_AUDIO_URLS = {};
+
+// Build blob: URLs from a pack's extracted asset Blobs (keyed "icons/…"/"audio/…").
+// Returns a truthy marker when the pack ships its own assets. No-op for JSON packs.
+async function installPackAssets(id, assets) {
+  if (!assets || !Object.keys(assets).length) return null;
+  const icons = {}, audio = {};
+  for (const [path, blob] of Object.entries(assets)) {
+    const url = URL.createObjectURL(blob);
+    if (/^icons\//i.test(path))      icons[path.replace(/^icons\//i, '')] = url;
+    else if (/^audio\//i.test(path)) audio[path.replace(/^audio\//i, '')] = url;
+  }
+  PACK_ICON_URLS[id]  = icons;
+  PACK_AUDIO_URLS[id] = audio;
+  return 'blob';
+}
+
+// Revoke a pack's blob: URLs so they don't leak when it's removed.
+function releasePackAssets(id) {
+  for (const map of [PACK_ICON_URLS[id], PACK_AUDIO_URLS[id]])
+    if (map) for (const url of Object.values(map)) URL.revokeObjectURL(url);
+  delete PACK_ICON_URLS[id];
+  delete PACK_AUDIO_URLS[id];
+}
+
+// Resolve a slot/portrait icon to a pack blob: URL if the active genre is an
+// uploaded pack that ships that icon; otherwise return null (use the file path).
+function packIconUrl(genre, cat, slug) {
+  return PACK_ICON_URLS[genre]?.[`${cat}#${slug}.webp`] ?? null;
+}
+
 // Presentation metadata now lives in ./generator/manifests.js. These maps are
 // derived from it so all existing consumers keep working unchanged.
 const GENRE_PORTRAIT_STYLES = Object.fromEntries(
@@ -1160,7 +1203,7 @@ function genreCardHTML(g, modifierClass, onclick) {
     <div class="genre-card ${modifierClass}" ${onclick ? `onclick="${onclick}"` : ''} title="${modifierClass === 'genre-card-peek' ? g.label : ''}">
       <div class="genre-card-image-wrap">
         <img class="genre-card-image"
-          src="generator/genres/${g.id}/icons/_genre.webp"
+          src="${PACK_ICON_URLS[g.id]?.['_genre.webp'] ?? `generator/genres/${g.id}/icons/_genre.webp`}"
           onerror="this.parentNode.innerHTML='<div class=&quot;genre-card-image-placeholder&quot;>⚙</div>'"
           alt="${g.label}" />
       </div>
@@ -1410,7 +1453,7 @@ function preloadGenreIcons(genre) {
     const entries = cfg.catalog[def.cat] ?? [];
     entries.forEach(entry => {
       const img = new Image();
-      img.src = iconPath(iconBaseFor(entry, def, cfg), def.cat, entry[1]);
+      img.src = packIconUrl(cfg.genre, def.cat, entry[1]) ?? iconPath(iconBaseFor(entry, def, cfg), def.cat, entry[1]);
     });
   });
 }
@@ -1451,6 +1494,7 @@ function getSlotConfig(genre) {
   const gendersCat = m.filterGendersToGenre ? GENDERS_CAT.filter(([id]) => tables.GENDERS.some(g => g.id === id)) : GENDERS_CAT;
   const orientsCat = m.filterGendersToGenre ? ORIENT_CAT.filter(([id]) => tables.ORIENTATIONS.some(o => o.id === id)) : ORIENT_CAT;
   return {
+    genre,
     iconBase: `./generator/genres/${genre}/icons/`,
     defs: [
       { key:'gender',    header:'Gender',         cat:'GENDERS',               common:true  },
@@ -1518,6 +1562,10 @@ function currentGenreTracks() {
   const prefix = GENRE_MUSIC_PREFIX[currentGenre] || 'fantasy';
   return GENRE_MUSIC_TRACKS[prefix] || GENRE_MUSIC_TRACKS.fantasy;
 }
+// Resolve a BGM filename to a pack blob: URL (uploaded pack) or the served path.
+function trackSrc(file) {
+  return PACK_AUDIO_URLS[currentGenre]?.[file] ?? `audio/music/${encodeURIComponent(file)}`;
+}
 function pickGenreTrack(genre) {
   const tracks = currentGenreTracks();
   let choice = tracks[Math.floor(Math.random() * tracks.length)];
@@ -1526,7 +1574,7 @@ function pickGenreTrack(genre) {
   }
   _lastMusicTrack   = choice;
   _playerTrackIndex = tracks.indexOf(choice);
-  return `audio/music/${encodeURIComponent(choice)}`;
+  return trackSrc(choice);
 }
 
 // Human-readable track title from a filename like "joseon-A Red Letter Under the Moonlight.mp3"
@@ -1556,7 +1604,7 @@ function playerLoadIndex(idx) {
   _playerTrackIndex = ((idx % tracks.length) + tracks.length) % tracks.length;
   const file = tracks[_playerTrackIndex];
   _lastMusicTrack = file;
-  _musicSfx.src         = `audio/music/${encodeURIComponent(file)}`;
+  _musicSfx.src         = trackSrc(file);
   _musicSfx.currentTime = 0;
   _musicSfx.volume      = 1;
   _musicSfx.play().catch(() => {});
@@ -1614,7 +1662,7 @@ async function animateSlots(skeleton, genre) {
 
     const showFrame = () => {
       const entry = entries[indices[def.key]];
-      img.src = iconPath(iconBaseFor(entry, def, cfg), def.cat, entry[1]);
+      img.src = packIconUrl(cfg.genre, def.cat, entry[1]) ?? iconPath(iconBaseFor(entry, def, cfg), def.cat, entry[1]);
     };
     showFrame();
 
@@ -1653,7 +1701,7 @@ async function animateSlots(skeleton, genre) {
     const sublblEl = document.getElementById(`slot-sublbl-${def.key}`);
     if (entry) {
       const [, iconSlug, label] = entry;
-      if (img) img.src = iconPath(iconBaseFor(entry, def, cfg), def.cat, iconSlug);
+      if (img) img.src = packIconUrl(cfg.genre, def.cat, iconSlug) ?? iconPath(iconBaseFor(entry, def, cfg), def.cat, iconSlug);
       // innerHTML (not textContent): MBTI_CAT's label embeds <br/>/<i> markup.
       // Safe — every catalog label comes from our own static data files, never user input.
       if (lblEl) lblEl.innerHTML = label;
@@ -2109,6 +2157,120 @@ function registerGenrePack(pack, { assetBase } = {}) {
   renderCarouselCard();
   renderCarouselIndicator();
   return { ok: true, id, errors: [] };
+}
+
+// Genre ids that ship with the app — never removable via the pack manager.
+const BUILTIN_GENRE_IDS = new Set(Object.keys(GENRE_TABLES));
+
+function unregisterGenrePack(id) {
+  if (BUILTIN_GENRE_IDS.has(id)) return;
+  const prefix = GENRE_MANIFESTS[id]?.music?.prefix;
+  delete GENRE_TABLES[id]; delete GENRE_MANIFESTS[id]; delete GENRE_VOICE[id];
+  delete STATIC_CARDS_BY_GENRE[id]; delete GENRE_PORTRAIT_STYLES[id];
+  delete GENRE_TTS_CONFIG[id]; delete GENRE_MUSIC_PREFIX[id]; delete PACK_ASSET_BASE[id];
+  if (prefix && !Object.values(GENRE_MANIFESTS).some(m => m.music?.prefix === prefix)) delete GENRE_MUSIC_TRACKS[prefix];
+  releasePackAssets(id);  // revoke any blob: URLs (see asset serving)
+  const i = GENRE_CAROUSEL_DATA.findIndex(c => c.id === id);
+  if (i !== -1) GENRE_CAROUSEL_DATA.splice(i, 1);
+  if (currentGenre === id) { carouselIndex = 0; setGenre(GENRE_CAROUSEL_DATA[0].id); }
+  renderCarouselCard();
+  renderCarouselIndicator();
+}
+
+// ── Genre-pack persistence (IndexedDB) ──────────────────────────────────────
+const PACK_DB = 'fatevend', PACK_STORE = 'genrePacks';
+function packDbOpen() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(PACK_DB, 1);
+    req.onupgradeneeded = () => { if (!req.result.objectStoreNames.contains(PACK_STORE)) req.result.createObjectStore(PACK_STORE, { keyPath: 'id' }); };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+function packDbTx(mode, fn) {
+  return packDbOpen().then(db => new Promise((resolve, reject) => {
+    const tx = db.transaction(PACK_STORE, mode);
+    const store = tx.objectStore(PACK_STORE);
+    const out = fn(store);
+    tx.oncomplete = () => resolve(out?.result ?? out);
+    tx.onerror = () => reject(tx.error);
+  }));
+}
+const packDbGetAll = () => packDbTx('readonly', s => s.getAll());
+const packDbPut    = rec => packDbTx('readwrite', s => s.put(rec));
+const packDbDelete = id => packDbTx('readwrite', s => s.delete(id));
+
+// Parse a user-selected file (.json or .zip) into a pack object + its asset blobs.
+async function parseGenrePackFile(file) {
+  if (/\.zip$/i.test(file.name) || file.type === 'application/zip') {
+    if (typeof JSZip === 'undefined') throw new Error('JSZip not loaded — cannot read .zip packs.');
+    const zip = await JSZip.loadAsync(file);
+    const manifestEntry = zip.file('manifest.json') || zip.file(/(^|\/)manifest\.json$/i)[0];
+    if (!manifestEntry) throw new Error('No manifest.json found in the zip.');
+    const pack = JSON.parse(await manifestEntry.async('string'));
+    const assets = {};  // logical path (e.g. "icons/RACE#x.webp" or "audio/y.mp3") → Blob
+    await Promise.all(Object.values(zip.files).filter(f => !f.dir && /^(icons|audio)\//i.test(f.name)).map(async f => {
+      assets[f.name] = await f.async('blob');
+    }));
+    return { pack, assets };
+  }
+  return { pack: JSON.parse(await file.text()), assets: {} };
+}
+
+async function installGenrePackFromFile(file) {
+  const statusEl = document.getElementById('genre-pack-status');
+  const setStatus = (msg, ok) => { if (statusEl) { statusEl.textContent = msg; statusEl.style.color = ok === false ? 'var(--danger, #c0392b)' : ok ? 'var(--brass, #b87333)' : ''; } };
+  try {
+    setStatus('Reading pack…');
+    const { pack, assets } = await parseGenrePackFile(file);
+    const errors = validatePack(pack);
+    if (errors.length) { setStatus('Invalid pack: ' + errors.slice(0, 3).join(' '), false); return; }
+    if (BUILTIN_GENRE_IDS.has(pack.id)) { setStatus(`"${pack.id}" is a built-in genre id — rename the pack's id.`, false); return; }
+    const assetBase = await installPackAssets(pack.id, assets);   // blob: URLs (see asset serving)
+    const res = registerGenrePack(pack, { assetBase });
+    if (!res.ok) { setStatus('Could not register: ' + res.errors.join(' '), false); return; }
+    await packDbPut({ id: pack.id, pack, updatedAt: Date.now() });
+    renderGenrePackList();
+    setStatus(`Installed "${pack.label}". Select it in the genre carousel.`, true);
+    const idx = GENRE_CAROUSEL_DATA.findIndex(c => c.id === pack.id);
+    if (idx !== -1) goToCarouselIndex(idx);
+  } catch (err) {
+    console.error('Genre pack install failed:', err);
+    setStatus('Import failed: ' + err.message, false);
+  }
+}
+
+async function loadStoredGenrePacks() {
+  let records = [];
+  try { records = await packDbGetAll(); } catch (e) { console.warn('Could not read stored genre packs:', e); return; }
+  for (const rec of records) {
+    try {
+      const assetBase = await installPackAssets(rec.id, rec.assets ?? {});
+      registerGenrePack(rec.pack, { assetBase });
+    } catch (e) { console.warn(`Failed to register stored pack "${rec.id}":`, e); }
+  }
+  renderGenrePackList();
+}
+
+async function removeInstalledPack(id) {
+  try { await packDbDelete(id); } catch (e) { console.warn('Pack delete failed:', e); }
+  unregisterGenrePack(id);
+  renderGenrePackList();
+}
+
+function renderGenrePackList() {
+  const el = document.getElementById('genre-pack-list');
+  if (!el) return;
+  const installed = GENRE_CAROUSEL_DATA.filter(c => !BUILTIN_GENRE_IDS.has(c.id));
+  if (!installed.length) { el.innerHTML = ''; return; }
+  el.innerHTML = '<div class="settings-hint" style="margin-bottom:0.25rem;">Installed packs</div>' +
+    installed.map(c => `
+      <div class="settings-option-row" style="justify-content:space-between;">
+        <span>${c.label} <span class="settings-hint">(${c.id})</span></span>
+        <button class="settings-btn-secondary" data-remove-pack="${c.id}" style="padding:0.15rem 0.6rem;">Remove</button>
+      </div>`).join('');
+  el.querySelectorAll('[data-remove-pack]').forEach(btn =>
+    btn.addEventListener('click', () => removeInstalledPack(btn.getAttribute('data-remove-pack'))));
 }
 
 async function copyAll(btn) {
@@ -2736,6 +2898,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const autoNarrateEl = document.getElementById('auto-narrate-all');
   autoNarrateEl.checked = localStorage.getItem('gof_auto_narrate_all') === 'true';
   autoNarrateEl.addEventListener('change', e => localStorage.setItem('gof_auto_narrate_all', e.target.checked));
+
+  // Genre-pack import: wire the file input and register any previously-installed
+  // packs from IndexedDB (added to the carousel on load).
+  const packFileEl = document.getElementById('genre-pack-file');
+  if (packFileEl) packFileEl.addEventListener('change', e => {
+    const file = e.target.files?.[0];
+    if (file) installGenrePackFromFile(file).finally(() => { e.target.value = ''; });
+  });
+  loadStoredGenrePacks();
 
   // Init genre carousel
   carouselIndex = Math.max(0, GENRE_CAROUSEL_DATA.findIndex(g => g.id === currentGenre));
