@@ -799,6 +799,7 @@ import {
 import { rollStats, assignMBTI, buildSkeleton } from './generator/engine.js';
 import { GENRE_TABLES } from './generator/registry.js';
 import { GENRE_MANIFESTS, GENRE_CAROUSEL_DATA, GENRE_VOICE } from './generator/manifests.js';
+import { loadPack, validatePack } from './generator/pack-loader.js';
 
 // ── Genre routing ─────────────────────────────────────────────────────────
 
@@ -1121,6 +1122,11 @@ let ttsAllActive   = false;
 let ttsNarrateBtn  = null;
 
 const SVG_NARRATE_ICON = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>`;
+
+// Per-genre asset base override, keyed by genre id. Empty/null for built-ins
+// (they use the conventional ./generator/genres/<id>/ path); set to a blob:
+// base for uploaded packs. Populated by registerGenrePack().
+const PACK_ASSET_BASE = {};
 
 // Presentation metadata now lives in ./generator/manifests.js. These maps are
 // derived from it so all existing consumers keep working unchanged.
@@ -2064,6 +2070,45 @@ function buildScenarioPayload() {
     },
     staticCards,
   };
+}
+
+// ── Runtime genre-pack registration ────────────────────────────────────────
+// Registers a declarative genre pack (see generator/pack-loader.js) into every
+// live registry so a newly-loaded genre behaves exactly like a built-in one —
+// generation, carousel, portrait style, TTS, music, slot machine, prompt voice,
+// and static cards. Mutates the imported registry objects in place (their
+// contents are mutable even though the bindings are const) and refreshes the
+// carousel. Returns { ok, id, errors }.
+function registerGenrePack(pack, { assetBase } = {}) {
+  const loaded = loadPack(pack);
+  if (loaded.errors && loaded.errors.length) return { ok: false, id: pack?.id, errors: loaded.errors };
+  const { id, tables, manifest, voice, staticCards } = loaded;
+
+  GENRE_TABLES[id]          = tables;
+  GENRE_MANIFESTS[id]       = manifest;
+  GENRE_VOICE[id]           = voice;
+  STATIC_CARDS_BY_GENRE[id] = staticCards;
+
+  // Keep the precomputed presentation maps (snapshots taken at load) in sync.
+  GENRE_PORTRAIT_STYLES[id] = manifest.portraitStyle;
+  GENRE_TTS_CONFIG[id]      = {
+    preprocess: TTS_PREPROCESSORS[manifest.tts.preprocess] ?? preprocessTts,
+    browser: manifest.tts.browser, kokoro: manifest.tts.kokoro, openai: manifest.tts.openai,
+  };
+  GENRE_MUSIC_PREFIX[id]                 = manifest.music.prefix;
+  GENRE_MUSIC_TRACKS[manifest.music.prefix] = manifest.music.tracks;
+
+  // Where this pack's icons/audio are served from (a real dir for built-ins, a
+  // blob: base for uploaded packs). Recorded for the asset resolver (see
+  // iconBaseFor / pickGenreTrack). null → fall back to the conventional path.
+  PACK_ASSET_BASE[id] = assetBase ?? null;
+
+  if (!GENRE_CAROUSEL_DATA.some(c => c.id === id))
+    GENRE_CAROUSEL_DATA.push({ id, label: manifest.label, desc: manifest.description });
+
+  renderCarouselCard();
+  renderCarouselIndicator();
+  return { ok: true, id, errors: [] };
 }
 
 async function copyAll(btn) {
@@ -3194,6 +3239,7 @@ Object.assign(window, {
   importToAIDungeon, checkImportServer,
   carouselStep, goToCarouselIndex, onToolbarGenreChange,
   playerPrev, playerNext, playerStop, playerPlay,
+  registerGenrePack,
 });
 </script>
 </body>

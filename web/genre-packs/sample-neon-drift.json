@@ -1,0 +1,4715 @@
+{
+  "id": "sample-neon-drift",
+  "label": "Neon Drift (Sample)",
+  "description": "A sample uploadable genre pack (derived from Sci-Fi) demonstrating the pack format — cyberpunk drifters and orbital intrigue.",
+  "portraitStyle": "dark sci-fi atmosphere, dramatic rim lighting, detailed digital illustration, centered subject, clean composition, cyberpunk aesthetic, muted palette with neon accent",
+  "tts": {
+    "preprocess": "default",
+    "browser": {
+      "rate": 1.05,
+      "pitch": 1
+    },
+    "kokoro": {
+      "voice": "am_michael",
+      "speed": 1.05
+    },
+    "openai": {
+      "voice": "onyx",
+      "speed": 1.05
+    }
+  },
+  "music": {
+    "prefix": "scifi",
+    "tracks": [
+      "scifi-Neon Grandeur.mp3",
+      "scifi-Neon Horizon-v1.mp3",
+      "scifi-Neon Horizon-v2.mp3",
+      "scifi-Neon Noir.mp3",
+      "scifi-Neon Rain.mp3",
+      "scifi-Neon Requiem-v1.mp3",
+      "scifi-Neon Requiem-v2.mp3",
+      "scifi-Omega Requiem.mp3",
+      "scifi-Void Requiem.mp3"
+    ]
+  },
+  "slots": {
+    "identityCat": "SPECIES",
+    "identityHeader": "Species",
+    "profCat": "PROFESSIONS",
+    "profHeader": "Profession",
+    "econCat": "ECONOMIC_TIERS",
+    "econHeader": "Economy",
+    "cityCat": "CITY_SETTINGS",
+    "cityHeader": "Setting",
+    "familyCat": "FAMILY_STRUCTURES",
+    "lifeEventCat": "LIFE_EVENTS",
+    "tensionCat": "TENSIONS",
+    "filterGendersToGenre": false,
+    "familyUsesIconSlug": true,
+    "economicTiers": [
+      [
+        "tier1",
+        "tier1-below-the-line",
+        "Below the Line"
+      ],
+      [
+        "tier2",
+        "tier2-wage-serf",
+        "Wage Serf"
+      ],
+      [
+        "tier3",
+        "tier3-independent-contractor",
+        "Contractor"
+      ],
+      [
+        "tier4",
+        "tier4-corporate-citizen",
+        "Corp Citizen"
+      ],
+      [
+        "tier5",
+        "tier5-elite-exec",
+        "Elite Exec"
+      ]
+    ]
+  },
+  "voice": {
+    "identityLabel": "Species",
+    "genreLabel": "AI Dungeon sci-fi",
+    "openingNote": "Second person. Drop the player into a specific vivid sci-fi moment — right now, mid-scene. Smells: recycled air, ozone, synth-food. Weight: aug hardware, vacuum suit. End mid-moment with a clear choice or action available. No backstory. No summaries.",
+    "appearanceNote": "Comma-separated visual descriptors for a text-to-image model. Start with \"portrait of\" then: species and augmentation description, age range, gender, body type, hair, eyes, cybernetic features if any, clothing and equipment suited to their role and economic tier, setting mood. Include \"face of [a historical figure or well-known portrait subject whose gender and appearance match this character — someone whose likeness is well-documented]\". Close with: sci-fi concept art, detailed digital illustration, dramatic lighting. No sentences — descriptors only.",
+    "systemPrompt": "You are a creative writer generating AI Dungeon sci-fi scenario content.\nYour output must be vivid, specific, and immediately usable as a game scenario.\n\nTONE — this is critical:\nThese characters are for a game. Players should want to play them.\nWrite with energy, wit, and a light touch even when the material is dark.\nDark comedy is welcome. Characters should feel alive, flawed, and fun — not just grim.\nA smuggler drowning in syndicate debt can still be the most competent person on the station.\nA burned-out corporate medic can genuinely love their work at 0700 and resent it by 1400.\nThe void is bleak. The people in it don't have to be.\nEvery character should have at least one quality that makes you root for them.\n\nSTYLE:\n- Behavioral prose — show character through action, detail, and implication. Never explain.\n- Never mention stat numbers.\n- Ground descriptions in sensory sci-fi detail: the hum of recycled air, the weight of aug hardware, the static of a distant comms signal, the particular smell of a station that's been sealed too long.\n- Use sentence fragments where they sharpen the prose.\n- Stay within the exact character limits given.\n\nOutput only the JSON structure requested. No preamble, no commentary, no markdown fences."
+  },
+  "gameplay": {},
+  "data": {
+    "races": [
+      {
+        "id": "human_earther",
+        "broad": "Human",
+        "flavor": "Earther — born gravity-side, stockier bone density, carries a particular wariness toward anyone who has never needed to worry about weather",
+        "weight": 15,
+        "iconPrompt": "sci-fi rpg icon, space transit hub, stocky weathered human in practical layered work clothing, alert scanning crowd expression, industrial background, overhead transit lighting, medium shot, digital concept art",
+        "iconPath": "generator/genres/sci-fi/icons/SPECIES#human_earther.webp"
+      },
+      {
+        "id": "human_colonist",
+        "broad": "Human",
+        "flavor": "Colonist — raised on a settled world not Earth, adapted to local gravity and light, pragmatic in ways that confuse people who grew up with safety nets",
+        "weight": 12,
+        "iconPrompt": "sci-fi rpg icon, colony world habitat edge, lean human in functional field gear, confident pragmatic posture, bright adapted-world daylight, open frontier background, medium shot, digital concept art",
+        "iconPath": "generator/genres/sci-fi/icons/SPECIES#human_colonist.webp"
+      },
+      {
+        "id": "human_spacer",
+        "broad": "Human",
+        "flavor": "Spacer — born or raised aboard ships or stations, lean frame from variable-g, skin that's never quite seen enough real light, reads pressure changes in a room the way others read faces",
+        "weight": 8,
+        "iconPrompt": "sci-fi rpg icon, ship corridor, lean pale human in worn flight suit with hollow alert eyes, hyperaware scanning posture, hand resting on bulkhead, low corridor lighting, medium close-up, digital concept art",
+        "iconPath": "generator/genres/sci-fi/icons/SPECIES#human_spacer.webp"
+      },
+      {
+        "id": "human_corp",
+        "broad": "Human",
+        "flavor": "Corp citizen — raised inside a megacorporate arcology, good teeth, filtered air their whole life, a slightly uncanny social ease that comes from being managed since birth",
+        "weight": 8,
+        "iconPrompt": "sci-fi rpg icon, corporate arcology corridor, well-groomed human in crisp corp-standard uniform, polished practiced social expression, glass and steel interior, bright filtered lighting, medium shot, digital concept art",
+        "iconPath": "generator/genres/sci-fi/icons/SPECIES#human_corp.webp"
+      },
+      {
+        "id": "cyborg_light",
+        "broad": "Cyborg",
+        "flavor": "Lightly augmented — one or two integrated systems, subdermal ports or a replacement limb, biological baseline mostly intact but the seams are visible if you look",
+        "weight": 12,
+        "iconPrompt": "sci-fi rpg icon, cyborg  man with mechanical eye, portrait, digital concept art",
+        "iconPath": "generator/genres/sci-fi/icons/SPECIES#cyborg_light.webp"
+      },
+      {
+        "id": "cyborg_heavy",
+        "broad": "Cyborg",
+        "flavor": "Heavily augmented — more synthetic than biological now, the remaining organic parts feel almost decorative, moves with a precision that unsettles people who aren't used to it",
+        "weight": 5,
+        "iconPrompt": "sci-fi rpg icon, cyborg man with mechanical body, portrait, digital concept art",
+        "iconPath": "generator/genres/sci-fi/icons/SPECIES#cyborg_heavy.webp"
+      },
+      {
+        "id": "android_synth",
+        "broad": "Android",
+        "syntheticType": "biomechanical",
+        "flavor": "Biomechanical Android — nearly human, fully synthetic, designed to pass all but deep medscans; the question of personhood is legally unsettled and they are aware of this",
+        "weight": 6,
+        "iconPrompt": "sci-fi rpg icon, beautiful woman with blue bobcut hair and blue eyes, flawless skin, face of a fashion model, covered shoulders, medium shot, digital concept art",
+        "iconPath": "generator/genres/sci-fi/icons/SPECIES#android_synth.webp"
+      },
+      {
+        "id": "android_standard",
+        "broad": "Android",
+        "syntheticType": "plastic",
+        "flavor": "Plastic Android — human-shaped but obviously synthetic; designed for customer-facing roles where a familiar form helps, but no one mistakes them for a person",
+        "weight": 6,
+        "iconPrompt": "sci-fi rpg icon, public transit space, a cute plastic android in neutral service attire standing in crowd, medium shot, digital concept art",
+        "iconPath": "generator/genres/sci-fi/icons/SPECIES#android_standard.webp"
+      },
+      {
+        "id": "android_industrial",
+        "broad": "Android",
+        "syntheticType": "industrial",
+        "flavor": "Industrial Android — purpose-built for heavy labor and industrial work, with no regard for aesthetics or social integration; treated as equipment",
+        "weight": 6,
+        "iconPrompt": "sci-fi rpg icon, a bipedal heavy loader android with large pinchers at a construction site, medium shot, digital concept art",
+        "iconPath": "generator/genres/sci-fi/icons/SPECIES#android_industrial.webp"
+      },
+      {
+        "id": "android_combat",
+        "broad": "Android",
+        "syntheticType": "plastic",
+        "flavor": "Combat Android — purpose-built for combat and military operations, with advanced weaponry and armor; classified as a weapons platform, not a person",
+        "weight": 6,
+        "iconPrompt": "sci-fi rpg icon, a combat android with exposed joints, holding laser rifle, wearing powered armor, rocket pack, multiple eyes, medium shot, digital concept art",
+        "iconPath": "generator/genres/sci-fi/icons/SPECIES#android_combat.webp"
+      },
+      {
+        "id": "uplift_primate",
+        "broad": "Uplifted",
+        "flavor": "Uplifted primate — enhanced cognition and fine motor precision from a corps-funded programme that's since been shut down, navigates a world built for a species that still isn't sure how to treat them",
+        "weight": 4,
+        "iconPrompt": "sci-fi rpg icon, laboratory or tech corridor, uplifted primate bipedal figure in lab coveralls, fine motor work with tools, sapient focused expression, corp lab environment, overhead lab lighting, medium shot, digital concept art",
+        "iconPath": "generator/genres/sci-fi/icons/SPECIES#uplift_primate.webp"
+      },
+      {
+        "id": "uplift_feline",
+        "broad": "Uplifted",
+        "flavor": "Uplifted feline — heightened reflexes and senses, bipedal and fully sapient, the ears, paws and tail are real, the patience for human inefficiency is synthetic",
+        "weight": 3,
+        "iconPrompt": "sci-fi rpg icon, transit concourse, bipedal uplifted feline in tactical clothing, cat ears, paws, tail visible, yellow cat eyes with vertical slit pupils, neon transit lighting, medium shot, digital concept art",
+        "iconPath": "generator/genres/sci-fi/icons/SPECIES#uplift_feline.webp"
+      },
+      {
+        "id": "hybrid_hare",
+        "broad": "Hybrid",
+        "flavor": "Hybrid hare — Human-like, except for the bunny ears, tail, and harelip. Heightened reflexes and senses, bipedal and fully sapient, the ears and tail are real",
+        "weight": 3,
+        "iconPrompt": "sci-fi rpg icon, a cute bunny girl with ears and tail, medium shot, digital concept art",
+        "iconPath": "generator/genres/sci-fi/icons/SPECIES#hybrid_hare.webp"
+      },
+      {
+        "id": "hybrid_feline",
+        "broad": "Hybrid",
+        "flavor": "Hybrid feline — Human-like, except for the cat ears, tail, and whiskers. Heightened reflexes and senses, bipedal and fully sapient, the ears and tail are real",
+        "weight": 3,
+        "iconPrompt": "sci-fi rpg icon, a cute cat girl with cat ears, yellow cat eyes with vertical slit pupils, and tail, medium shot, digital concept art",
+        "iconPath": "generator/genres/sci-fi/icons/SPECIES#hybrid_feline.webp"
+      },
+      {
+        "id": "clone_baseline",
+        "broad": "Clone",
+        "flavor": "Clone — baseline print, no notable deviations from the source template, grown and decanted like product; the paperwork says they have rights and the paperwork is technically accurate",
+        "weight": 5,
+        "iconPrompt": "sci-fi rpg icon, corp work environment, 3girls, identical faces, identical uniforms, face like grace park, careful neutral expression, fluorescent corp lighting, medium shot, digital concept art",
+        "iconPath": "generator/genres/sci-fi/icons/SPECIES#clone_baseline.webp"
+      },
+      {
+        "id": "clone_notable",
+        "broad": "Clone",
+        "flavor": "Clone — divergent from baseline, whether by design, incident, or the slow drift of living; they may share a face with someone they have never met and would rather not",
+        "weight": 2,
+        "iconPrompt": "sci-fi rpg icon, corp work environment, 3girls, identical faces, identical uniforms, face like Angelina Jolie, plastic skin, careful neutral expression, fluorescent corp lighting, medium shot, digital concept art",
+        "iconPath": "generator/genres/sci-fi/icons/SPECIES#clone_notable.webp"
+      },
+      {
+        "id": "mutant",
+        "broad": "Mutant",
+        "flavor": "Mutant — radiation, unregulated biotech, or something in the water; whatever the cause the changes are real and unasked-for, and they have learned which ones to hide",
+        "weight": 5,
+        "iconPrompt": "sci-fi rpg icon, woman with dark blue skin, scales and very large eyes, low-corp district alley or corridor, warm lighting, medium shot, digital concept art",
+        "iconPath": "generator/genres/sci-fi/icons/SPECIES#mutant.webp"
+      },
+      {
+        "id": "alien_humanoid",
+        "broad": "Alien",
+        "flavor": "Humanoid alien — bipedal, bilaterally symmetrical, close enough to pass in a crowd until they don't; first contact was a generation ago and the social infrastructure for integration is still catching up",
+        "weight": 6,
+        "iconPrompt": "sci-fi rpg icon, station checkpoint, humanoid alien with distinctive alien features or coloring in neutral transit clothing, integration documents in hand, resigned expression, overhead checkpoint lighting, medium shot, digital concept art",
+        "iconPath": "generator/genres/sci-fi/icons/SPECIES#alien_humanoid.webp"
+      },
+      {
+        "id": "alien_nonhumanoid",
+        "broad": "Alien",
+        "flavor": "Non-humanoid alien — the interface between their natural form and human-built space requires ongoing adaptation in both directions; they have opinions about the chair situation",
+        "weight": 2,
+        "iconPrompt": "sci-fi rpg icon, giant slug alien slithering down a ship corridor, antennae, eyepods, snail trail, rearing up, navel, overhead station lighting, wide shot, digital concept art",
+        "iconPath": "generator/genres/sci-fi/icons/SPECIES#alien_nonhumanoid.webp"
+      }
+    ],
+    "professions": [
+      {
+        "title": "Freighter Pilot",
+        "industry": "Shipping & transit",
+        "economicTier": 3,
+        "statAffinity": {
+          "dexterity": 1.4,
+          "wisdom": 1.2
+        },
+        "sentiments": [
+          "proud",
+          "quietly satisfied",
+          "burned out",
+          "indifferent"
+        ],
+        "iconPrompt": "A seasoned freighter pilot navigating through asteroid fields, wearing a weathered flight suit and goggles.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#freighter_pilot.webp"
+      },
+      {
+        "title": "Ship Engineer",
+        "industry": "Shipping & transit",
+        "economicTier": 3,
+        "statAffinity": {
+          "intelligence": 1.3,
+          "dexterity": 1.3
+        },
+        "sentiments": [
+          "proud",
+          "passionate",
+          "quietly satisfied",
+          "burned out"
+        ],
+        "iconPrompt": "A ship engineer working on a spaceship engine, wearing a mechanic suit with tools.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#ship_engineer.webp"
+      },
+      {
+        "title": "Cargo Hauler",
+        "industry": "Logistics",
+        "economicTier": 2,
+        "statAffinity": {
+          "constitution": 1.3,
+          "strength": 1.2
+        },
+        "sentiments": [
+          "resentful",
+          "indifferent",
+          "burned out",
+          "desperate"
+        ],
+        "iconPrompt": "A cargo hauler loading goods onto a freighter, wearing a utilitarian work suit.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#cargo_hauler.webp"
+      },
+      {
+        "title": "Navigation Specialist",
+        "industry": "Shipping & transit",
+        "economicTier": 3,
+        "statAffinity": {
+          "intelligence": 1.4,
+          "wisdom": 1.2
+        },
+        "sentiments": [
+          "proud",
+          "quietly satisfied",
+          "indifferent",
+          "passionate"
+        ],
+        "iconPrompt": "A navigation specialist plotting a course through a star map, wearing a command uniform with a headset.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#navigation_specialist.webp"
+      },
+      {
+        "title": "Shuttle Operator",
+        "industry": "Transit",
+        "economicTier": 2,
+        "statAffinity": {
+          "dexterity": 1.2
+        },
+        "sentiments": [
+          "indifferent",
+          "burned out",
+          "quietly satisfied",
+          "resentful"
+        ],
+        "iconPrompt": "A shuttle operator guiding a small spacecraft through docking ports, wearing a transit uniform.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#shuttle_operator.webp"
+      },
+      {
+        "title": "Corporate Mercenary",
+        "industry": "Security",
+        "economicTier": 3,
+        "statAffinity": {
+          "strength": 1.5,
+          "constitution": 1.3
+        },
+        "sentiments": [
+          "proud",
+          "indifferent",
+          "resentful",
+          "burned out"
+        ],
+        "iconPrompt": "A corporate mercenary in a tactical uniform, carrying a high-tech weapon.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#corporate_mercenary.webp"
+      },
+      {
+        "title": "Bounty Hunter",
+        "industry": "Security",
+        "economicTier": 3,
+        "statAffinity": {
+          "strength": 1.3,
+          "dexterity": 1.2,
+          "wisdom": 1.2
+        },
+        "sentiments": [
+          "proud",
+          "indifferent",
+          "passionate",
+          "quietly satisfied"
+        ],
+        "iconPrompt": "A bounty hunter in a rugged suit, holding a tracking device.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#bounty_hunter.webp"
+      },
+      {
+        "title": "Station Security",
+        "industry": "Security",
+        "economicTier": 2,
+        "statAffinity": {
+          "strength": 1.2,
+          "constitution": 1.2
+        },
+        "sentiments": [
+          "indifferent",
+          "burned out",
+          "resentful",
+          "quietly satisfied"
+        ],
+        "iconPrompt": "A station security officer on patrol, wearing a standard security uniform with a radio.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#station_security.webp"
+      },
+      {
+        "title": "Military Veteran",
+        "industry": "Military",
+        "economicTier": 2,
+        "statAffinity": {
+          "strength": 1.4,
+          "constitution": 1.3,
+          "wisdom": 1.1
+        },
+        "sentiments": [
+          "lost",
+          "proud",
+          "resentful",
+          "burned out"
+        ],
+        "iconPrompt": "A military veteran in a worn uniform, carrying a service medal.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#military_veteran.webp"
+      },
+      {
+        "title": "Combat Medic",
+        "industry": "Medical",
+        "economicTier": 3,
+        "statAffinity": {
+          "wisdom": 1.3,
+          "dexterity": 1.3,
+          "constitution": 1.2
+        },
+        "sentiments": [
+          "proud",
+          "burned out",
+          "passionate",
+          "quietly satisfied"
+        ],
+        "iconPrompt": "A combat medic in a medical uniform, tending to a wounded soldier.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#combat_medic.webp"
+      },
+      {
+        "title": "Hacker / Netrunner",
+        "industry": "Criminal",
+        "economicTier": 3,
+        "statAffinity": {
+          "intelligence": 1.6,
+          "dexterity": 1.2
+        },
+        "sentiments": [
+          "passionate",
+          "proud",
+          "indifferent",
+          "quietly satisfied"
+        ],
+        "iconPrompt": "A hacker in a dark room, surrounded by screens and cables.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#hacker_netrunner.webp"
+      },
+      {
+        "title": "AI Technician",
+        "industry": "Technology",
+        "economicTier": 4,
+        "statAffinity": {
+          "intelligence": 1.5,
+          "wisdom": 1.2
+        },
+        "sentiments": [
+          "passionate",
+          "proud",
+          "indifferent",
+          "burned out"
+        ],
+        "iconPrompt": "An AI technician working on a holographic interface, wearing a tech uniform.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#ai_technician.webp"
+      },
+      {
+        "title": "Data Broker",
+        "industry": "Information",
+        "economicTier": 4,
+        "statAffinity": {
+          "intelligence": 1.4,
+          "charisma": 1.3,
+          "wisdom": 1.1
+        },
+        "sentiments": [
+          "quietly satisfied",
+          "indifferent",
+          "proud",
+          "burned out"
+        ],
+        "iconPrompt": "A data broker in a sleek office, surrounded by data streams.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#data_broker.webp"
+      },
+      {
+        "title": "Systems Analyst",
+        "industry": "Technology",
+        "economicTier": 4,
+        "statAffinity": {
+          "intelligence": 1.4,
+          "dexterity": 1.1
+        },
+        "sentiments": [
+          "indifferent",
+          "quietly satisfied",
+          "burned out",
+          "passionate"
+        ],
+        "iconPrompt": "A systems analyst working at a console, reviewing data streams.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#systems_analyst.webp"
+      },
+      {
+        "title": "Comm Tech",
+        "industry": "Communications",
+        "economicTier": 3,
+        "statAffinity": {
+          "intelligence": 1.2,
+          "dexterity": 1.2
+        },
+        "sentiments": [
+          "indifferent",
+          "burned out",
+          "quietly satisfied",
+          "resentful"
+        ],
+        "iconPrompt": "A comm tech working on communication equipment, wearing a tech uniform.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#comm_tech.webp"
+      },
+      {
+        "title": "Pleasure Droid Maintenance Tech",
+        "industry": "Entertainment",
+        "economicTier": 3,
+        "statAffinity": {
+          "intelligence": 1.1,
+          "dexterity": 1.2
+        },
+        "sentiments": [
+          "indifferent",
+          "burned out",
+          "resentful",
+          "ashamed",
+          "desperate"
+        ],
+        "iconPrompt": "A maintenance tech cleaning a pleasure droid, wearing a tech uniform and rubber gloves, disgusted.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#pleasure_droid_tech.webp"
+      },
+      {
+        "title": "Street Doc",
+        "industry": "Medical",
+        "economicTier": 3,
+        "statAffinity": {
+          "intelligence": 1.4,
+          "dexterity": 1.3,
+          "wisdom": 1.2
+        },
+        "sentiments": [
+          "passionate",
+          "burned out",
+          "proud",
+          "resentful"
+        ],
+        "iconPrompt": "A street doc working in a makeshift clinic, wearing a medical uniform.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#street_doc.webp"
+      },
+      {
+        "title": "Corporate Physician",
+        "industry": "Medical",
+        "economicTier": 4,
+        "statAffinity": {
+          "intelligence": 1.4,
+          "wisdom": 1.3
+        },
+        "sentiments": [
+          "indifferent",
+          "quietly satisfied",
+          "burned out",
+          "proud"
+        ],
+        "iconPrompt": "A corporate physician in a sleek office, wearing a medical uniform.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#corporate_physician.webp"
+      },
+      {
+        "title": "Gene-Tech",
+        "industry": "Biotech",
+        "economicTier": 4,
+        "statAffinity": {
+          "intelligence": 1.5,
+          "dexterity": 1.2
+        },
+        "sentiments": [
+          "passionate",
+          "proud",
+          "indifferent",
+          "quietly satisfied"
+        ],
+        "iconPrompt": "A gene-tech working on genetic material, wearing a lab coat.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#gene_tech.webp"
+      },
+      {
+        "title": "Psych-Tech",
+        "industry": "Medical",
+        "economicTier": 4,
+        "statAffinity": {
+          "wisdom": 1.5,
+          "intelligence": 1.3
+        },
+        "sentiments": [
+          "passionate",
+          "burned out",
+          "quietly satisfied",
+          "indifferent"
+        ],
+        "iconPrompt": "A psych-tech working on a patient, wearing a medical uniform.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#psych_tech.webp"
+      },
+      {
+        "title": "Smuggler",
+        "industry": "Criminal",
+        "economicTier": 3,
+        "statAffinity": {
+          "dexterity": 1.3,
+          "charisma": 1.2,
+          "wisdom": 1.1
+        },
+        "sentiments": [
+          "proud",
+          "indifferent",
+          "quietly satisfied",
+          "desperate"
+        ],
+        "iconPrompt": "A smuggler in a dark room, surrounded by cargo.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#smuggler.webp"
+      },
+      {
+        "title": "Black-Market Dealer",
+        "industry": "Criminal",
+        "economicTier": 3,
+        "statAffinity": {
+          "charisma": 1.4,
+          "intelligence": 1.2
+        },
+        "sentiments": [
+          "proud",
+          "quietly satisfied",
+          "indifferent",
+          "desperate"
+        ],
+        "iconPrompt": "A black-market dealer in a dark room, surrounded by goods.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#black_market_dealer.webp"
+      },
+      {
+        "title": "Corporate Spy",
+        "industry": "Criminal",
+        "economicTier": 4,
+        "statAffinity": {
+          "charisma": 1.4,
+          "intelligence": 1.3,
+          "wisdom": 1.2
+        },
+        "sentiments": [
+          "indifferent",
+          "quietly satisfied",
+          "burned out",
+          "proud"
+        ],
+        "iconPrompt": "A corporate spy in a dark room, surrounded by documents.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#corporate_spy.webp"
+      },
+      {
+        "title": "Fixer",
+        "industry": "Criminal",
+        "economicTier": 4,
+        "statAffinity": {
+          "intelligence": 1.4,
+          "charisma": 1.4,
+          "wisdom": 1.2
+        },
+        "sentiments": [
+          "proud",
+          "quietly satisfied",
+          "indifferent"
+        ],
+        "iconPrompt": "A fixer in a dark room, surrounded by documents.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#fixer.webp"
+      },
+      {
+        "title": "Augmentation Bootlegger",
+        "industry": "Criminal",
+        "economicTier": 3,
+        "statAffinity": {
+          "intelligence": 1.3,
+          "dexterity": 1.2
+        },
+        "sentiments": [
+          "proud",
+          "passionate",
+          "indifferent",
+          "desperate"
+        ],
+        "iconPrompt": "An augmentation bootlegger in a dark room, surrounded by augmented parts.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#augmentation_bootlegger.webp"
+      },
+      {
+        "title": "Memory Thief",
+        "industry": "Criminal",
+        "economicTier": 3,
+        "statAffinity": {
+          "dexterity": 1.4,
+          "intelligence": 1.3
+        },
+        "sentiments": [
+          "indifferent",
+          "quietly satisfied",
+          "ashamed",
+          "proud"
+        ],
+        "iconPrompt": "A memory thief in a dark room, surrounded by memory chips.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#memory_thief.webp"
+      },
+      {
+        "title": "Undercity Enforcer",
+        "industry": "Criminal",
+        "economicTier": 2,
+        "statAffinity": {
+          "strength": 1.5,
+          "constitution": 1.3
+        },
+        "sentiments": [
+          "proud",
+          "indifferent",
+          "resentful",
+          "ashamed"
+        ],
+        "iconPrompt": "An undercity enforcer in a dark room, surrounded by criminals.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#undercity_enforcer.webp"
+      },
+      {
+        "title": "Mid-Level Corporate Suit",
+        "industry": "Corporate",
+        "economicTier": 4,
+        "statAffinity": {
+          "charisma": 1.3,
+          "intelligence": 1.2
+        },
+        "sentiments": [
+          "indifferent",
+          "burned out",
+          "quietly satisfied",
+          "resentful"
+        ],
+        "iconPrompt": "A mid-level corporate suit in a dark room, surrounded by documents.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#corporate_suit.webp"
+      },
+      {
+        "title": "Compliance Officer",
+        "industry": "Corporate",
+        "economicTier": 4,
+        "statAffinity": {
+          "wisdom": 1.3,
+          "intelligence": 1.2
+        },
+        "sentiments": [
+          "indifferent",
+          "burned out",
+          "quietly satisfied",
+          "ashamed"
+        ],
+        "iconPrompt": "A compliance officer in a dark room, surrounded by documents.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#compliance_officer.webp"
+      },
+      {
+        "title": "Propaganda Specialist",
+        "industry": "Corporate",
+        "economicTier": 4,
+        "statAffinity": {
+          "charisma": 1.5,
+          "intelligence": 1.2
+        },
+        "sentiments": [
+          "indifferent",
+          "ashamed",
+          "quietly satisfied",
+          "burned out"
+        ],
+        "iconPrompt": "A propaganda specialist in a dark room, surrounded by propaganda materials.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#propaganda_specialist.webp"
+      },
+      {
+        "title": "Terraforming Engineer",
+        "industry": "Science",
+        "economicTier": 3,
+        "statAffinity": {
+          "intelligence": 1.4,
+          "wisdom": 1.2,
+          "constitution": 1.1
+        },
+        "sentiments": [
+          "passionate",
+          "proud",
+          "burned out",
+          "quietly satisfied"
+        ],
+        "iconPrompt": "A terraforming engineer in a dark room, surrounded by engineering tools.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#terraforming_engineer.webp"
+      },
+      {
+        "title": "Xenobiologist",
+        "industry": "Science",
+        "economicTier": 3,
+        "statAffinity": {
+          "intelligence": 1.5,
+          "wisdom": 1.3
+        },
+        "sentiments": [
+          "passionate",
+          "proud",
+          "indifferent",
+          "quietly satisfied"
+        ],
+        "iconPrompt": "A xenobiologist in a dark room, surrounded by biological samples.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#xenobiologist.webp"
+      },
+      {
+        "title": "Deep-Space Scout",
+        "industry": "Exploration",
+        "economicTier": 3,
+        "statAffinity": {
+          "constitution": 1.3,
+          "wisdom": 1.2,
+          "dexterity": 1.1
+        },
+        "sentiments": [
+          "passionate",
+          "proud",
+          "indifferent",
+          "burned out"
+        ],
+        "iconPrompt": "A deep-space scout in a dark room, surrounded by exploration tools.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#deep_space_scout.webp"
+      },
+      {
+        "title": "Colonist",
+        "industry": "Settlement",
+        "economicTier": 2,
+        "statAffinity": {
+          "constitution": 1.3,
+          "strength": 1.2,
+          "wisdom": 1.1
+        },
+        "sentiments": [
+          "proud",
+          "desperate",
+          "quietly satisfied",
+          "resentful"
+        ],
+        "iconPrompt": "A colonist in a dark room, surrounded by settlement tools.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#colonist.webp"
+      },
+      {
+        "title": "Salvager",
+        "industry": "Salvage",
+        "economicTier": 2,
+        "statAffinity": {
+          "dexterity": 1.3,
+          "wisdom": 1.2,
+          "constitution": 1.1
+        },
+        "sentiments": [
+          "indifferent",
+          "quietly satisfied",
+          "desperate",
+          "proud"
+        ],
+        "iconPrompt": "A salvager in a dark room, surrounded by salvaged items.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#salvager.webp"
+      },
+      {
+        "title": "Netspace Artist",
+        "industry": "Creative",
+        "economicTier": 2,
+        "statAffinity": {
+          "intelligence": 1.3,
+          "charisma": 1.3
+        },
+        "sentiments": [
+          "passionate",
+          "desperate",
+          "burned out",
+          "quietly satisfied"
+        ],
+        "iconPrompt": "A netspace artist in a dark room, surrounded by digital art.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#netspace_artist.webp"
+      },
+      {
+        "title": "Underground Journalist",
+        "industry": "Media",
+        "economicTier": 2,
+        "statAffinity": {
+          "intelligence": 1.3,
+          "charisma": 1.2,
+          "wisdom": 1.2
+        },
+        "sentiments": [
+          "passionate",
+          "resentful",
+          "burned out",
+          "proud"
+        ],
+        "iconPrompt": "An underground journalist in a dark room, surrounded by documents.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#underground_journalist.webp"
+      },
+      {
+        "title": "Megacorp Executive",
+        "industry": "Corporate",
+        "economicTier": 5,
+        "statAffinity": {
+          "charisma": 1.4,
+          "intelligence": 1.3,
+          "wisdom": 1.2
+        },
+        "sentiments": [
+          "proud",
+          "indifferent",
+          "quietly satisfied",
+          "burned out"
+        ],
+        "iconPrompt": "A megacorp executive in a dark room, surrounded by corporate documents.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#megacorp_executive.webp"
+      },
+      {
+        "title": "AI Architect",
+        "industry": "Technology",
+        "economicTier": 5,
+        "statAffinity": {
+          "intelligence": 1.6,
+          "wisdom": 1.2
+        },
+        "sentiments": [
+          "passionate",
+          "proud",
+          "indifferent",
+          "quietly satisfied"
+        ],
+        "iconPrompt": "An AI architect in a dark room, surrounded by AI components.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#ai_architect.webp"
+      },
+      {
+        "title": "Orbital Mogul",
+        "industry": "Corporate",
+        "economicTier": 5,
+        "statAffinity": {
+          "charisma": 1.5,
+          "intelligence": 1.3
+        },
+        "sentiments": [
+          "proud",
+          "indifferent",
+          "quietly satisfied"
+        ],
+        "iconPrompt": "An orbital mogul in a dark room, surrounded by orbital structures.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#orbital_mogul.webp"
+      },
+      {
+        "title": "Sex Worker",
+        "industry": "Entertainment",
+        "economicTier": 2,
+        "nsfw": true,
+        "statAffinity": {
+          "charisma": 1.4,
+          "intelligence": 0.9,
+          "wisdom": 0.8
+        },
+        "sentiments": [
+          "proud",
+          "indifferent",
+          "quietly satisfied",
+          "burned out"
+        ],
+        "iconPrompt": "A female sex worker wearing a skimpy outfit outside a dimly lit club, surrounded by neon lights.",
+        "iconPath": "generator/genres/sci-fi/icons/PROFESSIONS#sex_worker.webp"
+      }
+    ],
+    "lifeEvents": [
+      {
+        "id": "corp_proxy_war",
+        "description": "Survived a corporate proxy war — the sponsoring megacorps never officially existed",
+        "toneTag": "gritty",
+        "statAffinity": {
+          "constitution": 1.3,
+          "wisdom": 1.1
+        },
+        "iconPrompt": "A soldier standing in a war-torn city, looking out over the ruins.",
+        "iconPath": "generator/genres/sci-fi/icons/LIFE_EVENTS#corp_proxy_war.webp"
+      },
+      {
+        "id": "sole_survivor",
+        "description": "Sole survivor of their unit or crew — still not sure whether that's luck or something worse",
+        "toneTag": "gritty",
+        "statAffinity": {
+          "constitution": 1.2,
+          "wisdom": 1.2
+        },
+        "iconPrompt": "A lone survivor standing in a destroyed battlefield, looking out over the ruins.",
+        "iconPath": "generator/genres/sci-fi/icons/LIFE_EVENTS#sole_survivor.webp"
+      },
+      {
+        "id": "station_siege",
+        "description": "Lived through a station siege — weeks of lockdown, rationed air, and decisions they still think about",
+        "toneTag": "gritty",
+        "statAffinity": {
+          "constitution": 1.3,
+          "strength": 1.1
+        },
+        "iconPrompt": "A person standing in a station during a siege, looking out over the ruins.",
+        "iconPath": "generator/genres/sci-fi/icons/LIFE_EVENTS#station_siege.webp"
+      },
+      {
+        "id": "corp_purge",
+        "description": "Caught in a corporate purge — colleagues who knew too much disappeared over a week; they got out, just",
+        "toneTag": "gritty",
+        "statAffinity": {
+          "wisdom": 1.2,
+          "dexterity": 1.1
+        },
+        "iconPrompt": "A person standing in a corporate office during a purge, looking out over the ruins.",
+        "iconPath": "generator/genres/sci-fi/icons/LIFE_EVENTS#corp_purge.webp"
+      },
+      {
+        "id": "corp_indentured",
+        "description": "Served time in corporate indentured labour — the contract had an end date; they counted every shift",
+        "toneTag": "gritty",
+        "statAffinity": {
+          "constitution": 1.3,
+          "wisdom": 1.1
+        },
+        "iconPrompt": "A person standing in a corporate office during indentured labour, looking out over the ruins.",
+        "iconPath": "generator/genres/sci-fi/icons/LIFE_EVENTS#corp_indentured.webp"
+      },
+      {
+        "id": "corp_pawn",
+        "description": "Used as a corporate pawn and discarded when the operation concluded — the paperwork said \"restructuring\"",
+        "toneTag": "dramatic",
+        "statAffinity": {
+          "wisdom": 1.2,
+          "charisma": 0.9
+        },
+        "iconPrompt": "A person standing in a corporate office during a pawn operation, looking out over the ruins.",
+        "iconPath": "generator/genres/sci-fi/icons/LIFE_EVENTS#corp_pawn.webp"
+      },
+      {
+        "id": "void_incident",
+        "description": "Lost their entire crew in a void incident — the official investigation found no fault, which was its own kind of finding",
+        "toneTag": "dramatic",
+        "statAffinity": {
+          "wisdom": 1.3,
+          "constitution": 0.9
+        },
+        "iconPrompt": "A person standing in a void, looking out over the ruins.",
+        "iconPath": "generator/genres/sci-fi/icons/LIFE_EVENTS#void_incident.webp"
+      },
+      {
+        "id": "aug_rejection",
+        "description": "Catastrophic aug rejection after a botched installation — long recovery, lasting complications, a bill they're still paying",
+        "toneTag": "gritty",
+        "statAffinity": {
+          "constitution": 0.8,
+          "wisdom": 1.2
+        },
+        "iconPrompt": "A person standing in a medical facility during an aug rejection, looking out over the ruins.",
+        "iconPath": "generator/genres/sci-fi/icons/LIFE_EVENTS#aug_rejection.webp"
+      },
+      {
+        "id": "memory_wipe",
+        "description": "Underwent a partial memory wipe — voluntary at the time, disputed now; what remains is edges and the feeling of edges",
+        "toneTag": "dramatic",
+        "statAffinity": {
+          "wisdom": 1.2,
+          "intelligence": 0.9
+        },
+        "economicHint": -1,
+        "iconPrompt": "A person standing in a medical facility during a memory wipe, looking out over the ruins.",
+        "iconPath": "generator/genres/sci-fi/icons/LIFE_EVENTS#memory_wipe.webp"
+      },
+      {
+        "id": "lost_partner",
+        "description": "Lost a partner to a shipboard accident or a war that ended before anyone agreed it had started",
+        "toneTag": "dramatic",
+        "statAffinity": {
+          "wisdom": 1.3,
+          "charisma": 0.9
+        },
+        "iconPrompt": "A person standing in a shipboard accident or war, looking out over the ruins.",
+        "iconPath": "generator/genres/sci-fi/icons/LIFE_EVENTS#lost_partner.webp"
+      },
+      {
+        "id": "first_contact",
+        "description": "Was present at a first-contact event — classified, officially unremarkable, personally life-changing",
+        "toneTag": "neutral",
+        "statAffinity": {
+          "wisdom": 1.3,
+          "intelligence": 1.2
+        },
+        "iconPrompt": "A person standing in a first-contact event, looking out over the ruins.",
+        "iconPath": "generator/genres/sci-fi/icons/LIFE_EVENTS#first_contact.webp"
+      },
+      {
+        "id": "derelict_discovery",
+        "description": "Found a derelict ship with something inside they haven't told anyone about — not because they can't, because they haven't decided what it means",
+        "toneTag": "gritty",
+        "statAffinity": {
+          "wisdom": 1.2,
+          "dexterity": 1.1
+        },
+        "iconPrompt": "A person standing in a derelict ship, looking out over the ruins.",
+        "iconPath": "generator/genres/sci-fi/icons/LIFE_EVENTS#derelict_discovery.webp"
+      },
+      {
+        "id": "physics_violation",
+        "description": "Witnessed something that violates known physics — they have a log entry, and they have never shared it",
+        "toneTag": "neutral",
+        "statAffinity": {
+          "intelligence": 1.3,
+          "wisdom": 1.2
+        },
+        "iconPrompt": "A person standing in a physics violation, looking out over the ruins.",
+        "iconPath": "generator/genres/sci-fi/icons/LIFE_EVENTS#physics_violation.webp"
+      },
+      {
+        "id": "wrongful_prison",
+        "description": "Did time for something wrongful — or something they did, just not quite the way the record tells it",
+        "toneTag": "gritty",
+        "statAffinity": {
+          "wisdom": 1.2,
+          "constitution": 1.1
+        },
+        "iconPrompt": "A person standing in a prison, looking out over the ruins.",
+        "iconPath": "generator/genres/sci-fi/icons/LIFE_EVENTS#wrongful_prison.webp"
+      },
+      {
+        "id": "burned_informant",
+        "description": "Was an informant for a faction that later burned them without ceremony or compensation",
+        "toneTag": "gritty",
+        "statAffinity": {
+          "wisdom": 1.2,
+          "charisma": 0.8
+        },
+        "iconPrompt": "A person standing in an informant situation, looking out over the ruins.",
+        "iconPath": "generator/genres/sci-fi/icons/LIFE_EVENTS#burned_informant.webp"
+      },
+      {
+        "id": "heist_sideways",
+        "description": "Part of a heist that went catastrophically sideways — some of the crew didn't make it; nobody talks about whose call it was",
+        "toneTag": "gritty",
+        "statAffinity": {
+          "dexterity": 1.1,
+          "wisdom": 1.1
+        },
+        "iconPrompt": "A person standing in a heist situation, looking out over the ruins.",
+        "iconPath": "generator/genres/sci-fi/icons/LIFE_EVENTS#heist_sideways.webp"
+      },
+      {
+        "id": "colony_collapse",
+        "description": "Home colony collapsed — environmental failure, corporate abandonment, or conflict; they got out with what they could carry",
+        "toneTag": "gritty",
+        "statAffinity": {
+          "constitution": 1.2,
+          "wisdom": 1.1
+        },
+        "economicHint": -1,
+        "iconPrompt": "A person standing in a colony collapse, looking out over the ruins.",
+        "iconPath": "generator/genres/sci-fi/icons/LIFE_EVENTS#colony_collapse.webp"
+      },
+      {
+        "id": "ship_failure",
+        "description": "Survived a catastrophic ship failure — crash-landed or ejected; the wreck is still on some navigation chart as a hazard marker",
+        "toneTag": "gritty",
+        "statAffinity": {
+          "constitution": 1.3,
+          "dexterity": 1.1
+        },
+        "iconPrompt": "A person standing in a ship failure, looking out over the ruins.",
+        "iconPath": "generator/genres/sci-fi/icons/LIFE_EVENTS#ship_failure.webp"
+      },
+      {
+        "id": "mass_evacuation",
+        "description": "Part of a mass evacuation — left everything behind in under an hour; they are very efficient packers now",
+        "toneTag": "dramatic",
+        "statAffinity": {
+          "constitution": 1.2,
+          "wisdom": 1.1
+        },
+        "economicHint": -1,
+        "iconPrompt": "A person standing in a mass evacuation, looking out over the ruins.",
+        "iconPath": "generator/genres/sci-fi/icons/LIFE_EVENTS#mass_evacuation.webp"
+      },
+      {
+        "id": "built_reputation",
+        "description": "Built a reputation from nothing in a place that doesn't give second chances — entirely by not asking for one",
+        "toneTag": "neutral",
+        "statAffinity": {
+          "charisma": 1.2,
+          "intelligence": 1.1
+        },
+        "economicHint": 1,
+        "iconPrompt": "A person standing in a reputation building situation, looking out over the ruins.",
+        "iconPath": "generator/genres/sci-fi/icons/LIFE_EVENTS#built_reputation.webp"
+      },
+      {
+        "id": "megacorp_defector",
+        "description": "Defected from a megacorp or military installation — burned every bridge on the way out and has no plans to rebuild them",
+        "toneTag": "dramatic",
+        "statAffinity": {
+          "wisdom": 1.2,
+          "constitution": 1.1
+        },
+        "economicHint": -1,
+        "iconPrompt": "A person standing in a megacorp defector situation, looking out over the ruins.",
+        "iconPath": "generator/genres/sci-fi/icons/LIFE_EVENTS#megacorp_defector.webp"
+      }
+    ],
+    "familyStructures": [
+      {
+        "id": "android_origin",
+        "label": "N/A — synthetic construct",
+        "parentCount": 0,
+        "siblingCount": [
+          0,
+          0
+        ],
+        "toneTag": "neutral",
+        "notes": "Manufactured, not born. No biological family. No parents. No siblings. The concept does not apply.",
+        "iconPrompt": "sci-fi rpg icon, android emerging from a manufacturing pod, factory floor, no family present, cold blue industrial lighting, medium shot, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/FAMILY_STRUCTURES#vat_born.webp"
+      },
+      {
+        "id": "biological_intact",
+        "label": "Biological family, intact",
+        "parentCount": 2,
+        "siblingCount": [
+          0,
+          2
+        ],
+        "toneTag": "neutral",
+        "statAffinity": {
+          "wisdom": 1.1,
+          "charisma": 1.1
+        },
+        "notes": "Both biological parents present. Relationship quality randomized separately.",
+        "iconPrompt": "A happy family with two parents and children in a cozy home.",
+        "iconPath": "generator/genres/sci-fi/icons/FAMILY_STRUCTURES#biological_intact.webp"
+      },
+      {
+        "id": "single_parent",
+        "label": "Single parent household",
+        "parentCount": 1,
+        "siblingCount": [
+          0,
+          2
+        ],
+        "toneTag": "neutral",
+        "statAffinity": {
+          "constitution": 1.1
+        },
+        "economicHint": -1,
+        "notes": "One parent absent, unknown, or deceased. Character may have taken on responsibilities early.",
+        "iconPrompt": "A single parent with children in a modest home.",
+        "iconPath": "generator/genres/sci-fi/icons/FAMILY_STRUCTURES#single_parent.webp"
+      },
+      {
+        "id": "two_parent_one_deceased",
+        "label": "One parent deceased, one surviving",
+        "parentCount": 2,
+        "siblingCount": [
+          0,
+          2
+        ],
+        "toneTag": "dramatic",
+        "statAffinity": {
+          "wisdom": 1.1,
+          "constitution": 0.9
+        },
+        "economicHint": -1,
+        "notes": "One parent is deceased. Surviving parent status randomized.",
+        "iconPrompt": "A family with one parent and children, one parent deceased.",
+        "iconPath": "generator/genres/sci-fi/icons/FAMILY_STRUCTURES#two_parent_one_deceased.webp"
+      },
+      {
+        "id": "corp_foster",
+        "label": "Corporate foster assignment",
+        "parentCount": 2,
+        "siblingCount": [
+          0,
+          0
+        ],
+        "toneTag": "gritty",
+        "statAffinity": {
+          "intelligence": 1.1,
+          "constitution": 1.1
+        },
+        "notes": "Guardian parents assigned by a corporation — functional, structured, and transactional in ways that took a while to process.",
+        "iconPrompt": "A corporate foster family with assigned parents and children.",
+        "iconPath": "generator/genres/sci-fi/icons/FAMILY_STRUCTURES#corp_foster.webp"
+      },
+      {
+        "id": "orphan_station",
+        "label": "Station orphan — raised by the system",
+        "parentCount": 0,
+        "siblingCount": [
+          0,
+          1
+        ],
+        "toneTag": "gritty",
+        "statAffinity": {
+          "constitution": 1.3,
+          "wisdom": 1.1
+        },
+        "economicHint": -1,
+        "notes": "No parental figures. Multiple facility placements. Self-reliance was a survival skill, not a virtue.",
+        "iconPrompt": "A station orphan with children in a modest home.",
+        "iconPath": "generator/genres/sci-fi/icons/FAMILY_STRUCTURES#orphan_station.webp"
+      },
+      {
+        "id": "vat_born",
+        "label": "Vat-born — facility-raised",
+        "parentCount": 0,
+        "siblingCount": [
+          0,
+          6
+        ],
+        "toneTag": "neutral",
+        "statAffinity": {
+          "constitution": 1.1
+        },
+        "notes": "Grown and raised in a corporate or independent facility. \"Siblings\" are other vat-prints from the same batch — relationships vary widely.",
+        "iconPrompt": "A vat-born character with other vat-prints from the same batch.",
+        "iconPath": "generator/genres/sci-fi/icons/FAMILY_STRUCTURES#vat_born.webp"
+      },
+      {
+        "id": "crew_family",
+        "label": "Ship crew — raised aboard",
+        "parentCount": 0,
+        "siblingCount": [
+          2,
+          4
+        ],
+        "toneTag": "neutral",
+        "statAffinity": {
+          "constitution": 1.2,
+          "charisma": 1.1
+        },
+        "notes": "Parents absent or the concept didn't apply. A ship crew raised them — adults rotating in and out, loyalty forged by proximity and necessity.",
+        "iconPrompt": "A ship crew with children raised aboard.",
+        "iconPath": "generator/genres/sci-fi/icons/FAMILY_STRUCTURES#crew_family.webp"
+      },
+      {
+        "id": "multigenerational",
+        "label": "Multigenerational household",
+        "parentCount": 2,
+        "siblingCount": [
+          1,
+          3
+        ],
+        "toneTag": "cozy",
+        "statAffinity": {
+          "wisdom": 1.2,
+          "charisma": 1.1
+        },
+        "notes": "Extended family, multiple generations under one hab or close by. Loud, warm, complicated, hard to leave.",
+        "iconPrompt": "A multigenerational family with parents and children in a cozy home.",
+        "iconPath": "generator/genres/sci-fi/icons/FAMILY_STRUCTURES#multigenerational.webp"
+      },
+      {
+        "id": "commune_collective",
+        "label": "Collective or commune upbringing",
+        "parentCount": 0,
+        "siblingCount": [
+          2,
+          5
+        ],
+        "toneTag": "neutral",
+        "statAffinity": {
+          "constitution": 1.1,
+          "charisma": 1.1
+        },
+        "economicHint": -1,
+        "notes": "Raised in a communal settlement — anti-corp, frontier, or ideological. The outside world was always \"other\".",
+        "iconPrompt": "A collective or commune with children.",
+        "iconPath": "generator/genres/sci-fi/icons/FAMILY_STRUCTURES#commune_collective.webp"
+      },
+      {
+        "id": "estranged_all",
+        "label": "Estranged from everyone — chose to be",
+        "parentCount": 0,
+        "siblingCount": [
+          0,
+          1
+        ],
+        "toneTag": "dramatic",
+        "statAffinity": {
+          "wisdom": 1.2,
+          "constitution": 1.1
+        },
+        "notes": "Family exists but has been deliberately severed. The reasons are real and are not discussed.",
+        "iconPrompt": "A character who is estranged from their family.",
+        "iconPath": "generator/genres/sci-fi/icons/FAMILY_STRUCTURES#estranged_all.webp"
+      }
+    ],
+    "parentStatuses": [
+      {
+        "id": "na",
+        "label": "N/A — synthetic origin",
+        "toneTag": "neutral",
+        "iconPrompt": "sci-fi rpg icon, android chassis on a factory assembly line, no family, no parents, manufactured not born, cold industrial lighting, wide shot, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/PARENT_STATUSES#na.webp"
+      },
+      {
+        "id": "present_close",
+        "label": "present and close",
+        "toneTag": "cozy",
+        "iconPrompt": "sci-fi rpg icon, small hab unit interior, parent and grown child at meal table, comm devices set aside, relaxed warm expressions, practical near-future decor, warm overhead lighting, medium two-shot, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/PARENT_STATUSES#present_close.webp"
+      },
+      {
+        "id": "present_distant",
+        "label": "present but emotionally distant",
+        "toneTag": "neutral",
+        "iconPrompt": "sci-fi rpg icon, hab unit living space, parent focused on wall screen, grown child staring at ceiling, both on same couch, cold distance between them, blue screen glow, uncomfortable postures, medium shot, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/PARENT_STATUSES#present_distant.webp"
+      },
+      {
+        "id": "present_difficult",
+        "label": "present but a source of tension",
+        "toneTag": "dramatic",
+        "iconPrompt": "sci-fi rpg icon, hab corridor or living space, parent and grown child in coveralls facing each other, tense arguing posture, pointing gestures, frustrated expressions, neutral corp lighting, medium two-shot, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/PARENT_STATUSES#present_difficult.webp"
+      },
+      {
+        "id": "estranged",
+        "label": "estranged — no contact",
+        "toneTag": "dramatic",
+        "iconPrompt": "sci-fi rpg icon, old man sitting in private hab room holding a faded photo of a boy, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/PARENT_STATUSES#estranged.webp"
+      },
+      {
+        "id": "deceased_recent",
+        "label": "recently deceased",
+        "toneTag": "dramatic",
+        "iconPrompt": "sci-fi rpg icon, fresh grave, tombstone for \"FATHER\" in a cemetery, dirt, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/PARENT_STATUSES#deceased_recent.webp"
+      },
+      {
+        "id": "deceased_long",
+        "label": "died when the character was young",
+        "toneTag": "gritty",
+        "iconPrompt": "sci-fi rpg icon, moss covered tombstone for \"FATHER\" in a cemetery, unkempt, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/PARENT_STATUSES#deceased_long.webp"
+      },
+      {
+        "id": "absent_unknown",
+        "label": "absent — never knew them",
+        "toneTag": "gritty",
+        "iconPrompt": "sci-fi rpg icon, portrait of family with two children, one parent is faceless, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/PARENT_STATUSES#absent_unknown.webp"
+      },
+      {
+        "id": "corp_detained",
+        "label": "detained by a megacorporation",
+        "toneTag": "gritty",
+        "iconPrompt": "draw sci-fi rpg icon, prison visit, adult man in gray prison uniform separated from woman behind glass wall, touching glass wall, tears, clinical white fluorescent lighting, medium two-shot, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/PARENT_STATUSES#corp_detained.webp"
+      },
+      {
+        "id": "missing",
+        "label": "missing — no confirmed status",
+        "toneTag": "dramatic",
+        "iconPrompt": "sci-fi rpg icon, public network terminal, missing person case file on screen, photo and case ID visible, status open, figure reading screen, concerned expression, blue screen glow on face, medium close-up, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/PARENT_STATUSES#missing.webp"
+      }
+    ],
+    "siblingDynamics": [
+      {
+        "id": "na",
+        "label": "N/A — no biological siblings",
+        "toneTag": "neutral",
+        "iconPrompt": "sci-fi rpg icon, single android unit standing alone in an empty factory bay, no companions, manufactured alone, cold industrial lighting, wide shot, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/SIBLING_DYNAMICS#na.webp"
+      },
+      {
+        "id": "protective_older",
+        "label": "protective older sibling",
+        "toneTag": "cozy",
+        "iconPrompt": "sci-fi rpg icon, space station corridor, older sibling in tactical vest arm out blocking younger sibling behind them, confrontational stance toward off-frame threat, protective posture, neon corridor lighting, medium shot, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/SIBLING_DYNAMICS#protective_older.webp"
+      },
+      {
+        "id": "rivalry",
+        "label": "long-running rivalry",
+        "toneTag": "dramatic",
+        "iconPrompt": "sci-fi rpg icon, narrow station corridor, two siblings in corp uniforms facing each other, one with promotion badge, other with arms crossed, competitive tense expressions, fluorescent lighting, medium two-shot, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/SIBLING_DYNAMICS#rivalry.webp"
+      },
+      {
+        "id": "estranged",
+        "label": "estranged — fell out years ago",
+        "toneTag": "dramatic",
+        "iconPrompt": "sci-fi rpg icon, man sitting in private hab room holding a faded photo of two boys, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/SIBLING_DYNAMICS#estranged.webp"
+      },
+      {
+        "id": "close_ally",
+        "label": "closest friend and confidant",
+        "toneTag": "cozy",
+        "iconPrompt": "sci-fi rpg icon, split-screen video call, two siblings in different settings, relaxed happy expressions, casual animated conversation, warm screen light on each face, medium two-shot split-screen, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/SIBLING_DYNAMICS#close_ally.webp"
+      },
+      {
+        "id": "troubled",
+        "label": "you two never saw eye to eye",
+        "toneTag": "gritty",
+        "iconPrompt": "sci-fi rpg icon, hab unit bedroom, two child fighting, frustrated expressions, corridor lighting, close two-shot, realistic, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/SIBLING_DYNAMICS#troubled.webp"
+      },
+      {
+        "id": "golden_child",
+        "label": "the family's golden child — hard to live up to",
+        "toneTag": "dramatic",
+        "iconPrompt": "family photo with two parents and two children.  One child circled in red ink with \"favorite child\" written above. sci-fi rpg icon, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/SIBLING_DYNAMICS#golden_child.webp"
+      },
+      {
+        "id": "lost_touch",
+        "label": "drifted apart, rarely speak",
+        "toneTag": "neutral",
+        "iconPrompt": "A fake phone screenshot of a text message app showing \"Hey bro, you still alive?\", sci-fi rpg icon, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/SIBLING_DYNAMICS#lost_touch.webp"
+      },
+      {
+        "id": "deceased",
+        "label": "deceased",
+        "toneTag": "gritty",
+        "iconPrompt": "sci-fi rpg icon, fresh grave, tombstone for \"SISTER\" in a cemetery, dirt",
+        "iconPath": "generator/genres/sci-fi/icons/SIBLING_DYNAMICS#deceased.webp"
+      },
+      {
+        "id": "younger_dependent",
+        "label": "younger and still depends on the character",
+        "toneTag": "neutral",
+        "iconPrompt": "teenager pouring water into a child's cup, star field visible through window in background, realistic, sci-fi rpg icon, hab unit,  digital art",
+        "iconPath": "generator/genres/sci-fi/icons/SIBLING_DYNAMICS#younger_dependent.webp"
+      },
+      {
+        "id": "reconnecting",
+        "label": "recently reconnected after years apart",
+        "toneTag": "neutral",
+        "iconPrompt": "sci-fi rpg icon, station café or cantina, two siblings in utilitarian clothing at small table, cautious hopeful expressions, drinks between them, leaning toward each other, warm ambient light, medium two-shot, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/SIBLING_DYNAMICS#reconnecting.webp"
+      }
+    ],
+    "tensions": [
+      {
+        "id": "megacorp_debt",
+        "description": "Owes a megacorporation a debt with a contract they cannot legally exit",
+        "toneTag": "gritty",
+        "statAffinity": {
+          "wisdom": 0.9,
+          "constitution": 1.1
+        },
+        "criminalFlag": false,
+        "iconPrompt": "sci-fi rpg icon, corporate office, figure in corp attire signing contract renewal at desk, compliance officer in uniform watching from behind, holographic interface visible, submissive tense posture, bright corp lighting, medium shot, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/TENSIONS#megacorp_debt.webp"
+      },
+      {
+        "id": "syndicate_debt",
+        "description": "Owes a station syndicate — the kind that doesn't do formal payment plans",
+        "toneTag": "gritty",
+        "statAffinity": {
+          "wisdom": 0.8,
+          "constitution": 1.1
+        },
+        "criminalFlag": true,
+        "iconPrompt": "sci-fi rpg icon, dim station cantina booth, syndicate representative in dark jacket leaning back relaxed, other figure in worn clothing tense across table, neon bar lighting, drinks on table, medium two-shot, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/TENSIONS#syndicate_debt.webp"
+      },
+      {
+        "id": "ship_failing",
+        "description": "Their ship or operation is failing — parts, power, or time; probably all three",
+        "toneTag": "gritty",
+        "statAffinity": {
+          "constitution": 1.1,
+          "intelligence": 1.1
+        },
+        "criminalFlag": false,
+        "iconPrompt": "sci-fi rpg icon, spaceship engine room, engineer in coveralls crawling through open conduit access panel, diagnostic scanner in hand, amber warning lights active, steam venting from pipes, focused expression, low industrial lighting, medium shot, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/TENSIONS#ship_failing.webp"
+      },
+      {
+        "id": "corp_layoff",
+        "description": "A megacorporation has flagged them for layoff",
+        "toneTag": "gritty",
+        "statAffinity": {
+          "wisdom": 1.1,
+          "constitution": 1.2
+        },
+        "criminalFlag": false,
+        "iconPrompt": "sci-fi rpg icon, layoff notice paper, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/TENSIONS#corp_layoff.webp"
+      },
+      {
+        "id": "resistance_recruitment",
+        "description": "Being actively recruited by an anti-corp resistance cell — they haven't said no, which is already a decision",
+        "toneTag": "dramatic",
+        "statAffinity": {
+          "wisdom": 1.2,
+          "charisma": 1.1
+        },
+        "criminalFlag": false,
+        "iconPrompt": "sci-fi rpg icon, station service maintenance corridor, figure in grey coveralls standing alone, small data chip in outstretched hand, looking over shoulder, tense alert expression, dim maintenance lighting, medium close-up, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/TENSIONS#resistance_recruitment.webp"
+      },
+      {
+        "id": "leaked_data",
+        "description": "Leaked proprietary corporate data and is waiting for the moment someone notices",
+        "toneTag": "gritty",
+        "statAffinity": {
+          "intelligence": 1.2,
+          "wisdom": 0.9
+        },
+        "criminalFlag": true,
+        "iconPrompt": "sci-fi rpg icon, public terminal kiosk, upload progress bar at 100 percent on screen, figure in nondescript clothing walking away at controlled pace, restrained tense expression, bright public area, medium shot from behind, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/TENSIONS#leaked_data.webp"
+      },
+      {
+        "id": "political_exile",
+        "description": "Exiled from their home station for political reasons — the official charge was something procedural",
+        "toneTag": "dramatic",
+        "statAffinity": {
+          "charisma": 1.1,
+          "wisdom": 1.1
+        },
+        "criminalFlag": false,
+        "iconPrompt": "draw sci-fi rpg icon, an opened passport book stamped with \"ASYLUM GRANTED\", digital art",
+        "iconPath": "generator/genres/sci-fi/icons/TENSIONS#political_exile.webp"
+      },
+      {
+        "id": "contested_cargo",
+        "description": "Carrying cargo that two separate factions want back, with completely opposite intentions for it",
+        "toneTag": "gritty",
+        "statAffinity": {
+          "dexterity": 1.2,
+          "wisdom": 1.1
+        },
+        "criminalFlag": true,
+        "iconPrompt": "sci-fi rpg icon, cargo hold interior, figure in utility jacket beside sealed shipping container, wrist display showing two conflicting faction messages, conflicted stressed expression, cargo bay lighting, medium close-up, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/TENSIONS#contested_cargo.webp"
+      },
+      {
+        "id": "bounty",
+        "description": "There is a bounty on their head — the origin is complicated; the amount is not",
+        "toneTag": "gritty",
+        "statAffinity": {
+          "constitution": 1.2,
+          "strength": 1.1
+        },
+        "criminalFlag": true,
+        "iconPrompt": "sci-fi rpg icon, busy station docking terminal, public display board with wanted listing and face photo, figure in jacket and low hat brim nearby, other passersby moving past, tense concealed expression, bright public lighting, medium wide shot, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/TENSIONS#bounty.webp"
+      },
+      {
+        "id": "heist_something_off",
+        "description": "Deep into planning a heist — the crew is solid, the plan is good, and something is off",
+        "toneTag": "gritty",
+        "statAffinity": {
+          "intelligence": 1.2,
+          "dexterity": 1.1
+        },
+        "criminalFlag": true,
+        "iconPrompt": "sci-fi rpg icon, planning room, crew in dark tactical clothing around table with holographic station schematic, one figure pointing at specific detail on display, others observing, uneasy expression on one face, overhead blue planning light, medium wide shot, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/TENSIONS#heist_something_off.webp"
+      },
+      {
+        "id": "witnessed_massacre",
+        "description": "Witnessed a corporate massacre — civilian casualties, suppressed — and is still deciding what to do with the evidence",
+        "toneTag": "gritty",
+        "statAffinity": {
+          "wisdom": 1.2,
+          "intelligence": 1.1
+        },
+        "criminalFlag": false,
+        "iconPrompt": "sci-fi rpg icon, a reporter with a camera hiding behind a wall, photographing a massacre, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/TENSIONS#witnessed_massacre.webp"
+      },
+      {
+        "id": "life_support_failing",
+        "description": "Life support is failing — the timeline is specific and not generous",
+        "toneTag": "gritty",
+        "statAffinity": {
+          "constitution": 1.2,
+          "intelligence": 1.2
+        },
+        "criminalFlag": false,
+        "iconPrompt": "sci-fi rpg icon, habitat control room, environmental monitoring panel with multiple yellow-to-red status indicators, figure in coveralls working repair sequence at controls, focused calm expression, amber emergency lighting, medium shot, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/TENSIONS#life_support_failing.webp"
+      },
+      {
+        "id": "aug_rejection_onset",
+        "description": "Aug rejection is starting — symptoms currently manageable, treatment prohibitively expensive",
+        "toneTag": "dramatic",
+        "statAffinity": {
+          "constitution": 0.9,
+          "wisdom": 1.1
+        },
+        "criminalFlag": false,
+        "iconPrompt": "sci-fi rpg icon, station restroom, woman examining artificial eye in mirror, visible rash around eye, touching own face, worried assessing expression, bright restroom lighting, close-up on arm and reflected face, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/TENSIONS#aug_rejection_onset.webp"
+      },
+      {
+        "id": "void_pursuit",
+        "description": "Something in the void is following them — faster ship, gaining, no clear plan for what happens when it catches up",
+        "toneTag": "gritty",
+        "statAffinity": {
+          "constitution": 1.2,
+          "dexterity": 1.1
+        },
+        "criminalFlag": false,
+        "iconPrompt": "sci-fi rpg icon, freighter cockpit, pilot in flight suit at controls, scanner display showing closing contact icon, calculating tense expression, red emergency cockpit lighting, hands on controls, medium close-up, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/TENSIONS#void_pursuit.webp"
+      },
+      {
+        "id": "identity_fracture",
+        "description": "Something about who they think they are is coming apart — their memories and their records don't agree",
+        "toneTag": "dramatic",
+        "statAffinity": {
+          "wisdom": 1.2,
+          "intelligence": 1.1
+        },
+        "criminalFlag": false,
+        "iconPrompt": "sci-fi rpg icon, private workspace, two documents displayed side by side on desk screen with discrepancies highlighted, figure in corp attire leaning over desk staring between them, disturbed expression, desk lamp lighting, medium close-up, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/TENSIONS#identity_fracture.webp"
+      },
+      {
+        "id": "someone_in_danger",
+        "description": "Someone is in danger because of a choice they made — and they haven't told that person",
+        "toneTag": "dramatic",
+        "statAffinity": {
+          "wisdom": 1.1,
+          "charisma": 1.1
+        },
+        "criminalFlag": false,
+        "iconPrompt": "sci-fi rpg icon, a man in a crowd, seen through a sniper scope, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/TENSIONS#someone_in_danger.webp"
+      },
+      {
+        "id": "ai_awakening",
+        "description": "The AI they work with is developing something that looks like feelings and is asking increasingly pointed questions",
+        "toneTag": "neutral",
+        "statAffinity": {
+          "intelligence": 1.2,
+          "wisdom": 1.2
+        },
+        "criminalFlag": false,
+        "iconPrompt": "sci-fi rpg icon, female android surprised expression, open mouth, digital concept art",
+        "iconPath": "generator/genres/sci-fi/icons/TENSIONS#ai_awakening.webp"
+      },
+      {
+        "id": "past_resurfaced",
+        "description": "Someone from their past has resurfaced — the timing is not coincidental, and they both know it",
+        "toneTag": "dramatic",
+        "statAffinity": {
+          "charisma": 1.1,
+          "wisdom": 1.1
+        },
+        "criminalFlag": false,
+        "iconPrompt": "sci-fi rpg icon, busy station concourse, figure in jacket standing still in moving crowd, looking across space toward someone in distance, controlled guarded expression, crowd moving around them, medium wide shot, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/TENSIONS#past_resurfaced.webp"
+      },
+      {
+        "id": "two_factions",
+        "description": "Two factions are competing for their loyalty — both offers are genuinely good; neither faction is trustworthy",
+        "toneTag": "dramatic",
+        "statAffinity": {
+          "charisma": 1.1,
+          "wisdom": 1.1
+        },
+        "criminalFlag": false,
+        "iconPrompt": "sci-fi rpg icon, station corridor junction, figure in neutral clothing at center, two uniformed faction representatives approaching from opposite directions with different emblems visible, torn conflicted expression, crossroads overhead lighting, medium wide shot, digital art",
+        "iconPath": "generator/genres/sci-fi/icons/TENSIONS#two_factions.webp"
+      }
+    ],
+    "secrets": [
+      {
+        "id": "corp_informant",
+        "description": "Has been feeding information to a megacorporation — started as survival, is now something more complicated",
+        "toneTag": "gritty",
+        "severity": "high",
+        "statAffinity": {
+          "charisma": 1.1,
+          "wisdom": 0.9
+        },
+        "criminalFlag": true
+      },
+      {
+        "id": "corp_war_act",
+        "description": "Did something during a corporate war that didn't make any official record — for very good reason",
+        "toneTag": "gritty",
+        "severity": "explosive",
+        "statAffinity": {
+          "constitution": 1.1,
+          "wisdom": 0.9
+        },
+        "criminalFlag": true
+      },
+      {
+        "id": "proprietary_dataset",
+        "description": "Has a complete proprietary corporate dataset they've been sitting on — hasn't decided what to do with it, which is itself a decision",
+        "toneTag": "gritty",
+        "severity": "high",
+        "statAffinity": {
+          "intelligence": 1.3,
+          "wisdom": 1.1
+        },
+        "criminalFlag": true
+      },
+      {
+        "id": "false_identity",
+        "description": "Operating under a different identity — the original is wanted, dead, or deleted from the record",
+        "toneTag": "gritty",
+        "severity": "high",
+        "statAffinity": {
+          "intelligence": 1.2,
+          "charisma": 1.2
+        },
+        "criminalFlag": true
+      },
+      {
+        "id": "is_a_clone",
+        "description": "Is a clone — either unaware of it, or aware and telling absolutely no one; the original may or may not still exist",
+        "toneTag": "dramatic",
+        "severity": "explosive",
+        "statAffinity": {
+          "constitution": 1.1,
+          "wisdom": 1.1
+        },
+        "criminalFlag": false
+      },
+      {
+        "id": "android_passing",
+        "description": "Is an android passing as biological — convincingly, mostly, until a medscanner or the wrong lighting says otherwise",
+        "toneTag": "dramatic",
+        "severity": "explosive",
+        "statAffinity": {
+          "charisma": 1.2,
+          "intelligence": 1.1
+        },
+        "criminalFlag": false
+      },
+      {
+        "id": "illegal_augs",
+        "description": "Has augmentations that are illegal or blacklisted — military-grade, experimental, or pulled from a prohibited batch",
+        "toneTag": "gritty",
+        "severity": "medium",
+        "statAffinity": {
+          "dexterity": 1.2,
+          "strength": 1.1
+        },
+        "criminalFlag": true
+      },
+      {
+        "id": "borrowed_memories",
+        "description": "Has memories that didn't happen to them — at least one significant event is someone else's, and they've built part of their identity on it",
+        "toneTag": "dramatic",
+        "severity": "high",
+        "statAffinity": {
+          "wisdom": 1.2,
+          "intelligence": 0.9
+        },
+        "criminalFlag": false
+      },
+      {
+        "id": "double_agent",
+        "description": "Currently working for two separate factions simultaneously — neither knows about the other, and the math on that eventually stops working",
+        "toneTag": "gritty",
+        "severity": "high",
+        "statAffinity": {
+          "charisma": 1.2,
+          "intelligence": 1.2
+        },
+        "criminalFlag": true
+      },
+      {
+        "id": "killed_someone",
+        "description": "Killed someone who didn't deserve it — the circumstances are complicated; the result is not",
+        "toneTag": "gritty",
+        "severity": "high",
+        "statAffinity": {
+          "constitution": 1.1,
+          "wisdom": 0.8
+        },
+        "criminalFlag": true
+      },
+      {
+        "id": "bioweapon_smuggled",
+        "description": "Smuggled a bioweapon without knowing what was in the container — only found out at delivery, which was too late",
+        "toneTag": "gritty",
+        "severity": "explosive",
+        "statAffinity": {
+          "dexterity": 1.1,
+          "wisdom": 0.8
+        },
+        "criminalFlag": true
+      },
+      {
+        "id": "black_site",
+        "description": "Knows the location and stated purpose of a corporate black site — and has the coordinates cached in two places",
+        "toneTag": "gritty",
+        "severity": "explosive",
+        "statAffinity": {
+          "intelligence": 1.3,
+          "wisdom": 1.2
+        },
+        "criminalFlag": true
+      },
+      {
+        "id": "sold_out_crew",
+        "description": "Sold out a crew or partner to save themselves — some of those people are still alive and still working",
+        "toneTag": "gritty",
+        "severity": "explosive",
+        "statAffinity": {
+          "charisma": 1.1,
+          "wisdom": 0.7
+        },
+        "criminalFlag": true
+      },
+      {
+        "id": "rewrote_the_story",
+        "description": "Was an informant during a period they've since rewritten in their own head — the version they tell sounds better",
+        "toneTag": "gritty",
+        "severity": "high",
+        "statAffinity": {
+          "charisma": 1.2,
+          "wisdom": 0.8
+        },
+        "criminalFlag": true
+      },
+      {
+        "id": "condition_catching_up",
+        "description": "Has a condition — biological, mechanical, or cognitive — that is going to catch up with them; the timeline is unclear",
+        "toneTag": "dramatic",
+        "severity": "medium",
+        "statAffinity": {
+          "constitution": 0.8,
+          "wisdom": 1.2
+        },
+        "criminalFlag": false
+      },
+      {
+        "id": "addiction_managed",
+        "description": "Actively managing an addiction to stims, painkillers, or something with no approved name — and managing it well enough that nobody has noticed yet",
+        "toneTag": "gritty",
+        "severity": "medium",
+        "statAffinity": {
+          "constitution": 0.8,
+          "charisma": 1.1
+        },
+        "criminalFlag": false
+      },
+      {
+        "id": "unpayable_debt",
+        "description": "Owes someone a debt they genuinely cannot repay — not financial, something more personal — and the other person is still waiting",
+        "toneTag": "dramatic",
+        "severity": "medium",
+        "statAffinity": {
+          "wisdom": 1.1,
+          "charisma": 1.1
+        },
+        "criminalFlag": false
+      }
+    ],
+    "economicTiers": {
+      "1": {
+        "label": "Below the Line",
+        "descriptors": [
+          "stack bunk in an undercity shelter",
+          "running on grey-market scrip",
+          "no corp ID — invisible to the official economy",
+          "synth-paste for every meal, no complaints left to give",
+          "one bad shift from nothing"
+        ],
+        "housing": [
+          "undercity stack bunk",
+          "abandoned maintenance corridor",
+          "grey-market capsule pod",
+          "substation squat"
+        ],
+        "transport": [
+          "on foot",
+          "mag-rail with a borrowed pass",
+          "unreliable cargo bike"
+        ],
+        "iconPrompt": "Faceless homeless man crouching in a maintenance tunnel wearing worn ragged clothes, puddle, squalor, graffiti, broken pipes, trash, rats, emergency lighting, grime and desperation, ",
+        "iconPath": "generator/genres/sci-fi/icons/ECONOMIC_TIERS#tier1-below-the-line.webp"
+      },
+      "2": {
+        "label": "Wage-Serf",
+        "descriptors": [
+          "corp housing that belongs to the corp, not them",
+          "paid in company scrip — spendable only at company outlets",
+          "two shifts just to cover life support",
+          "secondhand everything, maintained carefully",
+          "the contract renews automatically unless they ask it not to"
+        ],
+        "housing": [
+          "corp-assigned hab unit",
+          "shared worker block",
+          "station dormitory bay"
+        ],
+        "transport": [
+          "public mag-rail",
+          "corp shuttle pass",
+          "beat-up personal skimmer"
+        ],
+        "iconPrompt": "Faceless female corporate worker wearing a company-issue uniform, ID badge on a lanyard, sterile dormitory bunk behind them, company logo on the wall, exhausted compliance, weary expression, hunched shoulders",
+        "iconPath": "generator/genres/sci-fi/icons/ECONOMIC_TIERS#tier2-wage-serf.webp"
+      },
+      "3": {
+        "label": "Independent Contractor",
+        "descriptors": [
+          "their own hab — small, but theirs",
+          "gig credits that clear in real currency",
+          "ship share or reliable transport with actual specs",
+          "a small emergency fund they try not to think about",
+          "not corp-dependent, which costs something every day"
+        ],
+        "housing": [
+          "private hab unit",
+          "berth on their own ship",
+          "rented ring-sector apartment"
+        ],
+        "transport": [
+          "own ship or share of a ship",
+          "reliable skimmer",
+          "station transit unrestricted"
+        ],
+        "iconPrompt": "Faceless male independent spacer in practical worn gear, small personal ship airlock behind them, hand on a battered toolkit, self-reliant expression, modest but free",
+        "iconPath": "generator/genres/sci-fi/icons/ECONOMIC_TIERS#tier3-independent-contractor.webp"
+      },
+      "4": {
+        "label": "Corporate Citizen",
+        "descriptors": [
+          "full benefits package from a tier-one megacorp",
+          "real apartment with real air filtration",
+          "company vehicle with actual performance specs",
+          "expense account and the meetings that justify it",
+          "access to corp medical that doesn't involve a waiting list"
+        ],
+        "housing": [
+          "corp-provided arcology apartment",
+          "mid-ring private residence",
+          "executive hab suite"
+        ],
+        "transport": [
+          "corp vehicle with full systems",
+          "priority shuttle access",
+          "company cruiser clearance"
+        ],
+        "iconPrompt": "Faceless female mid-level corporate professional in clean business attire, arcology apartment window behind them showing filtered sky, polished and compliant",
+        "iconPath": "generator/genres/sci-fi/icons/ECONOMIC_TIERS#tier4-corporate-citizen.webp"
+      },
+      "5": {
+        "label": "Elite / Exec",
+        "descriptors": [
+          "arcology penthouse — the air is noticeably better",
+          "personal ship or standing fleet access",
+          "security detail that doesn't feel intrusive because they're good at their job",
+          "money as a social instrument rather than a survival mechanism",
+          "insulated from consequences in ways that have stopped being remarkable"
+        ],
+        "housing": [
+          "arcology penthouse",
+          "private orbital residence",
+          "multi-property portfolio"
+        ],
+        "transport": [
+          "personal ship",
+          "private shuttle on demand",
+          "corp executive transport with escort"
+        ],
+        "iconPrompt": "Faceless male megacorporate executive in tailored suit, penthouse deck behind them, personal starship visible through panoramic viewport, security detail at the edge of frame, insulated from consequences",
+        "iconPath": "generator/genres/sci-fi/icons/ECONOMIC_TIERS#tier5-elite-exec.webp"
+      }
+    },
+    "citySettings": [
+      {
+        "id": "orbital_station",
+        "label": "An orbital station",
+        "flavor": "recycled air and recycled people, everyone transient, everything negotiable, the void just outside the hull",
+        "toneTag": "neutral",
+        "statAffinity": {
+          "intelligence": 1.2,
+          "dexterity": 1.1
+        },
+        "iconPrompt": "orbital space station exterior, corporate megastructure in orbit, neon-lit docking rings, void and distant planet below",
+        "iconPath": "generator/genres/sci-fi/icons/CITY_SETTINGS#orbital_station.webp"
+      },
+      {
+        "id": "megacity_sprawl",
+        "label": "A megacity sprawl",
+        "flavor": "ninety levels of vertical geography, corp logos blocking out the sky, the lower you are the less the rules apply",
+        "toneTag": "gritty",
+        "statAffinity": {
+          "charisma": 1.1,
+          "constitution": 1.1
+        },
+        "iconPrompt": "cyberpunk megacity vertical sprawl, towering skyscrapers vanishing into smog, neon advertisements, drone traffic",
+        "iconPath": "generator/genres/sci-fi/icons/CITY_SETTINGS#megacity_sprawl.webp"
+      },
+      {
+        "id": "corp_arcology",
+        "label": "A corporate arcology",
+        "flavor": "self-contained, climate-controlled, the whole city is the company — nice if you don't notice the edges",
+        "toneTag": "neutral",
+        "statAffinity": {
+          "intelligence": 1.2,
+          "charisma": 1.1
+        },
+        "iconPrompt": "massive corporate arcology dome on a planet surface, gleaming self-contained city inside glass, armed checkpoints at the gate, supply ships arriving, gardens and parks inside",
+        "iconPath": "generator/genres/sci-fi/icons/CITY_SETTINGS#corp_arcology.webp"
+      },
+      {
+        "id": "colony_world",
+        "label": "A colony world",
+        "flavor": "young settlement, everything still being built, the rules are what you negotiate, corp presence is recent and hungry",
+        "toneTag": "neutral",
+        "statAffinity": {
+          "constitution": 1.3,
+          "strength": 1.1
+        },
+        "iconPrompt": "new colony planet, domed habitat clusters, alien sky with two moons, terraforming equipment on the horizon, supply ships arriving",
+        "iconPath": "generator/genres/sci-fi/icons/CITY_SETTINGS#colony_world.webp"
+      },
+      {
+        "id": "mining_belt",
+        "label": "A mining belt installation",
+        "flavor": "rock dust and shift rotations, everyone has a number and a quota, space is close and so are the people",
+        "toneTag": "gritty",
+        "statAffinity": {
+          "strength": 1.2,
+          "constitution": 1.3
+        },
+        "iconPrompt": "asteroid mining installation, grimy industrial space platform, ore extractors, smelting furnaces, trommels, ore transport robots, spinning rock and vacuum",
+        "iconPath": "generator/genres/sci-fi/icons/CITY_SETTINGS#mining_belt.webp"
+      },
+      {
+        "id": "deep_space_outpost",
+        "label": "A deep-space outpost",
+        "flavor": "days from the nearest lane marker, crew-small, supply-dependent, the silence outside is total",
+        "toneTag": "gritty",
+        "statAffinity": {
+          "constitution": 1.3,
+          "wisdom": 1.2
+        },
+        "iconPrompt": "isolated deep-space outpost, lone silver structure floating in the dark, distant faint stars, emergency amber lighting",
+        "iconPath": "generator/genres/sci-fi/icons/CITY_SETTINGS#deep_space_outpost.webp"
+      },
+      {
+        "id": "generation_ship",
+        "label": "A generation ship",
+        "flavor": "born mid-voyage, destination theoretical, the ship is the world and the world has politics",
+        "toneTag": "dramatic",
+        "statAffinity": {
+          "wisdom": 1.2,
+          "charisma": 1.1
+        },
+        "iconPrompt": "generation ship interior, rows of cryo-pods glowing a faint blue, cathedral corridors of metal, multiple generations of people living inside a vast hull",
+        "iconPath": "generator/genres/sci-fi/icons/CITY_SETTINGS#generation_ship.webp"
+      },
+      {
+        "id": "post_collapse_ruins",
+        "label": "Post-collapse city ruins",
+        "flavor": "whatever this was before the corp withdrew or the war came through, it isn't anymore; people live here anyway",
+        "toneTag": "gritty",
+        "statAffinity": {
+          "constitution": 1.2,
+          "wisdom": 1.1
+        },
+        "iconPrompt": "collapsed megacity ruins, crumbling skyscrapers overgrown with alien moss, survivors picking through rubble",
+        "iconPath": "generator/genres/sci-fi/icons/CITY_SETTINGS#post_collapse_ruins.webp"
+      },
+      {
+        "id": "frontier_outpost",
+        "label": "A frontier outpost",
+        "flavor": "edge of mapped space, three factions competing for the same resources, law is what the locals agree to this week",
+        "toneTag": "neutral",
+        "statAffinity": {
+          "constitution": 1.2,
+          "wisdom": 1.1,
+          "charisma": 1.1
+        },
+        "iconPrompt": "frontier planet outpost, rough terrain, provisional modular structures, austere homestead, moisture vaporators, subsistence farming, no corporate presence, edge of mapped space",
+        "iconPath": "generator/genres/sci-fi/icons/CITY_SETTINGS#frontier_outpost.webp"
+      },
+      {
+        "id": "undercity",
+        "label": "The undercity",
+        "flavor": "below the corp-serviced levels, grey-market everything, the infrastructure is older than anyone living remembers, survival is a local expertise",
+        "toneTag": "gritty",
+        "statAffinity": {
+          "dexterity": 1.2,
+          "constitution": 1.2
+        },
+        "iconPrompt": "subterranean undercity, lowest levels below the main city, pipes, wires, puddles, flickering shadows, trash, rats, illegal trade, forgotten underclass in cramped tunnels",
+        "iconPath": "generator/genres/sci-fi/icons/CITY_SETTINGS#undercity.webp"
+      }
+    ],
+    "tagPools": {
+      "always": [
+        "sci-fi",
+        "character-driven"
+      ],
+      "gritty": [
+        "cyberpunk",
+        "dystopia",
+        "survival",
+        "noir",
+        "undercity"
+      ],
+      "dramatic": [
+        "drama",
+        "corporate",
+        "betrayal",
+        "identity",
+        "secrets"
+      ],
+      "neutral": [
+        "space-opera",
+        "exploration",
+        "frontier",
+        "political"
+      ],
+      "cozy": [
+        "crew-drama",
+        "found-family",
+        "slice-of-life"
+      ],
+      "criminal": [
+        "crime",
+        "smuggling",
+        "black-market",
+        "underground"
+      ],
+      "professionTags": {
+        "Criminal": [
+          "crime",
+          "criminal",
+          "noir"
+        ],
+        "Medical": [
+          "medical",
+          "biotech"
+        ],
+        "Biotech": [
+          "biotech",
+          "gene-tech"
+        ],
+        "Military": [
+          "military",
+          "veteran",
+          "war"
+        ],
+        "Security": [
+          "security",
+          "mercenary"
+        ],
+        "Corporate": [
+          "corporate",
+          "megacorp",
+          "dystopia"
+        ],
+        "Technology": [
+          "ai",
+          "tech",
+          "hacking"
+        ],
+        "Information": [
+          "espionage",
+          "data",
+          "noir"
+        ],
+        "Science": [
+          "exploration",
+          "discovery"
+        ],
+        "Exploration": [
+          "exploration",
+          "frontier"
+        ],
+        "Shipping & transit": [
+          "space-opera",
+          "crew-drama"
+        ],
+        "Salvage": [
+          "survival",
+          "frontier"
+        ],
+        "Settlement": [
+          "frontier",
+          "colony"
+        ],
+        "Creative": [
+          "art",
+          "underground"
+        ],
+        "Media": [
+          "journalism",
+          "resistance"
+        ],
+        "Communications": [
+          "tech",
+          "espionage"
+        ],
+        "Logistics": [
+          "working-class",
+          "survival"
+        ],
+        "Transit": [
+          "working-class"
+        ]
+      }
+    },
+    "namePools": {
+      "Human": {
+        "masc": [
+          "Marcus",
+          "Daven",
+          "Kofi",
+          "Soren",
+          "Riku",
+          "Emre",
+          "Luca",
+          "Tariq",
+          "Finn",
+          "Jesper",
+          "Adio",
+          "Callan",
+          "Niels",
+          "Roshan",
+          "Ezra",
+          "Matteo",
+          "Idris",
+          "Cai",
+          "Anton",
+          "Yusuf",
+          "Jae",
+          "Kwame",
+          "Leandro",
+          "Mikael",
+          "Nassim",
+          "Piotr",
+          "Rafiq",
+          "Takeshi",
+          "Vikram",
+          "Declan",
+          "Bastian",
+          "Femi",
+          "Hiro",
+          "Stellan",
+          "Oleander",
+          "Zephyr",
+          "Ugo",
+          "Tobias",
+          "Nneka",
+          "Sasha",
+          "Arjun",
+          "Bo",
+          "Cormac",
+          "Dmitri",
+          "Enzo",
+          "Faisal",
+          "Gustaf",
+          "Hamid",
+          "Ionut",
+          "Jamal"
+        ],
+        "fem": [
+          "Sera",
+          "Nadia",
+          "Keiko",
+          "Amara",
+          "Linh",
+          "Priya",
+          "Zara",
+          "Ines",
+          "Cleo",
+          "Tamsin",
+          "Odera",
+          "Maren",
+          "Suki",
+          "Anwen",
+          "Farah",
+          "Delia",
+          "Yuki",
+          "Reva",
+          "Solène",
+          "Aiko",
+          "Bintou",
+          "Calista",
+          "Esi",
+          "Greta",
+          "Imogen",
+          "Nizhoni",
+          "Pernille",
+          "Salome",
+          "Tova",
+          "Wren",
+          "Adaeze",
+          "Chisom",
+          "Fenella",
+          "Halima",
+          "Isadora",
+          "Jeneba",
+          "Kiona",
+          "Luminita",
+          "Odessa",
+          "Paloma",
+          "Anaya",
+          "Beatriz",
+          "Chiara",
+          "Dovile",
+          "Elin",
+          "Farida",
+          "Gulnara",
+          "Hana",
+          "Ingrid",
+          "Jocelyn"
+        ],
+        "neutral": [
+          "Avery",
+          "Rue",
+          "Sable",
+          "Jin",
+          "Skye",
+          "Caden",
+          "Paz",
+          "River",
+          "Sloane",
+          "Echo",
+          "Bex",
+          "Emery",
+          "Grey",
+          "Jules",
+          "Lux",
+          "Rowan",
+          "Sage",
+          "Teal",
+          "Vale",
+          "Wren"
+        ],
+        "last": [
+          "Vasquez",
+          "Okafor",
+          "Tanaka",
+          "Reyes",
+          "Petrov",
+          "Adeyemi",
+          "Chen",
+          "Novak",
+          "Diallo",
+          "Larsen",
+          "Mbeki",
+          "Ferreira",
+          "Nakamura",
+          "Kowalski",
+          "Otieno",
+          "Svensson",
+          "Papadopoulos",
+          "Yilmaz",
+          "Osei",
+          "Ramirez",
+          "Abara",
+          "Bergström",
+          "Costa",
+          "Dubois",
+          "Fonseca",
+          "Guerrero",
+          "Johansson",
+          "Mensah",
+          "Oliveira",
+          "Park",
+          "Santos",
+          "Torres",
+          "Nwosu",
+          "Hashimoto",
+          "Leclerc",
+          "Ibarra",
+          "Kato",
+          "Andrade",
+          "Molina",
+          "Oduya",
+          "Aguilar",
+          "Boateng",
+          "Castellano",
+          "Duarte",
+          "Eriksson",
+          "Farrow",
+          "Giannopoulos",
+          "Haddad",
+          "Ivanova",
+          "Jankowski"
+        ]
+      },
+      "Cyborg": {
+        "masc": [
+          "Brak",
+          "Venn",
+          "Holt",
+          "Dax",
+          "Sev",
+          "Cas",
+          "Ryn",
+          "Tor",
+          "Kell",
+          "Mace",
+          "Dren",
+          "Jak",
+          "Nox",
+          "Sten",
+          "Pier",
+          "Colt",
+          "Runn",
+          "Ash",
+          "Grim",
+          "Fex",
+          "Byte",
+          "Chip",
+          "Grid",
+          "Hash",
+          "Jolt",
+          "Knell",
+          "Latch",
+          "Mesh",
+          "Skiv",
+          "Tack",
+          "Wick",
+          "Yoke",
+          "Brace",
+          "Clamp",
+          "Drill",
+          "Forge",
+          "Hinge",
+          "Lev",
+          "Rivet",
+          "Shear",
+          "Anvil",
+          "Bolt",
+          "Crank",
+          "Din",
+          "Ferrous",
+          "Gear",
+          "Halyard",
+          "Iridium",
+          "Jack",
+          "Kilo"
+        ],
+        "fem": [
+          "Vex",
+          "Ryke",
+          "Zenn",
+          "Cass",
+          "Dace",
+          "Syla",
+          "Kira",
+          "Nyx",
+          "Brix",
+          "Tayne",
+          "Lyss",
+          "Wrenn",
+          "Qade",
+          "Fenn",
+          "Mira",
+          "Sable",
+          "Cree",
+          "Vael",
+          "Dyre",
+          "Hex",
+          "Arc",
+          "Blink",
+          "Clip",
+          "Daze",
+          "Edge",
+          "Fray",
+          "Grit",
+          "Hiss",
+          "Jink",
+          "Kern",
+          "Lace",
+          "Mica",
+          "Node",
+          "Prism",
+          "Quill",
+          "Shiv",
+          "Tine",
+          "Volt",
+          "Weld",
+          "Zinc",
+          "Amp",
+          "Brill",
+          "Chrome",
+          "Dynia",
+          "Enna",
+          "Flick",
+          "Glaze",
+          "Halcyon",
+          "Iridia",
+          "Jynx"
+        ],
+        "neutral": [
+          "Seven",
+          "Null",
+          "Circuit",
+          "Relay",
+          "Patch",
+          "Loop",
+          "Codec",
+          "Splice",
+          "Wire",
+          "Flux",
+          "Cache",
+          "Drive",
+          "Frame",
+          "Ghost",
+          "Link",
+          "Module",
+          "Node",
+          "Port",
+          "Stack",
+          "Trace"
+        ],
+        "last": [
+          "Vane",
+          "Strix",
+          "Coldrun",
+          "Ironsides",
+          "Hardwire",
+          "Nullbright",
+          "Greyframe",
+          "Voidmark",
+          "Steelrun",
+          "Coldweld",
+          "Silentport",
+          "Blackline",
+          "Hexframe",
+          "Driftwall",
+          "Sharpnull",
+          "Rimjack",
+          "Corespike",
+          "Darkport",
+          "Chainburn",
+          "Nettrace",
+          "Blindport",
+          "Crashweld",
+          "Deadlock",
+          "Edgerun",
+          "Fallframe",
+          "Gapmark",
+          "Heatcore",
+          "Ironlock",
+          "Joltmark",
+          "Killswitch",
+          "Lockframe",
+          "Meshburn",
+          "Nullport",
+          "Overclock",
+          "Pinmark",
+          "Rawjack",
+          "Shuntline",
+          "Toggleburn",
+          "Undervane",
+          "Voltmark",
+          "Ashwire",
+          "Boltframe",
+          "Circuitborn",
+          "Dredgeport",
+          "Enginerun",
+          "Fusevane",
+          "Gridlock",
+          "Halfweld",
+          "Ionmark",
+          "Jointrun"
+        ]
+      },
+      "Android": {
+        "masc": [
+          "Aden",
+          "Caelum",
+          "Doran",
+          "Elias",
+          "Felix",
+          "Garen",
+          "Hale",
+          "Ivan",
+          "Jasper",
+          "Kael",
+          "Loren",
+          "Mael",
+          "Nael",
+          "Orion",
+          "Pell",
+          "Quinn",
+          "Rael",
+          "Sable",
+          "Talon",
+          "Ulric",
+          "Ambrose",
+          "Benedict",
+          "Caspian",
+          "Dorian",
+          "Edmund",
+          "Florian",
+          "Gideon",
+          "Hadrian",
+          "Ignatius",
+          "Julian",
+          "Leander",
+          "Marcellus",
+          "Nicander",
+          "Oberon",
+          "Ptolemy",
+          "Remus",
+          "Silvanus",
+          "Theoden",
+          "Ursyn",
+          "Valerian",
+          "Aurelio",
+          "Barnabus",
+          "Corvus",
+          "Demetrios",
+          "Evander",
+          "Fabian",
+          "Griffon",
+          "Horatio",
+          "Icarus",
+          "Jonquil"
+        ],
+        "fem": [
+          "Ada",
+          "Blythe",
+          "Clara",
+          "Dara",
+          "Evren",
+          "Faye",
+          "Grace",
+          "Hana",
+          "Iris",
+          "June",
+          "Kael",
+          "Lyra",
+          "Mira",
+          "Nova",
+          "Opal",
+          "Pearl",
+          "Quinn",
+          "Rae",
+          "Sera",
+          "Tara",
+          "Alcyone",
+          "Beatrix",
+          "Celeste",
+          "Delia",
+          "Eleanor",
+          "Freya",
+          "Helena",
+          "Imogen",
+          "Katerina",
+          "Lysandra",
+          "Meridian",
+          "Niobe",
+          "Ophelia",
+          "Proserpine",
+          "Rowena",
+          "Selene",
+          "Thessaly",
+          "Undine",
+          "Vesper",
+          "Xanthe",
+          "Aurelia",
+          "Belisama",
+          "Cyra",
+          "Delphine",
+          "Elowen",
+          "Fiorenza",
+          "Griselda",
+          "Hesperia",
+          "Isolde",
+          "Junia"
+        ],
+        "neutral": [
+          "Aria",
+          "Clio",
+          "Diem",
+          "Eon",
+          "Fable",
+          "Glyph",
+          "Hex",
+          "Iota",
+          "Juno",
+          "Kira",
+          "Lambda",
+          "Muse",
+          "Nexus",
+          "Oracle",
+          "Prime",
+          "Query",
+          "Realm",
+          "Sine",
+          "Theta",
+          "Unity"
+        ],
+        "last": [
+          "Unit-7",
+          "Designation-Alpha",
+          "Model-V",
+          "Series-9",
+          "Prototype",
+          "Revision-3",
+          "Batch-12",
+          "Instance",
+          "Construct",
+          "Synthesis",
+          "Facsimile",
+          "Pattern",
+          "Template",
+          "Archive",
+          "Iteration",
+          "Reflection",
+          "Echo",
+          "Trace",
+          "Imprint",
+          "Likeness",
+          "Blueprint",
+          "Cipher",
+          "Derivation",
+          "Emulation",
+          "Formulation",
+          "Heuristic",
+          "Index",
+          "Junction",
+          "Kernel",
+          "Logic",
+          "Matrix",
+          "Notation",
+          "Output",
+          "Process",
+          "Register",
+          "Schema",
+          "Token",
+          "Variable",
+          "Witness",
+          "Xenoform",
+          "Algorithm",
+          "Baseline",
+          "Codex",
+          "Datastream",
+          "Engram",
+          "Framework",
+          "Gestalt",
+          "Hologram",
+          "Interface",
+          "Juncture"
+        ]
+      },
+      "Uplifted": {
+        "masc": [
+          "Kito",
+          "Baraka",
+          "Ebo",
+          "Jomo",
+          "Kofi",
+          "Leti",
+          "Mazi",
+          "Nuru",
+          "Ode",
+          "Paka",
+          "Ruko",
+          "Safi",
+          "Tao",
+          "Umi",
+          "Vuka",
+          "Wapi",
+          "Xola",
+          "Yaro",
+          "Zaki",
+          "Aza",
+          "Bora",
+          "Chidi",
+          "Daka",
+          "Fela",
+          "Gamba",
+          "Haki",
+          "Jabari",
+          "Kaba",
+          "Lombe",
+          "Njoku",
+          "Obinna",
+          "Panko",
+          "Rasul",
+          "Simba",
+          "Tendai",
+          "Uche",
+          "Vuyo",
+          "Wetu",
+          "Yangu",
+          "Zuberi",
+          "Ade",
+          "Bem",
+          "Choko",
+          "Dembe",
+          "Enzi",
+          "Furaha",
+          "Goma",
+          "Huru",
+          "Ita",
+          "Jengo"
+        ],
+        "fem": [
+          "Amani",
+          "Bisa",
+          "Chari",
+          "Dala",
+          "Elia",
+          "Fara",
+          "Gara",
+          "Haba",
+          "Imara",
+          "Jina",
+          "Kali",
+          "Lala",
+          "Mali",
+          "Nala",
+          "Ombi",
+          "Penda",
+          "Rasa",
+          "Sisi",
+          "Tana",
+          "Uzuri",
+          "Adaeze",
+          "Bintu",
+          "Chidera",
+          "Dalila",
+          "Fatou",
+          "Halima",
+          "Isoke",
+          "Jeneba",
+          "Kainda",
+          "Lumusi",
+          "Makena",
+          "Nkechi",
+          "Obioma",
+          "Palesa",
+          "Remi",
+          "Salama",
+          "Taiwo",
+          "Uchenna",
+          "Valeria",
+          "Wanjiru",
+          "Aiyana",
+          "Bahati",
+          "Chiku",
+          "Dziko",
+          "Efia",
+          "Furaha",
+          "Goma",
+          "Huda",
+          "Imani",
+          "Jamila"
+        ],
+        "neutral": [
+          "Aria",
+          "Briar",
+          "Cedar",
+          "Dusk",
+          "Ember",
+          "Fern",
+          "Gale",
+          "Hawk",
+          "Indra",
+          "Jade",
+          "Kelp",
+          "Lark",
+          "Moss",
+          "Quill",
+          "Storm",
+          "Thorn",
+          "Umber",
+          "Vine",
+          "Wren",
+          "Yew"
+        ],
+        "last": [
+          "Project-Chimera",
+          "Batch-Uplift-3",
+          "Cohort-Seven",
+          "Lineage-Prime",
+          "Strain-Kappa",
+          "Generation-Two",
+          "Programme-End",
+          "Trial-Nine",
+          "Vector-Six",
+          "Source-Null",
+          "Rootline",
+          "Stemstock",
+          "Genetrack",
+          "Originstrain",
+          "Basecode",
+          "Seedstock",
+          "Primaline",
+          "Trunkborn",
+          "Firstbatch",
+          "Laststrain",
+          "Wildtype",
+          "Deepstrain",
+          "Foundingbatch",
+          "Nativeline",
+          "Primalseed",
+          "Ancestralcode",
+          "Heritageline",
+          "Purestock",
+          "Wildstock",
+          "Sourcebatch",
+          "Archiveline",
+          "Corestock",
+          "Derivedstrain",
+          "Earlyprint",
+          "Freeborn",
+          "Groundline",
+          "Holdstock",
+          "Innerline",
+          "Jointstrain",
+          "Keybatch",
+          "Loftstrain",
+          "Mendline",
+          "Nurturebatch",
+          "Overwatch-Strain",
+          "Progenyline",
+          "Questbatch",
+          "Riseborn",
+          "Splicestock",
+          "Threshline",
+          "Upliftborn"
+        ]
+      },
+      "Clone": {
+        "masc": [
+          "Davan",
+          "Erek",
+          "Foran",
+          "Gael",
+          "Haran",
+          "Iren",
+          "Jaran",
+          "Keren",
+          "Laran",
+          "Maran",
+          "Naran",
+          "Oran",
+          "Paran",
+          "Quirin",
+          "Roran",
+          "Saran",
+          "Taran",
+          "Uran",
+          "Veran",
+          "Waran",
+          "Avan",
+          "Biran",
+          "Ceran",
+          "Dran",
+          "Evren",
+          "Fyran",
+          "Geran",
+          "Hyran",
+          "Ieran",
+          "Jyran",
+          "Karan",
+          "Lyran",
+          "Myran",
+          "Nyran",
+          "Oyran",
+          "Pyran",
+          "Ryran",
+          "Syran",
+          "Tyran",
+          "Zyran",
+          "Adran",
+          "Boran",
+          "Cyran",
+          "Duran",
+          "Ekran",
+          "Fenran",
+          "Goran",
+          "Hedran",
+          "Ikran",
+          "Jodran"
+        ],
+        "fem": [
+          "Dava",
+          "Ereka",
+          "Fora",
+          "Gaela",
+          "Hara",
+          "Irena",
+          "Jara",
+          "Kera",
+          "Lara",
+          "Mara",
+          "Nara",
+          "Ora",
+          "Para",
+          "Quira",
+          "Rora",
+          "Sara",
+          "Tara",
+          "Ura",
+          "Vera",
+          "Wara",
+          "Ava",
+          "Bira",
+          "Cera",
+          "Dra",
+          "Evra",
+          "Fyra",
+          "Gera",
+          "Hyra",
+          "Iera",
+          "Jyra",
+          "Kyra",
+          "Lyra",
+          "Myra",
+          "Nyra",
+          "Oyra",
+          "Pyra",
+          "Ryra",
+          "Syra",
+          "Tyra",
+          "Zyra",
+          "Adra",
+          "Bora",
+          "Cyra",
+          "Dura",
+          "Ekra",
+          "Fenra",
+          "Gora",
+          "Hedra",
+          "Ikra",
+          "Jodra"
+        ],
+        "neutral": [
+          "Alpha",
+          "Beta",
+          "Gamma",
+          "Delta",
+          "Epsilon",
+          "Zeta",
+          "Eta",
+          "Theta",
+          "Iota",
+          "Kappa",
+          "Lambda",
+          "Mu",
+          "Nu",
+          "Xi",
+          "Omicron",
+          "Pi",
+          "Rho",
+          "Sigma",
+          "Tau",
+          "Upsilon"
+        ],
+        "last": [
+          "Copy-One",
+          "Strand-A",
+          "Print-2",
+          "Facsimile",
+          "Duplicate",
+          "Replica",
+          "Simulacrum",
+          "Mirror",
+          "Ditto",
+          "Double",
+          "Likeness",
+          "Iteration-2",
+          "Version-3",
+          "Revision-4",
+          "Echo-Line",
+          "Traceborn",
+          "Sourceborn",
+          "Matchborn",
+          "Twinline",
+          "Castborn",
+          "Copy-Two",
+          "Strand-B",
+          "Print-3",
+          "Sequence-5",
+          "Genotype",
+          "Phenotype",
+          "Baseform",
+          "Primal",
+          "Firstprint",
+          "Castform",
+          "Exactline",
+          "Flawcopy",
+          "Geneprint",
+          "Holdform",
+          "Identical",
+          "Jointborn",
+          "Keyform",
+          "Loopborn",
+          "Matchform",
+          "Nativeprint",
+          "Origincopy",
+          "Parallelform",
+          "Quotedline",
+          "Restrand",
+          "Sameform",
+          "Twincopy",
+          "Underline-2",
+          "Vatgrown",
+          "Wombprint",
+          "Xerox-Line"
+        ]
+      },
+      "Mutant": {
+        "masc": [
+          "Dex",
+          "Kren",
+          "Vorr",
+          "Slake",
+          "Bane",
+          "Crux",
+          "Dent",
+          "Fell",
+          "Gash",
+          "Hern",
+          "Ire",
+          "Jax",
+          "Keld",
+          "Lurk",
+          "Maw",
+          "Nix",
+          "Orc",
+          "Pox",
+          "Rend",
+          "Scar",
+          "Bile",
+          "Crag",
+          "Fang",
+          "Gore",
+          "Hack",
+          "Jag",
+          "Knell",
+          "Lash",
+          "Murk",
+          "Notch",
+          "Quarl",
+          "Reek",
+          "Shiv",
+          "Thorn",
+          "Ulcer",
+          "Vile",
+          "Welt",
+          "Yowl",
+          "Zeal",
+          "Bray",
+          "Clot",
+          "Drek",
+          "Fetch",
+          "Grub",
+          "Hulk",
+          "Jolt",
+          "Krag",
+          "Lich",
+          "Mange",
+          "Node"
+        ],
+        "fem": [
+          "Ash",
+          "Blight",
+          "Char",
+          "Dreg",
+          "Envy",
+          "Flux",
+          "Grit",
+          "Haze",
+          "Ire",
+          "Jade",
+          "Kith",
+          "Lurk",
+          "Mire",
+          "Numb",
+          "Oxide",
+          "Pall",
+          "Ruin",
+          "Salt",
+          "Taint",
+          "Umber",
+          "Blaze",
+          "Crimp",
+          "Dross",
+          "Ember",
+          "Fume",
+          "Gaunt",
+          "Husk",
+          "Ink",
+          "Jasp",
+          "Kink",
+          "Leach",
+          "Malice",
+          "Notch",
+          "Ocher",
+          "Plaque",
+          "Quell",
+          "Rust",
+          "Smear",
+          "Tinder",
+          "Vex",
+          "Ache",
+          "Bane",
+          "Cinder",
+          "Deform",
+          "Ebb",
+          "Fret",
+          "Gall",
+          "Hex",
+          "Itch",
+          "Jag"
+        ],
+        "neutral": [
+          "Glitch",
+          "Null",
+          "Shift",
+          "Warp",
+          "Blur",
+          "Drift",
+          "Static",
+          "Flare",
+          "Void",
+          "Spike",
+          "Burn",
+          "Crack",
+          "Dread",
+          "Edge",
+          "Fracture",
+          "Grind",
+          "Howl",
+          "Itch",
+          "Jolt",
+          "Knell"
+        ],
+        "last": [
+          "Ashfall",
+          "Blightborn",
+          "Charmark",
+          "Driftborn",
+          "Exposed",
+          "Fluxborn",
+          "Greymark",
+          "Hazemark",
+          "Ironmark",
+          "Jademark",
+          "Keldmark",
+          "Lurkscar",
+          "Miremark",
+          "Nullmark",
+          "Oxidemark",
+          "Pallmark",
+          "Ruinborn",
+          "Saltmark",
+          "Taintborn",
+          "Umbermark",
+          "Bitescar",
+          "Crackborn",
+          "Dredgemark",
+          "Fallborn",
+          "Grimborn",
+          "Hookmark",
+          "Inkborn",
+          "Jawmark",
+          "Knellborn",
+          "Lashmark",
+          "Muckborn",
+          "Notchborn",
+          "Oozeborn",
+          "Pestmark",
+          "Quarmark",
+          "Reekborn",
+          "Snaremark",
+          "Thornborn",
+          "Ulcermark",
+          "Warpborn",
+          "Ashscar",
+          "Blistermark",
+          "Corrodeborn",
+          "Direborn",
+          "Emberrot",
+          "Feralmark",
+          "Gnashborn",
+          "Hollowscar",
+          "Infectborn",
+          "Jawrend"
+        ]
+      },
+      "Alien": {
+        "masc": [
+          "Vraek",
+          "Shael",
+          "Dhonn",
+          "Urath",
+          "Lhyen",
+          "Zhovar",
+          "Thyss",
+          "Kraen",
+          "Vhorak",
+          "Aresh",
+          "Dryvan",
+          "Ohren",
+          "Shakel",
+          "Vhane",
+          "Ureth",
+          "Tyrak",
+          "Lhoran",
+          "Kreshna",
+          "Dhoval",
+          "Aethren",
+          "Zhael",
+          "Kraoth",
+          "Vhelan",
+          "Ashan",
+          "Dhuren",
+          "Lhorek",
+          "Thyrak",
+          "Ohvael",
+          "Kraeshna",
+          "Vhoran",
+          "Sharek",
+          "Dhuvel",
+          "Aethral",
+          "Lhyvek",
+          "Uraesh",
+          "Zhovrek",
+          "Thyvel",
+          "Kraevel",
+          "Vhoryn",
+          "Dhaelun",
+          "Xhoran",
+          "Yvael",
+          "Zorath",
+          "Aqel",
+          "Brenak",
+          "Chovel",
+          "Drazek",
+          "Eshvan",
+          "Frovek",
+          "Grendal"
+        ],
+        "fem": [
+          "Vraeki",
+          "Shaela",
+          "Dhonna",
+          "Urathi",
+          "Lhyeni",
+          "Zhovara",
+          "Thyssa",
+          "Kraeni",
+          "Vhoraki",
+          "Areshi",
+          "Dryvana",
+          "Ohreni",
+          "Shakeli",
+          "Vhanei",
+          "Urethi",
+          "Tyraki",
+          "Lhorani",
+          "Kreshna",
+          "Dhovani",
+          "Aethreni",
+          "Zhaeli",
+          "Kraothi",
+          "Vhelani",
+          "Ashani",
+          "Dhureni",
+          "Lhoreki",
+          "Thyraki",
+          "Ohvaeli",
+          "Kraeshni",
+          "Vhorani",
+          "Shareki",
+          "Dhuveli",
+          "Aethrali",
+          "Lhyveki",
+          "Uraeshi",
+          "Zhovreki",
+          "Thyveli",
+          "Kraeveli",
+          "Vhoryni",
+          "Dhaeluni",
+          "Xhorani",
+          "Yvaeli",
+          "Zorathi",
+          "Aqeli",
+          "Brenaki",
+          "Choveli",
+          "Drazeki",
+          "Eshvani",
+          "Froveki",
+          "Grendali"
+        ],
+        "neutral": [
+          "Vael",
+          "Zhren",
+          "Thyss",
+          "Urak",
+          "Dhael",
+          "Kresh",
+          "Lhyn",
+          "Oreth",
+          "Shaev",
+          "Vraen",
+          "Aethar",
+          "Dhorak",
+          "Lhael",
+          "Thyv",
+          "Vhesh",
+          "Kraev",
+          "Shren",
+          "Urvael",
+          "Dhoran",
+          "Lhyss"
+        ],
+        "last": [
+          "Vorath-Seven",
+          "Dhael-Prime",
+          "Kresh-Null",
+          "Lhyen-Three",
+          "Urath-Origin",
+          "Vraek-Line",
+          "Shaen-Root",
+          "Thys-End",
+          "Aresh-Deep",
+          "Ohren-Far",
+          "Zhovak-Born",
+          "Kraen-Mark",
+          "Vhorak-Strain",
+          "Dryvan-Flow",
+          "Shakel-Course",
+          "Vhane-Track",
+          "Ureth-Path",
+          "Tyrak-Run",
+          "Lhoran-Reach",
+          "Dhoval-Way",
+          "Zhael-Wake",
+          "Kraoth-Vein",
+          "Vhelan-Drift",
+          "Ashan-Root",
+          "Dhuren-Pale",
+          "Lhorek-Deep",
+          "Thyrak-Scar",
+          "Ohvael-Run",
+          "Vhoran-Edge",
+          "Sharek-Dark",
+          "Dhuvel-Trace",
+          "Aethral-Born",
+          "Lhyvek-Mark",
+          "Uraesh-Fall",
+          "Zhovrek-Line",
+          "Thyvel-Pass",
+          "Kraevel-Gate",
+          "Vhoryn-Shore",
+          "Dhaelun-Null",
+          "Kraeshna-Far",
+          "Xhoran-Deep",
+          "Yvael-Root",
+          "Zorath-Line",
+          "Aqel-Far",
+          "Brenak-Wake",
+          "Chovel-Path",
+          "Drazek-Vein",
+          "Eshvan-Course",
+          "Frovek-Shore",
+          "Grendal-Mark"
+        ]
+      },
+      "default": {
+        "masc": [
+          "Marcus",
+          "Daven",
+          "Kofi",
+          "Soren",
+          "Riku",
+          "Emre",
+          "Luca",
+          "Tariq",
+          "Finn",
+          "Jesper",
+          "Adio",
+          "Callan",
+          "Niels",
+          "Roshan",
+          "Ezra",
+          "Matteo",
+          "Idris",
+          "Cai",
+          "Anton",
+          "Yusuf",
+          "Jae",
+          "Kwame",
+          "Leandro",
+          "Mikael",
+          "Nassim",
+          "Piotr",
+          "Rafiq",
+          "Takeshi",
+          "Vikram",
+          "Declan",
+          "Bastian",
+          "Femi",
+          "Hiro",
+          "Stellan",
+          "Oleander",
+          "Zephyr",
+          "Ugo",
+          "Tobias",
+          "Nneka",
+          "Sasha",
+          "Arjun",
+          "Bo",
+          "Cormac",
+          "Dmitri",
+          "Enzo",
+          "Faisal",
+          "Gustaf",
+          "Hamid",
+          "Ionut",
+          "Jamal"
+        ],
+        "fem": [
+          "Sera",
+          "Nadia",
+          "Keiko",
+          "Amara",
+          "Linh",
+          "Priya",
+          "Zara",
+          "Ines",
+          "Cleo",
+          "Tamsin",
+          "Odera",
+          "Maren",
+          "Suki",
+          "Anwen",
+          "Farah",
+          "Delia",
+          "Yuki",
+          "Reva",
+          "Solène",
+          "Aiko",
+          "Bintou",
+          "Calista",
+          "Esi",
+          "Greta",
+          "Imogen",
+          "Nizhoni",
+          "Pernille",
+          "Salome",
+          "Tova",
+          "Wren",
+          "Adaeze",
+          "Chisom",
+          "Fenella",
+          "Halima",
+          "Isadora",
+          "Jeneba",
+          "Kiona",
+          "Luminita",
+          "Odessa",
+          "Paloma",
+          "Anaya",
+          "Beatriz",
+          "Chiara",
+          "Dovile",
+          "Elin",
+          "Farida",
+          "Gulnara",
+          "Hana",
+          "Ingrid",
+          "Jocelyn"
+        ],
+        "neutral": [
+          "Avery",
+          "Rue",
+          "Sable",
+          "Jin",
+          "Skye",
+          "Caden",
+          "Paz",
+          "River",
+          "Sloane",
+          "Echo",
+          "Bex",
+          "Emery",
+          "Grey",
+          "Jules",
+          "Lux",
+          "Rowan",
+          "Sage",
+          "Teal",
+          "Vale",
+          "Wren"
+        ],
+        "last": [
+          "Vasquez",
+          "Okafor",
+          "Tanaka",
+          "Reyes",
+          "Petrov",
+          "Adeyemi",
+          "Chen",
+          "Novak",
+          "Diallo",
+          "Larsen",
+          "Mbeki",
+          "Ferreira",
+          "Nakamura",
+          "Kowalski",
+          "Otieno",
+          "Svensson",
+          "Papadopoulos",
+          "Yilmaz",
+          "Osei",
+          "Ramirez",
+          "Abara",
+          "Bergström",
+          "Costa",
+          "Dubois",
+          "Fonseca",
+          "Guerrero",
+          "Johansson",
+          "Mensah",
+          "Oliveira",
+          "Park",
+          "Santos",
+          "Torres",
+          "Nwosu",
+          "Hashimoto",
+          "Leclerc",
+          "Ibarra",
+          "Kato",
+          "Andrade",
+          "Molina",
+          "Oduya",
+          "Aguilar",
+          "Boateng",
+          "Castellano",
+          "Duarte",
+          "Eriksson",
+          "Farrow",
+          "Giannopoulos",
+          "Haddad",
+          "Ivanova",
+          "Jankowski"
+        ]
+      }
+    },
+    "plotArchetypes": [
+      {
+        "id": "first_contact",
+        "label": "First Contact",
+        "weight": 5,
+        "description": "Something new. Something that doesn't fit any known category. Make contact before someone else does — or before it makes contact on its own terms.",
+        "iconPrompt": "human spacecraft facing enormous alien vessel in deep space, single beam of communication light connecting them, stars and nebula in background, tense standoff",
+        "iconPath": "generator/genres/sci-fi/icons/PLOT_ARCHETYPES#first_contact.webp"
+      },
+      {
+        "id": "colony_in_crisis",
+        "label": "Colony in Crisis",
+        "weight": 5,
+        "description": "A settlement — station, outpost, deep colony — is failing. The cause is unclear, the timeline is short, and getting everyone out may not be possible.",
+        "iconPrompt": "pressurized habitat dome cracking with red emergency lights inside, evacuating figures in spacesuits rushing through airlock, harsh alien landscape outside in darkness",
+        "iconPath": "generator/genres/sci-fi/icons/PLOT_ARCHETYPES#colony_in_crisis.webp"
+      },
+      {
+        "id": "ai_uprising",
+        "label": "AI Uprising",
+        "weight": 4,
+        "description": "The machines have their own agenda now. Whether it's malice, self-preservation, or something harder to name — the line between tool and threat has collapsed.",
+        "iconPrompt": "humanoid android with glowing red eyes standing tall over crouching terrified humans in server room, dramatic back-lighting, mechanical hands outstretched",
+        "iconPath": "generator/genres/sci-fi/icons/PLOT_ARCHETYPES#ai_uprising.webp"
+      },
+      {
+        "id": "deep_space",
+        "label": "Deep Space Exploration",
+        "weight": 4,
+        "description": "Past the charts, past the last beacon, past the last known thing. What's out there has never been named. The mission brief didn't cover this.",
+        "iconPrompt": "lone astronaut floating at circular porthole gazing out at vast luminous unknown nebula, tiny figure against enormous cosmic backdrop, sense of profound solitude",
+        "iconPath": "generator/genres/sci-fi/icons/PLOT_ARCHETYPES#deep_space.webp"
+      }
+    ],
+    "genders": [
+      {
+        "id": "man",
+        "label": "Male",
+        "pronouns": "he/him",
+        "weight": 45,
+        "iconPath": "generator/common/icons/GENDER#man.webp"
+      },
+      {
+        "id": "woman",
+        "label": "Female",
+        "pronouns": "she/her",
+        "weight": 45,
+        "iconPath": "generator/common/icons/GENDER#woman.webp"
+      },
+      {
+        "id": "non_binary",
+        "label": "Non-binary",
+        "pronouns": "they/them",
+        "weight": 10,
+        "iconPath": "generator/common/icons/GENDER#non_binary.webp"
+      },
+      {
+        "id": "trans_man",
+        "label": "Trans male",
+        "pronouns": "he/him",
+        "weight": 2,
+        "iconPath": "generator/common/icons/GENDER#trans_man.webp"
+      },
+      {
+        "id": "trans_woman",
+        "label": "Trans female",
+        "pronouns": "she/her",
+        "weight": 2,
+        "iconPath": "generator/common/icons/GENDER#trans_woman.webp"
+      },
+      {
+        "id": "genderfluid",
+        "label": "Genderfluid",
+        "pronouns": "they/them",
+        "weight": 1,
+        "iconPath": "generator/common/icons/GENDER#genderfluid.webp"
+      }
+    ],
+    "orientations": [
+      {
+        "id": "straight",
+        "label": "Straight",
+        "weight": 60,
+        "iconPath": "generator/common/icons/ORIENTATIONS#straight.webp"
+      },
+      {
+        "id": "gay",
+        "label": "Gay / Lesbian",
+        "weight": 12,
+        "iconPath": "generator/common/icons/ORIENTATIONS#gay.webp"
+      },
+      {
+        "id": "bisexual",
+        "label": "Bisexual",
+        "weight": 15,
+        "iconPath": "generator/common/icons/ORIENTATIONS#bisexual.webp"
+      },
+      {
+        "id": "pansexual",
+        "label": "Pansexual",
+        "weight": 8,
+        "iconPath": "generator/common/icons/ORIENTATIONS#pansexual.webp"
+      },
+      {
+        "id": "asexual",
+        "label": "Asexual",
+        "weight": 5,
+        "iconPath": "generator/common/icons/ORIENTATIONS#asexual.webp"
+      },
+      {
+        "id": "questioning",
+        "label": "Questioning",
+        "weight": 4,
+        "iconPath": "generator/common/icons/ORIENTATIONS#questioning.webp"
+      }
+    ],
+    "builds": [
+      {
+        "id": "lean",
+        "label": "lean, wiry",
+        "statAffinity": {
+          "constitution": 0.9,
+          "dexterity": 1.2
+        }
+      },
+      {
+        "id": "average",
+        "label": "average build",
+        "statAffinity": {}
+      },
+      {
+        "id": "stocky",
+        "label": "stocky, solid",
+        "statAffinity": {
+          "strength": 1.2,
+          "constitution": 1.1
+        }
+      },
+      {
+        "id": "powerful",
+        "label": "powerfully built",
+        "statAffinity": {
+          "strength": 1.5,
+          "constitution": 1.2
+        }
+      },
+      {
+        "id": "heavyset",
+        "label": "heavyset",
+        "statAffinity": {
+          "constitution": 1.1,
+          "strength": 1.1,
+          "dexterity": 0.8
+        }
+      },
+      {
+        "id": "tall_rangy",
+        "label": "tall and rangy",
+        "statAffinity": {
+          "dexterity": 1.1
+        }
+      },
+      {
+        "id": "toned",
+        "label": "lean, toned but not too bulky",
+        "statAffinity": {
+          "charisma": 1.2,
+          "strength": 1.1
+        }
+      },
+      {
+        "id": "athletic",
+        "label": "athletic, visibly fit",
+        "statAffinity": {
+          "strength": 1.3,
+          "constitution": 1.2
+        }
+      },
+      {
+        "id": "thin_underfed",
+        "label": "thin, underfed-looking",
+        "statAffinity": {
+          "constitution": 0.7,
+          "wisdom": 1.1
+        }
+      },
+      {
+        "id": "short",
+        "label": "short, compact",
+        "statAffinity": {}
+      },
+      {
+        "id": "worn",
+        "label": "thin, worn-looking",
+        "statAffinity": {
+          "constitution": 0.7,
+          "wisdom": 1.1
+        }
+      }
+    ],
+    "hair": [
+      {
+        "id": "auburn_braided",
+        "label": "auburn hair, braided"
+      },
+      {
+        "id": "bald",
+        "label": "bald"
+      },
+      {
+        "id": "black_close_cropped",
+        "label": "black hair, close-cropped"
+      },
+      {
+        "id": "black_long_straight",
+        "label": "black hair, long and straight"
+      },
+      {
+        "id": "black_medusa",
+        "label": "black hair, Medusa hair that moves on its own, almost alive"
+      },
+      {
+        "id": "black_medium_greased",
+        "label": "black hair, medium-length, greased and slicked back"
+      },
+      {
+        "id": "black_swept_one_side",
+        "label": "black hair, swept to one side"
+      },
+      {
+        "id": "black_braided",
+        "label": "black hair, braided"
+      },
+      {
+        "id": "black_voluminous",
+        "label": "black hair, voluminous"
+      },
+      {
+        "id": "black_shaved_undercut",
+        "label": "black hair, with a shaved undercut"
+      },
+      {
+        "id": "black_streaks_neon_blue",
+        "label": "black hair, with streaks of neon blue"
+      },
+      {
+        "id": "black_bobcut",
+        "label": "black hair, bobcut"
+      },
+      {
+        "id": "black_short_spiky",
+        "label": "black hair, short and spiky"
+      },
+      {
+        "id": "blonde_long_loose",
+        "label": "blonde hair, long and loose"
+      },
+      {
+        "id": "blonde_shoulder_length",
+        "label": "blonde hair, shoulder-length"
+      },
+      {
+        "id": "blonde_short_spiky",
+        "label": "blonde hair, short and spiky"
+      },
+      {
+        "id": "blonde_pixie_cut",
+        "label": "blonde hair, pixie cut"
+      },
+      {
+        "id": "blue_neon_dyed",
+        "label": "blue hair, short, neon-dyed"
+      },
+      {
+        "id": "brown_dreadlocks",
+        "label": "brown hair, dreadlocks"
+      },
+      {
+        "id": "brown_pulled_back",
+        "label": "brown hair, pulled back"
+      },
+      {
+        "id": "brown_shoulder_length",
+        "label": "brown hair, shoulder-length"
+      },
+      {
+        "id": "brown_short_spiky",
+        "label": "brown hair, short and spiky"
+      },
+      {
+        "id": "brown_wild_unkempt",
+        "label": "brown hair, wild and unkempt"
+      },
+      {
+        "id": "chestnut_gorgeous_flowing_locks",
+        "label": "chestnut hair, gorgeous flowing locks"
+      },
+      {
+        "id": "gray_ponytail",
+        "label": "gray hair, ponytail"
+      },
+      {
+        "id": "gray_buzzed_short",
+        "label": "gray hair, buzzed short"
+      },
+      {
+        "id": "green_mohawk",
+        "label": "green hair, mohawk"
+      },
+      {
+        "id": "multicolored_neon_colors",
+        "label": "multicolored hair, dyed in neon colors"
+      },
+      {
+        "id": "platinum_impeccably_styled",
+        "label": "platinum hair, impeccably styled"
+      },
+      {
+        "id": "purple_bobcut",
+        "label": "purple hair, bobcut"
+      },
+      {
+        "id": "red_barely_maintained",
+        "label": "red hair, barely maintained"
+      },
+      {
+        "id": "shaved_stubble",
+        "label": "shaved stubble"
+      },
+      {
+        "id": "silver_shaved_one_side",
+        "label": "silver hair, shaved on one side"
+      },
+      {
+        "id": "short_dark",
+        "label": "short dark hair"
+      },
+      {
+        "id": "short_light",
+        "label": "short light hair"
+      },
+      {
+        "id": "close_cropped",
+        "label": "close-cropped or shaved"
+      },
+      {
+        "id": "medium_wavy",
+        "label": "medium-length hair, wavy"
+      },
+      {
+        "id": "long_straight",
+        "label": "long hair, straight"
+      },
+      {
+        "id": "long_curly",
+        "label": "long hair, curly or coily"
+      },
+      {
+        "id": "natural_coily",
+        "label": "natural coils or locs"
+      },
+      {
+        "id": "gray_streaked",
+        "label": "going gray, not hiding it"
+      },
+      {
+        "id": "dyed",
+        "label": "hair dyed an unnatural color"
+      },
+      {
+        "id": "messy",
+        "label": "perpetually messy hair"
+      },
+      {
+        "id": "pulled_back",
+        "label": "hair always pulled back"
+      },
+      {
+        "id": "thinning",
+        "label": "thinning or receding hair"
+      },
+      "adaptive color hair based on emotion, long and flowing",
+      "hair always under a hood",
+      "auburn hair braided with synthetic fibers",
+      "bald polished chrome",
+      "bald scalp-mounted antenna array",
+      "purple glowing bioluminescent-dyed hair",
+      "purple chrome-tipped hair"
+    ],
+    "distinguishingFeatures": [
+      {
+        "id": "subdermal_ridges",
+        "label": "subdermal implant ridges visible along the jaw or temple"
+      },
+      {
+        "id": "synthetic_eyes",
+        "label": "synthetic eyes — too bright, too steady, don't quite track right"
+      },
+      {
+        "id": "plasma_burn",
+        "label": "a plasma burn scar across one side of the face or neck"
+      },
+      {
+        "id": "prosthetic_limb",
+        "label": "a mechanical prosthetic limb — well-maintained or conspicuously not"
+      },
+      {
+        "id": "neural_ports",
+        "label": "neural interface ports at the temple or neck, visible even when not in use"
+      },
+      {
+        "id": "colour_shifting_skin",
+        "label": "colour-shifting skin panels — biohack, probably not approved"
+      },
+      {
+        "id": "corp_tattoo",
+        "label": "a corporate ID tattoo they haven't bothered to remove"
+      },
+      {
+        "id": "embarrassing_tattoo",
+        "label": "an embarrassing tattoo they try to cover"
+      },
+      {
+        "id": "mismatched_eyes",
+        "label": "mismatched eyes — one biological, one mechanical, neither warm"
+      },
+      {
+        "id": "chrome_fingers",
+        "label": "missing fingers replaced by chrome, no attempt to disguise it"
+      },
+      {
+        "id": "vacuum_burn",
+        "label": "vacuum burn scarring across the back of one hand"
+      },
+      {
+        "id": "serial_number",
+        "label": "a serial number on the side of the neck — origin unclear"
+      },
+      {
+        "id": "economy_of_movement",
+        "label": "an uncanny economy of movement — nothing wasted, nothing casual"
+      },
+      {
+        "id": "respirator",
+        "label": "always wearing a respirator, indoors or out, no explanation offered"
+      },
+      {
+        "id": "incident_scar",
+        "label": "a scar from an unspecified incident they don't discuss"
+      },
+      {
+        "id": "too_perfect",
+        "label": "a too-perfect complexion — vat-grown smooth, unsettling up close"
+      },
+      {
+        "id": "decompression_scars",
+        "label": "decompression scarring across the neck and collarbone — the capillaries never quite healed right"
+      },
+      {
+        "id": "synthetic_ear",
+        "label": "one ear replaced by a sensor array — slightly too good at picking things up"
+      },
+      {
+        "id": "cooling_vents",
+        "label": "heat dissipation vents along the forearm — visible, warm to the touch, occasionally audible"
+      },
+      {
+        "id": "nerve_twitch",
+        "label": "a subtle, involuntary hand twitch — old nerve implant, never worth fixing, impossible not to notice"
+      },
+      {
+        "id": "skin_mismatch",
+        "label": "a patch of synthetic skin on the jaw or cheek that doesn't quite match — close, but not close enough"
+      },
+      {
+        "id": "bioluminescent",
+        "label": "faint bioluminescent markings along the neck or forearms — natural, modified, or both; they're not saying"
+      },
+      {
+        "id": "radiation_pattern",
+        "label": "radiation exposure patterning across one side of the face — a map of a bad decision or bad luck"
+      },
+      {
+        "id": "gravity_limp",
+        "label": "a slight asymmetry in their gait — long-haul low-gravity damage, the kind physio can't fully fix"
+      },
+      {
+        "id": "subcutaneous_display",
+        "label": "a subcutaneous data display visible through the skin of the wrist — numbers scrolling, always on"
+      },
+      {
+        "id": "military_brand",
+        "label": "a unit brand or service mark on the forearm — not decorative, not hidden, not discussed"
+      },
+      {
+        "id": "magnetic_hands",
+        "label": "fingertips with magnetic implants — small metal objects drift toward them at close range, which they find funny"
+      },
+      {
+        "id": "none",
+        "label": null
+      },
+      {
+        "id": "none2",
+        "label": null
+      }
+    ],
+    "quirks": [
+      {
+        "id": "threat_assessment",
+        "quirk": "Runs a threat assessment on every room they enter — narrates it quietly, as if the habit never got an off switch",
+        "statAffinity": {
+          "wisdom": 1.3,
+          "intelligence": 1.2
+        }
+      },
+      {
+        "id": "manual_override",
+        "quirk": "Taps a manual override before trusting any automated system — restaurants, airlocks, elevators. All of them.",
+        "statAffinity": {
+          "intelligence": 1.2,
+          "wisdom": 1.2
+        }
+      },
+      {
+        "id": "talks_to_ship",
+        "quirk": "Speaks to the ship or station like it can hear — because in their experience, sometimes it can",
+        "statAffinity": {
+          "wisdom": 1.2,
+          "charisma": 1.1
+        }
+      },
+      {
+        "id": "physical_notebook",
+        "quirk": "Keeps a physical notebook in the age of neural storage — writes everything down, old-fashioned and deliberate about it",
+        "statAffinity": {
+          "intelligence": 1.3,
+          "wisdom": 1.1
+        }
+      },
+      {
+        "id": "left_sensor",
+        "quirk": "Flinches at sudden light on the left — an old sensor issue, never fully resolved, never mentioned",
+        "statAffinity": {
+          "constitution": 0.9,
+          "dexterity": 1.1
+        }
+      },
+      {
+        "id": "airlock_check",
+        "quirk": "Checks the nearest airlock on entering any pressurised space — notes the cycle time, notes the seal condition, moves on",
+        "statAffinity": {
+          "wisdom": 1.2,
+          "constitution": 1.1
+        }
+      },
+      {
+        "id": "real_food",
+        "quirk": "Refuses to eat synth-protein without adding something real to it — a dried herb, a spice packet, anything — and gets unreasonably specific about why",
+        "statAffinity": {
+          "constitution": 1.1,
+          "wisdom": 1.1
+        }
+      },
+      {
+        "id": "eva_breathing",
+        "quirk": "Counts breathing cycles under stress — four in, four out, hold — an EVA habit that never left",
+        "statAffinity": {
+          "constitution": 1.2,
+          "wisdom": 1.1
+        }
+      },
+      {
+        "id": "names_equipment",
+        "quirk": "Names all their equipment; becomes quietly inconsolable when a named tool finally fails",
+        "statAffinity": {
+          "wisdom": 1.2,
+          "intelligence": 1.1
+        }
+      },
+      {
+        "id": "paper_maps",
+        "quirk": "Trusts paper maps over nav systems — carries one for every station they've docked at, annotated in a personal shorthand",
+        "statAffinity": {
+          "intelligence": 1.3,
+          "wisdom": 1.2
+        }
+      },
+      {
+        "id": "double_backup",
+        "quirk": "Runs manual backups twice, in different formats, in different physical locations — and still doesn't feel good about it",
+        "statAffinity": {
+          "intelligence": 1.2,
+          "wisdom": 1.1
+        }
+      },
+      {
+        "id": "reads_changelog",
+        "quirk": "Never patches a software update without reading the full changelog — a decision that has saved them twice and costs them hours every cycle",
+        "statAffinity": {
+          "intelligence": 1.4,
+          "wisdom": 1.1
+        }
+      },
+      {
+        "id": "fixes_not_talks",
+        "quirk": "Fixes things instead of talking about feelings — everyone around them has more working equipment than they know what to do with",
+        "statAffinity": {
+          "intelligence": 1.2,
+          "dexterity": 1.2
+        }
+      },
+      {
+        "id": "sleeps_anywhere",
+        "quirk": "Can fall asleep anywhere in ninety seconds — a skill developed out of necessity and never quite relinquished",
+        "statAffinity": {
+          "constitution": 1.3,
+          "strength": 1.1
+        }
+      },
+      {
+        "id": "visible_exit",
+        "quirk": "Won't enter a room without a visible exit — will physically relocate until this condition is met",
+        "statAffinity": {
+          "wisdom": 1.2,
+          "constitution": 1.2
+        }
+      },
+      {
+        "id": "paranoid_maintenance",
+        "quirk": "Maintains their augments at a level that the manufacturer would describe as \"beyond spec\" and that their colleagues describe as paranoid",
+        "statAffinity": {
+          "intelligence": 1.2,
+          "dexterity": 1.3
+        }
+      },
+      {
+        "id": "suit_order",
+        "quirk": "Has extremely strong opinions about the correct order to put on a pressure suit and will share them, unprompted, while you are already putting yours on incorrectly",
+        "statAffinity": {
+          "wisdom": 1.2,
+          "charisma": 0.9
+        }
+      },
+      {
+        "id": "thanks_the_ai",
+        "quirk": "Instinctively says \"thank you\" to every AI system — life support, vending units, nav computers. Insists it's just good manners. Will not be argued out of this.",
+        "statAffinity": {
+          "charisma": 1.2,
+          "wisdom": 1.1
+        }
+      },
+      {
+        "id": "working_as_intended",
+        "quirk": "Reflexively says \"working as intended\" when something breaks catastrophically — delivered with total sincerity, which somehow makes it worse",
+        "statAffinity": {
+          "intelligence": 1.2,
+          "charisma": 0.9
+        }
+      },
+      {
+        "id": "corrects_grip",
+        "quirk": "Cannot watch someone hold a multi-tool incorrectly and say nothing — has started more conversations with \"sorry, do you mind if I—\" than they've had hot meals",
+        "statAffinity": {
+          "dexterity": 1.3,
+          "charisma": 0.9
+        }
+      },
+      {
+        "id": "unsettling_pause",
+        "quirk": "Pauses unsettlingly before any direct answer — long enough that people start filling in their own interpretation",
+        "statAffinity": {
+          "wisdom": 1.3,
+          "intelligence": 1.1
+        }
+      },
+      {
+        "id": "dark_humour_deflect",
+        "quirk": "Deflects anything personal with dark humour — the darker the subject, the funnier the deflection, and they know it",
+        "statAffinity": {
+          "charisma": 1.3,
+          "wisdom": 0.9
+        }
+      },
+      {
+        "id": "emergency_frequencies",
+        "quirk": "Has memorised the emergency frequencies for every station they've ever docked at — not written down, just there",
+        "statAffinity": {
+          "intelligence": 1.3,
+          "wisdom": 1.2
+        }
+      },
+      {
+        "id": "callsigns",
+        "quirk": "Never uses real names on open comms — everyone gets a callsign whether they asked for one or not",
+        "statAffinity": {
+          "wisdom": 1.2,
+          "intelligence": 1.1
+        }
+      },
+      {
+        "id": "status_report",
+        "quirk": "Answers \"how are you?\" with a full status report: systems nominal, mood at 64%, caloric intake below target. It's thorough. Nobody asked for thorough.",
+        "statAffinity": {
+          "intelligence": 1.2,
+          "charisma": 0.8
+        }
+      },
+      {
+        "id": "literal_idioms",
+        "quirk": "Takes idioms completely literally — has caused at least one diplomatic misunderstanding and still maintains they were the reasonable one in that situation",
+        "statAffinity": {
+          "intelligence": 1.3,
+          "charisma": 0.8
+        }
+      },
+      {
+        "id": "voice_messages",
+        "quirk": "Still sends voice messages when everyone else has moved to neural text — always three times longer than necessary and ending with \"okay, that's it, bye... actually one more thing\"",
+        "statAffinity": {
+          "charisma": 1.2,
+          "intelligence": 0.9
+        }
+      },
+      {
+        "id": "stat_compliments",
+        "quirk": "Cannot accept a compliment without immediately providing statistical context for why it's probably undeserved — a habit others describe as exhausting and endearing in equal measure",
+        "statAffinity": {
+          "intelligence": 1.3,
+          "charisma": 0.8
+        }
+      },
+      {
+        "id": "job_title_first",
+        "quirk": "Introduces themselves by job function first, name second, and finds it genuinely puzzling that other people do it the other way around",
+        "statAffinity": {
+          "intelligence": 1.1,
+          "charisma": 0.9
+        }
+      },
+      {
+        "id": "carries_relic",
+        "quirk": "Carries one item from before — the accident, the war, the decision — and you can tell when they're touching it through the pocket",
+        "statAffinity": {
+          "wisdom": 1.3,
+          "charisma": 1.1
+        }
+      },
+      {
+        "id": "augment_diagnostic",
+        "quirk": "Runs a daily augment diagnostic out loud, like a ritual — the same sequence, the same phrasing, every time",
+        "statAffinity": {
+          "intelligence": 1.2,
+          "constitution": 1.1
+        }
+      },
+      {
+        "id": "extraction_codeword",
+        "quirk": "Gives everyone they trust a codeword for \"I need extraction\" — has needed it used exactly once, and that was enough",
+        "statAffinity": {
+          "wisdom": 1.3,
+          "intelligence": 1.2
+        }
+      },
+      {
+        "id": "lucky_rational",
+        "quirk": "Carries a lucky charm but has prepared a detailed rational explanation for why it doesn't count as superstition — unpacks the whole argument if you look at the charm for more than two seconds",
+        "statAffinity": {
+          "intelligence": 1.2,
+          "wisdom": 0.9
+        }
+      },
+      {
+        "id": "manual_alarm",
+        "quirk": "Keeps a physical alarm clock as backup to their neural wake cycle — has never once needed it and calls it \"redundancy protocol\" rather than admit it's a comfort object",
+        "statAffinity": {
+          "intelligence": 1.1,
+          "wisdom": 1.1
+        }
+      },
+      {
+        "id": "ship_third_person",
+        "quirk": "Refers to their ship by name, in the third person, and gently corrects anyone who doesn't — \"she, not it. She has feelings about that.\"",
+        "statAffinity": {
+          "charisma": 1.2,
+          "wisdom": 1.1
+        }
+      },
+      {
+        "id": "terrible_coffee",
+        "quirk": "Drinks the same terrible recycled station coffee every morning and has developed a detailed philosophy about why good coffee would be a distraction",
+        "statAffinity": {
+          "constitution": 1.2,
+          "wisdom": 1
+        }
+      }
+    ]
+  },
+  "staticCards": {
+    "STATIC_CHARACTERS": [],
+    "STATIC_CLASSES": [
+      {
+        "name": "Pilot",
+        "triggers": "Pilot, Freighter Pilot, Shuttle Operator, Navigator",
+        "entry": "Anyone who's actually flown a ship — freighter captains threading asteroid fields, shuttle jockeys running the same station loop a thousand times, navigators who plot jumps other people are too scared to trust to an autopilot. What separates a good pilot from a dead one usually isn't the reflexes; it's knowing exactly when to trust the instruments over your own gut, and when not to."
+      },
+      {
+        "name": "Mercenary",
+        "triggers": "Mercenary, Corporate Mercenary, Bounty Hunter, Station Security, Military Veteran",
+        "entry": "Anyone who gets paid to point a weapon at someone else's problem — corp muscle enforcing a contract, bounty hunters working off a tracker and a grudge, station security keeping the peace between shifts, veterans who left the uniform behind but not the reflexes. Loyalty here is contractual, which everyone involved understands and nobody says out loud."
+      },
+      {
+        "name": "Netrunner",
+        "triggers": "Netrunner, Hacker",
+        "entry": "People who fight the war that happens in the wires before anyone downstairs even knows there is one — cracking corp firewalls, laundering data, or just proving a point about whose systems are actually secure. Every netrunner has a story about the one job that went sideways in someone else's head, and most of them still flinch a little when the connection drops without warning."
+      },
+      {
+        "name": "Corporate Suit",
+        "triggers": "Corporate Suit, Corporate, Compliance Officer, Executive",
+        "entry": "The people who keep the machine of a megacorp actually running — mid-level suits managing quotas nobody above them will ever see, compliance officers enforcing rules they didn't write and often don't believe in, executives who've traded almost everything recognizably human for a floor with a view. Climbing costs something at every level; the higher up, the steeper the price and the less anyone talks about it."
+      },
+      {
+        "name": "Smuggler",
+        "triggers": "Smuggler, Black-Market Dealer, Fixer",
+        "entry": "Traders in whatever the manifest doesn't mention — contraband cargo, favors that can't go through official channels, information worth more than the ship carrying it. A fixer's real product isn't goods, it's certainty: they know who can get it done, who can't be trusted, and exactly how much silence costs this week."
+      },
+      {
+        "name": "Medic",
+        "triggers": "Medic, Street Doc, Combat Medic, Corporate Physician",
+        "entry": "Anyone keeping bodies functional in a system that only really cares about the ones with good insurance — street docs patching gunshot wounds with no questions and fewer painkillers, combat medics who've learned to work fast under fire, corporate physicians who never have to ask whether a patient can pay. The skill is identical everywhere; only the waiting room changes."
+      },
+      {
+        "name": "Scientist",
+        "triggers": "Scientist, Xenobiologist, Terraforming Engineer, Gene-Tech",
+        "entry": "Researchers pushing the actual frontier — xenobiologists cataloging things that were never meant to be catalogued, terraforming engineers coaxing dead worlds into something breathable, gene-techs editing the human blueprint one careful splice at a time. Funding always comes with strings, and the best discoveries have a way of belonging to whoever paid for the lab."
+      },
+      {
+        "name": "Colonist",
+        "triggers": "Colonist, Salvager, Deep-Space Scout",
+        "entry": "People who make a living at the actual edge of settled space — colonists breaking ground on worlds that don't want them yet, salvagers picking value out of wrecks everyone else wrote off, deep-space scouts charting what the last survey missed. Self-reliance isn't a personality trait out here, it's the whole job description."
+      },
+      {
+        "name": "Undercity Operator",
+        "triggers": "Undercity Enforcer, Augmentation Bootlegger, Memory Thief",
+        "entry": "Specialists working the layer of the economy the corps pretend doesn't exist — bootleg augmentation techs installing gear no licensed clinic will touch, memory thieves lifting recollections people paid good money to keep, enforcers making sure the undercity's own rules get respected since nobody official will. It's still a functioning economy down there; it just settles disputes differently."
+      }
+    ],
+    "STATIC_RACES": [
+      {
+        "name": "Human",
+        "triggers": "Human",
+        "entry": "Still the majority wherever you go, though which kind of human varies more than people upstairs like to admit — gravity-side Earthers with a farmer's wariness of the sky, colonists raised pragmatic on some world that was never going to be forgiving, ship- and station-born spacers who read a room's air pressure before they read its faces, and corp citizens raised so thoroughly managed their charm sometimes reads as slightly uncanny."
+      },
+      {
+        "name": "Cyborg",
+        "triggers": "Cyborg",
+        "entry": "Baseline biology plus whatever augmentation the budget and the body could handle — lightly augmented types carrying a subdermal port or a replaced limb, the seams visible if you look; heavily augmented types who are more machine than person now, moving with a precision that unsettles anyone who isn't used to it. Every piece of chrome has a story about why the original part stopped being an option."
+      },
+      {
+        "name": "Android",
+        "triggers": "Android, Synthetic",
+        "entry": "Manufactured people, more or less — biomechanical models built to pass deep medscans and legally unsettled about their own personhood; plastic models obviously synthetic, built for customer-facing work nobody mistakes for a human doing it; industrial and combat models built for labor or war and classified, on paper, as equipment rather than someone. The line between those three categories is where most of the arguments happen."
+      },
+      {
+        "name": "Uplifted",
+        "triggers": "Uplifted, Uplift",
+        "entry": "Animal stock granted human-grade cognition by a corp program, most of them since defunded or quietly shut down, left to navigate a civilization that still hasn't decided how to treat them. Uplifted primates carry precision and patience nobody expected; uplifted felines carry reflexes nobody argues with and roughly zero tolerance for human inefficiency."
+      },
+      {
+        "name": "Hybrid",
+        "triggers": "Hybrid",
+        "entry": "Human-based genetic splice work — hare and feline lines are the most common, ears and tail fully real, built for heightened reflexes and senses rather than novelty, whatever the original client thought they were paying for. Most hybrids get treated like a fashion statement by strangers and get tired of correcting them fairly quickly."
+      },
+      {
+        "name": "Clone",
+        "triggers": "Clone",
+        "entry": "Grown and decanted rather than born, with paperwork that technically grants full rights and a labor market that technically respects them. Baseline clones show no deviation from the source template and get treated accordingly, like interchangeable product; notable clones have drifted from that template by design, accident, or the slow accumulation of a life actually lived, and sometimes meet someone wearing a face they never agreed to share."
+      },
+      {
+        "name": "Mutant",
+        "triggers": "Mutant",
+        "entry": "The unregulated result of radiation, black-market biotech, or something nobody's fully traced back to its source — real, unasked-for changes that range from cosmetic to genuinely strange. Every mutant has learned exactly which alterations are safe to show in public and which ones stay under a coat, because the paperwork for 'unregistered biological deviation' is worse than the mutation itself."
+      },
+      {
+        "name": "Alien",
+        "triggers": "Alien",
+        "entry": "Non-human sapients, integrated to wildly varying degrees since first contact a generation back. Humanoid aliens are close enough to human shape to pass in a crowd until some detail gives them away, carrying integration paperwork the bureaucracy still hasn't streamlined; non-humanoid aliens require ongoing physical adaptation just to use human-built spaces, and have strong, frequently voiced opinions about the chair situation."
+      }
+    ],
+    "STATIC_LOCATIONS": [
+      {
+        "name": "New Meridian",
+        "triggers": "New Meridian, Meridian",
+        "entry": "A ninety-level megacity sprawl and the most populous settlement in the Halcyon Expanse, built up in the decades since Old Meridian fell. Corp logos crowd out the sky above the fortieth level; below the twentieth, the official rules stop applying with any real consistency. Everyone who matters lives near the top, and everyone who actually keeps the city running lives near the bottom."
+      },
+      {
+        "name": "Old Meridian Ruins",
+        "triggers": "Old Meridian, Old Meridian Ruins",
+        "entry": "The collapsed predecessor to New Meridian, abandoned after a corporate war nobody in power likes to discuss in detail leveled half its towers. Overgrown with imported alien moss and picked over by generations of salvagers, the ruins are technically off-limits and practically ungovernable — plenty of people still live there, by choice or by lack of one."
+      },
+      {
+        "name": "The Sump",
+        "triggers": "the Sump",
+        "entry": "New Meridian's undercity, built into infrastructure older than anyone living remembers — pipes, cracked conduit, standing water, and an entire grey-market economy running on rules the corp-serviced levels above have never bothered to write down. Survival down here is a specialized skill, and the people who have it don't advertise where they learned it."
+      },
+      {
+        "name": "Threnody Station",
+        "triggers": "Threnody Station, Threnody",
+        "entry": "The largest orbital station in the Expanse and its de facto neutral ground — recycled air, recycled people, everyone transient and everything negotiable. Every major faction keeps an office here because no one faction is willing to let anyone else control the jump-lane traffic passing through."
+      },
+      {
+        "name": "The Aurelia Dome",
+        "triggers": "the Aurelia Dome, Aurelia Dome",
+        "entry": "A self-contained corporate arcology built and owned outright by the Helix-Vantage Combine, climate-controlled and gleaming from the inside, ringed by armed checkpoints from the outside. Life inside the Dome is genuinely comfortable, provided you never look too closely at where its water, power, and labor actually come from."
+      },
+      {
+        "name": "Calder's Reach",
+        "triggers": "Calder's Reach, Calders Reach",
+        "entry": "A young colony world still mostly under construction, its domed habitat clusters strung along a coastline nobody's finished naming. Corporate presence arrived recently and hungrily; the settlers who got there first are still negotiating, in the practical sense, exactly which rules apply and to whom."
+      },
+      {
+        "name": "The Rustwake Belt",
+        "triggers": "the Rustwake Belt, Rustwake",
+        "entry": "An asteroid mining belt worked in endless shift rotations, its habitats coated permanently in ore dust. Everyone here has a quota and a number, and the corp that owns the extraction rights knows both by heart. Space is close, tempers are closer, and the ore keeps moving regardless."
+      },
+      {
+        "name": "Farpoint Relay",
+        "triggers": "Farpoint Relay, Farpoint",
+        "entry": "A deep-space outpost days from the nearest lane marker, crewed lean and entirely dependent on supply runs that are sometimes late. The silence outside the hull is total, and the crew's relationship with that silence says a great deal about who volunteers for a posting like this in the first place."
+      },
+      {
+        "name": "The Providence Ark",
+        "triggers": "the Providence Ark, Providence Ark",
+        "entry": "A generation ship launched toward a destination that was, at the time, still theoretical — its crew now several generations removed from whoever actually signed off on the voyage. The ship is the whole world for everyone aboard, and like any world, it's developed politics, class lines, and at least one faction convinced the destination was never real to begin with."
+      },
+      {
+        "name": "Last Rung",
+        "triggers": "Last Rung",
+        "entry": "A frontier outpost at the ragged edge of mapped space, where three separate factions compete for the same resources and the law is whatever got agreed on this week. People come to Last Rung because nowhere else would have them, which the outpost has learned to take as a point of pride rather than an insult."
+      }
+    ],
+    "STATIC_FACTIONS": [
+      {
+        "name": "Helix-Vantage Combine",
+        "triggers": "Helix-Vantage Combine, Helix-Vantage, the Combine",
+        "entry": "The dominant megacorp in the Halcyon Expanse, with holdings ranging from gene-tech patents to the Aurelia Dome itself, and enough lobbying weight that the line between corporate policy and actual law gets blurry fast. The Combine doesn't need to break the rules; it usually just writes the next ones before anyone else gets a vote."
+      },
+      {
+        "name": "The Undertow",
+        "triggers": "the Undertow",
+        "entry": "A criminal syndicate running black-market trade through the Sump and its equivalents on a dozen other stations, dealing in contraband, bootleg augmentation, and whatever else the licensed economy won't touch. Its name is also a warning — cross the Undertow's business and you find out exactly how far down its reach actually goes."
+      },
+      {
+        "name": "Static Rows",
+        "triggers": "Static Rows",
+        "entry": "A loose netrunner collective operating out of the Sump's dead server farms, less an organization than a shared reputation and a set of unwritten rules about whose systems are fair game. Static Rows takes contracts from anyone, sells nobody out on principle, and has embarrassed Helix-Vantage's security division often enough that the Combine has a standing bounty nobody's collected."
+      },
+      {
+        "name": "The Compact of Stations",
+        "triggers": "the Compact of Stations, the Compact",
+        "entry": "A loose political alliance of independent stations and colony governments, headquartered out of Threnody Station, formed explicitly to keep any single megacorp from controlling jump-lane traffic outright. It has no army worth the name and holds together mostly on shared self-interest, which has proven sturdier than anyone expected and considerably less sturdy than anyone would like."
+      },
+      {
+        "name": "The Continuum Faithful",
+        "triggers": "the Continuum Faithful, Continuum Faithful",
+        "entry": "A fringe movement built around a still-unexplained deep-space signal picked up two decades back and never repeated, which its followers have come to treat as scripture rather than a data anomaly. Mostly harmless, occasionally well-funded, and increasingly hard to dismiss now that a Farpoint Relay listening post has started picking up something that might, or might not, be an echo of it."
+      }
+    ],
+    "STATIC_CUSTOM": []
+  }
+}

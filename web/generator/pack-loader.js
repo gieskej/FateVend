@@ -35,6 +35,18 @@
 //
 // No browser APIs. Pure JS.
 
+import { GENDERS as COMMON_GENDERS }             from './common/genders.js';
+import { ORIENTATIONS as COMMON_ORIENTATIONS }   from './common/orientations.js';
+import { BUILDS as COMMON_BUILDS }               from './common/build.js';
+import { HAIR as COMMON_HAIR }                   from './common/hair.js';
+import { RELATIONSHIP_STATUSES as COMMON_RELATIONSHIP_STATUSES } from './common/relationship-statuses.js';
+import { COMMON_PLOT_ARCHETYPES }                from './common/plot-archetypes.js';
+
+const DEFAULT_COMMONS = {
+  GENDERS: COMMON_GENDERS, ORIENTATIONS: COMMON_ORIENTATIONS, BUILDS: COMMON_BUILDS,
+  HAIR: COMMON_HAIR, RELATIONSHIP_STATUSES: COMMON_RELATIONSHIP_STATUSES, COMMON_PLOT_ARCHETYPES,
+};
+
 // Fields a pack must provide (top-level).
 const REQUIRED_TOP = ['id', 'label', 'description', 'portraitStyle', 'tts', 'music', 'slots', 'voice', 'data'];
 // data.* fields the generator needs (genders/orientations/builds/hair fall back to commons).
@@ -76,11 +88,12 @@ export function validatePack(pack) {
 /**
  * Normalizes a validated pack into the app's runtime shapes.
  * @param {object} pack     Parsed manifest.json (with a `data` sub-object).
- * @param {object} commons  Shared defaults: { GENDERS, ORIENTATIONS, BUILDS,
- *                          HAIR, RELATIONSHIP_STATUSES, COMMON_PLOT_ARCHETYPES }.
+ * @param {object} [commons] Shared defaults ({ GENDERS, ORIENTATIONS, BUILDS,
+ *                          HAIR, RELATIONSHIP_STATUSES, COMMON_PLOT_ARCHETYPES });
+ *                          defaults to the app's common tables.
  * @returns {{ id, tables, manifest, voice, staticCards, errors }}
  */
-export function loadPack(pack, commons) {
+export function loadPack(pack, commons = DEFAULT_COMMONS) {
   const errors = validatePack(pack);
   if (errors.length) return { id: pack?.id, errors };
 
