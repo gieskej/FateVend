@@ -27,6 +27,7 @@
 - The text-to-image prompt needs to handle special cases:
   - Aliens: The text-to-image generator has no idea what an alien looks like, so we need specific alien features mentioned in their portrait prompts (e.g. unusual skin color, horns, scales, webbed fingers, forked tongue, pointed ears, etc).  Likewise, non-humanoid aliens should be even more unusual looking (e.g. four legs, no legs, amoeba, tenticals, insect, vapor, lava, jelly, etc)
   - "Android — Industrial Android" are genderless machines, so they shouldn't have hair, age, clothes, tattoos, a face like (famous person) and should ignore the NSFW flag.
+  - "Plastic Android": portrait of Plastic Android, female, tall and electronic eyes, pale plastic skin, subtle corporate insignia, 
 
 
 ### Low Priority Bugs
