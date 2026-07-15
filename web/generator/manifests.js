@@ -20,6 +20,15 @@ export const GENRE_MANIFESTS = {
     portraitStyle: 'modern cinematic style, natural lighting, detailed digital illustration, centered subject, clean composition, contemporary realism, muted urban palette, grounded atmosphere',
     tts: { preprocess: 'default', browser: { rate: 1.00, pitch: 1.00 }, kokoro: { voice: 'af_bella', speed: 1.00 }, openai: { voice: 'nova', speed: 1.00 } },
     music: { prefix: 'modern', tracks: ['modern-Bright Prelude.mp3', 'modern-Urban Keys.mp3'] },
+    slots: {
+      identityCat: 'ETHNICITY', identityHeader: 'Race',
+      profCat: 'PROFESSION', profHeader: 'Profession',
+      econCat: 'ECONOMIC_TIER', econHeader: 'Economy',
+      cityCat: 'CITY_SETTING', cityHeader: 'Setting',
+      familyCat: 'FAMILY_STRUCTURE', lifeEventCat: 'LIFE_EVENT', tensionCat: 'TENSION',
+      filterGendersToGenre: true, familyUsesIconSlug: false,
+      economicTiers: [['tier1','survival','Survival'],['tier2','working_poor','Working Poor'],['tier3','working_lower_middle','Working Class'],['tier4','middle_upper_middle','Middle Class'],['tier5','wealthy_elite','Wealthy / Elite']],
+    },
   },
   fantasy: {
     id: 'fantasy',
@@ -28,6 +37,15 @@ export const GENRE_MANIFESTS = {
     portraitStyle: 'fantasy RPG art style, dramatic lighting, detailed digital illustration, centered subject, clean composition, painterly texture, rich warm palette, high fantasy atmosphere',
     tts: { preprocess: 'default', browser: { rate: 0.92, pitch: 0.95 }, kokoro: { voice: 'af_bella', speed: 0.92 }, openai: { voice: 'fable', speed: 0.92 } },
     music: { prefix: 'fantasy', tracks: ['fantasy-overture1.mp3', 'fantasy-overture_dark.mid.mp3'] },
+    slots: {
+      identityCat: 'RACE', identityHeader: 'Species',
+      profCat: 'PROFESSION', profHeader: 'Profession',
+      econCat: 'ECONOMIC_TIER', econHeader: 'Economy',
+      cityCat: 'CITY_SETTING', cityHeader: 'Setting',
+      familyCat: 'FAMILY', lifeEventCat: 'LIFE_EVENT', tensionCat: 'TENSION',
+      filterGendersToGenre: true, familyUsesIconSlug: false,
+      economicTiers: [['tier1','destitute','Destitute'],['tier2','common_folk','Common Folk'],['tier3','skilled_journeyman','Skilled'],['tier4','prosperous','Prosperous'],['tier5','wealthy_noble','Wealthy']],
+    },
   },
   'sci-fi': {
     id: 'sci-fi',
@@ -36,6 +54,15 @@ export const GENRE_MANIFESTS = {
     portraitStyle: 'dark sci-fi atmosphere, dramatic rim lighting, detailed digital illustration, centered subject, clean composition, cyberpunk aesthetic, muted palette with neon accent',
     tts: { preprocess: 'default', browser: { rate: 1.05, pitch: 1.00 }, kokoro: { voice: 'am_michael', speed: 1.05 }, openai: { voice: 'onyx', speed: 1.05 } },
     music: { prefix: 'scifi', tracks: ['scifi-Neon Grandeur.mp3', 'scifi-Neon Horizon-v1.mp3', 'scifi-Neon Horizon-v2.mp3', 'scifi-Neon Noir.mp3', 'scifi-Neon Rain.mp3', 'scifi-Neon Requiem-v1.mp3', 'scifi-Neon Requiem-v2.mp3', 'scifi-Omega Requiem.mp3', 'scifi-Void Requiem.mp3'] },
+    slots: {
+      identityCat: 'SPECIES', identityHeader: 'Species',
+      profCat: 'PROFESSIONS', profHeader: 'Profession',
+      econCat: 'ECONOMIC_TIERS', econHeader: 'Economy',
+      cityCat: 'CITY_SETTINGS', cityHeader: 'Setting',
+      familyCat: 'FAMILY_STRUCTURES', lifeEventCat: 'LIFE_EVENTS', tensionCat: 'TENSIONS',
+      filterGendersToGenre: false, familyUsesIconSlug: true,
+      economicTiers: [['tier1','tier1-below-the-line','Below the Line'],['tier2','tier2-wage-serf','Wage Serf'],['tier3','tier3-independent-contractor','Contractor'],['tier4','tier4-corporate-citizen','Corp Citizen'],['tier5','tier5-elite-exec','Elite Exec']],
+    },
   },
   'manga-osaka-highschool1987': {
     id: 'manga-osaka-highschool1987',
@@ -44,6 +71,15 @@ export const GENRE_MANIFESTS = {
     portraitStyle: '1980s shounen manga illustration style, bold ink lines, high contrast black and white with spot color, dramatic composition, expressive character design, retro Japanese school drama aesthetic, screen tone texture',
     tts: { preprocess: 'manga', browser: { rate: 1.10, pitch: 1.05 }, kokoro: { voice: 'af_sky', speed: 1.10 }, openai: { voice: 'shimmer', speed: 1.10 } },
     music: { prefix: 'manga', tracks: ['manga-Neon Heart_en.mp3', 'manga-Neon Heart_en_jp.mp3', 'manga-Neon Kiss.mp3'] },
+    slots: {
+      identityCat: 'TRIBES', identityHeader: 'Archetype',
+      profCat: 'PROFESSIONS', profHeader: 'Role',
+      econCat: 'ECONOMIC_TIERS', econHeader: 'Standing',
+      cityCat: 'CITY_SETTINGS', cityHeader: 'Setting',
+      familyCat: 'FAMILY_STRUCTURES', lifeEventCat: 'LIFE_EVENTS', tensionCat: 'TENSIONS',
+      filterGendersToGenre: false, familyUsesIconSlug: false,
+      economicTiers: [['tier1','tier1-struggling','Struggling'],['tier2','tier2-working-class','Working Class'],['tier3','tier3-middle-class','Middle Class'],['tier4','tier4-well-off','Well-Off'],['tier5','tier5-bubble-rich','Bubble Rich']],
+    },
   },
   paleolithic: {
     id: 'paleolithic',
@@ -52,6 +88,15 @@ export const GENRE_MANIFESTS = {
     portraitStyle: 'prehistoric cave painting art style, ochre and charcoal pigments on rough stone texture, bold primitive silhouette, warm earth tones, ancient petroglyph aesthetic, centered subject',
     tts: { preprocess: 'default', browser: { rate: 0.88, pitch: 0.95 }, kokoro: { voice: 'am_adam', speed: 0.88 }, openai: { voice: 'echo', speed: 0.88 } },
     music: { prefix: 'paleolithic', tracks: ['paleolithic-Primal Dawn-v1.mp3', 'paleolithic-Primal Dawn-v2.mp3', 'paleolithic-Primal Hunt.mp3'] },
+    slots: {
+      identityCat: 'RACES', identityHeader: 'Tribe',
+      profCat: 'PROFESSIONS', profHeader: 'Role',
+      econCat: 'ECONOMIC_TIERS', econHeader: 'Status',
+      cityCat: 'CITY_SETTINGS', cityHeader: 'Territory',
+      familyCat: 'FAMILY_STRUCTURES', lifeEventCat: 'LIFE_EVENTS', tensionCat: 'TENSIONS',
+      filterGendersToGenre: false, familyUsesIconSlug: false,
+      economicTiers: [['tier1','tier1-outcast','Outcast'],['tier2','tier2-common-member','Common Member'],['tier3','tier3-valued-member','Valued Member'],['tier4','tier4-respected-elder','Elder'],['tier5','tier5-shaman-chief','Shaman / Chief']],
+    },
   },
   'historical-korea-joseon-dynasty': {
     id: 'historical-korea-joseon-dynasty',
@@ -60,6 +105,15 @@ export const GENRE_MANIFESTS = {
     portraitStyle: 'Joseon Dynasty Korean court painting style, minhwa folk art, clean flat colors with mineral pigments, traditional hanbok dress, decorative floral and nature motifs, centered subject, white background, confident ink outline, warm earth and jewel tones',
     tts: { preprocess: 'default', browser: { rate: 0.85, pitch: 0.95 }, kokoro: { voice: 'bf_emma', speed: 0.85 }, openai: { voice: 'alloy', speed: 0.85 } },
     music: { prefix: 'joseon', tracks: ['joseon-A Name That Bloomed In The Moonlight-v1.mp3', 'joseon-A Name That Bloomed In The Moonlight-v2.mp3', 'joseon-A Name That Bloomed In The Moonlight-v3.mp3', 'joseon-A Red Letter Under the Moonlight.mp3', 'joseon-Rain Falls on the Palace-v1.mp3', 'joseon-Rain Falls on the Palace-v2.mp3', 'joseon-Shadow of the Throne-v1.mp3', 'joseon-Shadow of the Throne-v2.mp3', 'joseon-Shadow of the Throne-v3.mp3'] },
+    slots: {
+      identityCat: 'CLASSES', identityHeader: 'Class',
+      profCat: 'PROFESSIONS', profHeader: 'Profession',
+      econCat: 'ECONOMIC_TIERS', econHeader: 'Standing',
+      cityCat: 'CITY_SETTINGS', cityHeader: 'Setting',
+      familyCat: 'FAMILY_STRUCTURES', lifeEventCat: 'LIFE_EVENTS', tensionCat: 'TENSIONS',
+      filterGendersToGenre: false, familyUsesIconSlug: false,
+      economicTiers: [['tier1','tier1-destitute','Destitute'],['tier2','tier2-subsistence','Subsistence'],['tier3','tier3-modest','Modest'],['tier4','tier4-established','Established'],['tier5','tier5-elite','Elite']],
+    },
   },
   nihongi: {
     id: 'nihongi',
@@ -68,6 +122,15 @@ export const GENRE_MANIFESTS = {
     portraitStyle: 'Nihon Shoki ancient Japan yamato-e court painting style, minhwa-adjacent flat mineral pigments, traditional Japanese asuka court aesthetic, clean confident ink outline, centered subject, warm ochre and vermillion palette, gold leaf accent, detailed silk textile patterns, white background, ancient japanese figure study, dignified formal composition',
     tts: { preprocess: 'nihongi', browser: { rate: 0.82, pitch: 0.90 }, kokoro: { voice: 'jf_alpha', speed: 0.82 }, openai: { voice: 'onyx', speed: 0.82 } },
     music: { prefix: 'nihongi', tracks: ['nihongi-Shadow of Yomi-v1.mp3', 'nihongi-Shadow of Yomi-v2.mp3', 'nihongi-Shadow of Yomi-v3.mp3'] },
+    slots: {
+      identityCat: 'CLANS', identityHeader: 'Clan',
+      profCat: 'PROFESSIONS', profHeader: 'Profession',
+      econCat: 'ECONOMIC_TIERS', econHeader: 'Standing',
+      cityCat: 'CITY_SETTINGS', cityHeader: 'Setting',
+      familyCat: 'FAMILY_STRUCTURES', lifeEventCat: 'LIFE_EVENTS', tensionCat: 'TENSIONS',
+      filterGendersToGenre: false, familyUsesIconSlug: false,
+      economicTiers: [['tier1','tier1-outcast','Outcast'],['tier2','tier2-peasant','Peasant'],['tier3','tier3-minor-official','Minor Official'],['tier4','tier4-court-retainer','Court Retainer'],['tier5','tier5-great-lord','Great Lord']],
+    },
   },
 };
 
