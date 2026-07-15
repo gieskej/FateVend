@@ -209,7 +209,7 @@ import * as PaleoStaticCards   from './genres/paleolithic/static-cards.js';
 import * as MangaHsStaticCards from './genres/manga-osaka-highschool1987/static-cards.js';
 import * as ModernStaticCards  from './genres/modern/static-cards.js';
 import * as NihongiStaticCards from './genres/nihongi/static-cards.js';
-// historical-korea-joseon-dynasty has no static-cards.js yet.
+import * as JoseonStaticCards  from './genres/historical-korea-joseon-dynasty/static-cards.js';
 
 export const STATIC_CARDS_BY_GENRE = {
   fantasy:                          FantasyStaticCards,
@@ -218,6 +218,7 @@ export const STATIC_CARDS_BY_GENRE = {
   'manga-osaka-highschool1987':     MangaHsStaticCards,
   modern:                           ModernStaticCards,
   nihongi:                          NihongiStaticCards,
+  'historical-korea-joseon-dynasty': JoseonStaticCards,
 };
 
 // ── STAT ADJECTIVES ─────────────────────────────────────────────────────────
