@@ -9,7 +9,7 @@
 ## Bugs - Fantasy
 - Redo all the missing icons in Fantasy
 - The text-to-image prompt needs to handle special cases:
-  - Dragonborn: Illustration of a person with golden dragon scale skin, thin but muscular body, long dark hair, fiery golden eyes, sharp filed teeth, prominent facial scales, subtle horns protruding from hair
+  - Dragonborn: Illustration of a person with golden dragon scale skin, muscular body, fiery golden eyes, sharp filed teeth, prominent facial scales, subtle horns protruding from hair, scaly tail
 
 ## Bugs - Modern
 - The Modern genre is crap.  It is too general and open ended to be any fun.  Let's recast it to ...
