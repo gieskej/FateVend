@@ -12,8 +12,13 @@
 // No browser APIs. No Node-specific APIs. Pure JS.
 
 import { uniformPick, uniformPickN, randomInt } from './selector.js';
-import { PARENT_STATUSES, SIBLING_DYNAMICS }    from './genres/modern/family-structures.js';
+import { PARENT_STATUSES as MODERN_PARENT_STATUSES, SIBLING_DYNAMICS as MODERN_SIBLING_DYNAMICS } from './genres/modern/family-structures.js';
 import { poolFor, pickFirstName }               from './skeleton-builder.js';
+
+// Modern's parent/sibling tables are the explicit fallback when a genre's own
+// tables aren't threaded through (e.g. a legacy caller). The browser and CLI
+// both pass the active genre's PARENT_STATUSES/SIBLING_DYNAMICS via buildCast's
+// opts so each genre uses its own — matching what the live app already does.
 
 // Gender id → display label (mirrors common/genders.js without the import)
 const GENDER_LABELS = {
@@ -257,8 +262,8 @@ function familyLastName(protagonistLast, forceNew, ethnicityBroad, namePools) {
 
 // ── PARENT BUILDER ────────────────────────────────────────────────────────
 
-function buildParent(role, structure, protName, protLast, ethnicityBroad, namePools) {
-  const pool = PARENT_STATUSES;
+function buildParent(role, structure, protName, protLast, ethnicityBroad, namePools, parentStatuses) {
+  const pool = parentStatuses;
   let status;
   const id = structure.id;
 
@@ -306,8 +311,8 @@ function buildParent(role, structure, protName, protLast, ethnicityBroad, namePo
 
 // ── SIBLING BUILDER ───────────────────────────────────────────────────────
 
-function buildSibling(protName, protLast, ethnicityBroad, namePools) {
-  const dyn         = uniformPick(SIBLING_DYNAMICS);
+function buildSibling(protName, protLast, ethnicityBroad, namePools, siblingDynamics) {
+  const dyn         = uniformPick(siblingDynamics);
   const genderId    = Math.random() < 0.5 ? 'man' : 'woman';
   const namePool    = poolFor(namePools, ethnicityBroad);
   const firstName   = pickFirstName(genderId, namePool);
@@ -407,9 +412,11 @@ function buildPartner(relStatusId, protName, protLast, ethnicityBroad, namePools
  * @param {string} [relationshipStatusId]  e.g. "married", "single", "widowed"
  * @returns {import('./types.js').NPCSkeleton[]}
  */
-export function buildCast(protagonistName, protagonistLast, ethnicityBroad, familyStructure, namePools, protagonistGenderId, protagonistOrientation, relationshipStatusId) {
+export function buildCast(protagonistName, protagonistLast, ethnicityBroad, familyStructure, namePools, protagonistGenderId, protagonistOrientation, relationshipStatusId, opts = {}) {
   const cast = [];
   const MAX  = 6;
+  const parentStatuses  = opts.parentStatuses  ?? MODERN_PARENT_STATUSES;
+  const siblingDynamics = opts.siblingDynamics ?? MODERN_SIBLING_DYNAMICS;
 
   // ── PARENTS ──────────────────────────────────────────────────────────
   const pc = familyStructure.parentCount ?? 0;
@@ -421,11 +428,11 @@ export function buildCast(protagonistName, protagonistLast, ethnicityBroad, fami
                 : isOneAbsent   ? (Math.random()<0.5?'absent':'present') : 'present';
     const fRole = isOneDeceased ? (mRole==='deceased'?'surviving':'deceased')
                 : isOneAbsent   ? (mRole==='absent'?'present':'absent') : 'present';
-    cast.push(buildParent('mother', {...familyStructure, _r:mRole}, protagonistName, protagonistLast, ethnicityBroad, namePools));
-    cast.push(buildParent('father', {...familyStructure, _r:fRole}, protagonistName, protagonistLast, ethnicityBroad, namePools));
+    cast.push(buildParent('mother', {...familyStructure, _r:mRole}, protagonistName, protagonistLast, ethnicityBroad, namePools, parentStatuses));
+    cast.push(buildParent('father', {...familyStructure, _r:fRole}, protagonistName, protagonistLast, ethnicityBroad, namePools, parentStatuses));
   } else if (pc === 1) {
     const g = familyStructure.parentGender ?? (Math.random()<0.5?'mother':'father');
-    cast.push(buildParent(g, familyStructure, protagonistName, protagonistLast, ethnicityBroad, namePools));
+    cast.push(buildParent(g, familyStructure, protagonistName, protagonistLast, ethnicityBroad, namePools, parentStatuses));
   }
 
   // ── PARTNER ───────────────────────────────────────────────────────────
@@ -437,7 +444,7 @@ export function buildCast(protagonistName, protagonistLast, ethnicityBroad, fami
   const [minS, maxS] = familyStructure.siblingCount ?? [0, 0];
   const sibSlots = Math.min(randomInt(minS, maxS), 2, MAX - cast.length - 2);
   for (let i = 0; i < sibSlots; i++) {
-    cast.push(buildSibling(protagonistName, protagonistLast, ethnicityBroad, namePools));
+    cast.push(buildSibling(protagonistName, protagonistLast, ethnicityBroad, namePools, siblingDynamics));
   }
 
   // ── BEST FRIENDS ──────────────────────────────────────────────────────

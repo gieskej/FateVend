@@ -223,7 +223,10 @@ export function buildSkeleton(stats, mbti, tables, opts = {}) {
   const tags = assembleTags(profession, tension, city, secret.severity, TAG_POOLS);
 
   // ── SUPPORTING CAST ───────────────────────────────────────────────────
-  const cast = buildCast(name, lastName, identity.broad, famStructure, NAME_POOLS, gender.id, orientation.label, relationshipStatus.id);
+  const cast = buildCast(name, lastName, identity.broad, famStructure, NAME_POOLS, gender.id, orientation.label, relationshipStatus.id, {
+    parentStatuses:  tables.PARENT_STATUSES,
+    siblingDynamics: tables.SIBLING_DYNAMICS,
+  });
 
   return {
     name, age,
