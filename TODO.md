@@ -2,8 +2,11 @@
 - Play scenarios from each genre and make sure they are fun, not just some grim chatbot trying to kill you or chat you to death.  Most of the genre's AI generated try to be factual, historical, and boring.
 
 - Update generate-icons.py to read the icon prompts from the new genre-pack data structures.
-- Update skills
 - Update README
+
+## Refactor follow-ups
+- Collapse the two prompt systems: the browser builds prompts from `GENRE_VOICE` (manifests.js) while the CLI/module path still uses per-genre `prompt-template.js` via `api-client.js` PROMPT_TEMPLATES. Adding a built-in genre currently means authoring both, kept in sync by hand. Unify on one shared `buildPrompt(skeleton, voice)`.
+- De-duplicate the two engine copies: the browser imports `generator/engine.js` and the CLI imports `generator/skeleton-builder.js` — both contain the same engine logic (e.g. the `identity.broad === 'Android'` family override), a divergence risk from the verbatim extract. Point both at one module.
 
 ## Bugs
 - Plot essentials should be short bullet points, not wordy prose.  Ideally around 1000 characters, maximum 1500 characters.
@@ -35,7 +38,6 @@
 ### Low Priority Bugs
 - Sometimes generate_icons hangs and you have to restart the whole shell to recover.
 - Think of a better project name.
-- Update add-genre skill to handle BGM and other new genre-related features.
 
 ## New Features
 - Enable AID scripting and automatically inject the latest auto-cards (https://github.com/LewdLeah/Auto-Cards)
