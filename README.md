@@ -2,7 +2,7 @@
 
 A personality-first RPG character generator for AI Dungeon scenarios. Rolls stats, seeds a full character skeleton from curated tables, then calls an AI API (Claude or Gemini) to generate terse behavioral prose — character entries, a scenario description, opening, plot components, text-to-image prompts, and tags — ready to export directly into AI Dungeon.
 
-Seven genres: 
+Seven built-in genres:
 - **Modern**
 - **Fantasy**
 - **Sci-Fi**
@@ -10,6 +10,11 @@ Seven genres:
 - **Manga (Osaka Highschool 1987)**
 - **Joseon Dynasty**
 - **Nihongi (Ancient Japan)**
+
+…plus **importable genre packs**: a genre is a pure-data pack (a `manifest.json`,
+or a `.zip` with its own icons and music) that you can add at runtime from
+**Settings → Genre Packs** — no source edits, no rebuild. See
+[Genre packs](#genre-packs) below.
 
 ## Screenshots
 
@@ -73,7 +78,7 @@ Seven genres:
 
 </details>
 
-## Prerequisits
+## Prerequisites
 - A laptop, PC or server to serve the HTML/JS/images.  Should work on any OS.
 - An AI text provider
   - Ollama (local or on LAN)
@@ -97,7 +102,7 @@ Seven genres:
   - Kokoro TTS (local or LAN) (Recommended)
     - https://github.com/remsky/Kokoro-FastAPI
   - OpenAI TTS cloud API key
-- Auto Importer (an external script) requires node.js and playwrite and chromium
+- Auto Importer (an external script) requires Node.js, Playwright, and Chromium
 
 ## Quick start
 
@@ -124,7 +129,7 @@ This fills in `deploy/fatevend.service`'s user and repo path automatically (usin
 - Choose a genre
 - Click **Spin the Reels**.
 - When the slot machine UI completes, a scenario template is generated.
-- If it looks interesting, Click **Generate Full Scenario**.
+- If it looks interesting, Click **Generate Scenario**.
 - Wait a couple minutes to generate the text and, if an image provider is defined, a protagonist portrait.
   - Adjust the Portrait Prompt and click Generate Portrait as needed.
   - Click Generate on each NPC's portrait
@@ -143,7 +148,7 @@ There are a few ways to use the results:
   - This is great to capture the story for later editing while on mobile, or use in other games.
   - Available on all platforms
 - ↑ Import to AI Dungeon
-  - This option is only available on localhost because of its dependence on playwrite and chromium.
+  - This option is only available on localhost because of its dependence on Playwright and Chromium.
   - Requires your AI Dungeon credentials
 
 You can also open `web/index.html` directly in a browser and enter keys manually.
@@ -206,6 +211,35 @@ The package folder comes from **↓ Download Package (.zip)** in the web app. It
 
 Select a voice provider in **Settings → Narration**: Browser (built-in), Kokoro (local LAN endpoint), or OpenAI TTS. Speaker buttons appear on all prose fields. **Narrate All** reads the full sheet sequentially.
 
+## Genre packs
+
+A genre is entirely **data**, so a new playable genre can be shipped as a
+self-contained **pack** and imported at runtime — no source edits, no rebuild.
+A pack is either:
+
+- a single **`manifest.json`** (all data inline), or
+- a **`.zip`** containing `manifest.json` plus optional `icons/` and `audio/`
+  folders (so the pack brings its own slot-machine art, carousel cover, and BGM).
+
+Packs carry **no executable code** — only JSON data and image/audio assets — so
+importing one can't run arbitrary JavaScript.
+
+**To install:** open **Settings → Genre Packs**, choose a `.json` or `.zip`
+file, and the new genre appears in the carousel immediately. Installed packs are
+stored in the browser (IndexedDB) and reload automatically; each has a **Remove**
+button.
+
+**To author one:** the fastest start is an existing example in `web/genre-packs/`:
+
+- `sample-neon-drift.json` — a JSON-only pack (reuses Sci-Fi's art via the
+  optional `iconBase` field).
+- `example-pirate-cove.zip` + `build-example-pack.py` — a self-contained `.zip`
+  with bundled icons and audio; the Python script builds it and doubles as a
+  worked template.
+
+The full pack format, loader/registration internals, and authoring guide are in
+[`.claude/docs/features/genre-packs/DESIGN.md`](.claude/docs/features/genre-packs/DESIGN.md).
+
 ## CLI usage
 
 ```bash
@@ -232,25 +266,32 @@ web/
 
   generator/                      ← Core library (no UI or Node dependencies)
     index.js                      ← Public API: generateCharacter()
+    engine.js                     ← Roll + skeleton pipeline used by the browser
     roller.js                     ← Stat rolling (Box-Muller bell curve)
     selector.js                   ← Weighted table selection
     skeleton-builder.js           ← Assembles CharacterSkeleton from genre tables
     cast-builder.js               ← Supporting cast (family, friends, foils)
-    api-client.js                 ← Claude + Gemini API calls, output truncation
-    ui-data.js                    ← Re-exports all genre tables for the UI
+    registry.js                   ← GENRE_TABLES: single source of truth for genre data
+    manifests.js                  ← GENRE_MANIFESTS + GENRE_VOICE: presentation, slots, prompt voice
+    pack-loader.js                ← Loads/validates a genre pack into the runtime shapes
+    api-client.js                 ← Claude + Gemini API calls, output truncation (CLI path)
+    ui-data.js                    ← Static story cards + shared UI constants
 
-    genres/
-      modern/
-      fantasy/
-      sci-fi/
-      paleolithic/
-      manga-osaka-highschool1987/
-      historical-korea-joseon-dynasty/
-      nihongi/
+    genres/                       ← Built-in genres (each a folder of pure-data modules)
+      modern/  fantasy/  sci-fi/  paleolithic/
+      manga-osaka-highschool1987/  historical-korea-joseon-dynasty/  nihongi/
 
-      Each genre contains:
-        prompt-template.js        ← Genre-specific AI prompt + response parser
-        professions.js, races.js, life-events.js, tensions.js, secrets.js, …
+      Each genre contains data modules consumed by registry.js:
+        character-attributes.js   ← genders, orientations, identity, builds, hair, features, quirks
+        professions.js, life-events.js, family-structures.js, tensions.js,
+        secrets.js, settings.js, names.js, plot-archetypes.js, static-cards.js
+        prompt-template.js        ← Genre AI prompt + response parser (CLI path)
+        icons/                    ← Slot-machine + carousel art (+ generate_icons.py)
+
+  genre-packs/                    ← Importable genre packs (data-only, no source edits)
+    sample-neon-drift.json        ← JSON-only example pack
+    example-pirate-cove.zip       ← Self-contained .zip example (bundled icons + audio)
+    build-example-pack.py         ← Builds the .zip; worked authoring template
 
   tools/
     aidungeon-importer.mjs        ← Playwright CLI importer
@@ -282,12 +323,22 @@ const { skeleton } = await generateCharacter({ genre: 'fantasy', skipAI: true })
 
 ### Adding a new genre
 
-#### Easy
-- Use the Claude Code "/add-genre {title}" skill
+There are two ways, depending on whether the genre should ship in the repo:
 
-#### Manual
-1. Create `generator/genres/<name>/` mirroring an existing genre's file structure
-2. Export the new tables from `generator/ui-data.js`
-3. Register the genre in `getGenreTables()` and `api-client.js` in `index.html`
-4. Add a genre button to the selector in the UI
-5. Create the prompts, icons, etc.
+**As a genre pack (no source edits, recommended).** Author a `manifest.json` /
+`.zip` and import it at runtime — see [Genre packs](#genre-packs) and start from
+`web/genre-packs/build-example-pack.py`.
+
+**As a built-in genre (ships in the repo, and usable from the CLI).** Add a
+folder of pure-data modules under `generator/genres/<id>/` and wire it into the
+registration sites:
+
+1. Create `generator/genres/<id>/` mirroring an existing genre's data modules.
+2. Import those tables and add a `GENRE_TABLES['<id>']` entry in `generator/registry.js`.
+3. Add `GENRE_MANIFESTS['<id>']`, the id in `CAROUSEL_ORDER`, and `GENRE_VOICE['<id>']` in `generator/manifests.js`.
+4. Register static story cards in `generator/ui-data.js` (`STATIC_CARDS_BY_GENRE`).
+5. Add `prompt-template.js` + register it in `api-client.js` `PROMPT_TEMPLATES` (CLI path), and add an `icons/generate_icons.py` wrapper.
+
+The engine, carousel, slot machine, TTS, and music are all data-driven, so a new
+genre needs **no `index.html` edits**. The Claude Code **`/add-genre`** skill
+walks through both paths step by step.

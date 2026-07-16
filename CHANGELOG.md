@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-07-16
+
+### docs: bring README up to date with the refactor + genre packs
+**What changed:** The README still described the pre-refactor architecture and omitted genre packs. Updated it: added a **Genre packs** section (pack format, install via Settings → Genre Packs, IndexedDB persistence, and the `sample-neon-drift.json` / `example-pirate-cove.zip` + `build-example-pack.py` authoring examples, linking `DESIGN.md`) and a mention in the intro; rewrote the stale project-structure tree to include `engine.js`, `registry.js`, `manifests.js`, `pack-loader.js`, the `genre-packs/` folder, and the real per-genre data-module layout (dropping the "ui-data.js re-exports all tables" description); rewrote **Adding a new genre** to cover the pack path and the actual built-in registration sites (registry.js / manifests.js / ui-data.js / api-client.js), replacing the deleted `getGenreTables()` / "genre button to the selector" steps; corrected the button name (**Generate Scenario**); and fixed typos (Prerequisites, Playwright/Chromium).
+**Impact:** The README now matches the shipped code and documents the headline genre-packs feature. No app code changed.
+**Test cases:** N/A (documentation). Verified the project-structure tree and registration sites against the current source (generator/ listing, genre-packs/ contents, button labels).
+
 ## 2026-07-15
 
 ### docs: revamp the /add-genre skill and trim /sync-inline for the post-refactor architecture
