@@ -152,8 +152,16 @@ The fastest way to build one is to start from a built-in genre: serialize its
 entries into the `manifest.json` shape above (the round-trip test in the
 `pack-loader` work shows the exact inverse mapping), change the `id`/`label`/
 `description`/voice, swap in your own data and `icons/`+`audio/`, and zip it.
-`web/genre-packs/sample-neon-drift.json` is a complete worked example (derived
-from Sci-Fi).
+
+Two worked examples ship in `web/genre-packs/`:
+- **`sample-neon-drift.json`** — a JSON-only pack (derived from Sci-Fi) that
+  reuses Sci-Fi's served art via `iconBase`; the lightweight "reskin" case.
+- **`example-pirate-cove.zip`** — a self-contained `.zip` (bundled `icons/` +
+  `audio/`) that exercises the blob-URL asset path end to end. It's produced by
+  `build-example-pack.py`, which also shows the inverse mapping from plain data
+  to the pack format and generates simple placeholder icons; re-run it to rebuild
+  the zip. (A real pack would run the icon pipeline for finished art instead of
+  the placeholders.)
 
 ## Note on the icon pipeline
 
