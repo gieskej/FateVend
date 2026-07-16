@@ -1,7 +1,7 @@
 # TODO
 - Play scenarios from each genre and make sure they are fun, not just some grim chatbot trying to kill you or chat you to death.  Most of the genre's AI generated try to be factual, historical, and boring.
 
-- Update generate-icons.py to read the icon prompts from the new genre-pack data structures.
+- Add a new script in genre-packs to generate icons using SD or Gemini to read the icon prompts from the new genre-pack data structures.
 
 ## Refactor follow-ups
 - Collapse the two prompt systems: the browser builds prompts from `GENRE_VOICE` (manifests.js) while the CLI/module path still uses per-genre `prompt-template.js` via `api-client.js` PROMPT_TEMPLATES. Adding a built-in genre currently means authoring both, kept in sync by hand. Unify on one shared `buildPrompt(skeleton, voice)`.
