@@ -44,6 +44,8 @@ my-genre.zip
   "label": "My Genre",
   "description": "One-line pitch shown on the carousel card.",
   "portraitStyle": "comma-separated text-to-image style tags",
+  "iconBase": "generator/genres/sci-fi/icons/",  // optional: reuse another served
+                                 // folder's icons instead of shipping your own (see below)
   "tts": { "preprocess": "default",   // "default" | "manga" | "nihongi"
            "browser": { "rate": 1.0, "pitch": 1.0 },
            "kokoro":  { "voice": "af_bella", "speed": 1.0 },
@@ -122,6 +124,17 @@ shapes match the existing built-in genre data files (e.g. a race is
   `audio/music/…`) for built-ins. Blobs are revoked on removal. A JSON-only pack
   (no assets) simply shows the gear placeholder for any missing icon — exactly
   like a built-in genre with an ungenerated icon.
+
+- **`iconBase` (reskin packs)** — a JSON-only pack that has no bundled `icons/`
+  can still show real art by declaring `iconBase`: a served folder its
+  genre-specific icons resolve from. `getSlotConfig()` uses it as the icon base
+  (in place of the default `./generator/genres/<pack-id>/icons/`) and the carousel
+  cover reads it for `_genre.webp`. This lets a lightweight "reskin" pack reuse a
+  built-in genre's icons when it keeps that genre's category/slug names — e.g.
+  `sample-neon-drift.json` sets `"iconBase": "generator/genres/sci-fi/icons/"` and
+  renders Sci-Fi's art. A zipped pack's own blob icons still take priority
+  (`packIconUrl` is checked first); `iconBase` only affects the served-path
+  fallback. Built-ins omit it and are unaffected.
 
 ## Security
 

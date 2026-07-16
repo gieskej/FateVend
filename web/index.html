@@ -1198,12 +1198,18 @@ let carouselIndex = 0;
 // Prev/next cards only get room to peek out on desktop widths.
 function carouselShowPeeks(width) { return width >= 600; }
 
+// Served folder a genre's icons resolve from — a pack may override it (reskin
+// packs reusing a built-in's art); built-ins use their own conventional folder.
+function genreIconBase(id) {
+  return GENRE_MANIFESTS[id]?.iconBase ?? `generator/genres/${id}/icons/`;
+}
+
 function genreCardHTML(g, modifierClass, onclick) {
   return `
     <div class="genre-card ${modifierClass}" ${onclick ? `onclick="${onclick}"` : ''} title="${modifierClass === 'genre-card-peek' ? g.label : ''}">
       <div class="genre-card-image-wrap">
         <img class="genre-card-image"
-          src="${PACK_ICON_URLS[g.id]?.['_genre.webp'] ?? `generator/genres/${g.id}/icons/_genre.webp`}"
+          src="${PACK_ICON_URLS[g.id]?.['_genre.webp'] ?? `${genreIconBase(g.id)}_genre.webp`}"
           onerror="this.parentNode.innerHTML='<div class=&quot;genre-card-image-placeholder&quot;>⚙</div>'"
           alt="${g.label}" />
       </div>
@@ -1489,13 +1495,17 @@ function getSlotConfig(genre) {
   });
   const SENT_CAT = SENTIMENTS.map(s => [s.id, s.iconPath?.match(/#([^.]+)\.webp$/i)?.[1] ?? s.id, s.label]);
 
-  const m = (GENRE_MANIFESTS[genre] ?? GENRE_MANIFESTS['modern']).slots;
+  const manifest = GENRE_MANIFESTS[genre] ?? GENRE_MANIFESTS['modern'];
+  const m = manifest.slots;
   const tables = GENRE_TABLES[genre] ?? GENRE_TABLES['modern'];
   const gendersCat = m.filterGendersToGenre ? GENDERS_CAT.filter(([id]) => tables.GENDERS.some(g => g.id === id)) : GENDERS_CAT;
   const orientsCat = m.filterGendersToGenre ? ORIENT_CAT.filter(([id]) => tables.ORIENTATIONS.some(o => o.id === id)) : ORIENT_CAT;
   return {
     genre,
-    iconBase: `./generator/genres/${genre}/icons/`,
+    // A pack may point its genre-specific icons at another served folder
+    // (e.g. a lightweight "reskin" pack reusing a built-in genre's art);
+    // built-ins leave iconBase unset and resolve from their own folder.
+    iconBase: manifest.iconBase ?? `./generator/genres/${genre}/icons/`,
     defs: [
       { key:'gender',    header:'Gender',         cat:'GENDERS',               common:true  },
       { key:'species',   header:m.identityHeader, cat:m.identityCat,           common:false },
@@ -2154,6 +2164,12 @@ function registerGenrePack(pack, { assetBase } = {}) {
   if (!GENRE_CAROUSEL_DATA.some(c => c.id === id))
     GENRE_CAROUSEL_DATA.push({ id, label: manifest.label, desc: manifest.description });
 
+  // The toolbar dropdown is a plain <select>; keep its options in sync with the
+  // carousel so an imported pack is selectable there too.
+  const sel = document.getElementById('genre-select');
+  if (sel && !sel.querySelector(`option[value="${id}"]`))
+    sel.appendChild(new Option(manifest.label, id));
+
   renderCarouselCard();
   renderCarouselIndicator();
   return { ok: true, id, errors: [] };
@@ -2172,6 +2188,7 @@ function unregisterGenrePack(id) {
   releasePackAssets(id);  // revoke any blob: URLs (see asset serving)
   const i = GENRE_CAROUSEL_DATA.findIndex(c => c.id === id);
   if (i !== -1) GENRE_CAROUSEL_DATA.splice(i, 1);
+  document.getElementById('genre-select')?.querySelector(`option[value="${id}"]`)?.remove();
   if (currentGenre === id) { carouselIndex = 0; setGenre(GENRE_CAROUSEL_DATA[0].id); }
   renderCarouselCard();
   renderCarouselIndicator();

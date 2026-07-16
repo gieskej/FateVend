@@ -3,6 +3,7 @@
   "label": "Neon Drift (Sample)",
   "description": "A sample uploadable genre pack (derived from Sci-Fi) demonstrating the pack format — cyberpunk drifters and orbital intrigue.",
   "portraitStyle": "dark sci-fi atmosphere, dramatic rim lighting, detailed digital illustration, centered subject, clean composition, cyberpunk aesthetic, muted palette with neon accent",
+  "iconBase": "generator/genres/sci-fi/icons/",
   "tts": {
     "preprocess": "default",
     "browser": {

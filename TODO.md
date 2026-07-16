@@ -1,6 +1,10 @@
 # TODO
 - Play scenarios from each genre and make sure they are fun, not just some grim chatbot trying to kill you or chat you to death.  Most of the genre's AI generated try to be factual, historical, and boring.
 
+- Update generate-icons.py to read the icon prompts from the new genre-pack data structures.
+- Update skills
+- Update README
+
 ## Bugs
 - Plot essentials should be short bullet points, not wordy prose.  Ideally around 1000 characters, maximum 1500 characters.
 
@@ -18,8 +22,6 @@
 - Redo all of the Joseon.  The current icons are a cultural mashup of Chinese, Japanese, Vietnamese and Korean, so they are not accurate.
 ## Bugs - Nihongi
 - Redo all of the Nihongi icons.  The current icons are a cultural mashup of Chinese, Japanese, Vietnamese and Korean, so they are not accurate.
-
-
 
 ## Bugs - Osaka
 ## Bugs - Paleo
@@ -46,6 +48,9 @@
 
 ## Open Questions
 - Should Plot Essentials be considers as spoilers, and therefore not automatically read by the narrator?
+
+## Rejected ideas
+- Auto-load web/genre-packs (N/A - Uploaded genre-packs are stored in the browser's index DB )
 
 ---
 

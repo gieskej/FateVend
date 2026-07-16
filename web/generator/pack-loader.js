@@ -138,6 +138,7 @@ export function loadPack(pack, commons = DEFAULT_COMMONS) {
     tts: pack.tts,
     music: pack.music,
     slots: pack.slots,
+    iconBase: pack.iconBase ?? null,   // optional: resolve icons from another served folder
   };
 
   const voice = {
