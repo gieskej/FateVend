@@ -2246,7 +2246,10 @@ async function installGenrePackFromFile(file) {
     const assetBase = await installPackAssets(pack.id, assets);   // blob: URLs (see asset serving)
     const res = registerGenrePack(pack, { assetBase });
     if (!res.ok) { setStatus('Could not register: ' + res.errors.join(' '), false); return; }
-    await packDbPut({ id: pack.id, pack, updatedAt: Date.now() });
+    // Persist the extracted asset Blobs alongside the pack so a zipped pack's
+    // icons/audio survive a reload — blob: URLs are per-document and die on
+    // refresh, so loadStoredGenrePacks() rebuilds them from these stored Blobs.
+    await packDbPut({ id: pack.id, pack, assets, updatedAt: Date.now() });
     renderGenrePackList();
     setStatus(`Installed "${pack.label}". Select it in the genre carousel.`, true);
     const idx = GENRE_CAROUSEL_DATA.findIndex(c => c.id === pack.id);
@@ -2283,7 +2286,7 @@ function renderGenrePackList() {
   el.innerHTML = '<div class="settings-hint" style="margin-bottom:0.25rem;">Installed packs</div>' +
     installed.map(c => `
       <div class="settings-option-row" style="justify-content:space-between;">
-        <span>${c.label} <span class="settings-hint">(${c.id})</span></span>
+        <span class="settings-pack-name">${c.label} <span class="settings-hint">(${c.id})</span></span>
         <button class="settings-btn-secondary" data-remove-pack="${c.id}" style="padding:0.15rem 0.6rem;">Remove</button>
       </div>`).join('');
   el.querySelectorAll('[data-remove-pack]').forEach(btn =>

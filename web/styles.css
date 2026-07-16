@@ -297,6 +297,10 @@ body::before {
   text-transform: none;
   letter-spacing: 0;
 }
+.settings-pack-name {
+  color: var(--parchment);
+  font-size: 0.9rem;
+}
 
 .settings-modal-footer {
   display: flex;
