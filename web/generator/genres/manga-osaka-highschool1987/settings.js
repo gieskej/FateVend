@@ -16,7 +16,7 @@ export const TAG_POOLS = {
     'Arts':       ['drama', 'music', 'art', 'performance'],
     'Leadership': ['student-council', 'responsibility', 'class-rep'],
     'Delinquent': ['yankii', 'territory', 'conflict', 'sukajan'],
-    'Part-time':  ['arubaito', 'conbini', 'working', 'money'],
+    'Part-time':  ['arubaito', 'konbini', 'working', 'money'],
     'Faculty':    ['teacher', 'sensei', 'authority', 'homeroom'],
   },
 };

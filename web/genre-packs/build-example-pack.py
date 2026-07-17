@@ -4,7 +4,7 @@
 Unlike the JSON-only `sample-neon-drift.json` (which reuses Sci-Fi's art via
 `iconBase`), this is a .zip that BUNDLES its own icons/ and audio/ so it
 exercises the blob-URL asset path end to end. The icons here are simple
-generated placeholders (a themed colour + the slug) — a real pack would run the
+generated placeholders (a themed color + the slug) — a real pack would run the
 icon pipeline to produce art. Re-run this script to regenerate the zip.
 
     python3 web/genre-packs/build-example-pack.py
@@ -268,7 +268,7 @@ MANIFEST = {
 }
 
 # ── Icon + audio generation ─────────────────────────────────────────────────
-# Themed background colour per category so the placeholders read at a glance.
+# Themed background color per category so the placeholders read at a glance.
 CAT_COLORS = {
     "CREW": (46, 89, 122), "TRADE": (120, 79, 43), "PURSE": (138, 112, 40),
     "PORT": (58, 96, 74), "KIN": (110, 66, 92), "YARN": (72, 84, 120),

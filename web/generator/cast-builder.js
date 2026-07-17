@@ -79,7 +79,7 @@ const TRAITS_MIXED = [
   'charming and unreliable', 'protective',         'impulsive',
   'pragmatic',               'idealistic',         'hard to read',
   'stubborn',                'quietly ambitious',  'unpredictable',
-  'hot-tempered but quick to apologise',            'means well, executes poorly',
+  'hot-tempered but quick to apologize',            'means well, executes poorly',
   'emotionally unavailable except at 2am',          'the world\'s worst liar',
   'extremely competent at exactly one thing',       'allergic to asking for help',
 ];
@@ -101,7 +101,7 @@ const FRIEND_DYNAMICS = [
   'Believes in {n} more than {n} believes in themselves',
   'The only person who can make {n} laugh when things are genuinely terrible',
   'Has their own chaos, but shows up for {n} anyway',
-  'Knows every embarrassing story and has never weaponised one',
+  'Knows every embarrassing story and has never weaponized one',
   'Drifted for a while; they\'re close again now, pretending the gap never happened',
   'Technically {n}\'s oldest friend — the history is more complicated than the friendship',
   'Would absolutely help {n} move a body. No questions. Light snacks provided.',
@@ -115,7 +115,7 @@ const FOIL_ROLES = [
   {
     role: 'rival',
     dynamics: [
-      'Wants what {n} has — and is closer to getting it than {n} realises',
+      'Wants what {n} has — and is closer to getting it than {n} realizes',
       'Grew up alongside {n}; the competition never officially ended',
       'Respects {n} just enough to make the rivalry feel personal',
       'Would help {n} in a genuine crisis, but only to stay one step ahead',

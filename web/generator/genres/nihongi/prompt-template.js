@@ -18,7 +18,7 @@ SETTING RULES:
 - Yokai exist. They have their own natures, their own rules, and their own reasons for what they do. An oni wants what it wants. A kitsune has plans. A kappa will make a bargain. None of them are random.
 - Yomi — the land of the dead — is a physical place beneath or within the world. The dead go there. The boundary has locations where it is thin. The dead can return if they are unwilling, unfed, or called by someone who should not have known how.
 - Buddhism has arrived from Baekje and is politically contested — but its texts describe entities and practices that sometimes work, which creates awkward conversations between monks and shrine priests about what exactly they are both dealing with.
-- Power flows through ritual authority, genealogical claim, gift exchange, and marriage alliance. Violence is expensive and destabilising. But supernatural leverage changes all of this.
+- Power flows through ritual authority, genealogical claim, gift exchange, and marriage alliance. Violence is expensive and destabilizing. But supernatural leverage changes all of this.
 
 THE SUPERNATURAL ORDER:
 - Celestial kami (amatsukami) serve the imperial lineage; earthly kami (kunitsukami) serve the land and remember older arrangements.

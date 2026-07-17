@@ -225,7 +225,7 @@ export const LIFE_EVENTS = [
   },
   {
     id: 'still_from_home',
-    description: 'Never travelled far from where they were born until recently — every town is still a little astonishing',
+    description: 'Never traveled far from where they were born until recently — every town is still a little astonishing',
     statAffinity: { wisdom: 1.1, constitution: 1.1 },
     iconPrompt: 'Fantasy RPG icon. A wide-eyed traveler arriving at the gates of a large city for the first time, taking in the scale and noise and life with undisguised astonishment, pack from home still clean on their back.',
     iconPath: 'generator/genres/fantasy/icons/LIFE_EVENT#still_from_home.webp'

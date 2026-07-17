@@ -81,7 +81,7 @@ export const QUIRKS = [
   },
   {
     id: 'over_apologises',
-    quirk: 'Apologises reflexively for things that are not their fault, then apologises for apologising — genuinely working on it',
+    quirk: 'Apologizes reflexively for things that are not their fault, then apologizes for apologizing — genuinely working on it',
     statAffinity: { charisma: 1.1, constitution: 0.9 },
   },
   {
@@ -120,7 +120,7 @@ export const QUIRKS = [
   // ── OBJECTS & RITUALS ─────────────────────────────────────────────────────
   {
     id: 'lucky_item',
-    quirk: 'Carries a specific lucky item — a worn ¥10 coin, a keyholder from a crane game, a folded piece of manga — and touches it before anything important',
+    quirk: 'Carries a specific lucky item — a worn ¥10 coin, a key holder from a crane game, a folded piece of manga — and touches it before anything important',
     statAffinity: { wisdom: 1.2, charisma: 1.1 },
   },
   {

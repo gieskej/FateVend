@@ -685,7 +685,7 @@
             <li>The default URL is <code>http://localhost:7860</code>. If running on another machine, use its IP address, e.g. <code>http://192.168.1.50:7860</code>.</li>
             <li>Paste the URL into the <strong>Local SD URL</strong> field above. The app calls the <code>/sdapi/v1/txt2img</code> endpoint (AUTOMATIC1111-compatible format, which Forge implements).</li>
           </ol>
-          <p>Install a Flux1-dev or SDXL model for best results. The portrait prompts are optimised for Flux1-dev with danbooru-style tags.</p>
+          <p>Install a Flux1-dev or SDXL model for best results. The portrait prompts are optimized for Flux1-dev with danbooru-style tags.</p>
         </div>
 
         <div class="help-section">
@@ -2642,7 +2642,7 @@ async function generatePortrait(btn) {
   const apiKey   = document.getElementById('img-api-key').value.trim();
   const useSD    = currentImageProvider === 'sd' ? !!sdUrl
                  : currentImageProvider === 'stability' ? false
-                 : !!sdUrl;   // fallback if selector not yet initialised
+                 : !!sdUrl;   // fallback if selector not yet initialized
   if (!sdUrl && !apiKey) {
     showError('Enter a local SD URL or Stability AI key to generate portraits.');
     return;
@@ -3053,8 +3053,8 @@ const KOKORO_VOICE_PREFIX = {
   hm: 'Hindi Male',
   jf: 'Japanese Female', 
   jm: 'Japanese Male',
-  pf: 'Portugese Female',
-  pm: 'Portugese Male',
+  pf: 'Portuguese Female',
+  pm: 'Portuguese Male',
   zf: 'Chinese Female',
   zm: 'Chinese Male'
 };

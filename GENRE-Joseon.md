@@ -1,7 +1,7 @@
-# Genre: Joseon Dynasy 
+# Genre: Joseon Dynasty 
 
 ## Inspiration
-I loved watching those Korean historical dramas full of palace intrigue, heartache and heros such as...
+I loved watching those Korean historical dramas full of palace intrigue, heartache and heroes such as...
 
 ### Dae Jang Geum (Jewel in the Palace) - 2003
 Follows the real-life inspired story of Seo Jang-geum, an orphaned kitchen cook who overcomes societal discrimination to become the first female supreme royal physician in the Joseon Dynasty.

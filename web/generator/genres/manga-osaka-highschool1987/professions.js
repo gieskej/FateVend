@@ -156,7 +156,7 @@ export const PROFESSIONS = [
     economicTier: 2,
     statAffinity: { constitution: 1.2, charisma: 1.1 },
     sentiments: ['indifferent', 'burned out', 'quietly satisfied', 'resentful'],
-    iconPrompt: 'japanese convenience store conbini clerk student 1987 uniform counter late night manga illustration',
+    iconPrompt: 'japanese convenience store konbini clerk student 1987 uniform counter late night manga illustration',
     iconPath: 'generator/genres/manga-osaka-highschool1987/icons/PROFESSIONS#convenience_store_clerk.webp',
   },
   {

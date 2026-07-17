@@ -23,7 +23,7 @@ export const DISTINGUISHING_FEATURES = [
   { label: 'eyes that are two different colors' },
   { label: 'a nose that\'s been broken at least twice' },
   { label: 'calloused hands that tell the whole story' },
-  { label: 'a limp they\'ve long since stopped apologising for' },
+  { label: 'a limp they\'ve long since stopped apologizing for' },
   { label: 'a scar that crosses one eye — the eye still works, somehow' },
   { label: 'ritual scarring across the cheeks' },
   { label: 'teeth filed to points' },
@@ -65,5 +65,5 @@ export const QUIRKS = [
   { quirk: 'Compulsively maps new spaces — scratches diagrams in dirt or parchment margin', statAffinity: { intelligence: 1.3, dexterity: 1.1 } },
   { quirk: 'Always knows which direction is north — insists on orienting everyone else, whether they asked or not', statAffinity: { wisdom: 1.3, intelligence: 1.1 } },
   { quirk: 'Tastes unfamiliar liquids before identifying them — has not died yet', statAffinity: { constitution: 1.3, wisdom: 0.8 } },
-  { quirk: 'Apologises to objects they damage — doors, walls, unfortunate furniture', statAffinity: { wisdom: 1.2, charisma: 1.1 } },
+  { quirk: 'Apologizes to objects they damage — doors, walls, unfortunate furniture', statAffinity: { wisdom: 1.2, charisma: 1.1 } },
 ];

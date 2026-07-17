@@ -23,7 +23,7 @@ export const DISTINGUISHING_FEATURES = [
   { id: 'shrine_scar',       label: 'a thin ritual scar at the base of the left thumb — a clan initiation mark, never shown and never discussed with outsiders' },
   { id: 'forge_burns',       label: 'faint burn scars across the forearms from forge work, incongruous with their current court position' },
   { id: 'bronze_mirror',     label: 'a small bronze mirror worn on a cord at the neck — considered a divine protective object, never removed, slightly greenish with age' },
-  { id: 'continental_face',  label: 'bone structure and colouring that marks them clearly as descended from continental craftsmen — the clan genealogy says nothing of this' },
+  { id: 'continental_face',  label: 'bone structure and coloring that marks them clearly as descended from continental craftsmen — the clan genealogy says nothing of this' },
   { id: 'birth_mark',        label: 'a birthmark on the left inner wrist noted in the midwife\'s record; the clan diviner declared it an omen at birth and has not agreed on which kind since' },
   { id: 'field_hands',       label: 'hands roughened by agricultural work despite two generations of court rank — noticed, never mentioned' },
   { id: 'jade_ornament',     label: 'a small jade ornament from a foreign ship, sewn into the inner robe where it cannot be seen and only the wearer knows the cost' },
@@ -68,7 +68,7 @@ export const QUIRKS = [
   },
   {
     id: 'genealogy_memory',
-    quirk: 'Memorises the genealogy of every significant person they meet — recites it silently when trying to read a situation; finds gaps or inconsistencies in lineage records immediately and involuntarily',
+    quirk: 'Memorizes the genealogy of every significant person they meet — recites it silently when trying to read a situation; finds gaps or inconsistencies in lineage records immediately and involuntarily',
     statAffinity: { intelligence: 1.3, charisma: 1.1 },
   },
   {

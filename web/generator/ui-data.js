@@ -243,7 +243,7 @@ export const NPC_TRAITS = [
   'generous to a fault','shamelessly enthusiastic','never holds a grudge',
   'always picks up the phone','makes everyone feel seen','weirdly calm under pressure',
   'charming and unreliable','protective','impulsive','pragmatic','idealistic',
-  'hard to read','stubborn','unpredictable','hot-tempered but quick to apologise',
+  'hard to read','stubborn','unpredictable','hot-tempered but quick to apologize',
   "means well, executes poorly","the world's worst liar",'allergic to asking for help',
   'emotionally closed','deeply anxious','cynical','bitter','secretive',
   'quietly broken','running from something','one bad decision from disaster',
@@ -255,7 +255,7 @@ export const FRIEND_DYNAMICS = [
   'Believes in {n} more than {n} believes in themselves',
   'The only person who can make {n} laugh when things are genuinely terrible',
   'Has their own chaos, but shows up for {n} anyway',
-  'Knows every embarrassing story and has never weaponised one',
+  'Knows every embarrassing story and has never weaponized one',
   "Drifted for a while; they're close again now, pretending the gap never happened",
   'Would absolutely help {n} move a body. No questions. Light snacks provided.',
   "The voice in {n}'s head that says \"are you sure about this?\" — usually right",
@@ -273,7 +273,7 @@ export const PARENT_DYNAMICS_ALIVE = [
 ];
 
 export const FOIL_ROLES = [
-  { role:'rival',               dynamics:["Wants what {n} has — and is closer to getting it than {n} realises","Grew up alongside {n}; the competition technically never ended","Respects {n} just enough to make the rivalry feel personal","The only person who can beat {n} — which {n} finds both infuriating and motivating"] },
+  { role:'rival',               dynamics:["Wants what {n} has — and is closer to getting it than {n} realizes","Grew up alongside {n}; the competition technically never ended","Respects {n} just enough to make the rivalry feel personal","The only person who can beat {n} — which {n} finds both infuriating and motivating"] },
   { role:'antagonist',          dynamics:["Has a reason to want things to go badly for {n} — and the patience to wait","Operates in the same world as {n}, just on the other side of a line","Knows something about {n} that {n} wishes they didn't","Honestly believes they're the reasonable one in this situation"] },
   { role:'love interest',       dynamics:["Has known {n} long enough to see past the performance — still here","Wants more from {n} than {n} knows how to give right now","The timing has never been right. Might never be. They're both ignoring this.","Finds {n}'s specific brand of disaster oddly endearing"] },
   { role:'estranged former ally',dynamics:["Used to be the person {n} trusted most. Something happened. Neither talks about it.","Resurfaces at exactly the wrong moment, as they always do","Could be an asset or a liability — {n} genuinely doesn't know which"] },

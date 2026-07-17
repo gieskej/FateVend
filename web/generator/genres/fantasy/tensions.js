@@ -125,7 +125,7 @@ export const TENSIONS = [
     description: 'Something magical or divine is taking an interest in them — the attention is not comfortable',
     toneTag: 'dramatic',
     criminalFlag: false,
-    iconPrompt: 'Fantasy RPG icon. A vast divine eye of burning light descending from stormclouds, its gaze fixed on a single small figure below who looks up with unease, all other figures oblivious.',
+    iconPrompt: 'Fantasy RPG icon. A vast divine eye of burning light descending from storm clouds, its gaze fixed on a single small figure below who looks up with unease, all other figures oblivious.',
     iconPath: 'generator/genres/fantasy/icons/TENSION#something_wants_them.webp',
   },
   {

@@ -42,7 +42,7 @@ export const DISTINGUISHING_FEATURES = [
   { id: 'plasma_burn',         label: 'a plasma burn scar across one side of the face or neck'                      },
   { id: 'prosthetic_limb',     label: 'a mechanical prosthetic limb — well-maintained or conspicuously not'         },
   { id: 'neural_ports',        label: 'neural interface ports at the temple or neck, visible even when not in use'  },
-  { id: 'colour_shifting_skin',label: 'colour-shifting skin panels — biohack, probably not approved'                },
+  { id: 'color_shifting_skin',label: 'color-shifting skin panels — biohack, probably not approved'                },
   { id: 'corp_tattoo',         label: 'a corporate ID tattoo they haven\'t bothered to remove'                      },
   { id: 'embarrassing_tattoo', label: 'an embarrassing tattoo they try to cover'                                    },
   { id: 'mismatched_eyes',     label: 'mismatched eyes — one biological, one mechanical, neither warm'              },
@@ -103,7 +103,7 @@ export const QUIRKS = [
   },
   {
     id: 'airlock_check',
-    quirk: 'Checks the nearest airlock on entering any pressurised space — notes the cycle time, notes the seal condition, moves on',
+    quirk: 'Checks the nearest airlock on entering any pressurized space — notes the cycle time, notes the seal condition, moves on',
     statAffinity: { wisdom: 1.2, constitution: 1.1 },
   },
   {
@@ -191,7 +191,7 @@ export const QUIRKS = [
   },
   {
     id: 'emergency_frequencies',
-    quirk: 'Has memorised the emergency frequencies for every station they\'ve ever docked at — not written down, just there',
+    quirk: 'Has memorized the emergency frequencies for every station they\'ve ever docked at — not written down, just there',
     statAffinity: { intelligence: 1.3, wisdom: 1.2 },
   },
   {

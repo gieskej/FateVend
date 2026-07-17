@@ -84,7 +84,7 @@ export const SECRETS = [
   },
   {
     id: 'hidden_buddhist',
-    description: 'They practise Buddhism in secret — and one of the Buddhist texts they have obtained describes something in the world around them that should not exist, which they have now seen twice',
+    description: 'They practice Buddhism in secret — and one of the Buddhist texts they have obtained describes something in the world around them that should not exist, which they have now seen twice',
     severity: 'medium',
     criminalFlag: false,
     iconPrompt: 'ancient japanese secret buddhist practice hidden sutra prayer night candlelight text describing supernatural entity that exists forbidden knowledge nihon shoki yamato-e painting',

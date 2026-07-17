@@ -29,9 +29,10 @@
 ## Bugs - Paleo
 ## Bugs - Sci-Fi
 - The text-to-image prompt needs to handle special cases:
-  - Aliens: The text-to-image generator has no idea what an alien looks like, so we need specific alien features mentioned in their portrait prompts (e.g. unusual skin color, horns, scales, webbed fingers, forked tongue, pointed ears, etc).  Likewise, non-humanoid aliens should be even more unusual looking (e.g. four legs, no legs, amoeba, tenticals, insect, vapor, lava, jelly, etc)
+  - Aliens: The text-to-image generator has no idea what an alien looks like, so we need specific alien features mentioned in their portrait prompts (e.g. unusual skin color, horns, scales, webbed fingers, forked tongue, pointed ears, etc).  Likewise, non-humanoid aliens should be even more unusual looking (e.g. four legs, no legs, amoeba, tentacles, insect, vapor, lava, jelly, etc)
   - "Android — Industrial Android" are genderless machines, so they shouldn't have hair, age, clothes, tattoos, a face like (famous person) and should ignore the NSFW flag.
   - "Plastic Android": portrait of Plastic Android, female, tall and electronic eyes, pale plastic skin, subtle corporate insignia, 
+- Create some concrete alien species instead of leaving it to be completely random.  It will help coherency 
 
 
 ### Low Priority Bugs
@@ -44,7 +45,7 @@
 - Add a button that creates a promo video for the scenario using the character portraits, overture, name overlays, "Starring YOU as xxx".
 - Add a NPC portrait Zoom to popup menu?
 - Add settings option to disable BGM.
-- Kokoro'e english voices don't pronounce Japanese or Korean words properly, but the Japanese voices produce incomprehenible English.  So either we preprocess English -> Katakana so the Japanese voice works?  Or even better, extend the Kokoro service to do this heavy lifting.  Consider using CMU Pronouncing Dictionary (CMUdict)
+- Kokoro'e english voices don't pronounce Japanese or Korean words properly, but the Japanese voices produce incomprehensible English.  So either we preprocess English -> Katakana so the Japanese voice works?  Or even better, extend the Kokoro service to do this heavy lifting.  Consider using CMU Pronouncing Dictionary (CMUdict)
 
 
 ## Open Questions

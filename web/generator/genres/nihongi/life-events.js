@@ -36,7 +36,7 @@ export const LIFE_EVENTS = [
   },
   {
     id: 'received_divine_mark',
-    description: 'They woke one morning with a mark — a pattern on the skin, a change in eye colour, a birthmark that had not been there the night before — that shrine mediums recognise as significant, though they disagree about what it means',
+    description: 'They woke one morning with a mark — a pattern on the skin, a change in eye color, a birthmark that had not been there the night before — that shrine mediums recognize as significant, though they disagree about what it means',
     toneTag: 'transformative',
     statAffinity: { wisdom: 1.3, charisma: 1.3 },
     iconPrompt: 'ancient japanese figure with strange divine mark appeared overnight on skin, shrine mediums examining disagreeing about meaning, marked by supernatural forces, nihon shoki yamato-e painting',

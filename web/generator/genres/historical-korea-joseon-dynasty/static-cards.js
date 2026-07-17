@@ -184,7 +184,7 @@ export const STATIC_FACTIONS = [
   {
     name: "The Red Sickles",
     triggers: "Red Sickles",
-    entry: "A ruthless street gang of former farmers turned thieves and thugs known for weilding rusty sickles.",
+    entry: "A ruthless street gang of former farmers turned thieves and thugs known for wielding rusty sickles.",
   },
 
 ];

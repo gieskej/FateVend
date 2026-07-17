@@ -4154,8 +4154,8 @@
         "label": "neural interface ports at the temple or neck, visible even when not in use"
       },
       {
-        "id": "colour_shifting_skin",
-        "label": "colour-shifting skin panels — biohack, probably not approved"
+        "id": "color_shifting_skin",
+        "label": "color-shifting skin panels — biohack, probably not approved"
       },
       {
         "id": "corp_tattoo",
@@ -4293,7 +4293,7 @@
       },
       {
         "id": "airlock_check",
-        "quirk": "Checks the nearest airlock on entering any pressurised space — notes the cycle time, notes the seal condition, moves on",
+        "quirk": "Checks the nearest airlock on entering any pressurized space — notes the cycle time, notes the seal condition, moves on",
         "statAffinity": {
           "wisdom": 1.2,
           "constitution": 1.1
@@ -4429,7 +4429,7 @@
       },
       {
         "id": "emergency_frequencies",
-        "quirk": "Has memorised the emergency frequencies for every station they've ever docked at — not written down, just there",
+        "quirk": "Has memorized the emergency frequencies for every station they've ever docked at — not written down, just there",
         "statAffinity": {
           "intelligence": 1.3,
           "wisdom": 1.2

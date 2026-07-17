@@ -218,7 +218,7 @@ export const FAMILY_STRUCTURES = [
     parentCount:0, 
     siblingCount:[1,2], 
     statAffinity:{ constitution:1.2 }, 
-    iconPrompt: 'fantasy rpg icon, teenage boy and younger bother standing in medieval marketplace selling wilted vegitables, medium shot, painterly art style', 
+    iconPrompt: 'fantasy rpg icon, teenage boy and younger bother standing in medieval marketplace selling wilted vegetables, medium shot, painterly art style', 
     iconPath: 'generator/genres/fantasy/icons/FAMILY#raised_by_older_sibling.webp' 
   },
   { 

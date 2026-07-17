@@ -5,7 +5,7 @@
 
 export const STAT_ADJECTIVES = {
   strength:     ['feeble',    'weak',             'average strength',      'strong',     'mighty'    ],
-  intelligence: ['dim',       'slow minded',      'average intellegence',  'sharp',      'brilliant' ],
+  intelligence: ['dim',       'slow minded',      'average intelligence',  'sharp',      'brilliant' ],
   wisdom:       ['reckless',  'naive',            'average wisdom',        'perceptive', 'sage'      ],
   charisma:     ['repellent', 'socially awkward', 'personable',            'charming',   'magnetic personality'  ],
   dexterity:    ['clumsy',    'sluggish',         'nimble',                'agile',      'acrobatic' ],

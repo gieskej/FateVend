@@ -124,9 +124,9 @@ export const RACES = [
   {
     id: 'dragonborn',
     broad: 'Dragonborn',
-    flavor: 'dragonborn — muscular man covered in scales with firey eyes, fangs and a spiked tail. Proud, occasionally breathes something alarming when startled',
+    flavor: 'dragonborn — muscular man covered in scales with fiery eyes, fangs and a spiked tail. Proud, occasionally breathes something alarming when startled',
     weight: 3,
-    iconPrompt: 'Fantasy RPG icon. A muscular man covered in gold scales, firey eyes and a proud stance.  Fangs visible in a subtle snarl.  Spiked tail curled behind them.  Wearing heavy plate armor.  Standing in a stone castle hallway.',
+    iconPrompt: 'Fantasy RPG icon. A muscular man covered in gold scales, fiery eyes and a proud stance.  Fangs visible in a subtle snarl.  Spiked tail curled behind them.  Wearing heavy plate armor.  Standing in a stone castle hallway.',
     iconPath: 'generator/genres/fantasy/icons/RACE#dragonborn.webp'
   },
 

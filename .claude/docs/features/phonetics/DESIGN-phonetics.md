@@ -2,7 +2,7 @@
 
 ## Problem Definition
 
-Kokoro'e english voices don't pronounce Japanese or Korean words properly, but the Japanese voices produce incomprehenible English.  So either we write some JavaScript to preprocess English -> Katakana so the Japanese voice works?  Or even better, extend the Kokoro service to do this heavy lifting.  Consider using CMU Pronouncing Dictionary (CMUdict)
+Kokoro'e english voices don't pronounce Japanese or Korean words properly, but the Japanese voices produce incomprehensible English.  So either we write some JavaScript to preprocess English -> Katakana so the Japanese voice works?  Or even better, extend the Kokoro service to do this heavy lifting.  Consider using CMU Pronouncing Dictionary (CMUdict)
 
 I've manually experimented with online CMUdict, pasting in the English I want to TTS, and then copying the Katakana back into Kokoro's web UI.  It sounds a lot better when read with a Japanese voice.
 

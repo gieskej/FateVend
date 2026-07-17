@@ -228,7 +228,7 @@ export const STATIC_RACES = [
   },
   {
     name: "Oni",
-    triggers: "Oni, oni, orge, troll, demon",
+    triggers: "Oni, oni, ogre, troll, demon",
     entry: 
       "An oni (鬼) is a fearsome ogre-like demon from Japanese folklore, born from human evil or summoned from the underworld of Jigoku. Towering and muscular, oni are often depicted with red or blue skin, wild hair, horns, sharp fangs, clawed hands, and tiger-skin loincloths, wielding massive spiked iron clubs called kanabō.  Their bodies are resistant to most weapons and fire, possessing immense strength, supernatural speed, and agility. Oni can shapeshift into flawless human disguises, read minds, mimic the voices of loved ones, and unleash terrifying roars that paralyze victims with fear. They feed on human flesh and life force, and many legends describe them as wardens of Buddhist hell, where they torment the souls of the wicked."
   }
