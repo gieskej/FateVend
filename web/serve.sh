@@ -95,11 +95,44 @@ fi
 # -u: unbuffered stdout, so the port/URL message (and journalctl -f) show up
 # immediately instead of sitting in a buffer that's lost if the process is killed.
 python3 -u - <<'PY'
-import http.server, socket, os, pathlib
+import http.server, socket, os, pathlib, platform, subprocess
 
 # Record our own PID so the next run of serve.sh can stop us if we're
 # still around (e.g. this terminal got closed without a clean Ctrl+C).
 pathlib.Path('.serve-static.pid').write_text(str(os.getpid()))
+
+def describe_port_owner(port):
+    """Best-effort lookup of what's already listening on `port`, so the
+    "port is taken" message says who — not just that it happened."""
+    try:
+        if platform.system() == 'Windows':
+            out = subprocess.run(['netstat', '-ano'], capture_output=True, text=True, timeout=5).stdout
+            pid = None
+            for line in out.splitlines():
+                parts = line.split()
+                if len(parts) >= 5 and parts[0] == 'TCP' and parts[1].endswith(f':{port}') and parts[-2] == 'LISTENING':
+                    pid = parts[-1]
+                    break
+            if not pid:
+                return None
+            tl = subprocess.run(
+                ['tasklist', '/FI', f'PID eq {pid}', '/FO', 'CSV', '/NH'],
+                capture_output=True, text=True, timeout=5,
+            ).stdout.strip()
+            name = tl.split(',')[0].strip('"') if tl else None
+            return f'PID {pid}' + (f' ({name})' if name else '')
+        else:
+            out = subprocess.run(
+                ['lsof', '-nP', f'-i:{port}', '-sTCP:LISTEN'],
+                capture_output=True, text=True, timeout=5,
+            ).stdout
+            lines = [l for l in out.splitlines() if l and not l.startswith('COMMAND')]
+            if not lines:
+                return None
+            parts = lines[0].split()
+            return f'PID {parts[1]} ({parts[0]})'
+    except Exception:
+        return None
 
 class NoCacheHandler(http.server.SimpleHTTPRequestHandler):
     def end_headers(self):
@@ -131,7 +164,11 @@ def find_free_port(preferred, bind, tries=20):
 BIND = '0.0.0.0'
 PORT = find_free_port(8080, BIND)
 if PORT != 8080:
-    print(f'Port 8080 is already in use — using {PORT} instead.')
+    owner = describe_port_owner(8080)
+    if owner:
+        print(f'Port 8080 is already in use by {owner} — using {PORT} instead.')
+    else:
+        print(f'Port 8080 is already in use — using {PORT} instead.')
 print(f'App is at http://localhost:{PORT}/')
 
 http.server.test(HandlerClass=NoCacheHandler, ServerClass=QuietThreadingHTTPServer, port=PORT, bind=BIND)
