@@ -1,7 +1,6 @@
 # TODO
 - Play scenarios from each genre and make sure they are fun, not just some grim chatbot trying to kill you or chat you to death.  Most of the genre's AI generated try to be factual, historical, and boring.
 
-- Add a new script in genre-packs to generate icons using SD or Gemini to read the icon prompts from the new genre-pack data structures.
 
 ## Refactor follow-ups
 - Collapse the two prompt systems: the browser builds prompts from `GENRE_VOICE` (manifests.js) while the CLI/module path still uses per-genre `prompt-template.js` via `api-client.js` PROMPT_TEMPLATES. Adding a built-in genre currently means authoring both, kept in sync by hand. Unify on one shared `buildPrompt(skeleton, voice)`.
@@ -57,6 +56,7 @@
 ---
 
 ## Fixed Bugs
+- Add a new script in genre-packs to generate icons using SD or Gemini to read the icon prompts from the new genre-pack data structures.
 - FEAT: Uploadable genre packs — a genre is now a pure-JSON pack (or .zip with icons/audio) that can be imported at runtime via Settings → Genre Packs, persisted in IndexedDB, and removed, with zero source edits. Built on a large internal refactor (one shared engine module, one genre-table registry, one manifest for presentation/slots/voice) that de-duplicated ~1000 lines out of index.html. See .claude/docs/features/genre-packs/DESIGN.md.
 - BUG: Joseon static cards were missing from Copy-to-Clipboard / Download Package (ui-data.js never imported the genre's static-cards.js). Now wired in.
 - BUG: The aidungeon-importer's portrait upload was flaky (sometimes worked, sometimes silently landed on an unrelated stock image). Root cause: the code unconditionally clicked a "SELECT" button after uploading, but that button belongs to a *different* flow (choosing an existing image from the gallery grid) — a fresh upload actually finishes and closes the modal on its own, no confirm click needed. Depending on timing, clicking it could land on a random stock/template image instead of the real upload. Removed the click entirely; now waits for the Content Image element's own src to actually change.

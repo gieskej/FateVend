@@ -1,0 +1,12 @@
+[
+  {
+    "label": "Neon Drift (Sample)",
+    "description": "A sample uploadable genre pack (derived from Sci-Fi) demonstrating the pack format — cyberpunk drifters and orbital intrigue.",
+    "file": "sample-neon-drift.json"
+  },
+  {
+    "label": "Pirate Cove (Example)",
+    "description": "A bundled-asset example genre pack — swashbuckling crews, buried gold, and a kraken on the reef.",
+    "file": "example-pirate-cove.zip"
+  }
+]

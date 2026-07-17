@@ -463,6 +463,7 @@
           <button class="settings-tab"        onclick="switchSettingsTab('image')"     data-tab="image">Image</button>
           <button class="settings-tab"        onclick="switchSettingsTab('narration')" data-tab="narration">Narration</button>
           <button class="settings-tab"        onclick="switchSettingsTab('options')"   data-tab="options">Options</button>
+          <button class="settings-tab"        onclick="switchSettingsTab('genre')"     data-tab="genre">Genre</button>
         </div>
 
         <!-- TEXT GENERATION -->
@@ -576,8 +577,15 @@
             <input id="auto-narrate-all" type="checkbox">
             <label for="auto-narrate-all">Auto-play Narrate All <span class="settings-hint">(starts reading the full scenario aloud as soon as generation finishes; requires a narration provider)</span></label>
           </div>
+        </div>
 
-          <div class="settings-group-heading" style="margin-top:1rem;">Genre Packs</div>
+        <!-- GENRE PACKS -->
+        <div class="settings-tab-panel" id="tab-genre">
+          <div class="settings-group-heading">Genre Packs</div>
+          <div class="settings-field">
+            <label>Download a pack <span class="settings-hint">(save the file, then use Import below to install it — handy on mobile, where you can't browse to a repo folder)</span></label>
+            <div id="genre-pack-downloads" style="margin-top:0.25rem;"></div>
+          </div>
           <div class="settings-field">
             <label>Import a genre pack <span class="settings-hint">(a .json or .zip pack adds a new playable genre to the carousel)</span></label>
             <input id="genre-pack-file" type="file" accept=".json,.zip,application/json,application/zip" class="api-input" style="padding:0.4rem;">
@@ -2278,6 +2286,30 @@ async function removeInstalledPack(id) {
   renderGenrePackList();
 }
 
+// Lists the sample/example packs checked into web/genre-packs/ as plain download
+// links (via a small hand-maintained index.json) so a phone — which can't browse
+// a repo folder the way a desktop file picker can — has some way to grab a pack
+// file at all before feeding it into the Import field above.
+async function renderDownloadablePacks() {
+  const el = document.getElementById('genre-pack-downloads');
+  if (!el) return;
+  let packs;
+  try {
+    const res = await fetch('genre-packs/index.json', { cache: 'no-store' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    packs = await res.json();
+  } catch (e) {
+    console.warn('Could not load downloadable genre packs list:', e);
+    el.innerHTML = '';
+    return;
+  }
+  el.innerHTML = packs.map(p => `
+    <div class="settings-option-row" style="justify-content:space-between;">
+      <span class="settings-pack-name">${p.label} <span class="settings-hint">(${p.file})</span></span>
+      <a class="settings-btn-secondary" href="genre-packs/${p.file}" download style="padding:0.15rem 0.6rem;text-decoration:none;">Download</a>
+    </div>`).join('');
+}
+
 function renderGenrePackList() {
   const el = document.getElementById('genre-pack-list');
   if (!el) return;
@@ -2927,6 +2959,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (file) installGenrePackFromFile(file).finally(() => { e.target.value = ''; });
   });
   loadStoredGenrePacks();
+  renderDownloadablePacks();
 
   // Init genre carousel
   carouselIndex = Math.max(0, GENRE_CAROUSEL_DATA.findIndex(g => g.id === currentGenre));
