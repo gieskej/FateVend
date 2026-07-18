@@ -1,6 +1,14 @@
 // ── RACES ─────────────────────────────────────────────────────────────────
-// broad = the race label used for name pool lookup
-// flavor = physical/cultural detail passed to Claude for description prose
+// Each entry:
+//   id         — unique slug; used for slot-machine reel identity and icon lookup
+//   broad      — race label used for name pool lookup and the NON_HUMANOID face-prompt
+//                check in prompt-template.js
+//   flavor     — physical/cultural detail passed to Claude for description prose
+//   weight     — relative rarity for weighted-random selection (statAndWeightPick);
+//                races carry no statAffinity, so this is a flat rarity dial, not
+//                stat-scaled like profession/build weights are
+//   iconPrompt — text-to-image prompt used to generate this race's slot-machine reel icon
+//   iconPath   — served path where that icon lives
 // No stat affinities — race does not determine capability
 
 export const RACES = [

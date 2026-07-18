@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-07-17
+
+### feat: 9 concrete sci-fi alien species, replacing the generic humanoid/non-humanoid split
+**What changed:** `web/generator/genres/sci-fi/races.js`'s Alien roster previously had just two entries — a vague `alien_humanoid` ("distinctive alien features or coloring") and a single `alien_nonhumanoid` slug-creature — leaving TODO.md's "no idea what an alien looks like" and "create some concrete alien species" bugs open. Replaced with 9 distinct, concretely-described species: `alien_humanoid` (now with real visual detail: pointy ears, black bowlcut), `alien_slug` (renamed from `alien_nonhumanoid`), and 6 new ones — `alien_locust`, `alien_reptilian`, `alien_avian`, `alien_amoeba`, `alien_plant`, `alien_vapor` — plus `alien_typical` (the classic small green big-eyed archetype). Also tightened the three synthetic Android flavors to explicitly call out "sentient AI" / "advanced AI", and trimmed the Human roster to just `human_earther` (dropped `human_colonist`/`human_spacer`/`human_corp`) and Clone to just `clone_baseline` (dropped `clone_notable`).
+Follow-up fix: `web/generator/genres/sci-fi/static-cards.js`'s Human/Clone/Alien lore cards (fed into AI Dungeon story cards, Copy, and Download) still described the removed subtypes — the Human card described 4 subtypes down to 1, the Clone card still described a "notable clone" variant that no longer exists, and the Alien card's old generic "humanoid vs. non-humanoid... chair situation" framing didn't reflect the new 9-species roster at all. Rewrote all three to match the current data.
+**Impact:** Sci-fi Alien rolls now get a specific, recognizable species with real visual identity instead of a coin-flip between "generic alien" and "generic non-human alien" — directly improves portrait-prompt coherency (feeds into the separate race-aware-appearance-prompt work). Lore cards no longer reference races that can't actually be rolled.
+**Test cases:** Confirmed via direct read that every new/renamed race entry has a matching icon file already on disk (`SPECIES#alien_locust.webp` etc., including the `alien_slug` rename), and that the runtime slot-machine icon lookup (which keys off `identity.id` directly for the SPECIES category) resolves correctly for all 9 entries with no broken images. Grepped the removed ids (`human_colonist`, `human_spacer`, `human_corp`, `clone_notable`, `alien_nonhumanoid`) across the live generator code and confirmed no remaining references outside the frozen `sample-neon-drift.json` genre-pack snapshot (expected — packs are self-contained, not live derivations).
+
 ## 2026-07-16
 
 ### feat: Genre tab in Settings + downloadable sample genre packs

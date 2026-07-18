@@ -1,7 +1,19 @@
 // ── RACES ───────────────────────────────────────────────────────────────
-// Structured as broad category + evocative flavor detail.
-// The flavor informs Claude's physical/behavioral description prose —
-// never stated as a clinical label in the output.
+// Structured as broad category + evocative flavor detail. Each entry:
+//   id            — unique slug; used for slot-machine reel identity and icon lookup
+//   broad         — coarse species category (e.g. 'Human', 'Android'); drives name-pool
+//                    lookup, the android_origin family-structure override, and the
+//                    NON_HUMANOID face-prompt check in prompt-template.js
+//   syntheticType — Android entries only: 'biomechanical' | 'plastic' | 'industrial' |
+//                    undefined. Controls which of gender/orientation/relationship get
+//                    generated vs. overridden (see buildSkeleton()).
+//   flavor        — physical/cultural detail passed to Claude for description prose;
+//                    never stated as a clinical label in the output
+//   weight        — relative rarity for weighted-random selection (statAndWeightPick);
+//                    races carry no statAffinity, so this is a flat rarity dial, not
+//                    stat-scaled like profession/build weights are
+//   iconPrompt    — text-to-image prompt used to generate this race's slot-machine reel icon
+//   iconPath      — served path where that icon lives
 // No stat affinities — race is not correlated with capability.
 
 export const RACES = [
@@ -14,30 +26,6 @@ export const RACES = [
     weight: 15,
     iconPrompt: 'sci-fi rpg icon, space transit hub, stocky weathered human in practical layered work clothing, alert scanning crowd expression, industrial background, overhead transit lighting, medium shot, digital concept art',
     iconPath: 'generator/genres/sci-fi/icons/SPECIES#human_earther.webp'
-  },
-  {
-    id: 'human_colonist',
-    broad: 'Human',
-    flavor: 'Colonist — raised on a settled world not Earth, adapted to local gravity and light, pragmatic in ways that confuse people who grew up with safety nets',
-    weight: 12,
-    iconPrompt: 'sci-fi rpg icon, colony world habitat edge, lean human in functional field gear, confident pragmatic posture, bright adapted-world daylight, open frontier background, medium shot, digital concept art',
-    iconPath: 'generator/genres/sci-fi/icons/SPECIES#human_colonist.webp'
-  },
-  {
-    id: 'human_spacer',
-    broad: 'Human',
-    flavor: 'Spacer — born or raised aboard ships or stations, lean frame from variable-g, skin that\'s never quite seen enough real light, reads pressure changes in a room the way others read faces',
-    weight: 8,
-    iconPrompt: 'sci-fi rpg icon, ship corridor, lean pale human in worn flight suit with hollow alert eyes, hyperaware scanning posture, hand resting on bulkhead, low corridor lighting, medium close-up, digital concept art',
-    iconPath: 'generator/genres/sci-fi/icons/SPECIES#human_spacer.webp'
-  },
-  {
-    id: 'human_corp',
-    broad: 'Human',
-    flavor: 'Corp citizen — raised inside a megacorporate arcology, good teeth, filtered air their whole life, a slightly uncanny social ease that comes from being managed since birth',
-    weight: 8,
-    iconPrompt: 'sci-fi rpg icon, corporate arcology corridor, well-groomed human in crisp corp-standard uniform, polished practiced social expression, glass and steel interior, bright filtered lighting, medium shot, digital concept art',
-    iconPath: 'generator/genres/sci-fi/icons/SPECIES#human_corp.webp'
   },
 
   // ── CYBORG ────────────────────────────────────────────────────────────
@@ -67,7 +55,7 @@ export const RACES = [
     id: 'android_synth',
     broad: 'Android',
     syntheticType: 'biomechanical',
-    flavor: 'Biomechanical Android — nearly human, fully synthetic, designed to pass all but deep medscans; the question of personhood is legally unsettled and they are aware of this',
+    flavor: 'Biomechanical Android — nearly human, fully synthetic, designed to pass all but deep medscans; sentient AI, the question of personhood is legally unsettled and they are aware of this',
     weight: 6,
     iconPrompt: 'sci-fi rpg icon, beautiful woman with blue bobcut hair and blue eyes, flawless skin, face of a fashion model, covered shoulders, medium shot, digital concept art',
     iconPath: 'generator/genres/sci-fi/icons/SPECIES#android_synth.webp'
@@ -76,7 +64,7 @@ export const RACES = [
     id: 'android_standard',
     broad: 'Android',
     syntheticType: 'plastic',
-    flavor: 'Plastic Android — human-shaped but obviously synthetic; designed for customer-facing roles where a familiar form helps, but no one mistakes them for a person',
+    flavor: 'Plastic Android — human-shaped but obviously synthetic; designed for customer-facing roles where a familiar form helps, but no one mistakes them for a person, advanced AI',
     weight: 6,
     iconPrompt: 'sci-fi rpg icon, public transit space, a cute plastic android in neutral service attire standing in crowd, medium shot, digital concept art',
     iconPath: 'generator/genres/sci-fi/icons/SPECIES#android_standard.webp'
@@ -85,7 +73,7 @@ export const RACES = [
     id: 'android_industrial',
     broad: 'Android',
     syntheticType: 'industrial',
-    flavor: 'Industrial Android — purpose-built for heavy labor and industrial work, with no regard for aesthetics or social integration; treated as equipment',
+    flavor: 'Industrial Android — purpose-built for heavy labor and industrial work, with no regard for aesthetics or social integration; treated as equipment, advanced AI',
     weight: 6,
     iconPrompt: 'sci-fi rpg icon, a bipedal heavy loader android with large pinchers at a construction site, medium shot, digital concept art',
     iconPath: 'generator/genres/sci-fi/icons/SPECIES#android_industrial.webp'
@@ -94,7 +82,7 @@ export const RACES = [
     id: 'android_combat',
     broad: 'Android',
     syntheticType: 'plastic',
-    flavor: 'Combat Android — purpose-built for combat and military operations, with advanced weaponry and armor; classified as a weapons platform, not a person',
+    flavor: 'Combat Android — purpose-built for combat and military operations, with advanced weaponry and armor; classified as a weapons platform, not a person, advanced AI',
     weight: 6,
     iconPrompt: 'sci-fi rpg icon, a combat android with exposed joints, holding laser rifle, wearing powered armor, rocket pack, multiple eyes, medium shot, digital concept art',
     iconPath: 'generator/genres/sci-fi/icons/SPECIES#android_combat.webp'
@@ -141,16 +129,8 @@ export const RACES = [
     broad: 'Clone',
     flavor: 'Clone — baseline print, no notable deviations from the source template, grown and decanted like product; the paperwork says they have rights and the paperwork is technically accurate',
     weight: 5,
-    iconPrompt: 'sci-fi rpg icon, corp work environment, 3girls, identical faces, identical uniforms, face like grace park, careful neutral expression, fluorescent corp lighting, medium shot, digital concept art',
+    iconPrompt: 'sci-fi rpg icon, corp work environment, 3girls, identical faces, identical uniforms, face like Grace Park, careful neutral expression, fluorescent corp lighting, medium shot, digital concept art',
     iconPath: 'generator/genres/sci-fi/icons/SPECIES#clone_baseline.webp'
-  },
-  {
-    id: 'clone_notable',
-    broad: 'Clone',
-    flavor: 'Clone — divergent from baseline, whether by design, incident, or the slow drift of living; they may share a face with someone they have never met and would rather not',
-    weight: 2,
-    iconPrompt: 'sci-fi rpg icon, corp work environment, 3girls, identical faces, identical uniforms, face like Angelina Jolie, plastic skin, careful neutral expression, fluorescent corp lighting, medium shot, digital concept art',
-    iconPath: 'generator/genres/sci-fi/icons/SPECIES#clone_notable.webp'
   },
 
   // ── MUTANT ────────────────────────────────────────────────────────────
@@ -169,15 +149,74 @@ export const RACES = [
     broad: 'Alien',
     flavor: 'Humanoid alien — bipedal, bilaterally symmetrical, close enough to pass in a crowd until they don\'t; first contact was a generation ago and the social infrastructure for integration is still catching up',
     weight: 6,
-    iconPrompt: 'sci-fi rpg icon, station checkpoint, humanoid alien with distinctive alien features or coloring in neutral transit clothing, integration documents in hand, resigned expression, overhead checkpoint lighting, medium shot, digital concept art',
+    iconPrompt: 'sci-fi rpg icon, humanoid with pointy ears, black bowlcut and a raised eyebrow, medium shot, digital concept art',
     iconPath: 'generator/genres/sci-fi/icons/SPECIES#alien_humanoid.webp'
   },
   {
-    id: 'alien_nonhumanoid',
+    id: 'alien_slug',
     broad: 'Alien',
-    flavor: 'Non-humanoid alien — the interface between their natural form and human-built space requires ongoing adaptation in both directions; they have opinions about the chair situation',
+    flavor: 'Slug alien — the interface between their natural form and human-built space requires ongoing adaptation in both directions; they have opinions about the chair situation',
     weight: 2,
     iconPrompt: 'sci-fi rpg icon, giant slug alien slithering down a ship corridor, antennae, eyepods, snail trail, rearing up, navel, overhead station lighting, wide shot, digital concept art',
     iconPath: 'generator/genres/sci-fi/icons/SPECIES#alien_nonhumanoid.webp'
   },
+  {
+    id: 'alien_locust',
+    broad: 'Alien',
+    flavor: 'Locust alien — Resembles terran locust, except they are man-sized, walk upright and are surprisingly clever.  Always hungry.',
+    weight: 2,
+    iconPrompt: 'sci-fi rpg icon, giant locust holding a laser gun, digital concept art',
+    iconPath: 'generator/genres/sci-fi/icons/SPECIES#alien_locust.webp'
+  },
+  {
+    id: 'alien_reptilian',
+    broad: 'Alien',
+    flavor: 'Reptilian alien — Resembles terran lizard, except they are man-sized, walk upright and are surprisingly clever.  Always hungry.',
+    weight: 2,
+    iconPrompt: 'sci-fi rpg icon, giant iguana standing upright holding a laser gun, digital concept art',
+    iconPath: 'generator/genres/sci-fi/icons/SPECIES#alien_reptilian.webp'
+  },
+  {
+    id: 'alien_avian',
+    broad: 'Alien',
+    flavor: 'Avian alien — Humanoid alien with bird-like features.',
+    weight: 2,
+    iconPrompt: 'sci-fi rpg icon, bird man with beak, feathers, arms, wings, holding a laser gun, digital concept art',
+    iconPath: 'generator/genres/sci-fi/icons/SPECIES#alien_avian.webp'
+  },
+  {
+    id: 'alien_amoeba',
+    broad: 'Alien',
+    flavor: 'Amoeba alien — A shapeshifting alien made of gelatinous goo',
+    weight: 2,
+    iconPrompt: 'sci-fi rpg icon, green jelly girl holding a laser gun, digital concept art',
+    iconPath: 'generator/genres/sci-fi/icons/SPECIES#alien_amoeba.webp'
+  },
+  {
+    id: 'alien_plant',
+    broad: 'Alien',
+    flavor: 'Plant alien — A sentient alien plant',
+    weight: 2,
+    iconPrompt: 'sci-fi rpg icon, blue bald woman with small flowers budding from her head holding a laser gun, digital concept art',
+    iconPath: 'generator/genres/sci-fi/icons/SPECIES#alien_plant.webp'
+  },
+  {
+    id: 'alien_vapor',
+    broad: 'Alien',
+    flavor: 'Vapor alien — A sentient shapeshifting gaseous alien',
+    weight: 2,
+    iconPrompt: 'sci-fi rpg icon, cloud man standing in corridor, digital concept art',
+    iconPath: 'generator/genres/sci-fi/icons/SPECIES#alien_vapor.webp'
+  },
+  {
+    id: 'alien_typical',
+    broad: 'Alien',
+    flavor: 'Typical alien — A typical green alien with big eyes',
+    weight: 12,
+    iconPrompt: 'sci-fi rpg icon, typical green alien with big eyes, digital concept art',
+    iconPath: 'generator/genres/sci-fi/icons/SPECIES#alien_typical.webp'
+  },
+  
+    
+
 ];

@@ -1,6 +1,11 @@
 # TODO
 - Play scenarios from each genre and make sure they are fun, not just some grim chatbot trying to kill you or chat you to death.  Most of the genre's AI generated try to be factual, historical, and boring.
 
+- Move the NSFW image prompt slug to an external JSON file so users can modify it to do whatever they want.
+
+- e2e unit test
+
+
 
 ## Refactor follow-ups
 - Collapse the two prompt systems: the browser builds prompts from `GENRE_VOICE` (manifests.js) while the CLI/module path still uses per-genre `prompt-template.js` via `api-client.js` PROMPT_TEMPLATES. Adding a built-in genre currently means authoring both, kept in sync by hand. Unify on one shared `buildPrompt(skeleton, voice)`.
@@ -12,7 +17,6 @@
 - Rearrange the "⚙ AI Generated Scenario" so it matches the order read out by the narrator: Title, Portrait Prompt , Description, Opening, Plot Essentials, Author's Note
 
 ## Bugs - Fantasy
-- Redo all the missing icons in Fantasy
 - The text-to-image prompt needs to handle special cases:
   - Dragonborn: Illustration of a person with golden dragon scale skin, muscular body, fiery golden eyes, sharp filed teeth, prominent facial scales, subtle horns protruding from hair, scaly tail
 
@@ -31,7 +35,6 @@
   - Aliens: The text-to-image generator has no idea what an alien looks like, so we need specific alien features mentioned in their portrait prompts (e.g. unusual skin color, horns, scales, webbed fingers, forked tongue, pointed ears, etc).  Likewise, non-humanoid aliens should be even more unusual looking (e.g. four legs, no legs, amoeba, tentacles, insect, vapor, lava, jelly, etc)
   - "Android — Industrial Android" are genderless machines, so they shouldn't have hair, age, clothes, tattoos, a face like (famous person) and should ignore the NSFW flag.
   - "Plastic Android": portrait of Plastic Android, female, tall and electronic eyes, pale plastic skin, subtle corporate insignia, 
-- Create some concrete alien species instead of leaving it to be completely random.  It will help coherency 
 
 
 ### Low Priority Bugs
@@ -56,6 +59,8 @@
 ---
 
 ## Fixed Bugs
+- Create some concrete alien species instead of leaving it to be completely random — added 9 distinct sci-fi alien species (humanoid, slug, locust, reptilian, avian, amoeba, plant, vapor, typical) in place of the old generic humanoid/non-humanoid split.
+- Redo all the missing icons in Fantasy
 - Add a new script in genre-packs to generate icons using SD or Gemini to read the icon prompts from the new genre-pack data structures.
 - FEAT: Uploadable genre packs — a genre is now a pure-JSON pack (or .zip with icons/audio) that can be imported at runtime via Settings → Genre Packs, persisted in IndexedDB, and removed, with zero source edits. Built on a large internal refactor (one shared engine module, one genre-table registry, one manifest for presentation/slots/voice) that de-duplicated ~1000 lines out of index.html. See .claude/docs/features/genre-packs/DESIGN.md.
 - BUG: Joseon static cards were missing from Copy-to-Clipboard / Download Package (ui-data.js never imported the genre's static-cards.js). Now wired in.

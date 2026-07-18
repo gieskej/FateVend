@@ -53,7 +53,7 @@ export const STATIC_RACES = [
   {
     name: "Human",
     triggers: "Human",
-    entry: "Still the majority wherever you go, though which kind of human varies more than people upstairs like to admit — gravity-side Earthers with a farmer's wariness of the sky, colonists raised pragmatic on some world that was never going to be forgiving, ship- and station-born spacers who read a room's air pressure before they read its faces, and corp citizens raised so thoroughly managed their charm sometimes reads as slightly uncanny.",
+    entry: "Still the majority wherever you go — gravity-side Earthers, stocky and weathered, carrying a farmer's wariness toward anyone who's never had to worry about weather. Baseline stock, no augmentation required, though plenty pick some up anyway.",
   },
   {
     name: "Cyborg",
@@ -78,7 +78,7 @@ export const STATIC_RACES = [
   {
     name: "Clone",
     triggers: "Clone",
-    entry: "Grown and decanted rather than born, with paperwork that technically grants full rights and a labor market that technically respects them. Baseline clones show no deviation from the source template and get treated accordingly, like interchangeable product; notable clones have drifted from that template by design, accident, or the slow accumulation of a life actually lived, and sometimes meet someone wearing a face they never agreed to share.",
+    entry: "Grown and decanted rather than born, with paperwork that technically grants full rights and a labor market that technically respects them. Shows no deviation from the source template and gets treated accordingly, like interchangeable product — identical face, identical uniform, identical career track as every other print off the same line.",
   },
   {
     name: "Mutant",
@@ -88,7 +88,7 @@ export const STATIC_RACES = [
   {
     name: "Alien",
     triggers: "Alien",
-    entry: "Non-human sapients, integrated to wildly varying degrees since first contact a generation back. Humanoid aliens are close enough to human shape to pass in a crowd until some detail gives them away, carrying integration paperwork the bureaucracy still hasn't streamlined; non-humanoid aliens require ongoing physical adaptation just to use human-built spaces, and have strong, frequently voiced opinions about the chair situation.",
+    entry: "Non-human sapients, integrated to wildly varying degrees since first contact a generation back. Humanoid types are close enough to human shape to pass in a crowd until some detail gives them away, carrying integration paperwork the bureaucracy still hasn't streamlined — and yes, some really do look like the little big-eyed green men of old pulp covers. Further out on the spectrum: slug-formed aliens who need ongoing physical adaptation just to use human-built spaces and have strong opinions about the chair situation; upright locusts and reptilians, always hungry, cleverer than the terran animals they resemble; avians with feathers and wings crammed into corridors built for bipeds; shapeshifting amoeba and vapor types who unsettle anyone who's never shared an airlock with something that doesn't have a fixed shape; and sentient plant-aliens who experience time, and urgency, on a completely different schedule than everyone waiting on them.",
   },
 ];
 
