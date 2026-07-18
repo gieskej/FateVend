@@ -1,9 +1,50 @@
 // genres/fantasy/plot-archetypes.js
 // Fantasy-specific plot archetypes, added on top of COMMON_PLOT_ARCHETYPES.
+// Same shape as common/plot-archetypes.js: id, label, weight, description,
+// iconPrompt, iconPath.
 
 export const FANTASY_PLOT_ARCHETYPES = [
-  { id: 'prophecy',        label: 'Prophecy Fulfillment',  weight: 5, description: 'Ancient words name the character — or doom them. The question isn\'t whether the prophecy is real. It\'s what it actually means, and what must be sacrificed to fulfill it.',    iconPrompt: 'ancient parchment scroll glowing with golden runes and magical symbols, robed wizard reading it in candlelit stone tower, awestruck expression, magical smoke rising',  iconPath: 'generator/genres/fantasy/icons/PLOT_ARCHETYPES#prophecy.webp' },
-  { id: 'dungeon_delve',   label: 'Dungeon Delve',         weight: 6, description: 'Beneath the earth, behind the sealed door, past the wards — something valuable or terrible waits. Delve in. Don\'t die. Get back out.',                                          iconPrompt: 'party of adventurers descending torch-lit stone staircase into dark dungeon below, sword and shield raised by the lead figure, ancient carved runes on stone walls',    iconPath: 'generator/genres/fantasy/icons/PLOT_ARCHETYPES#dungeon_delve.webp' },
-  { id: 'kingdom_at_war',  label: 'Kingdom at War',        weight: 5, description: 'Armies, borders, and the human cost of who sits on the throne. Survival means choosing a side — or finding a way to change the outcome before the killing is done.',              iconPrompt: 'two opposing medieval armies clashing on hilltop battlefield, opposing banners flying, castle silhouette visible through stormy dramatic sky, morning light',            iconPath: 'generator/genres/fantasy/icons/PLOT_ARCHETYPES#kingdom_at_war.webp' },
-  { id: 'apprentice_rise', label: "The Apprentice's Rise", weight: 4, description: 'Someone with power has taken the character under their wing — or into their shadow. Learning, earning trust, and discovering what that power really costs.',                      iconPrompt: 'young apprentice receiving glowing magical staff from wise elder mentor, golden light transferring between their hands, dramatic magical aura, stone chamber',          iconPath: 'generator/genres/fantasy/icons/PLOT_ARCHETYPES#apprentice_rise.webp' },
+  {
+    id: "prophecy",
+    label: "Prophecy Fulfillment",
+    weight: 5,
+    description:
+      "Ancient words name the character — or doom them. The question isn't whether the prophecy is real. It's what it actually means, and what must be sacrificed to fulfill it.",
+    iconPrompt:
+      "ancient parchment scroll glowing with golden runes and magical symbols, robed wizard reading it in candlelit stone tower, awestruck expression, magical smoke rising",
+    iconPath: "generator/genres/fantasy/icons/PLOT_ARCHETYPES#prophecy.webp",
+  },
+  {
+    id: "dungeon_delve",
+    label: "Dungeon Delve",
+    weight: 6,
+    description:
+      "Beneath the earth, behind the sealed door, past the wards — something valuable or terrible waits. Delve in. Don't die. Get back out.",
+    iconPrompt:
+      "party of adventurers descending torch-lit stone staircase into dark dungeon below, sword and shield raised by the lead figure, ancient carved runes on stone walls",
+    iconPath:
+      "generator/genres/fantasy/icons/PLOT_ARCHETYPES#dungeon_delve.webp",
+  },
+  {
+    id: "kingdom_at_war",
+    label: "Kingdom at War",
+    weight: 5,
+    description:
+      "Armies, borders, and the human cost of who sits on the throne. Survival means choosing a side — or finding a way to change the outcome before the killing is done.",
+    iconPrompt:
+      "two opposing medieval armies clashing on hilltop battlefield, opposing banners flying, castle silhouette visible through stormy dramatic sky, morning light",
+    iconPath:
+      "generator/genres/fantasy/icons/PLOT_ARCHETYPES#kingdom_at_war.webp",
+  },
+  {
+    id: "apprentice_rise",
+    label: "The Apprentice's Rise",
+    weight: 4,
+    description:
+      "Someone with power has taken the character under their wing — or into their shadow. Learning, earning trust, and discovering what that power really costs.",
+    iconPrompt:
+      "young apprentice receiving glowing magical staff from wise elder mentor, golden light transferring between their hands, dramatic magical aura, stone chamber",
+    iconPath:
+      "generator/genres/fantasy/icons/PLOT_ARCHETYPES#apprentice_rise.webp",
+  },
 ];

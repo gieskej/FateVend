@@ -1,227 +1,297 @@
 // genres/paleolithic/family-structures.js
-// Family and clan arrangements for paleolithic characters.
+// Family and clan arrangements for paleolithic characters. Family composition
+// is randomized per character; the generator picks one FAMILY_STRUCTURES
+// entry, then resolves each parent's status independently.
+//
+// PARENT_STATUSES / SIBLING_DYNAMICS entries: id, label, toneTag, iconPrompt, iconPath.
+//
+// FAMILY_STRUCTURES entries:
+//   id, label            — identity + display label
+//   parentCount          — 0, 1, or 2 — determines which parent slots are filled
+//   siblingCount         — [min, max], resolved at generation time
+//   parentGender         — optional; forces 'mother'/'father' for a 1-parent structure
+//   toneTag              — gritty | dramatic | cozy | neutral
+//   statAffinity         — optional stat-weighted selection bias
+//   economicHint         — optional tier shift suggestion
+//   notes                — internal note on what this structure represents
+//   iconPrompt, iconPath — slot-machine reel icon
 
 export const PARENT_STATUSES = [
   {
-    id: 'present_close',
-    label: 'present and close',
-    toneTag: 'cozy',
-    iconPrompt: 'paleolithic rpg icon, parent and grown child sitting together by a fire preparing food, warm and easy in each other\'s company, evening firelight, medium two-shot, digital art',
-    iconPath: 'generator/genres/paleolithic/icons/PARENT_STATUSES#present_close.webp',
+    id: "present_close",
+    label: "present and close",
+    toneTag: "cozy",
+    iconPrompt:
+      "paleolithic rpg icon, parent and grown child sitting together by a fire preparing food, warm and easy in each other's company, evening firelight, medium two-shot, digital art",
+    iconPath:
+      "generator/genres/paleolithic/icons/PARENT_STATUSES#present_close.webp",
   },
   {
-    id: 'present_distant',
-    label: 'present but never close',
-    toneTag: 'neutral',
-    iconPrompt: 'paleolithic rpg icon, parent working on one side of camp, grown child on other, both aware of each other, no warmth between them, daylight, medium shot, digital art',
-    iconPath: 'generator/genres/paleolithic/icons/PARENT_STATUSES#present_distant.webp',
+    id: "present_distant",
+    label: "present but never close",
+    toneTag: "neutral",
+    iconPrompt:
+      "paleolithic rpg icon, parent working on one side of camp, grown child on other, both aware of each other, no warmth between them, daylight, medium shot, digital art",
+    iconPath:
+      "generator/genres/paleolithic/icons/PARENT_STATUSES#present_distant.webp",
   },
   {
-    id: 'present_difficult',
-    label: 'a source of tension',
-    toneTag: 'dramatic',
-    iconPrompt: 'paleolithic rpg icon, parent and grown child in tense confrontation by camp fire, gesturing sharply, voices raised, other tribe members looking away, medium shot, digital art',
-    iconPath: 'generator/genres/paleolithic/icons/PARENT_STATUSES#present_difficult.webp',
+    id: "present_difficult",
+    label: "a source of tension",
+    toneTag: "dramatic",
+    iconPrompt:
+      "paleolithic rpg icon, parent and grown child in tense confrontation by camp fire, gesturing sharply, voices raised, other tribe members looking away, medium shot, digital art",
+    iconPath:
+      "generator/genres/paleolithic/icons/PARENT_STATUSES#present_difficult.webp",
   },
   {
-    id: 'killed_hunt',
-    label: 'killed on a hunt — the wound has never fully closed',
-    toneTag: 'gritty',
-    iconPrompt: 'paleolithic rpg icon, simple grave mound under a tree with a spear planted upright as a marker, small offerings of bone and stone, quiet daylight, digital art',
-    iconPath: 'generator/genres/paleolithic/icons/PARENT_STATUSES#killed_hunt.webp',
+    id: "killed_hunt",
+    label: "killed on a hunt — the wound has never fully closed",
+    toneTag: "gritty",
+    iconPrompt:
+      "paleolithic rpg icon, simple grave mound under a tree with a spear planted upright as a marker, small offerings of bone and stone, quiet daylight, digital art",
+    iconPath:
+      "generator/genres/paleolithic/icons/PARENT_STATUSES#killed_hunt.webp",
   },
   {
-    id: 'died_winter',
-    label: 'lost in the great winter famine',
-    toneTag: 'gritty',
-    iconPrompt: 'paleolithic rpg icon, weathered figure standing alone in snow staring at a ring of stones marking an old grave, grief, winter light, digital art',
-    iconPath: 'generator/genres/paleolithic/icons/PARENT_STATUSES#died_winter.webp',
+    id: "died_winter",
+    label: "lost in the great winter famine",
+    toneTag: "gritty",
+    iconPrompt:
+      "paleolithic rpg icon, weathered figure standing alone in snow staring at a ring of stones marking an old grave, grief, winter light, digital art",
+    iconPath:
+      "generator/genres/paleolithic/icons/PARENT_STATUSES#died_winter.webp",
   },
   {
-    id: 'died_long_ago',
-    label: 'died when the character was very young — barely a memory',
-    toneTag: 'neutral',
-    iconPrompt: 'paleolithic rpg icon, small child looking at a painted handprint on a cave wall, the only remnant of a parent, touching the stone, soft firelight, digital art',
-    iconPath: 'generator/genres/paleolithic/icons/PARENT_STATUSES#died_long_ago.webp',
+    id: "died_long_ago",
+    label: "died when the character was very young — barely a memory",
+    toneTag: "neutral",
+    iconPrompt:
+      "paleolithic rpg icon, small child looking at a painted handprint on a cave wall, the only remnant of a parent, touching the stone, soft firelight, digital art",
+    iconPath:
+      "generator/genres/paleolithic/icons/PARENT_STATUSES#died_long_ago.webp",
   },
   {
-    id: 'taken_in_raid',
-    label: 'taken in a rival tribe raid — alive or dead is unknown',
-    toneTag: 'dramatic',
-    iconPrompt: 'paleolithic rpg icon, figure at edge of a cleared camp staring toward the distant forest, wondering, uncertain expression, dawn light, digital art',
-    iconPath: 'generator/genres/paleolithic/icons/PARENT_STATUSES#taken_in_raid.webp',
+    id: "taken_in_raid",
+    label: "taken in a rival tribe raid — alive or dead is unknown",
+    toneTag: "dramatic",
+    iconPrompt:
+      "paleolithic rpg icon, figure at edge of a cleared camp staring toward the distant forest, wondering, uncertain expression, dawn light, digital art",
+    iconPath:
+      "generator/genres/paleolithic/icons/PARENT_STATUSES#taken_in_raid.webp",
   },
   {
-    id: 'estranged',
-    label: 'alive but the rift between you has no bridge',
-    toneTag: 'dramatic',
-    iconPrompt: 'paleolithic rpg icon, two figures on opposite sides of a camp fire, no eye contact, deliberate distance, cold and formal, night, digital art',
-    iconPath: 'generator/genres/paleolithic/icons/PARENT_STATUSES#estranged.webp',
+    id: "estranged",
+    label: "alive but the rift between you has no bridge",
+    toneTag: "dramatic",
+    iconPrompt:
+      "paleolithic rpg icon, two figures on opposite sides of a camp fire, no eye contact, deliberate distance, cold and formal, night, digital art",
+    iconPath:
+      "generator/genres/paleolithic/icons/PARENT_STATUSES#estranged.webp",
   },
   {
-    id: 'unknown',
-    label: 'never known — foundling',
-    toneTag: 'neutral',
-    iconPrompt: 'paleolithic rpg icon, tribe elder holding a small bundled infant found at the forest edge, compassionate look, dawn, digital art',
-    iconPath: 'generator/genres/paleolithic/icons/PARENT_STATUSES#unknown.webp',
+    id: "unknown",
+    label: "never known — foundling",
+    toneTag: "neutral",
+    iconPrompt:
+      "paleolithic rpg icon, tribe elder holding a small bundled infant found at the forest edge, compassionate look, dawn, digital art",
+    iconPath: "generator/genres/paleolithic/icons/PARENT_STATUSES#unknown.webp",
   },
 ];
 
 export const SIBLING_DYNAMICS = [
   {
-    id: 'na',
-    label: 'no siblings — only child',
-    toneTag: 'neutral',
-    iconPrompt: 'paleolithic rpg icon, single child playing alone at edge of camp, absorbed in their own activity, distance from others, daylight, digital art',
-    iconPath: 'generator/genres/paleolithic/icons/SIBLING_DYNAMICS#na.webp',
+    id: "na",
+    label: "no siblings — only child",
+    toneTag: "neutral",
+    iconPrompt:
+      "paleolithic rpg icon, single child playing alone at edge of camp, absorbed in their own activity, distance from others, daylight, digital art",
+    iconPath: "generator/genres/paleolithic/icons/SIBLING_DYNAMICS#na.webp",
   },
   {
-    id: 'protective_older',
-    label: 'protective older sibling',
-    toneTag: 'cozy',
-    iconPrompt: 'paleolithic rpg icon, older sibling arm blocking younger sibling back from danger at forest edge, protective stance, alert, medium two-shot, digital art',
-    iconPath: 'generator/genres/paleolithic/icons/SIBLING_DYNAMICS#protective_older.webp',
+    id: "protective_older",
+    label: "protective older sibling",
+    toneTag: "cozy",
+    iconPrompt:
+      "paleolithic rpg icon, older sibling arm blocking younger sibling back from danger at forest edge, protective stance, alert, medium two-shot, digital art",
+    iconPath:
+      "generator/genres/paleolithic/icons/SIBLING_DYNAMICS#protective_older.webp",
   },
   {
-    id: 'rivalry',
-    label: 'rivalry — you have been competing since childhood',
-    toneTag: 'dramatic',
-    iconPrompt: 'paleolithic rpg icon, two siblings measuring a kill against each other, proud and competitive, other tribe members watching with amusement, daylight, digital art',
-    iconPath: 'generator/genres/paleolithic/icons/SIBLING_DYNAMICS#rivalry.webp',
+    id: "rivalry",
+    label: "rivalry — you have been competing since childhood",
+    toneTag: "dramatic",
+    iconPrompt:
+      "paleolithic rpg icon, two siblings measuring a kill against each other, proud and competitive, other tribe members watching with amusement, daylight, digital art",
+    iconPath:
+      "generator/genres/paleolithic/icons/SIBLING_DYNAMICS#rivalry.webp",
   },
   {
-    id: 'close_ally',
-    label: 'closest ally and confidant',
-    toneTag: 'cozy',
-    iconPrompt: 'paleolithic rpg icon, two siblings sitting back to back sharing a meal and talking quietly, complete ease, camp fire nearby, night, digital art',
-    iconPath: 'generator/genres/paleolithic/icons/SIBLING_DYNAMICS#close_ally.webp',
+    id: "close_ally",
+    label: "closest ally and confidant",
+    toneTag: "cozy",
+    iconPrompt:
+      "paleolithic rpg icon, two siblings sitting back to back sharing a meal and talking quietly, complete ease, camp fire nearby, night, digital art",
+    iconPath:
+      "generator/genres/paleolithic/icons/SIBLING_DYNAMICS#close_ally.webp",
   },
   {
-    id: 'deceased',
-    label: 'deceased — lost to hunt, winter, or illness',
-    toneTag: 'gritty',
-    iconPrompt: 'paleolithic rpg icon, lone figure sitting at a grave mound, fresh, stone marker, grieving, alone in quiet forest, digital art',
-    iconPath: 'generator/genres/paleolithic/icons/SIBLING_DYNAMICS#deceased.webp',
+    id: "deceased",
+    label: "deceased — lost to hunt, winter, or illness",
+    toneTag: "gritty",
+    iconPrompt:
+      "paleolithic rpg icon, lone figure sitting at a grave mound, fresh, stone marker, grieving, alone in quiet forest, digital art",
+    iconPath:
+      "generator/genres/paleolithic/icons/SIBLING_DYNAMICS#deceased.webp",
   },
   {
-    id: 'estranged',
-    label: 'estranged — another tribe, or a disagreement neither will name',
-    toneTag: 'dramatic',
-    iconPrompt: 'paleolithic rpg icon, figure sitting alone staring at a distant fire across a river, knowing their sibling is there, not crossing, night, digital art',
-    iconPath: 'generator/genres/paleolithic/icons/SIBLING_DYNAMICS#estranged.webp',
+    id: "estranged",
+    label: "estranged — another tribe, or a disagreement neither will name",
+    toneTag: "dramatic",
+    iconPrompt:
+      "paleolithic rpg icon, figure sitting alone staring at a distant fire across a river, knowing their sibling is there, not crossing, night, digital art",
+    iconPath:
+      "generator/genres/paleolithic/icons/SIBLING_DYNAMICS#estranged.webp",
   },
   {
-    id: 'younger_dependent',
-    label: 'younger and still depends on you',
-    toneTag: 'neutral',
-    iconPrompt: 'paleolithic rpg icon, older sibling teaching younger one how to make fire, patient and steady, cave interior, firelight, medium two-shot, digital art',
-    iconPath: 'generator/genres/paleolithic/icons/SIBLING_DYNAMICS#younger_dependent.webp',
+    id: "younger_dependent",
+    label: "younger and still depends on you",
+    toneTag: "neutral",
+    iconPrompt:
+      "paleolithic rpg icon, older sibling teaching younger one how to make fire, patient and steady, cave interior, firelight, medium two-shot, digital art",
+    iconPath:
+      "generator/genres/paleolithic/icons/SIBLING_DYNAMICS#younger_dependent.webp",
   },
   {
-    id: 'golden_child',
-    label: 'the one the tribe favors — still ranking above you',
-    toneTag: 'dramatic',
-    iconPrompt: 'paleolithic rpg icon, sibling receiving praise from chief while other watches from behind, slight expression of resignation, camp scene, firelight, digital art',
-    iconPath: 'generator/genres/paleolithic/icons/SIBLING_DYNAMICS#golden_child.webp',
+    id: "golden_child",
+    label: "the one the tribe favors — still ranking above you",
+    toneTag: "dramatic",
+    iconPrompt:
+      "paleolithic rpg icon, sibling receiving praise from chief while other watches from behind, slight expression of resignation, camp scene, firelight, digital art",
+    iconPath:
+      "generator/genres/paleolithic/icons/SIBLING_DYNAMICS#golden_child.webp",
   },
 ];
 
 export const FAMILY_STRUCTURES = [
   // ── INTACT FAMILY UNITS ───────────────────────────────────────────────────
   {
-    id: 'bonded_pair',
-    label: 'Bonded pair — both parents present',
+    id: "bonded_pair",
+    label: "Bonded pair — both parents present",
     parentCount: 2,
     siblingCount: [0, 3],
-    toneTag: 'neutral',
+    toneTag: "neutral",
     statAffinity: { wisdom: 1.1, charisma: 1.1 },
-    notes: 'Both parents alive and bonded. Relationship quality randomized.',
-    iconPrompt: 'Paleolithic family unit — bonded adult pair with children around a fire, simple and close',
-    iconPath: 'generator/genres/paleolithic/icons/FAMILY_STRUCTURES#bonded_pair.webp',
+    notes: "Both parents alive and bonded. Relationship quality randomized.",
+    iconPrompt:
+      "Paleolithic family unit — bonded adult pair with children around a fire, simple and close",
+    iconPath:
+      "generator/genres/paleolithic/icons/FAMILY_STRUCTURES#bonded_pair.webp",
   },
   {
-    id: 'single_parent',
-    label: 'Single parent — one lost to hunt, raid, or winter',
+    id: "single_parent",
+    label: "Single parent — one lost to hunt, raid, or winter",
     parentCount: 1,
     siblingCount: [0, 3],
-    toneTag: 'neutral',
+    toneTag: "neutral",
     statAffinity: { constitution: 1.2 },
     economicHint: -1,
-    notes: 'One parent absent, dead, or taken. The surviving parent carried the whole weight.',
-    iconPrompt: 'Paleolithic single parent with children, working hard to provide, camp setting',
-    iconPath: 'generator/genres/paleolithic/icons/FAMILY_STRUCTURES#single_parent.webp',
+    notes:
+      "One parent absent, dead, or taken. The surviving parent carried the whole weight.",
+    iconPrompt:
+      "Paleolithic single parent with children, working hard to provide, camp setting",
+    iconPath:
+      "generator/genres/paleolithic/icons/FAMILY_STRUCTURES#single_parent.webp",
   },
   {
-    id: 'one_parent_lost',
-    label: 'One parent taken or dead, one surviving',
+    id: "one_parent_lost",
+    label: "One parent taken or dead, one surviving",
     parentCount: 2,
     siblingCount: [0, 2],
-    toneTag: 'dramatic',
+    toneTag: "dramatic",
     statAffinity: { wisdom: 1.1, constitution: 0.9 },
     economicHint: -1,
-    notes: 'One parent is deceased. Surviving parent carries the loss and the family.',
-    iconPrompt: 'Paleolithic survivor parent and children at campfire, one parent gone, quiet grief behind daily life',
-    iconPath: 'generator/genres/paleolithic/icons/FAMILY_STRUCTURES#one_parent_lost.webp',
+    notes:
+      "One parent is deceased. Surviving parent carries the loss and the family.",
+    iconPrompt:
+      "Paleolithic survivor parent and children at campfire, one parent gone, quiet grief behind daily life",
+    iconPath:
+      "generator/genres/paleolithic/icons/FAMILY_STRUCTURES#one_parent_lost.webp",
   },
 
   // ── EXTENDED & COLLECTIVE ─────────────────────────────────────────────────
   {
-    id: 'extended_clan',
-    label: 'Extended clan — three generations under one fire',
+    id: "extended_clan",
+    label: "Extended clan — three generations under one fire",
     parentCount: 2,
     siblingCount: [1, 4],
-    toneTag: 'cozy',
+    toneTag: "cozy",
     statAffinity: { wisdom: 1.2, charisma: 1.1 },
-    notes: 'Grandparents, parents, siblings — all at one fire. Loud, warm, complicated.',
-    iconPrompt: 'Paleolithic multigenerational clan fire circle, elders and children and parents all around central fire, complex and warm',
-    iconPath: 'generator/genres/paleolithic/icons/FAMILY_STRUCTURES#extended_clan.webp',
+    notes:
+      "Grandparents, parents, siblings — all at one fire. Loud, warm, complicated.",
+    iconPrompt:
+      "Paleolithic multigenerational clan fire circle, elders and children and parents all around central fire, complex and warm",
+    iconPath:
+      "generator/genres/paleolithic/icons/FAMILY_STRUCTURES#extended_clan.webp",
   },
   {
-    id: 'adopted_by_tribe',
-    label: 'Adopted by the tribe — no blood family known',
+    id: "adopted_by_tribe",
+    label: "Adopted by the tribe — no blood family known",
     parentCount: 0,
     siblingCount: [0, 2],
-    toneTag: 'neutral',
+    toneTag: "neutral",
     statAffinity: { constitution: 1.2, wisdom: 1.1 },
-    notes: 'Found, traded, or orphaned and taken in. The tribe is family. The blood family is a story.',
-    iconPrompt: 'Paleolithic child being welcomed into a tribe camp by elder with open arms, forest edge behind, warmth of belonging',
-    iconPath: 'generator/genres/paleolithic/icons/FAMILY_STRUCTURES#adopted_by_tribe.webp',
+    notes:
+      "Found, traded, or orphaned and taken in. The tribe is family. The blood family is a story.",
+    iconPrompt:
+      "Paleolithic child being welcomed into a tribe camp by elder with open arms, forest edge behind, warmth of belonging",
+    iconPath:
+      "generator/genres/paleolithic/icons/FAMILY_STRUCTURES#adopted_by_tribe.webp",
   },
   {
-    id: 'orphan_band',
-    label: 'Orphan — raised by the band collectively',
+    id: "orphan_band",
+    label: "Orphan — raised by the band collectively",
     parentCount: 0,
     siblingCount: [0, 1],
-    toneTag: 'gritty',
+    toneTag: "gritty",
     statAffinity: { constitution: 1.3, wisdom: 1.1 },
     economicHint: -1,
-    notes: 'No parents. Multiple adults in varying states of responsibility. Self-reliance was survival.',
-    iconPrompt: 'Paleolithic orphan child sitting slightly apart from the main camp fire, watching the family units with quiet distance',
-    iconPath: 'generator/genres/paleolithic/icons/FAMILY_STRUCTURES#orphan_band.webp',
+    notes:
+      "No parents. Multiple adults in varying states of responsibility. Self-reliance was survival.",
+    iconPrompt:
+      "Paleolithic orphan child sitting slightly apart from the main camp fire, watching the family units with quiet distance",
+    iconPath:
+      "generator/genres/paleolithic/icons/FAMILY_STRUCTURES#orphan_band.webp",
   },
 
   // ── UNUSUAL ───────────────────────────────────────────────────────────────
   {
-    id: 'estranged_all',
-    label: 'Estranged from birth family — chose this tribe alone',
+    id: "estranged_all",
+    label: "Estranged from birth family — chose this tribe alone",
     parentCount: 0,
     siblingCount: [0, 1],
-    toneTag: 'dramatic',
+    toneTag: "dramatic",
     statAffinity: { wisdom: 1.2, constitution: 1.1 },
-    notes: 'Family exists elsewhere. Left by choice or force. The reasons are real and rarely spoken.',
-    iconPrompt: 'Lone paleolithic figure arriving at an unfamiliar camp, accepted but clearly without people here yet, the beginning of belonging',
-    iconPath: 'generator/genres/paleolithic/icons/FAMILY_STRUCTURES#estranged_all.webp',
+    notes:
+      "Family exists elsewhere. Left by choice or force. The reasons are real and rarely spoken.",
+    iconPrompt:
+      "Lone paleolithic figure arriving at an unfamiliar camp, accepted but clearly without people here yet, the beginning of belonging",
+    iconPath:
+      "generator/genres/paleolithic/icons/FAMILY_STRUCTURES#estranged_all.webp",
   },
   {
-    id: 'shaman_lineage',
-    label: 'Shaman lineage — born into the spirit-working family',
+    id: "shaman_lineage",
+    label: "Shaman lineage — born into the spirit-working family",
     parentCount: 2,
     siblingCount: [0, 2],
-    toneTag: 'dramatic',
+    toneTag: "dramatic",
     statAffinity: { wisdom: 1.3, intelligence: 1.2, charisma: 1.1 },
     economicHint: 1,
-    notes: 'Born into the family that speaks to spirits. The expectation is lifelong and heavy.',
-    iconPrompt: 'Paleolithic child sitting in a ceremonial cave space with a parent who is a shaman, surrounded by painted walls and offerings',
-    iconPath: 'generator/genres/paleolithic/icons/FAMILY_STRUCTURES#shaman_lineage.webp',
+    notes:
+      "Born into the family that speaks to spirits. The expectation is lifelong and heavy.",
+    iconPrompt:
+      "Paleolithic child sitting in a ceremonial cave space with a parent who is a shaman, surrounded by painted walls and offerings",
+    iconPath:
+      "generator/genres/paleolithic/icons/FAMILY_STRUCTURES#shaman_lineage.webp",
   },
 ];

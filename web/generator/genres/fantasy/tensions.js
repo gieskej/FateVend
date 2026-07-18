@@ -1,233 +1,296 @@
 // genres/fantasy/tensions.js
+// The inciting situation the character is currently in — feeds the scenario
+// Opening and Description heavily. Each tension carries:
+//   id, description, toneTag, criminalFlag (bool), statAffinity (optional),
+//   economicHint (optional), iconPrompt/iconPath (slot-machine reel icon)
 
 export const TENSIONS = [
   // ── DEBTS & OBLIGATIONS ───────────────────────────────────────────────────
   {
-    id: 'debt_to_guild',
-    description: 'Owes a significant debt to a guild or criminal organization — the clock is ticking',
-    toneTag: 'dramatic',
+    id: "debt_to_guild",
+    description:
+      "Owes a significant debt to a guild or criminal organization — the clock is ticking",
+    toneTag: "dramatic",
     criminalFlag: true,
-    iconPrompt: 'Fantasy RPG icon. A cloaked figure signing a contract by candlelight, a guild seal stamped in wax on the parchment, armed silhouettes looming in the shadows behind them.',
-    iconPath: 'generator/genres/fantasy/icons/TENSION#debt_to_guild.webp',
+    iconPrompt:
+      "Fantasy RPG icon. A cloaked figure signing a contract by candlelight, a guild seal stamped in wax on the parchment, armed silhouettes looming in the shadows behind them.",
+    iconPath: "generator/genres/fantasy/icons/TENSION#debt_to_guild.webp",
   },
   {
-    id: 'owed_service',
-    description: 'Is bound by oath or contract to perform a service they\'ve been avoiding',
-    toneTag: 'dramatic',
+    id: "owed_service",
+    description:
+      "Is bound by oath or contract to perform a service they've been avoiding",
+    toneTag: "dramatic",
     criminalFlag: false,
-    iconPrompt: 'Fantasy RPG icon. A warrior standing before a glowing magical scroll bound with chains of light, an hourglass casting a long shadow across the stone floor.',
-    iconPath: 'generator/genres/fantasy/icons/TENSION#owed_service.webp',
+    iconPrompt:
+      "Fantasy RPG icon. A warrior standing before a glowing magical scroll bound with chains of light, an hourglass casting a long shadow across the stone floor.",
+    iconPath: "generator/genres/fantasy/icons/TENSION#owed_service.webp",
   },
   {
-    id: 'price_on_head',
-    description: 'Has a bounty on their head in at least one territory — for reasons that are complicated',
-    toneTag: 'gritty',
+    id: "price_on_head",
+    description:
+      "Has a bounty on their head in at least one territory — for reasons that are complicated",
+    toneTag: "gritty",
     criminalFlag: true,
-    iconPrompt: 'Fantasy RPG icon. A wanted poster nailed to a tavern wall, a hooded figure\'s face sketched on it, torchlight flickering, armored bounty hunters reading it in the background.',
-    iconPath: 'generator/genres/fantasy/icons/TENSION#price_on_head.webp',
+    iconPrompt:
+      "Fantasy RPG icon. A wanted poster nailed to a tavern wall, a hooded figure's face sketched on it, torchlight flickering, armored bounty hunters reading it in the background.",
+    iconPath: "generator/genres/fantasy/icons/TENSION#price_on_head.webp",
   },
   {
-    id: 'magic_debt',
-    description: 'Owes a debt to something supernatural — a spirit, a deity, or something harder to name',
-    toneTag: 'dramatic',
+    id: "magic_debt",
+    description:
+      "Owes a debt to something supernatural — a spirit, a deity, or something harder to name",
+    toneTag: "dramatic",
     criminalFlag: false,
-    iconPrompt: 'Fantasy RPG icon. A lone figure kneeling before a vast spectral entity of light and shadow, magical binding runes etched in a circle on the ground between them, otherworldly glow.',
-    iconPath: 'generator/genres/fantasy/icons/TENSION#magic_debt.webp',
+    iconPrompt:
+      "Fantasy RPG icon. A lone figure kneeling before a vast spectral entity of light and shadow, magical binding runes etched in a circle on the ground between them, otherworldly glow.",
+    iconPath: "generator/genres/fantasy/icons/TENSION#magic_debt.webp",
   },
 
   // ── PURSUIT & DANGER ──────────────────────────────────────────────────────
   {
-    id: 'being_hunted',
-    description: 'Is being hunted by someone with the resources to actually find them',
-    toneTag: 'gritty',
+    id: "being_hunted",
+    description:
+      "Is being hunted by someone with the resources to actually find them",
+    toneTag: "gritty",
     criminalFlag: true,
-    iconPrompt: 'Fantasy RPG icon. A cloaked figure sprinting through a dark forest, armored hunters with torches and hounds visible through the trees behind them, closing the gap.',
-    iconPath: 'generator/genres/fantasy/icons/TENSION#being_hunted.webp',
+    iconPrompt:
+      "Fantasy RPG icon. A cloaked figure sprinting through a dark forest, armored hunters with torches and hounds visible through the trees behind them, closing the gap.",
+    iconPath: "generator/genres/fantasy/icons/TENSION#being_hunted.webp",
   },
   {
-    id: 'prophecy_attached',
-    description: 'Has had a prophecy attached to their name — and is not sure if they believe it, but others do',
-    toneTag: 'dramatic',
+    id: "prophecy_attached",
+    description:
+      "Has had a prophecy attached to their name — and is not sure if they believe it, but others do",
+    toneTag: "dramatic",
     criminalFlag: false,
-    iconPrompt: 'Fantasy RPG icon. A glowing crystal orb showing a vision of a distant figure, an ancient parchment unfurled beside it, a robed seer pointing at a lone traveler with reverence and fear.',
-    iconPath: 'generator/genres/fantasy/icons/TENSION#prophecy_attached.webp',
+    iconPrompt:
+      "Fantasy RPG icon. A glowing crystal orb showing a vision of a distant figure, an ancient parchment unfurled beside it, a robed seer pointing at a lone traveler with reverence and fear.",
+    iconPath: "generator/genres/fantasy/icons/TENSION#prophecy_attached.webp",
   },
   {
-    id: 'cursed_item',
-    description: 'Is in possession of something powerful and cursed that they cannot simply put down',
-    toneTag: 'dramatic',
+    id: "cursed_item",
+    description:
+      "Is in possession of something powerful and cursed that they cannot simply put down",
+    toneTag: "dramatic",
     criminalFlag: false,
-    iconPrompt: 'Fantasy RPG icon. A gauntleted hand clutching a pulsing dark artifact, tendrils of black shadow curling up the arm, an ominous purple glow, the figure unable to release their grip.',
-    iconPath: 'generator/genres/fantasy/icons/TENSION#cursed_item.webp',
+    iconPrompt:
+      "Fantasy RPG icon. A gauntleted hand clutching a pulsing dark artifact, tendrils of black shadow curling up the arm, an ominous purple glow, the figure unable to release their grip.",
+    iconPath: "generator/genres/fantasy/icons/TENSION#cursed_item.webp",
   },
   {
-    id: 'old_enemy_resurfaces',
-    description: 'An enemy from their past has resurfaced — better resourced and angrier than before',
-    toneTag: 'gritty',
+    id: "old_enemy_resurfaces",
+    description:
+      "An enemy from their past has resurfaced — better resourced and angrier than before",
+    toneTag: "gritty",
     criminalFlag: false,
-    iconPrompt: 'Fantasy RPG icon. Two armored figures facing each other across a ruined battlefield, recognition and cold fury in their stances, swords drawn, a history of violence between them implied.',
-    iconPath: 'generator/genres/fantasy/icons/TENSION#old_enemy_resurfaces.webp',
+    iconPrompt:
+      "Fantasy RPG icon. Two armored figures facing each other across a ruined battlefield, recognition and cold fury in their stances, swords drawn, a history of violence between them implied.",
+    iconPath:
+      "generator/genres/fantasy/icons/TENSION#old_enemy_resurfaces.webp",
   },
   {
-    id: 'witness_to_conspiracy',
-    description: 'Witnessed something they weren\'t supposed to see — the people involved have noticed',
-    toneTag: 'gritty',
+    id: "witness_to_conspiracy",
+    description:
+      "Witnessed something they weren't supposed to see — the people involved have noticed",
+    toneTag: "gritty",
     criminalFlag: true,
-    iconPrompt: 'Fantasy RPG icon. A figure pressing against a stone wall, peering through a cracked doorway at robed conspirators gathered around a glowing map, one conspirator looking back with suspicion.',
-    iconPath: 'generator/genres/fantasy/icons/TENSION#witness_to_conspiracy.webp',
+    iconPrompt:
+      "Fantasy RPG icon. A figure pressing against a stone wall, peering through a cracked doorway at robed conspirators gathered around a glowing map, one conspirator looking back with suspicion.",
+    iconPath:
+      "generator/genres/fantasy/icons/TENSION#witness_to_conspiracy.webp",
   },
 
   // ── DUTY & LOYALTY ────────────────────────────────────────────────────────
   {
-    id: 'lord_demands_it',
-    description: 'Their lord, patron, or employer has issued a command they are not comfortable carrying out',
-    toneTag: 'dramatic',
+    id: "lord_demands_it",
+    description:
+      "Their lord, patron, or employer has issued a command they are not comfortable carrying out",
+    toneTag: "dramatic",
     criminalFlag: false,
-    iconPrompt: 'Fantasy RPG icon. A noble lord on a high throne extending a sealed decree toward a kneeling knight, the knight\'s expression conflicted and reluctant, a grand castle hall behind them.',
-    iconPath: 'generator/genres/fantasy/icons/TENSION#lord_demands_it.webp',
+    iconPrompt:
+      "Fantasy RPG icon. A noble lord on a high throne extending a sealed decree toward a kneeling knight, the knight's expression conflicted and reluctant, a grand castle hall behind them.",
+    iconPath: "generator/genres/fantasy/icons/TENSION#lord_demands_it.webp",
   },
   {
-    id: 'protect_someone',
-    description: 'Responsible for protecting someone who makes that job as difficult as possible',
-    toneTag: 'neutral',
+    id: "protect_someone",
+    description:
+      "Responsible for protecting someone who makes that job as difficult as possible",
+    toneTag: "neutral",
     criminalFlag: false,
-    iconPrompt: 'Fantasy RPG icon. A weary guardian with sword drawn standing protectively in front of a reckless charge who is leaning eagerly toward danger, exasperation evident on the guardian\'s face.',
-    iconPath: 'generator/genres/fantasy/icons/TENSION#protect_someone.webp',
+    iconPrompt:
+      "Fantasy RPG icon. A weary guardian with sword drawn standing protectively in front of a reckless charge who is leaning eagerly toward danger, exasperation evident on the guardian's face.",
+    iconPath: "generator/genres/fantasy/icons/TENSION#protect_someone.webp",
   },
   {
-    id: 'conflicting_oaths',
-    description: 'Has made oaths to two parties whose interests are now directly in conflict',
-    toneTag: 'dramatic',
+    id: "conflicting_oaths",
+    description:
+      "Has made oaths to two parties whose interests are now directly in conflict",
+    toneTag: "dramatic",
     criminalFlag: false,
-    iconPrompt: 'Fantasy RPG icon. A figure standing between two opposing faction banners, arms outstretched toward each, a glowing oath-mark on each palm, torn expression on their face.',
-    iconPath: 'generator/genres/fantasy/icons/TENSION#conflicting_oaths.webp',  
+    iconPrompt:
+      "Fantasy RPG icon. A figure standing between two opposing faction banners, arms outstretched toward each, a glowing oath-mark on each palm, torn expression on their face.",
+    iconPath: "generator/genres/fantasy/icons/TENSION#conflicting_oaths.webp",
   },
   {
-    id: 'last_of_something',
-    description: 'Is the last known member of an order, bloodline, or tradition — and that means something dangerous',
-    toneTag: 'dramatic',
+    id: "last_of_something",
+    description:
+      "Is the last known member of an order, bloodline, or tradition — and that means something dangerous",
+    toneTag: "dramatic",
     criminalFlag: false,
-    iconPrompt: 'Fantasy RPG icon. A lone figure standing in a crumbling hall bearing an ancient crest, dozens of extinguished candles surrounding a single flame still burning, the weight of extinction on their shoulders.',
-    iconPath: 'generator/genres/fantasy/icons/TENSION#last_of_something.webp',
+    iconPrompt:
+      "Fantasy RPG icon. A lone figure standing in a crumbling hall bearing an ancient crest, dozens of extinguished candles surrounding a single flame still burning, the weight of extinction on their shoulders.",
+    iconPath: "generator/genres/fantasy/icons/TENSION#last_of_something.webp",
   },
 
   // ── POWER & AMBITION ──────────────────────────────────────────────────────
   {
-    id: 'power_growing',
-    description: 'Their power is growing faster than their control — and they haven\'t told anyone',
-    toneTag: 'dramatic',
+    id: "power_growing",
+    description:
+      "Their power is growing faster than their control — and they haven't told anyone",
+    toneTag: "dramatic",
     criminalFlag: false,
-    iconPrompt: 'Fantasy RPG icon. A mage\'s hands crackling with wild uncontrolled energy, arcs of arcane lightning radiating outward, fear on their face as the power exceeds their will, companions nearby unaware.',
-    iconPath: 'generator/genres/fantasy/icons/TENSION#power_growing.webp',
+    iconPrompt:
+      "Fantasy RPG icon. A mage's hands crackling with wild uncontrolled energy, arcs of arcane lightning radiating outward, fear on their face as the power exceeds their will, companions nearby unaware.",
+    iconPath: "generator/genres/fantasy/icons/TENSION#power_growing.webp",
   },
   {
-    id: 'something_wants_them',
-    description: 'Something magical or divine is taking an interest in them — the attention is not comfortable',
-    toneTag: 'dramatic',
+    id: "something_wants_them",
+    description:
+      "Something magical or divine is taking an interest in them — the attention is not comfortable",
+    toneTag: "dramatic",
     criminalFlag: false,
-    iconPrompt: 'Fantasy RPG icon. A vast divine eye of burning light descending from storm clouds, its gaze fixed on a single small figure below who looks up with unease, all other figures oblivious.',
-    iconPath: 'generator/genres/fantasy/icons/TENSION#something_wants_them.webp',
+    iconPrompt:
+      "Fantasy RPG icon. A vast divine eye of burning light descending from storm clouds, its gaze fixed on a single small figure below who looks up with unease, all other figures oblivious.",
+    iconPath:
+      "generator/genres/fantasy/icons/TENSION#something_wants_them.webp",
   },
   {
-    id: 'rival_ahead',
-    description: 'A rival is close to achieving something that would be very bad for everyone — including them',
-    toneTag: 'neutral',
+    id: "rival_ahead",
+    description:
+      "A rival is close to achieving something that would be very bad for everyone — including them",
+    toneTag: "neutral",
     criminalFlag: false,
-    iconPrompt: 'Fantasy RPG icon. Two figures racing down a dungeon corridor toward a glowing artifact at the far end, the rival nearly there, the hero behind and losing ground.',
-    iconPath: 'generator/genres/fantasy/icons/TENSION#rival_ahead.webp',
+    iconPrompt:
+      "Fantasy RPG icon. Two figures racing down a dungeon corridor toward a glowing artifact at the far end, the rival nearly there, the hero behind and losing ground.",
+    iconPath: "generator/genres/fantasy/icons/TENSION#rival_ahead.webp",
   },
   {
-    id: 'political_pawn',
-    description: 'Has been caught between two powerful factions who both want to use them',
-    toneTag: 'dramatic',
+    id: "political_pawn",
+    description:
+      "Has been caught between two powerful factions who both want to use them",
+    toneTag: "dramatic",
     criminalFlag: false,
-    iconPrompt: 'Fantasy RPG icon. A figure standing on a giant chessboard between two rival rulers extending their hands, the figure a pawn between two kings, unable to choose a side.',
-    iconPath: 'generator/genres/fantasy/icons/TENSION#political_pawn.webp',
+    iconPrompt:
+      "Fantasy RPG icon. A figure standing on a giant chessboard between two rival rulers extending their hands, the figure a pawn between two kings, unable to choose a side.",
+    iconPath: "generator/genres/fantasy/icons/TENSION#political_pawn.webp",
   },
 
   // ── PERSONAL ─────────────────────────────────────────────────────────────
   {
-    id: 'searching_for_someone',
-    description: 'Is searching for someone who disappeared — or was taken — and the trail is finally warm',
-    toneTag: 'neutral',
+    id: "searching_for_someone",
+    description:
+      "Is searching for someone who disappeared — or was taken — and the trail is finally warm",
+    toneTag: "neutral",
     criminalFlag: false,
-    iconPrompt: 'Fantasy RPG icon. A traveler crouching over a trail of faint glowing footprints on a misty forest path, clutching a worn locket with a portrait inside, urgency in their posture.',
-    iconPath: 'generator/genres/fantasy/icons/TENSION#searching_for_someone.webp',
+    iconPrompt:
+      "Fantasy RPG icon. A traveler crouching over a trail of faint glowing footprints on a misty forest path, clutching a worn locket with a portrait inside, urgency in their posture.",
+    iconPath:
+      "generator/genres/fantasy/icons/TENSION#searching_for_someone.webp",
   },
   {
-    id: 'past_catches_up',
-    description: 'Something from their past is catching up — a choice, a crime, a person, a promise',
-    toneTag: 'dramatic',
+    id: "past_catches_up",
+    description:
+      "Something from their past is catching up — a choice, a crime, a person, a promise",
+    toneTag: "dramatic",
     criminalFlag: false,
-    iconPrompt: 'Fantasy RPG icon. A figure walking forward as ghostly hands and shadowy memories reach out from behind them, nearly grasping their cloak, a road they thought they had left far behind.',
-    iconPath: 'generator/genres/fantasy/icons/TENSION#past_catches_up.webp',
+    iconPrompt:
+      "Fantasy RPG icon. A figure walking forward as ghostly hands and shadowy memories reach out from behind them, nearly grasping their cloak, a road they thought they had left far behind.",
+    iconPath: "generator/genres/fantasy/icons/TENSION#past_catches_up.webp",
   },
   {
-    id: 'health_or_curse',
-    description: 'Something is wrong with them — a wound, a curse, a corruption — and they haven\'t told their companions',
-    toneTag: 'dramatic',
+    id: "health_or_curse",
+    description:
+      "Something is wrong with them — a wound, a curse, a corruption — and they haven't told their companions",
+    toneTag: "dramatic",
     criminalFlag: false,
-    iconPrompt: 'Fantasy RPG icon. A warrior pressing a hand over a wound that pulses with dark corruption, quickly pulling their cloak shut as companions approach, concealing the spreading mark.',
-    iconPath: 'generator/genres/fantasy/icons/TENSION#health_or_curse.webp',
+    iconPrompt:
+      "Fantasy RPG icon. A warrior pressing a hand over a wound that pulses with dark corruption, quickly pulling their cloak shut as companions approach, concealing the spreading mark.",
+    iconPath: "generator/genres/fantasy/icons/TENSION#health_or_curse.webp",
   },
   {
-    id: 'running_out_of_time',
-    description: 'Is working against a deadline they haven\'t told anyone about — something will happen if they don\'t act',
-    toneTag: 'dramatic',
+    id: "running_out_of_time",
+    description:
+      "Is working against a deadline they haven't told anyone about — something will happen if they don't act",
+    toneTag: "dramatic",
     criminalFlag: false,
-    iconPrompt: 'Fantasy RPG icon. An enormous cracked hourglass with the last grains of sand falling, a lone figure sprinting desperately across a fantasy landscape beneath it, no one else aware.',
-    iconPath: 'generator/genres/fantasy/icons/TENSION#running_out_of_time.webp',
+    iconPrompt:
+      "Fantasy RPG icon. An enormous cracked hourglass with the last grains of sand falling, a lone figure sprinting desperately across a fantasy landscape beneath it, no one else aware.",
+    iconPath: "generator/genres/fantasy/icons/TENSION#running_out_of_time.webp",
   },
 
   // ── GRITTY ────────────────────────────────────────────────────────────────
   {
-    id: 'job_gone_wrong',
-    description: 'A job went sideways — someone died who wasn\'t supposed to, and the fallout is still arriving',
-    toneTag: 'gritty',
+    id: "job_gone_wrong",
+    description:
+      "A job went sideways — someone died who wasn't supposed to, and the fallout is still arriving",
+    toneTag: "gritty",
     criminalFlag: true,
-    iconPrompt: 'Fantasy RPG icon. A rogue standing in a ruined room amid overturned furniture and a body covered by cloth, one bloodied hand at their side, the weight of an unintended outcome on their face.',
-    iconPath: 'generator/genres/fantasy/icons/TENSION#job_gone_wrong.webp',
+    iconPrompt:
+      "Fantasy RPG icon. A rogue standing in a ruined room amid overturned furniture and a body covered by cloth, one bloodied hand at their side, the weight of an unintended outcome on their face.",
+    iconPath: "generator/genres/fantasy/icons/TENSION#job_gone_wrong.webp",
   },
   {
-    id: 'forced_to_work_with_enemy',
-    description: 'Has been forced to work alongside someone they deeply distrust — or outright hate',
-    toneTag: 'gritty',
+    id: "forced_to_work_with_enemy",
+    description:
+      "Has been forced to work alongside someone they deeply distrust — or outright hate",
+    toneTag: "gritty",
     criminalFlag: false,
-    iconPrompt: 'Fantasy RPG icon. Two armed figures standing back to back in a dark dungeon corridor, visibly tense and bristling, forced into cooperation by the danger surrounding them on all sides.',
-    iconPath: 'generator/genres/fantasy/icons/TENSION#forced_to_work_with_enemy.webp',
+    iconPrompt:
+      "Fantasy RPG icon. Two armed figures standing back to back in a dark dungeon corridor, visibly tense and bristling, forced into cooperation by the danger surrounding them on all sides.",
+    iconPath:
+      "generator/genres/fantasy/icons/TENSION#forced_to_work_with_enemy.webp",
   },
   {
-    id: 'broke_and_desperate',
-    description: 'Flat broke in a city that rewards wealth and punishes poverty, with skills and no coin',
-    toneTag: 'gritty',
+    id: "broke_and_desperate",
+    description:
+      "Flat broke in a city that rewards wealth and punishes poverty, with skills and no coin",
+    toneTag: "gritty",
     criminalFlag: false,
-    iconPrompt: 'Fantasy RPG icon. A down-on-their-luck adventurer counting the last few copper coins in their palm, a wealthy merchant city glittering behind them, eyes scanning for an opportunity.',
-    iconPath: 'generator/genres/fantasy/icons/TENSION#broke_and_desperate.webp',
+    iconPrompt:
+      "Fantasy RPG icon. A down-on-their-luck adventurer counting the last few copper coins in their palm, a wealthy merchant city glittering behind them, eyes scanning for an opportunity.",
+    iconPath: "generator/genres/fantasy/icons/TENSION#broke_and_desperate.webp",
   },
 
   // ── COZY / LIGHT ─────────────────────────────────────────────────────────
   {
-    id: 'reluctant_hero',
-    description: 'Keeps being asked to solve problems they didn\'t cause and didn\'t volunteer for',
-    toneTag: 'cozy',
+    id: "reluctant_hero",
+    description:
+      "Keeps being asked to solve problems they didn't cause and didn't volunteer for",
+    toneTag: "cozy",
     criminalFlag: false,
-    iconPrompt: 'Fantasy RPG icon. An ordinary villager being tugged by the sleeves toward a distant problem by a hopeful crowd, arms crossed and resistant, clearly not having volunteered for any of this.',
-    iconPath: 'generator/genres/fantasy/icons/TENSION#reluctant_hero.webp',
+    iconPrompt:
+      "Fantasy RPG icon. An ordinary villager being tugged by the sleeves toward a distant problem by a hopeful crowd, arms crossed and resistant, clearly not having volunteered for any of this.",
+    iconPath: "generator/genres/fantasy/icons/TENSION#reluctant_hero.webp",
   },
   {
-    id: 'first_adventure',
-    description: 'Has landed in their first real adventure — considerably more dangerous than anticipated',
-    toneTag: 'cozy',
+    id: "first_adventure",
+    description:
+      "Has landed in their first real adventure — considerably more dangerous than anticipated",
+    toneTag: "cozy",
     criminalFlag: false,
-    iconPrompt: 'Fantasy RPG icon. A wide-eyed young adventurer holding a torch at the mouth of a dark dungeon, pack still neat and clean, looking into the unknown with excitement tipping toward dread.',
-    iconPath: 'generator/genres/fantasy/icons/TENSION#first_adventure.webp',
+    iconPrompt:
+      "Fantasy RPG icon. A wide-eyed young adventurer holding a torch at the mouth of a dark dungeon, pack still neat and clean, looking into the unknown with excitement tipping toward dread.",
+    iconPath: "generator/genres/fantasy/icons/TENSION#first_adventure.webp",
   },
   {
-    id: 'unlikely_alliance',
-    description: 'Has formed an unlikely alliance that makes both parties uncomfortable — but it\'s working',
-    toneTag: 'cozy',
+    id: "unlikely_alliance",
+    description:
+      "Has formed an unlikely alliance that makes both parties uncomfortable — but it's working",
+    toneTag: "cozy",
     criminalFlag: false,
-    iconPrompt: 'Fantasy RPG icon. A prim knight and a scruffy rogue walking side by side through a forest, both visibly uncomfortable with each other, yet moving in the same direction with undeniable effectiveness.',
-    iconPath: 'generator/genres/fantasy/icons/TENSION#unlikely_alliance.webp',
+    iconPrompt:
+      "Fantasy RPG icon. A prim knight and a scruffy rogue walking side by side through a forest, both visibly uncomfortable with each other, yet moving in the same direction with undeniable effectiveness.",
+    iconPath: "generator/genres/fantasy/icons/TENSION#unlikely_alliance.webp",
   },
 ];

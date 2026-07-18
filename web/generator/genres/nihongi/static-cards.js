@@ -1,3 +1,17 @@
+// genres/nihongi/static-cards.js
+// Genre lore — imported into STATIC_CARDS_BY_GENRE (ui-data.js) and injected
+// by the AI Dungeon importer as typed Story Cards alongside the generated
+// NPC cards (also included in Copy/Download via buildScenarioPayload()).
+// Each array holds { name, triggers, entry } objects:
+//   name     — the story card's title
+//   triggers — comma-separated keyword string AI Dungeon matches against
+//   entry    — the lore text itself
+// Array name -> AI Dungeon card type (see aidungeon-importer.mjs):
+//   STATIC_CHARACTERS -> character   STATIC_CLASSES  -> class
+//   STATIC_RACES      -> race        STATIC_LOCATIONS -> location
+//   STATIC_FACTIONS   -> faction     STATIC_CUSTOM    -> custom
+// May be empty — not every genre populates every category.
+
 export const STATIC_CHARACTERS = [
   {
     name: "Amaterasu Ōmikami",
@@ -62,7 +76,8 @@ export const STATIC_CHARACTERS = [
   {
     name: "Kagutsuchi",
     triggers: "Kagutsuchi",
-    entry: "Fire god whose birth burned and killed his mother, Izanami. Depicted as an infant wreathed permanently in flame, too dangerous to hold and too new to understand why, cut into pieces by his own grieving father moments after birth. He has no personality so much as a nature — pure, undirected destruction, present at his own creation with no chance to be anything else.",
+    entry:
+      "Fire god whose birth burned and killed his mother, Izanami. Depicted as an infant wreathed permanently in flame, too dangerous to hold and too new to understand why, cut into pieces by his own grieving father moments after birth. He has no personality so much as a nature — pure, undirected destruction, present at his own creation with no chance to be anything else.",
   },
   {
     name: "Ninigi",
@@ -229,9 +244,9 @@ export const STATIC_RACES = [
   {
     name: "Oni",
     triggers: "Oni, oni, ogre, troll, demon",
-    entry: 
-      "An oni (鬼) is a fearsome ogre-like demon from Japanese folklore, born from human evil or summoned from the underworld of Jigoku. Towering and muscular, oni are often depicted with red or blue skin, wild hair, horns, sharp fangs, clawed hands, and tiger-skin loincloths, wielding massive spiked iron clubs called kanabō.  Their bodies are resistant to most weapons and fire, possessing immense strength, supernatural speed, and agility. Oni can shapeshift into flawless human disguises, read minds, mimic the voices of loved ones, and unleash terrifying roars that paralyze victims with fear. They feed on human flesh and life force, and many legends describe them as wardens of Buddhist hell, where they torment the souls of the wicked."
-  }
+    entry:
+      "An oni (鬼) is a fearsome ogre-like demon from Japanese folklore, born from human evil or summoned from the underworld of Jigoku. Towering and muscular, oni are often depicted with red or blue skin, wild hair, horns, sharp fangs, clawed hands, and tiger-skin loincloths, wielding massive spiked iron clubs called kanabō.  Their bodies are resistant to most weapons and fire, possessing immense strength, supernatural speed, and agility. Oni can shapeshift into flawless human disguises, read minds, mimic the voices of loved ones, and unleash terrifying roars that paralyze victims with fear. They feed on human flesh and life force, and many legends describe them as wardens of Buddhist hell, where they torment the souls of the wicked.",
+  },
 ];
 
 export const STATIC_LOCATIONS = [
@@ -255,8 +270,7 @@ export const STATIC_LOCATIONS = [
   {
     name: "Kyoto",
     triggers: "Kyoto",
-    entry:
-      "Ancient capital and center of culture.",
+    entry: "Ancient capital and center of culture.",
   },
   {
     name: "Rivers and Ponds",

@@ -1,95 +1,132 @@
 // genres/manga-osaka-highschool1987/city-settings.js
-// Specific Osaka locations and settings, 1987.
+// Specific Osaka locations and settings, 1987. Each entry:
+//   id           — unique slug; used for slot-machine reel identity and icon lookup
+//   label        — display label
+//   flavor       — atmospheric detail passed to Claude for the Opening/Description
+//   toneTag      — gritty | dramatic | cozy | neutral; feeds TAG_POOLS in settings.js
+//   statAffinity — optional stat-weighted selection bias
+//   iconPrompt   — text-to-image prompt for this setting's slot-machine reel icon
+//   iconPath     — served path where that icon lives
 
 export const CITY_SETTINGS = [
   {
-    id: 'namba_dotonbori',
-    label: 'Namba / Dotonbori',
-    flavor: 'The neon spine of Osaka — takoyaki smoke, pachinko noise, Glico Man lit up over the canal',
-    toneTag: 'dramatic',
+    id: "namba_dotonbori",
+    label: "Namba / Dotonbori",
+    flavor:
+      "The neon spine of Osaka — takoyaki smoke, pachinko noise, Glico Man lit up over the canal",
+    toneTag: "dramatic",
     statAffinity: { charisma: 1.2, dexterity: 1.1 },
-    iconPrompt: 'Dotonbori canal Osaka 1987 night neon lights Glico man sign reflections in water teenagers on bridge manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/CITY_SETTINGS#namba_dotonbori.webp',
+    iconPrompt:
+      "Dotonbori canal Osaka 1987 night neon lights Glico man sign reflections in water teenagers on bridge manga illustration",
+    iconPath:
+      "generator/genres/manga-osaka-highschool1987/icons/CITY_SETTINGS#namba_dotonbori.webp",
   },
   {
-    id: 'shinsaibashi',
-    label: 'Shinsaibashi',
-    flavor: 'The shopping district where cool happens first — boutiques, records, kissaten, and everyone watching everyone else',
-    toneTag: 'neutral',
+    id: "shinsaibashi",
+    label: "Shinsaibashi",
+    flavor:
+      "The shopping district where cool happens first — boutiques, records, kissaten, and everyone watching everyone else",
+    toneTag: "neutral",
     statAffinity: { charisma: 1.3, intelligence: 1.1 },
-    iconPrompt: 'Shinsaibashi shopping arcade Osaka 1987 covered arcade bustling fashionable teens window shopping manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/CITY_SETTINGS#shinsaibashi.webp',
+    iconPrompt:
+      "Shinsaibashi shopping arcade Osaka 1987 covered arcade bustling fashionable teens window shopping manga illustration",
+    iconPath:
+      "generator/genres/manga-osaka-highschool1987/icons/CITY_SETTINGS#shinsaibashi.webp",
   },
   {
-    id: 'den_den_town',
-    label: 'Den Den Town',
-    flavor: 'Nipponbashi electronics street — model kits, import games, laser discs, where otaku culture is barely visible but absolutely present',
-    toneTag: 'cozy',
+    id: "den_den_town",
+    label: "Den Den Town",
+    flavor:
+      "Nipponbashi electronics street — model kits, import games, laser discs, where otaku culture is barely visible but absolutely present",
+    toneTag: "cozy",
     statAffinity: { intelligence: 1.4, dexterity: 1.1 },
-    iconPrompt: 'Den Den Town Nipponbashi Osaka 1987 electronics stores signs manga model kits crowded street otaku manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/CITY_SETTINGS#den_den_town.webp',
+    iconPrompt:
+      "Den Den Town Nipponbashi Osaka 1987 electronics stores signs manga model kits crowded street otaku manga illustration",
+    iconPath:
+      "generator/genres/manga-osaka-highschool1987/icons/CITY_SETTINGS#den_den_town.webp",
   },
   {
-    id: 'tennoji_park',
-    label: 'Tennoji Park',
-    flavor: 'Where yankii meet, skaters practice, and students go when they\'re not where they\'re supposed to be',
-    toneTag: 'gritty',
+    id: "tennoji_park",
+    label: "Tennoji Park",
+    flavor:
+      "Where yankii meet, skaters practice, and students go when they're not where they're supposed to be",
+    toneTag: "gritty",
     statAffinity: { strength: 1.2, constitution: 1.1 },
-    iconPrompt: 'Tennoji Park Osaka 1987 teenagers hanging out delinquents on benches autumn afternoon manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/CITY_SETTINGS#tennoji_park.webp',
+    iconPrompt:
+      "Tennoji Park Osaka 1987 teenagers hanging out delinquents on benches autumn afternoon manga illustration",
+    iconPath:
+      "generator/genres/manga-osaka-highschool1987/icons/CITY_SETTINGS#tennoji_park.webp",
   },
   {
-    id: 'school_rooftop',
-    label: 'School Rooftop',
-    flavor: 'Confessions, confrontations, lunch spots, and the place where the real conversations happen',
-    toneTag: 'dramatic',
+    id: "school_rooftop",
+    label: "School Rooftop",
+    flavor:
+      "Confessions, confrontations, lunch spots, and the place where the real conversations happen",
+    toneTag: "dramatic",
     statAffinity: { charisma: 1.2, wisdom: 1.1 },
-    iconPrompt: 'Japanese high school rooftop 1987 Osaka cityscape background two students talking dramatic clouds manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/CITY_SETTINGS#school_rooftop.webp',
+    iconPrompt:
+      "Japanese high school rooftop 1987 Osaka cityscape background two students talking dramatic clouds manga illustration",
+    iconPath:
+      "generator/genres/manga-osaka-highschool1987/icons/CITY_SETTINGS#school_rooftop.webp",
   },
   {
-    id: 'shotengai',
-    label: 'Local Shotengai',
-    flavor: 'The covered shopping street near home — okonomiyaki shop, bicycle repair, the old woman who knows everyone\'s business',
-    toneTag: 'cozy',
+    id: "shotengai",
+    label: "Local Shotengai",
+    flavor:
+      "The covered shopping street near home — okonomiyaki shop, bicycle repair, the old woman who knows everyone's business",
+    toneTag: "cozy",
     statAffinity: { wisdom: 1.2, charisma: 1.1 },
-    iconPrompt: 'Japanese covered shotengai shopping street 1987 Osaka lanterns small shops afternoon warm light teenager on bicycle manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/CITY_SETTINGS#shotengai.webp',
+    iconPrompt:
+      "Japanese covered shotengai shopping street 1987 Osaka lanterns small shops afternoon warm light teenager on bicycle manga illustration",
+    iconPath:
+      "generator/genres/manga-osaka-highschool1987/icons/CITY_SETTINGS#shotengai.webp",
   },
   {
-    id: 'batting_cage',
-    label: 'Batting Cage',
-    flavor: 'The batting cage near school — sports kids and delinquents share the same nets, which generates interesting situations',
-    toneTag: 'neutral',
+    id: "batting_cage",
+    label: "Batting Cage",
+    flavor:
+      "The batting cage near school — sports kids and delinquents share the same nets, which generates interesting situations",
+    toneTag: "neutral",
     statAffinity: { strength: 1.3, constitution: 1.1 },
-    iconPrompt: 'Japanese batting cage 1987 Osaka student swinging baseball bat afternoon neon lighting sweat manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/CITY_SETTINGS#batting_cage.webp',
+    iconPrompt:
+      "Japanese batting cage 1987 Osaka student swinging baseball bat afternoon neon lighting sweat manga illustration",
+    iconPath:
+      "generator/genres/manga-osaka-highschool1987/icons/CITY_SETTINGS#batting_cage.webp",
   },
   {
-    id: 'game_center',
-    label: 'Game Center',
-    flavor: 'Street Fighter II is still two years away but Xevious and Double Dragon are enough — time disappears here',
-    toneTag: 'cozy',
+    id: "game_center",
+    label: "Game Center",
+    flavor:
+      "Street Fighter II is still two years away but Xevious and Double Dragon are enough — time disappears here",
+    toneTag: "cozy",
     statAffinity: { dexterity: 1.3, intelligence: 1.1 },
-    iconPrompt: 'Japanese game center arcade 1987 Osaka neon cabinets students teenagers competing Gradius manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/CITY_SETTINGS#game_center.webp',
+    iconPrompt:
+      "Japanese game center arcade 1987 Osaka neon cabinets students teenagers competing Gradius manga illustration",
+    iconPath:
+      "generator/genres/manga-osaka-highschool1987/icons/CITY_SETTINGS#game_center.webp",
   },
   {
-    id: 'school_festival_grounds',
-    label: 'School Festival Grounds',
-    flavor: 'During bunkasai: chaos, magic, haunted houses run by delinquents, and confessions that couldn\'t happen anywhere else',
-    toneTag: 'dramatic',
+    id: "school_festival_grounds",
+    label: "School Festival Grounds",
+    flavor:
+      "During bunkasai: chaos, magic, haunted houses run by delinquents, and confessions that couldn't happen anywhere else",
+    toneTag: "dramatic",
     statAffinity: { charisma: 1.3, wisdom: 1.1 },
-    iconPrompt: 'Japanese school cultural festival bunkasai 1987 Osaka decorated school grounds students banners food stalls excitement manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/CITY_SETTINGS#school_festival_grounds.webp',
+    iconPrompt:
+      "Japanese school cultural festival bunkasai 1987 Osaka decorated school grounds students banners food stalls excitement manga illustration",
+    iconPath:
+      "generator/genres/manga-osaka-highschool1987/icons/CITY_SETTINGS#school_festival_grounds.webp",
   },
   {
-    id: 'kissaten',
-    label: 'Kissaten',
-    flavor: 'The coffee shop near school — dim, smoky, Jazz Messengers on the hi-fi, where serious conversations go to become more serious',
-    toneTag: 'cozy',
+    id: "kissaten",
+    label: "Kissaten",
+    flavor:
+      "The coffee shop near school — dim, smoky, Jazz Messengers on the hi-fi, where serious conversations go to become more serious",
+    toneTag: "cozy",
     statAffinity: { intelligence: 1.2, charisma: 1.1 },
-    iconPrompt: 'Japanese kissaten coffee shop 1987 Osaka dim interior students talking booth jazz records warm light manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/CITY_SETTINGS#kissaten.webp',
+    iconPrompt:
+      "Japanese kissaten coffee shop 1987 Osaka dim interior students talking booth jazz records warm light manga illustration",
+    iconPath:
+      "generator/genres/manga-osaka-highschool1987/icons/CITY_SETTINGS#kissaten.webp",
   },
 ];

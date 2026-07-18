@@ -1,218 +1,304 @@
 // genres/nihongi/family-structures.js
-// Family situations in the Nihon Shoki world.
+// Family situations in the Nihon Shoki world. Family composition is
+// randomized per character; the generator picks one FAMILY_STRUCTURES entry,
+// then resolves each parent's status independently.
+//
+// PARENT_STATUSES / SIBLING_DYNAMICS entries: id, label, toneTag, iconPrompt, iconPath.
+//
+// FAMILY_STRUCTURES entries:
+//   id, label            — identity + display label
+//   parentCount          — 0, 1, or 2 — determines which parent slots are filled
+//   siblingCount         — [min, max], resolved at generation time
+//   parentGender         — optional; forces 'mother'/'father' for a 1-parent structure
+//   toneTag              — gritty | dramatic | cozy | neutral
+//   statAffinity         — optional stat-weighted selection bias
+//   economicHint         — optional tier shift suggestion
+//   notes                — internal note on what this structure represents
+//   iconPrompt, iconPath — slot-machine reel icon
 
 export const PARENT_STATUSES = [
   {
-    id: 'father_court_lord',
-    label: 'Father is a present court official — demanding, invested, watching every step',
-    toneTag: 'pressure',
-    iconPrompt: 'ancient japanese father court official asuka demanding authoritative watching child silk robes nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/PARENT_STATUSES#father_court_lord.webp',
+    id: "father_court_lord",
+    label:
+      "Father is a present court official — demanding, invested, watching every step",
+    toneTag: "pressure",
+    iconPrompt:
+      "ancient japanese father court official asuka demanding authoritative watching child silk robes nihon shoki yamato-e painting",
+    iconPath:
+      "generator/genres/nihongi/icons/PARENT_STATUSES#father_court_lord.webp",
   },
   {
-    id: 'father_posted_away',
-    label: 'Father is posted to a distant province on imperial business — absent, an idea more than a person',
-    toneTag: 'absent',
-    iconPrompt: 'ancient japanese father posted away distant provincial posting absent child waiting home nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/PARENT_STATUSES#father_posted_away.webp',
+    id: "father_posted_away",
+    label:
+      "Father is posted to a distant province on imperial business — absent, an idea more than a person",
+    toneTag: "absent",
+    iconPrompt:
+      "ancient japanese father posted away distant provincial posting absent child waiting home nihon shoki yamato-e painting",
+    iconPath:
+      "generator/genres/nihongi/icons/PARENT_STATUSES#father_posted_away.webp",
   },
   {
-    id: 'father_purge_killed',
-    label: 'Father was killed in a political purge — the circumstances are not discussed openly',
-    toneTag: 'burden',
-    iconPrompt: 'ancient japanese father killed political purge ancestral altar mourning responsibility dangerous memory nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/PARENT_STATUSES#father_purge_killed.webp',
+    id: "father_purge_killed",
+    label:
+      "Father was killed in a political purge — the circumstances are not discussed openly",
+    toneTag: "burden",
+    iconPrompt:
+      "ancient japanese father killed political purge ancestral altar mourning responsibility dangerous memory nihon shoki yamato-e painting",
+    iconPath:
+      "generator/genres/nihongi/icons/PARENT_STATUSES#father_purge_killed.webp",
   },
   {
-    id: 'mother_shrine_priestess',
-    label: 'Mother serves at an important shrine — rarely home, presence more ritual than domestic',
-    toneTag: 'distant_sacred',
-    iconPrompt: 'ancient japanese mother shrine priestess sacred duty white robes ritual rarely home child alone nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/PARENT_STATUSES#mother_shrine_priestess.webp',
+    id: "mother_shrine_priestess",
+    label:
+      "Mother serves at an important shrine — rarely home, presence more ritual than domestic",
+    toneTag: "distant_sacred",
+    iconPrompt:
+      "ancient japanese mother shrine priestess sacred duty white robes ritual rarely home child alone nihon shoki yamato-e painting",
+    iconPath:
+      "generator/genres/nihongi/icons/PARENT_STATUSES#mother_shrine_priestess.webp",
   },
   {
-    id: 'mother_continental',
-    label: 'Mother is from the continent — different customs, different expectations, a permanently foreign presence in the compound',
-    toneTag: 'cultural_gap',
-    iconPrompt: 'ancient japanese mother continental baekje silla foreign customs different appearance compound isolation nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/PARENT_STATUSES#mother_continental.webp',
+    id: "mother_continental",
+    label:
+      "Mother is from the continent — different customs, different expectations, a permanently foreign presence in the compound",
+    toneTag: "cultural_gap",
+    iconPrompt:
+      "ancient japanese mother continental baekje silla foreign customs different appearance compound isolation nihon shoki yamato-e painting",
+    iconPath:
+      "generator/genres/nihongi/icons/PARENT_STATUSES#mother_continental.webp",
   },
   {
-    id: 'father_in_exile',
-    label: 'Father was exiled after a factional defeat — household speaks of it only in code',
-    toneTag: 'disgrace',
-    iconPrompt: 'ancient japanese exiled father provincial exile shame silence waiting for recall household carefully quiet nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/PARENT_STATUSES#father_in_exile.webp',
+    id: "father_in_exile",
+    label:
+      "Father was exiled after a factional defeat — household speaks of it only in code",
+    toneTag: "disgrace",
+    iconPrompt:
+      "ancient japanese exiled father provincial exile shame silence waiting for recall household carefully quiet nihon shoki yamato-e painting",
+    iconPath:
+      "generator/genres/nihongi/icons/PARENT_STATUSES#father_in_exile.webp",
   },
   {
-    id: 'father_war_fallen',
-    label: 'Father died in an inter-clan military conflict — his reputation oscillates between honour and cautionary tale depending on who won',
-    toneTag: 'grief',
-    iconPrompt: 'ancient japanese father died inter-clan war battle honour mourning survivor son daughter nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/PARENT_STATUSES#father_war_fallen.webp',
+    id: "father_war_fallen",
+    label:
+      "Father died in an inter-clan military conflict — his reputation oscillates between honour and cautionary tale depending on who won",
+    toneTag: "grief",
+    iconPrompt:
+      "ancient japanese father died inter-clan war battle honour mourning survivor son daughter nihon shoki yamato-e painting",
+    iconPath:
+      "generator/genres/nihongi/icons/PARENT_STATUSES#father_war_fallen.webp",
   },
   {
-    id: 'both_deceased_epidemic',
-    label: 'Both parents died in an epidemic — raised by clan elders with institutional warmth and personal distance',
-    toneTag: 'orphan',
-    iconPrompt: 'ancient japanese both parents dead epidemic orphan raised clan elders compound formal distance nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/PARENT_STATUSES#both_deceased_epidemic.webp',
+    id: "both_deceased_epidemic",
+    label:
+      "Both parents died in an epidemic — raised by clan elders with institutional warmth and personal distance",
+    toneTag: "orphan",
+    iconPrompt:
+      "ancient japanese both parents dead epidemic orphan raised clan elders compound formal distance nihon shoki yamato-e painting",
+    iconPath:
+      "generator/genres/nihongi/icons/PARENT_STATUSES#both_deceased_epidemic.webp",
   },
   {
-    id: 'parent_remarried',
-    label: 'A parent remarried — the new household has its own politics, loyalties, and children',
-    toneTag: 'friction',
-    iconPrompt: 'ancient japanese remarried parent stepparent new household different children tension awkward distance nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/PARENT_STATUSES#parent_remarried.webp',
+    id: "parent_remarried",
+    label:
+      "A parent remarried — the new household has its own politics, loyalties, and children",
+    toneTag: "friction",
+    iconPrompt:
+      "ancient japanese remarried parent stepparent new household different children tension awkward distance nihon shoki yamato-e painting",
+    iconPath:
+      "generator/genres/nihongi/icons/PARENT_STATUSES#parent_remarried.webp",
   },
 ];
 
 export const SIBLING_DYNAMICS = [
   {
-    id: 'na',
-    label: 'Only child',
-    toneTag: 'neutral',
-    iconPrompt: 'ancient japanese only child alone compound solitary heir single yamato household nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SIBLING_DYNAMICS#na.webp',
+    id: "na",
+    label: "Only child",
+    toneTag: "neutral",
+    iconPrompt:
+      "ancient japanese only child alone compound solitary heir single yamato household nihon shoki yamato-e painting",
+    iconPath: "generator/genres/nihongi/icons/SIBLING_DYNAMICS#na.webp",
   },
   {
-    id: 'eldest_heir',
-    label: 'Eldest — carries the clan line and everything that comes with it',
-    toneTag: 'burden',
-    iconPrompt: 'ancient japanese eldest heir clan responsibility serious formal asuka period nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SIBLING_DYNAMICS#eldest_heir.webp',
+    id: "eldest_heir",
+    label: "Eldest — carries the clan line and everything that comes with it",
+    toneTag: "burden",
+    iconPrompt:
+      "ancient japanese eldest heir clan responsibility serious formal asuka period nihon shoki yamato-e painting",
+    iconPath:
+      "generator/genres/nihongi/icons/SIBLING_DYNAMICS#eldest_heir.webp",
   },
   {
-    id: 'younger_overlooked',
-    label: 'Younger sibling — systematically overlooked in favour of the heir',
-    toneTag: 'resentment',
-    iconPrompt: 'ancient japanese younger sibling overlooked watching elder attention resentment shadow compound nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SIBLING_DYNAMICS#younger_overlooked.webp',
+    id: "younger_overlooked",
+    label: "Younger sibling — systematically overlooked in favour of the heir",
+    toneTag: "resentment",
+    iconPrompt:
+      "ancient japanese younger sibling overlooked watching elder attention resentment shadow compound nihon shoki yamato-e painting",
+    iconPath:
+      "generator/genres/nihongi/icons/SIBLING_DYNAMICS#younger_overlooked.webp",
   },
   {
-    id: 'sister_shrine_dedicated',
-    label: 'A sister was dedicated to shrine service — contact is formal and rare',
-    toneTag: 'loss',
-    iconPrompt: 'ancient japanese sister dedicated shrine service miko separation ritual barrier family distance nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SIBLING_DYNAMICS#sister_shrine_dedicated.webp',
+    id: "sister_shrine_dedicated",
+    label:
+      "A sister was dedicated to shrine service — contact is formal and rare",
+    toneTag: "loss",
+    iconPrompt:
+      "ancient japanese sister dedicated shrine service miko separation ritual barrier family distance nihon shoki yamato-e painting",
+    iconPath:
+      "generator/genres/nihongi/icons/SIBLING_DYNAMICS#sister_shrine_dedicated.webp",
   },
   {
-    id: 'sibling_rival',
-    label: 'A sibling is a direct rival for the same position — and is as capable as they are',
-    toneTag: 'rivalry',
-    iconPrompt: 'ancient japanese sibling rivalry competing same court position capable both dangerous tension nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SIBLING_DYNAMICS#sibling_rival.webp',
+    id: "sibling_rival",
+    label:
+      "A sibling is a direct rival for the same position — and is as capable as they are",
+    toneTag: "rivalry",
+    iconPrompt:
+      "ancient japanese sibling rivalry competing same court position capable both dangerous tension nihon shoki yamato-e painting",
+    iconPath:
+      "generator/genres/nihongi/icons/SIBLING_DYNAMICS#sibling_rival.webp",
   },
   {
-    id: 'continental_half',
-    label: 'A half-sibling from the continental parent — different upbringing, different loyalties, same blood',
-    toneTag: 'complicated',
-    iconPrompt: 'ancient japanese half sibling continental parent different customs same clan complicated loyalty nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SIBLING_DYNAMICS#continental_half.webp',
+    id: "continental_half",
+    label:
+      "A half-sibling from the continental parent — different upbringing, different loyalties, same blood",
+    toneTag: "complicated",
+    iconPrompt:
+      "ancient japanese half sibling continental parent different customs same clan complicated loyalty nihon shoki yamato-e painting",
+    iconPath:
+      "generator/genres/nihongi/icons/SIBLING_DYNAMICS#continental_half.webp",
   },
   {
-    id: 'deceased_elder',
-    label: 'An older sibling died — their position was inherited along with their ghost',
-    toneTag: 'grief',
-    iconPrompt: 'ancient japanese deceased older sibling inherited role memorial ghost expectation younger survivor nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SIBLING_DYNAMICS#deceased_elder.webp',
+    id: "deceased_elder",
+    label:
+      "An older sibling died — their position was inherited along with their ghost",
+    toneTag: "grief",
+    iconPrompt:
+      "ancient japanese deceased older sibling inherited role memorial ghost expectation younger survivor nihon shoki yamato-e painting",
+    iconPath:
+      "generator/genres/nihongi/icons/SIBLING_DYNAMICS#deceased_elder.webp",
   },
   {
-    id: 'temple_bond',
-    label: 'A sibling now in a Buddhist temple — the closest relationship they have, conducted through rare correspondence',
-    toneTag: 'warmth',
-    iconPrompt: 'ancient japanese sibling buddhist temple close bond letters rare visit warmth separation faith nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SIBLING_DYNAMICS#temple_bond.webp',
+    id: "temple_bond",
+    label:
+      "A sibling now in a Buddhist temple — the closest relationship they have, conducted through rare correspondence",
+    toneTag: "warmth",
+    iconPrompt:
+      "ancient japanese sibling buddhist temple close bond letters rare visit warmth separation faith nihon shoki yamato-e painting",
+    iconPath:
+      "generator/genres/nihongi/icons/SIBLING_DYNAMICS#temple_bond.webp",
   },
 ];
 
 export const FAMILY_STRUCTURES = [
   {
-    id: 'great_clan_compound',
-    label: 'Great Clan Compound — Asuka Capital Residence',
+    id: "great_clan_compound",
+    label: "Great Clan Compound — Asuka Capital Residence",
     parentCount: 2,
     siblingCount: [1, 3],
-    toneTag: 'prestigious',
+    toneTag: "prestigious",
     statAffinity: { intelligence: 1.2, charisma: 1.2 },
-    notes: 'Generations of genealogy, faction politics at the dinner table, and the constant low hum of court surveillance; the clan crest is both identity and burden',
-    iconPrompt: 'ancient japanese great clan compound asuka capital grand residence inner outer quarters generations genealogy prestigious nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/FAMILY_STRUCTURES#great_clan_compound.webp',
+    notes:
+      "Generations of genealogy, faction politics at the dinner table, and the constant low hum of court surveillance; the clan crest is both identity and burden",
+    iconPrompt:
+      "ancient japanese great clan compound asuka capital grand residence inner outer quarters generations genealogy prestigious nihon shoki yamato-e painting",
+    iconPath:
+      "generator/genres/nihongi/icons/FAMILY_STRUCTURES#great_clan_compound.webp",
   },
   {
-    id: 'reduced_noble',
-    label: 'Reduced Noble Household — Title Intact, Resources Gone',
+    id: "reduced_noble",
+    label: "Reduced Noble Household — Title Intact, Resources Gone",
     parentCount: 2,
     siblingCount: [0, 2],
-    toneTag: 'proud_but_diminished',
+    toneTag: "proud_but_diminished",
     statAffinity: { wisdom: 1.2, intelligence: 1.1 },
-    notes: 'Still uses the court rank, still maintains the forms; the silk robes are carefully repaired and the genealogy is recited correctly — ambition scales precisely with how far they have fallen',
-    iconPrompt: 'ancient japanese reduced noble household title intact resources gone dignified poverty faded pride mended silk nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/FAMILY_STRUCTURES#reduced_noble.webp',
+    notes:
+      "Still uses the court rank, still maintains the forms; the silk robes are carefully repaired and the genealogy is recited correctly — ambition scales precisely with how far they have fallen",
+    iconPrompt:
+      "ancient japanese reduced noble household title intact resources gone dignified poverty faded pride mended silk nihon shoki yamato-e painting",
+    iconPath:
+      "generator/genres/nihongi/icons/FAMILY_STRUCTURES#reduced_noble.webp",
   },
   {
-    id: 'provincial_household',
-    label: 'Provincial Governor\'s Household',
+    id: "provincial_household",
+    label: "Provincial Governor's Household",
     parentCount: 2,
     siblingCount: [1, 3],
-    toneTag: 'independent',
+    toneTag: "independent",
     statAffinity: { constitution: 1.2, wisdom: 1.2 },
-    notes: 'Far from the capital and relatively sovereign; the court\'s instructions arrive weeks late and the provincial reality is always different from what the capital imagines',
-    iconPrompt: 'ancient japanese provincial governor household country compound land management far from capital independent authority nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/FAMILY_STRUCTURES#provincial_household.webp',
+    notes:
+      "Far from the capital and relatively sovereign; the court's instructions arrive weeks late and the provincial reality is always different from what the capital imagines",
+    iconPrompt:
+      "ancient japanese provincial governor household country compound land management far from capital independent authority nihon shoki yamato-e painting",
+    iconPath:
+      "generator/genres/nihongi/icons/FAMILY_STRUCTURES#provincial_household.webp",
   },
   {
-    id: 'shrine_family',
-    label: 'Hereditary Shrine Custodian Family',
+    id: "shrine_family",
+    label: "Hereditary Shrine Custodian Family",
     parentCount: 2,
     siblingCount: [0, 2],
-    toneTag: 'sacred',
+    toneTag: "sacred",
     statAffinity: { wisdom: 1.4, constitution: 1.1 },
-    notes: 'The shrine has been in the family longer than the Yamato court has claimed the surrounding territory; ritual knowledge is the inheritance, and the kami are closer than any court minister',
-    iconPrompt: 'ancient japanese hereditary shrine family custodian sacred forest kami close ritual knowledge generations nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/FAMILY_STRUCTURES#shrine_family.webp',
+    notes:
+      "The shrine has been in the family longer than the Yamato court has claimed the surrounding territory; ritual knowledge is the inheritance, and the kami are closer than any court minister",
+    iconPrompt:
+      "ancient japanese hereditary shrine family custodian sacred forest kami close ritual knowledge generations nihon shoki yamato-e painting",
+    iconPath:
+      "generator/genres/nihongi/icons/FAMILY_STRUCTURES#shrine_family.webp",
   },
   {
-    id: 'continental_craftsmen',
-    label: 'Continental Craftsman Family',
+    id: "continental_craftsmen",
+    label: "Continental Craftsman Family",
     parentCount: 2,
     siblingCount: [1, 3],
-    toneTag: 'skilled_outsider',
+    toneTag: "skilled_outsider",
     statAffinity: { dexterity: 1.3, intelligence: 1.2 },
-    notes: 'Immigrant or descended from immigrants; the skill is extraordinary, the social position is permanent second-tier; the language of the homeland is still spoken at home',
-    iconPrompt: 'ancient japanese continental craftsman family immigrant baekje skilled workshop foreign customs at home bilingual nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/FAMILY_STRUCTURES#continental_craftsmen.webp',
+    notes:
+      "Immigrant or descended from immigrants; the skill is extraordinary, the social position is permanent second-tier; the language of the homeland is still spoken at home",
+    iconPrompt:
+      "ancient japanese continental craftsman family immigrant baekje skilled workshop foreign customs at home bilingual nihon shoki yamato-e painting",
+    iconPath:
+      "generator/genres/nihongi/icons/FAMILY_STRUCTURES#continental_craftsmen.webp",
   },
   {
-    id: 'farming_household',
-    label: 'Farming Household — Rice Paddy Country',
+    id: "farming_household",
+    label: "Farming Household — Rice Paddy Country",
     parentCount: 2,
     siblingCount: [2, 5],
-    toneTag: 'grounded',
+    toneTag: "grounded",
     statAffinity: { constitution: 1.3, strength: 1.2 },
-    notes: 'Seasonal rhythms of rice planting and harvest, communal labour, the village as the entire world; what happens in Asuka is rumour, what happens to the water supply is life and death',
-    iconPrompt: 'ancient japanese farming family rice paddy thatched house seasonal hard work communal village nihon shoki folk painting',
-    iconPath: 'generator/genres/nihongi/icons/FAMILY_STRUCTURES#farming_household.webp',
+    notes:
+      "Seasonal rhythms of rice planting and harvest, communal labour, the village as the entire world; what happens in Asuka is rumour, what happens to the water supply is life and death",
+    iconPrompt:
+      "ancient japanese farming family rice paddy thatched house seasonal hard work communal village nihon shoki folk painting",
+    iconPath:
+      "generator/genres/nihongi/icons/FAMILY_STRUCTURES#farming_household.webp",
   },
   {
-    id: 'war_orphan',
-    label: 'War Orphan — Both Parents Lost in Clan Conflict',
+    id: "war_orphan",
+    label: "War Orphan — Both Parents Lost in Clan Conflict",
     parentCount: 0,
     siblingCount: [0, 1],
-    toneTag: 'survival',
+    toneTag: "survival",
     statAffinity: { dexterity: 1.2, wisdom: 1.2 },
-    notes: 'The conflict that killed their parents is still being fought in court by the same factions; they were absorbed by a clan with its own reasons for the arrangement',
-    iconPrompt: 'ancient japanese war orphan both parents lost clan conflict absorbed by another clan alone survivor nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/FAMILY_STRUCTURES#war_orphan.webp',
+    notes:
+      "The conflict that killed their parents is still being fought in court by the same factions; they were absorbed by a clan with its own reasons for the arrangement",
+    iconPrompt:
+      "ancient japanese war orphan both parents lost clan conflict absorbed by another clan alone survivor nihon shoki yamato-e painting",
+    iconPath:
+      "generator/genres/nihongi/icons/FAMILY_STRUCTURES#war_orphan.webp",
   },
   {
-    id: 'temple_raised',
-    label: 'Raised in a Buddhist Temple — Given as an Oblate',
+    id: "temple_raised",
+    label: "Raised in a Buddhist Temple — Given as an Oblate",
     parentCount: 0,
     siblingCount: [0, 0],
-    toneTag: 'detached',
+    toneTag: "detached",
     statAffinity: { wisdom: 1.4, intelligence: 1.3 },
-    notes: 'Given to the temple in infancy or early childhood; deeply learned in continental texts, genuinely outside the social norms of lay society; the world of clan politics is both familiar from reading and alien from experience',
-    iconPrompt: 'ancient japanese child raised buddhist temple oblate given learned continental texts outside lay society mountain temple nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/FAMILY_STRUCTURES#temple_raised.webp',
+    notes:
+      "Given to the temple in infancy or early childhood; deeply learned in continental texts, genuinely outside the social norms of lay society; the world of clan politics is both familiar from reading and alien from experience",
+    iconPrompt:
+      "ancient japanese child raised buddhist temple oblate given learned continental texts outside lay society mountain temple nihon shoki yamato-e painting",
+    iconPath:
+      "generator/genres/nihongi/icons/FAMILY_STRUCTURES#temple_raised.webp",
   },
 ];

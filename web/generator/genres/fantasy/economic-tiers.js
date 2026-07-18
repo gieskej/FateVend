@@ -1,42 +1,97 @@
+// genres/fantasy/economic-tiers.js
+// Economic status markers, one tier (1-5, poorest to wealthiest) per character,
+// derived from profession economicTier + life-event/family economicHint shifts.
+// Each tier:
+//   label       — display label
+//   descriptors — sensory/status details woven into the character Entry
+//   housing     — pool of housing situations for this tier
+//   transport   — pool of transport options for this tier
+//   iconPrompt  — text-to-image prompt for this tier's slot-machine reel icon
+//   iconPath    — served path where that icon lives
+
 export const ECONOMIC_TIERS = {
   1: {
-    label: 'Destitute',
-    descriptors: ['sleeping rough or in a stable', 'begging or stealing to eat', 'one bad day from destitute', 'clothes that were someone else\'s first'],
-    housing: ['stable loft', 'doorway or alley', 'a corner of a crowded common room', 'a cave or ruin'],
-    transport: ['on foot', 'a lame mule', 'nothing'],
-    iconPrompt: 'Fantasy RPG icon. A gaunt figure huddled in a stone doorway wrapped in a threadbare cloak, a cracked begging bowl beside them, rain-slicked cobblestones, city wealth visible and indifferent in the distance.',
-    iconPath: 'generator/genres/fantasy/icons/ECONOMIC_TIER#destitute.webp',
+    label: "Destitute",
+    descriptors: [
+      "sleeping rough or in a stable",
+      "begging or stealing to eat",
+      "one bad day from destitute",
+      "clothes that were someone else's first",
+    ],
+    housing: [
+      "stable loft",
+      "doorway or alley",
+      "a corner of a crowded common room",
+      "a cave or ruin",
+    ],
+    transport: ["on foot", "a lame mule", "nothing"],
+    iconPrompt:
+      "Fantasy RPG icon. A gaunt figure huddled in a stone doorway wrapped in a threadbare cloak, a cracked begging bowl beside them, rain-slicked cobblestones, city wealth visible and indifferent in the distance.",
+    iconPath: "generator/genres/fantasy/icons/ECONOMIC_TIER#destitute.webp",
   },
   2: {
-    label: 'Common folk',
-    descriptors: ['a rented room above a tavern', 'pays their debts, barely', 'secondhand gear that mostly works', 'coin enough for bread and not much else'],
-    housing: ['rented room', 'shared dormitory', 'a modest cottage'],
-    transport: ['on foot', 'a serviceable horse', 'passage on a merchant barge'],
-    iconPrompt: 'Fantasy RPG icon. A tired laborer eating a simple meal at a tavern table, a nearly empty coin purse beside a mug of ale, patched secondhand gear hanging on the chair, making ends meet.',
-    iconPath: 'generator/genres/fantasy/icons/ECONOMIC_TIER#common_folk.webp',
+    label: "Common folk",
+    descriptors: [
+      "a rented room above a tavern",
+      "pays their debts, barely",
+      "secondhand gear that mostly works",
+      "coin enough for bread and not much else",
+    ],
+    housing: ["rented room", "shared dormitory", "a modest cottage"],
+    transport: [
+      "on foot",
+      "a serviceable horse",
+      "passage on a merchant barge",
+    ],
+    iconPrompt:
+      "Fantasy RPG icon. A tired laborer eating a simple meal at a tavern table, a nearly empty coin purse beside a mug of ale, patched secondhand gear hanging on the chair, making ends meet.",
+    iconPath: "generator/genres/fantasy/icons/ECONOMIC_TIER#common_folk.webp",
   },
   3: {
-    label: 'Skilled / journeyman',
-    descriptors: ['decent lodgings in the craftsmen\'s quarter', 'a horse of their own', 'gear they chose rather than inherited', 'steady work if not spectacular'],
-    housing: ['own room at an inn', 'rented townhouse', 'quarters provided by an employer'],
-    transport: ['reliable horse', 'their own small boat', 'hired passage'],
-    iconPrompt: 'Fantasy RPG icon. A skilled artisan at a tidy workshop bench in the craftsmen\'s quarter, quality tools on the wall, a reliable horse visible through the window, steady and capable if not wealthy.',
-    iconPath: 'generator/genres/fantasy/icons/ECONOMIC_TIER#skilled_journeyman.webp',
+    label: "Skilled / journeyman",
+    descriptors: [
+      "decent lodgings in the craftsmen's quarter",
+      "a horse of their own",
+      "gear they chose rather than inherited",
+      "steady work if not spectacular",
+    ],
+    housing: [
+      "own room at an inn",
+      "rented townhouse",
+      "quarters provided by an employer",
+    ],
+    transport: ["reliable horse", "their own small boat", "hired passage"],
+    iconPrompt:
+      "Fantasy RPG icon. A skilled artisan at a tidy workshop bench in the craftsmen's quarter, quality tools on the wall, a reliable horse visible through the window, steady and capable if not wealthy.",
+    iconPath:
+      "generator/genres/fantasy/icons/ECONOMIC_TIER#skilled_journeyman.webp",
   },
   4: {
-    label: 'Prosperous',
-    descriptors: ['a house in the merchant district or keeps rooms at a good inn', 'well-equipped', 'money is not currently the problem', 'a name that opens some doors'],
-    housing: ['townhouse', 'estate rooms', 'private quarters at a keep'],
-    transport: ['quality horse', 'carriage', 'private ship cabin'],
-    iconPrompt: 'Fantasy RPG icon. A well-dressed merchant in a fine townhouse study, maps and ledgers spread across an oak desk, quality arms displayed on the wall, a carriage visible through the window below.',
-    iconPath: 'generator/genres/fantasy/icons/ECONOMIC_TIER#prosperous.webp',
+    label: "Prosperous",
+    descriptors: [
+      "a house in the merchant district or keeps rooms at a good inn",
+      "well-equipped",
+      "money is not currently the problem",
+      "a name that opens some doors",
+    ],
+    housing: ["townhouse", "estate rooms", "private quarters at a keep"],
+    transport: ["quality horse", "carriage", "private ship cabin"],
+    iconPrompt:
+      "Fantasy RPG icon. A well-dressed merchant in a fine townhouse study, maps and ledgers spread across an oak desk, quality arms displayed on the wall, a carriage visible through the window below.",
+    iconPath: "generator/genres/fantasy/icons/ECONOMIC_TIER#prosperous.webp",
   },
   5: {
-    label: 'Wealthy / noble',
-    descriptors: ['an estate or manor', 'staff and servants', 'money as leverage', 'insulated from the consequences that affect everyone else'],
-    housing: ['manor house', 'castle wing', 'palatial city residence'],
-    transport: ['fine warhorse', 'private carriage', 'personal ship'],
-    iconPrompt: 'Fantasy RPG icon. A noble seated in a grand manor hall, liveried servants in attendance, tall windows overlooking manicured estate grounds, wealth and power woven into every surface.',
-    iconPath: 'generator/genres/fantasy/icons/ECONOMIC_TIER#wealthy_noble.webp',
+    label: "Wealthy / noble",
+    descriptors: [
+      "an estate or manor",
+      "staff and servants",
+      "money as leverage",
+      "insulated from the consequences that affect everyone else",
+    ],
+    housing: ["manor house", "castle wing", "palatial city residence"],
+    transport: ["fine warhorse", "private carriage", "personal ship"],
+    iconPrompt:
+      "Fantasy RPG icon. A noble seated in a grand manor hall, liveried servants in attendance, tall windows overlooking manicured estate grounds, wealth and power woven into every surface.",
+    iconPath: "generator/genres/fantasy/icons/ECONOMIC_TIER#wealthy_noble.webp",
   },
 };

@@ -1,26 +1,30 @@
 // genres/fantasy/settings.js
+// Re-exports ECONOMIC_TIERS/CITY_SETTINGS and defines TAG_POOLS: the pools
+// scenario tags (up to 10) are drawn from, keyed by toneTag match on the
+// rolled city/tension (`always` is unconditional), `criminal` (added when a
+// tension's criminalFlag is true), and `professionTags` (keyed by industry).
 
-export { ECONOMIC_TIERS } from './economic-tiers.js';
-export { CITY_SETTINGS } from './city-settings.js';
+export { ECONOMIC_TIERS } from "./economic-tiers.js";
+export { CITY_SETTINGS } from "./city-settings.js";
 
 export const TAG_POOLS = {
-  always: ['fantasy', 'character-driven'],
-  gritty: ['gritty', 'dark', 'survival', 'crime', 'low-fantasy'],
-  dramatic: ['drama', 'political', 'secrets', 'betrayal', 'high-stakes'],
-  cozy: ['cozy', 'slice-of-life', 'small-town', 'light-fantasy'],
-  neutral: ['adventure', 'classic-fantasy', 'world-building'],
-  criminal: ['crime', 'thieves-guild', 'underworld', 'heist'],
+  always: ["fantasy", "character-driven"],
+  gritty: ["gritty", "dark", "survival", "crime", "low-fantasy"],
+  dramatic: ["drama", "political", "secrets", "betrayal", "high-stakes"],
+  cozy: ["cozy", "slice-of-life", "small-town", "light-fantasy"],
+  neutral: ["adventure", "classic-fantasy", "world-building"],
+  criminal: ["crime", "thieves-guild", "underworld", "heist"],
   professionTags: {
-    'Martial': ['action', 'combat', 'soldier'],
-    'Criminal': ['crime', 'thieves-guild', 'heist'],
-    'Arcane': ['magic', 'arcane', 'sorcery'],
-    'Divine': ['religion', 'gods', 'faith'],
-    'Craft': ['crafting', 'artisan', 'slice-of-life'],
-    'Performance': ['bard', 'music', 'performance'],
-    'Service': ['slice-of-life', 'community'],
-    'Trade': ['merchant', 'trade', 'adventure'],
-    'Nobility': ['political', 'intrigue', 'power'],
-    'Wilderness': ['ranger', 'nature', 'survival'],
-    'Outcast': ['exile', 'survival', 'redemption'],
+    Martial: ["action", "combat", "soldier"],
+    Criminal: ["crime", "thieves-guild", "heist"],
+    Arcane: ["magic", "arcane", "sorcery"],
+    Divine: ["religion", "gods", "faith"],
+    Craft: ["crafting", "artisan", "slice-of-life"],
+    Performance: ["bard", "music", "performance"],
+    Service: ["slice-of-life", "community"],
+    Trade: ["merchant", "trade", "adventure"],
+    Nobility: ["political", "intrigue", "power"],
+    Wilderness: ["ranger", "nature", "survival"],
+    Outcast: ["exile", "survival", "redemption"],
   },
 };

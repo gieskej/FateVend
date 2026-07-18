@@ -1,298 +1,357 @@
 // genres/fantasy/family-structures.js
 // Largely mirrors modern structure but with fantasy-appropriate notes.
+// Family composition is randomized per character; the generator picks one
+// FAMILY_STRUCTURES entry, then resolves each parent's status independently.
+//
+// PARENT_STATUSES / SIBLING_DYNAMICS entries: id, label, toneTag, iconPrompt, iconPath.
+//
+// FAMILY_STRUCTURES entries:
+//   id, label            — identity + display label
+//   parentCount          — 0, 1, or 2 — determines which parent slots are filled
+//   siblingCount         — [min, max], resolved at generation time
+//   parentGender         — optional; forces 'mother'/'father' for a 1-parent structure
+//   toneTag              — gritty | dramatic | cozy | neutral
+//   statAffinity         — optional stat-weighted selection bias
+//   economicHint         — optional tier shift suggestion
+//   notes                — internal note on what this structure represents
+//   iconPrompt, iconPath — slot-machine reel icon
 
 export const PARENT_STATUSES = [
-  { 
-    id:'present_close',
-    label:'present and close', 
-    iconPrompt: 'fantasy rpg icon, medieval cottage interior, parent and grown child by stone hearth, both in woolen homespun, hand on shoulder, laughing together, warm amber firelight, rough wooden beams overhead, close two-shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/PARENT#present_close.webp' 
+  {
+    id: "present_close",
+    label: "present and close",
+    iconPrompt:
+      "fantasy rpg icon, medieval cottage interior, parent and grown child by stone hearth, both in woolen homespun, hand on shoulder, laughing together, warm amber firelight, rough wooden beams overhead, close two-shot, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/PARENT#present_close.webp",
   },
-  { 
-    id:'present_distant', 
-    label:'present but emotionally distant', 
-    iconPrompt: 'fantasy rpg icon, medieval family dining table, parent washing dishes and child eating alone, looking away from each other, stiff postures, tallow candle on rough-hewn table, medium shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/PARENT#present_distant.webp' 
+  {
+    id: "present_distant",
+    label: "present but emotionally distant",
+    iconPrompt:
+      "fantasy rpg icon, medieval family dining table, parent washing dishes and child eating alone, looking away from each other, stiff postures, tallow candle on rough-hewn table, medium shot, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/PARENT#present_distant.webp",
   },
-  { 
-    id:'present_difficult', 
-    label:'present but a source of tension', 
-    iconPrompt: 'fantasy rpg icon, medieval family home interior, parent and grown child in rough homespun facing each other, pointing gestures, angry tense expressions, cluttered room with clay pots and barrels, dramatic torch light, medium two-shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/PARENT#present_difficult.webp' 
+  {
+    id: "present_difficult",
+    label: "present but a source of tension",
+    iconPrompt:
+      "fantasy rpg icon, medieval family home interior, parent and grown child in rough homespun facing each other, pointing gestures, angry tense expressions, cluttered room with clay pots and barrels, dramatic torch light, medium two-shot, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/PARENT#present_difficult.webp",
   },
-  { 
-    id:'estranged', 
-    label:'estranged — no contact', 
-    iconPrompt: 'fantasy rpg icon, dim medieval room, teenage boy in worn tunic seated at rough table, holding small painting of father, looking at painting with wistful sad expression, dusty shelves, single tallow candle, close-up, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/PARENT#estranged.webp' 
+  {
+    id: "estranged",
+    label: "estranged — no contact",
+    iconPrompt:
+      "fantasy rpg icon, dim medieval room, teenage boy in worn tunic seated at rough table, holding small painting of father, looking at painting with wistful sad expression, dusty shelves, single tallow candle, close-up, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/PARENT#estranged.webp",
   },
-  { 
-    id:'deceased_recent', 
-    label:'recently deceased', 
-    iconPrompt: 'fantasy rpg icon, village cemetery, freshly carved stone grave marker, fresh grave, dirt still disturbed, figure in wool cloak standing before it, head bowed, fresh wildflowers on ground, overcast sky, iron fence behind, medium shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/PARENT#deceased_recent.webp' 
+  {
+    id: "deceased_recent",
+    label: "recently deceased",
+    iconPrompt:
+      "fantasy rpg icon, village cemetery, freshly carved stone grave marker, fresh grave, dirt still disturbed, figure in wool cloak standing before it, head bowed, fresh wildflowers on ground, overcast sky, iron fence behind, medium shot, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/PARENT#deceased_recent.webp",
   },
-  { 
-    id:'deceased_long', 
-    label:'died when the character was young', 
-    iconPrompt: 'fantasy rpg icon, village churchyard, weathered moss-covered grave marker, figure in homespun kneeling beside it, aged dried flowers, calm contemplative expression, stone church wall in background, soft diffused daylight, medium shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/PARENT#deceased_long.webp' 
+  {
+    id: "deceased_long",
+    label: "died when the character was young",
+    iconPrompt:
+      "fantasy rpg icon, village churchyard, weathered moss-covered grave marker, figure in homespun kneeling beside it, aged dried flowers, calm contemplative expression, stone church wall in background, soft diffused daylight, medium shot, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/PARENT#deceased_long.webp",
   },
-  { 
-    id:'absent_unknown', 
-    label:'absent — never knew them', 
-    iconPrompt: 'fantasy rpg icon, framed family portrait on wall, faceless father in armor, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/PARENT#absent_unknown.webp' 
+  {
+    id: "absent_unknown",
+    label: "absent — never knew them",
+    iconPrompt:
+      "fantasy rpg icon, framed family portrait on wall, faceless father in armor, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/PARENT#absent_unknown.webp",
   },
-  { 
-    id:'imprisoned', 
-    label:'imprisoned or indentured', 
-    iconPrompt: 'fantasy rpg icon, stone dungeon visiting room, iron bars in foreground, visitor in wool cloak gripping bars, manacled parent seated beyond bars on straw, dim torchlight, anguished expressions, medium shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/PARENT#imprisoned.webp' 
+  {
+    id: "imprisoned",
+    label: "imprisoned or indentured",
+    iconPrompt:
+      "fantasy rpg icon, stone dungeon visiting room, iron bars in foreground, visitor in wool cloak gripping bars, manacled parent seated beyond bars on straw, dim torchlight, anguished expressions, medium shot, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/PARENT#imprisoned.webp",
   },
-  { 
-    id:'missing', 
-    label:'missing — presumed dead, but unconfirmed', 
-    iconPrompt: 'fantasy rpg icon, medieval town notice board, faded missing person poster with drawn portrait, figure in travel cloak reading it, worried searching expression, crowded market background, close-up on poster and reader\'s face, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/PARENT#missing.webp' 
+  {
+    id: "missing",
+    label: "missing — presumed dead, but unconfirmed",
+    iconPrompt:
+      "fantasy rpg icon, medieval town notice board, faded missing person poster with drawn portrait, figure in travel cloak reading it, worried searching expression, crowded market background, close-up on poster and reader's face, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/PARENT#missing.webp",
   },
-  { 
-    id:'abroad', 
-    label:'lives far away, little contact', 
-    iconPrompt: 'fantasy rpg icon, close-up of a hand written letter with seal, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/PARENT#abroad.webp' 
+  {
+    id: "abroad",
+    label: "lives far away, little contact",
+    iconPrompt:
+      "fantasy rpg icon, close-up of a hand written letter with seal, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/PARENT#abroad.webp",
   },
 ];
 
 export const SIBLING_DYNAMICS = [
-  { 
-    id:'protective_older', 
-    label:'protective older sibling', 
-    iconPrompt: 'fantasy rpg icon, medieval cobblestone market street, older sibling in leather jerkin arm outstretched blocking younger sibling, confrontational stance toward threat off-frame, protective determined expression, market stalls behind, medium shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/SIBLING#protective_older.webp' 
+  {
+    id: "protective_older",
+    label: "protective older sibling",
+    iconPrompt:
+      "fantasy rpg icon, medieval cobblestone market street, older sibling in leather jerkin arm outstretched blocking younger sibling, confrontational stance toward threat off-frame, protective determined expression, market stalls behind, medium shot, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/SIBLING#protective_older.webp",
   },
-  { 
-    id:'rivalry', 
-    label:'long-running rivalry', 
-    iconPrompt: 'fantasy rpg icon, packed-dirt training yard or market alley, two siblings in worn training clothes, mirrored confrontational stances, competitive stares, hands near wooden practice swords, neither yielding, afternoon light, medium wide shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/SIBLING#rivalry.webp' 
+  {
+    id: "rivalry",
+    label: "long-running rivalry",
+    iconPrompt:
+      "fantasy rpg icon, packed-dirt training yard or market alley, two siblings in worn training clothes, mirrored confrontational stances, competitive stares, hands near wooden practice swords, neither yielding, afternoon light, medium wide shot, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/SIBLING#rivalry.webp",
   },
-  { 
-    id:'estranged', 
-    label:'estranged — fell out years ago', 
-    iconPrompt: 'fantasy rpg icon, dim medieval room, teenage boy in worn tunic seated at rough table, holding small painting of brother, looking at painting with wistful sad expression, dusty shelves, single tallow candle, close-up, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/SIBLING#estranged.webp' 
+  {
+    id: "estranged",
+    label: "estranged — fell out years ago",
+    iconPrompt:
+      "fantasy rpg icon, dim medieval room, teenage boy in worn tunic seated at rough table, holding small painting of brother, looking at painting with wistful sad expression, dusty shelves, single tallow candle, close-up, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/SIBLING#estranged.webp",
   },
-  { 
-    id:'close_ally', 
-    label:'closest friend and confidant', 
-    iconPrompt: 'fantasy rpg icon, winding cobblestone road, two teenage brothers in travel cloaks walking side by side, relaxed animated conversation gestures, smiling, warm afternoon light, rolling hills in distance, medium shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/SIBLING#close_ally.webp' 
+  {
+    id: "close_ally",
+    label: "closest friend and confidant",
+    iconPrompt:
+      "fantasy rpg icon, winding cobblestone road, two teenage brothers in travel cloaks walking side by side, relaxed animated conversation gestures, smiling, warm afternoon light, rolling hills in distance, medium shot, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/SIBLING#close_ally.webp",
   },
-  { 
-    id:'troubled', 
-    label:'struggling — conscripted, cursed, or in debt', 
-    iconPrompt: 'fantasy rpg icon, cottage doorway under thatched eave, sister in dirty torn clothing and muddy boots outside open door, hat in hand, dejected pleading expression, other figure in door frame reacting with concern, close two-shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/SIBLING#troubled.webp' 
+  {
+    id: "troubled",
+    label: "struggling — conscripted, cursed, or in debt",
+    iconPrompt:
+      "fantasy rpg icon, cottage doorway under thatched eave, sister in dirty torn clothing and muddy boots outside open door, hat in hand, dejected pleading expression, other figure in door frame reacting with concern, close two-shot, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/SIBLING#troubled.webp",
   },
-  { 
-    id:'golden_child', 
-    label:"the family's golden child", 
-    iconPrompt: 'fantasy rpg icon, family home interior, framed paintings of family members on wall but one dominant portrait of the favored child, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/SIBLING#golden_child.webp' 
+  {
+    id: "golden_child",
+    label: "the family's golden child",
+    iconPrompt:
+      "fantasy rpg icon, family home interior, framed paintings of family members on wall but one dominant portrait of the favored child, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/SIBLING#golden_child.webp",
   },
-  { 
-    id:'lost_touch', 
-    label:'drifted apart, rarely in contact', 
-    iconPrompt: 'fantasy rpg icon, small writing desk, figure in linen shirt seated before half-written letter on parchment, quill set down, distant unfocused expression, dust on old parchment, tallow candle, close-up, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/SIBLING#lost_touch.webp' 
+  {
+    id: "lost_touch",
+    label: "drifted apart, rarely in contact",
+    iconPrompt:
+      "fantasy rpg icon, small writing desk, figure in linen shirt seated before half-written letter on parchment, quill set down, distant unfocused expression, dust on old parchment, tallow candle, close-up, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/SIBLING#lost_touch.webp",
   },
-  { 
-    id:'deceased', 
-    label:'deceased — war, plague, or worse', 
-    iconPrompt: 'fantasy rpg icon, village graveyard, simple stone grave marker, figure in wool cloak standing at grave with hands clasped, dried and fresh flowers at base, solemn quiet expression, iron fence visible, soft overcast light, medium shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/SIBLING#deceased.webp' 
+  {
+    id: "deceased",
+    label: "deceased — war, plague, or worse",
+    iconPrompt:
+      "fantasy rpg icon, village graveyard, simple stone grave marker, figure in wool cloak standing at grave with hands clasped, dried and fresh flowers at base, solemn quiet expression, iron fence visible, soft overcast light, medium shot, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/SIBLING#deceased.webp",
   },
-  { 
-    id:'younger_dependent', 
-    label:'younger and still depends on the character', 
-    iconPrompt: 'fantasy rpg icon, muddy road, younger sibling in worn boots looking up at older in travel cloak, younger pointing for direction, older gesturing ahead, patient guiding expression, open countryside behind, medium two-shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/SIBLING#younger_dependent.webp' 
+  {
+    id: "younger_dependent",
+    label: "younger and still depends on the character",
+    iconPrompt:
+      "fantasy rpg icon, muddy road, younger sibling in worn boots looking up at older in travel cloak, younger pointing for direction, older gesturing ahead, patient guiding expression, open countryside behind, medium two-shot, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/SIBLING#younger_dependent.webp",
   },
-  { 
-    id:'reconnecting', 
-    label:'recently reconnected after years apart', 
-    iconPrompt: 'fantasy rpg icon, tavern interior, two siblings in travel-worn cloaks seated across rough wooden table, cautious hopeful expressions, pewter cups between them, both leaning slightly forward, warm amber firelight, medium shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/SIBLING#reconnecting.webp' 
+  {
+    id: "reconnecting",
+    label: "recently reconnected after years apart",
+    iconPrompt:
+      "fantasy rpg icon, tavern interior, two siblings in travel-worn cloaks seated across rough wooden table, cautious hopeful expressions, pewter cups between them, both leaning slightly forward, warm amber firelight, medium shot, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/SIBLING#reconnecting.webp",
   },
 ];
 
 export const FAMILY_STRUCTURES = [
   {
-    id:'two_parent_intact', 
-    label:'Two parents, still together', 
-    parentCount:2, 
-    siblingCount:[0,3], 
-    statAffinity:{ wisdom:1.1, charisma:1.1 }, 
-    iconPrompt: 'fantasy rpg icon, medieval thatched cottage exterior at dusk, mother and father in woolen garb visible through small lit window, family silhouettes inside, warm candlelight glow, stone wall and garden gate, exterior view, medium wide shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/FAMILY#two_parent_intact.webp' 
+    id: "two_parent_intact",
+    label: "Two parents, still together",
+    parentCount: 2,
+    siblingCount: [0, 3],
+    statAffinity: { wisdom: 1.1, charisma: 1.1 },
+    iconPrompt:
+      "fantasy rpg icon, medieval thatched cottage exterior at dusk, mother and father in woolen garb visible through small lit window, family silhouettes inside, warm candlelight glow, stone wall and garden gate, exterior view, medium wide shot, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/FAMILY#two_parent_intact.webp",
   },
-  { 
-    id:'two_parent_divorced', 
-    label:'Parents separated or estranged', 
-    parentCount:2, 
-    siblingCount:[0,3], 
-    statAffinity:{ wisdom:0.9 }, 
-    iconPrompt: 'fantasy rpg icon, cobblestone property exterior, mother and father in worn linen standing apart, formal clipped postures, divided belongings in sacks between them, cold daylight, minimal eye contact, wooden fence behind, medium two-shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/FAMILY#two_parent_divorced.webp' 
+  {
+    id: "two_parent_divorced",
+    label: "Parents separated or estranged",
+    parentCount: 2,
+    siblingCount: [0, 3],
+    statAffinity: { wisdom: 0.9 },
+    iconPrompt:
+      "fantasy rpg icon, cobblestone property exterior, mother and father in worn linen standing apart, formal clipped postures, divided belongings in sacks between them, cold daylight, minimal eye contact, wooden fence behind, medium two-shot, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/FAMILY#two_parent_divorced.webp",
   },
-  { 
-    id:'two_parent_one_deceased', 
-    label:'One parent deceased, one surviving', 
-    parentCount:2, 
-    siblingCount:[0,2], 
-    statAffinity:{ wisdom:1.1, constitution:0.9 }, 
-    iconPrompt: 'fantasy rpg icon, family home stone interior, framed portrait on stone mantle, tallow candle and dried flowers beneath it, surviving parent in rough homespun standing before it, quiet expression, stone hearth fire in background, medium shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/FAMILY#two_parent_one_deceased.webp' 
+  {
+    id: "two_parent_one_deceased",
+    label: "One parent deceased, one surviving",
+    parentCount: 2,
+    siblingCount: [0, 2],
+    statAffinity: { wisdom: 1.1, constitution: 0.9 },
+    iconPrompt:
+      "fantasy rpg icon, family home stone interior, framed portrait on stone mantle, tallow candle and dried flowers beneath it, surviving parent in rough homespun standing before it, quiet expression, stone hearth fire in background, medium shot, painterly art style",
+    iconPath:
+      "generator/genres/fantasy/icons/FAMILY#two_parent_one_deceased.webp",
   },
-  { 
-    id:'two_parent_one_absent', 
-    label:'One parent absent or unknown', 
-    parentCount:2, 
-    siblingCount:[0,2], 
-    statAffinity:{ constitution:1.1, charisma:0.9 }, 
-    iconPrompt: 'fantasy rpg icon, modest stone interior, single parent in linen apron at rough wooden table with children, empty chair clearly visible at table end, children not looking at it, simple bread and bowls, stone hearth in background, medium wide shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/FAMILY#two_parent_one_absent.webp' 
+  {
+    id: "two_parent_one_absent",
+    label: "One parent absent or unknown",
+    parentCount: 2,
+    siblingCount: [0, 2],
+    statAffinity: { constitution: 1.1, charisma: 0.9 },
+    iconPrompt:
+      "fantasy rpg icon, modest stone interior, single parent in linen apron at rough wooden table with children, empty chair clearly visible at table end, children not looking at it, simple bread and bowls, stone hearth in background, medium wide shot, painterly art style",
+    iconPath:
+      "generator/genres/fantasy/icons/FAMILY#two_parent_one_absent.webp",
   },
-  { 
-    id:'two_parent_both_troubled', 
-    label:'Both parents troubled', 
-    parentCount:2, 
-    siblingCount:[0,3], 
-    statAffinity:{ constitution:1.2, wisdom:0.8 }, 
-    iconPrompt: 'fantasy rpg icon, rundown family dwelling, two distressed parents in background, cluttered damaged stone interior with broken pottery, child in homespun seated silently in corner watching, dim torchlight, medium shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/FAMILY#two_parent_both_troubled.webp' 
+  {
+    id: "two_parent_both_troubled",
+    label: "Both parents troubled",
+    parentCount: 2,
+    siblingCount: [0, 3],
+    statAffinity: { constitution: 1.2, wisdom: 0.8 },
+    iconPrompt:
+      "fantasy rpg icon, rundown family dwelling, two distressed parents in background, cluttered damaged stone interior with broken pottery, child in homespun seated silently in corner watching, dim torchlight, medium shot, painterly art style",
+    iconPath:
+      "generator/genres/fantasy/icons/FAMILY#two_parent_both_troubled.webp",
   },
-  { 
-    id:'single_mother', 
-    label:'Raised by a single mother', 
-    parentCount:1, 
-    parentGender:'mother', 
-    siblingCount:[0,3], 
-    statAffinity:{ charisma:1.1, wisdom:1.1 }, 
-    iconPrompt: 'fantasy rpg icon, modest cottage interior, woman in linen dress and apron holding child, stirring pot or mending clothes, capable efficient posture, tired expression, hearth fire and tallow candle, medium shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/FAMILY#single_mother.webp' 
+  {
+    id: "single_mother",
+    label: "Raised by a single mother",
+    parentCount: 1,
+    parentGender: "mother",
+    siblingCount: [0, 3],
+    statAffinity: { charisma: 1.1, wisdom: 1.1 },
+    iconPrompt:
+      "fantasy rpg icon, modest cottage interior, woman in linen dress and apron holding child, stirring pot or mending clothes, capable efficient posture, tired expression, hearth fire and tallow candle, medium shot, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/FAMILY#single_mother.webp",
   },
-  { 
-    id:'single_father', 
-    label:'Raised by a single father', 
-    parentCount:1, 
-    parentGender:'father', 
-    siblingCount:[0,2], 
-    statAffinity:{ strength:1.1, wisdom:1.1 }, 
-    iconPrompt: 'fantasy rpg icon, small family home stone interior, man in leather jerkin holding child, warm daylight through small window, medium shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/FAMILY#single_father.webp' 
+  {
+    id: "single_father",
+    label: "Raised by a single father",
+    parentCount: 1,
+    parentGender: "father",
+    siblingCount: [0, 2],
+    statAffinity: { strength: 1.1, wisdom: 1.1 },
+    iconPrompt:
+      "fantasy rpg icon, small family home stone interior, man in leather jerkin holding child, warm daylight through small window, medium shot, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/FAMILY#single_father.webp",
   },
-  { 
-    id:'single_parent_struggling', 
-    label:'Single parent under severe hardship', 
-    parentCount:1, 
-    siblingCount:[1,4], 
-    statAffinity:{ constitution:1.2, wisdom:1.1 }, 
-    economicHint:-1, 
-    iconPrompt: 'fantasy rpg icon, sparse stone interior, single parent in worn homespun slumped in wooden chair, child asleep on straw cot nearby, exhausted expression, dying embers in stone hearth, low warm glow, medium shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/FAMILY#single_parent_struggling.webp' 
+  {
+    id: "single_parent_struggling",
+    label: "Single parent under severe hardship",
+    parentCount: 1,
+    siblingCount: [1, 4],
+    statAffinity: { constitution: 1.2, wisdom: 1.1 },
+    economicHint: -1,
+    iconPrompt:
+      "fantasy rpg icon, sparse stone interior, single parent in worn homespun slumped in wooden chair, child asleep on straw cot nearby, exhausted expression, dying embers in stone hearth, low warm glow, medium shot, painterly art style",
+    iconPath:
+      "generator/genres/fantasy/icons/FAMILY#single_parent_struggling.webp",
   },
-  { 
-    id:'raised_by_grandparents', 
-    label:'Raised by grandparents', 
-    parentCount:0, 
-    siblingCount:[0,2], 
-    statAffinity:{ wisdom:1.2, charisma:0.9 }, 
-    iconPrompt: 'fantasy rpg icon, old weathered cottage interior, elderly couple in worn woolen garb seated with grandchild between them, patchwork quilts on rough furniture, warm loving expressions, afternoon light through small leaded window, dried herbs hanging above, medium wide shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/FAMILY#raised_by_grandparents.webp' 
+  {
+    id: "raised_by_grandparents",
+    label: "Raised by grandparents",
+    parentCount: 0,
+    siblingCount: [0, 2],
+    statAffinity: { wisdom: 1.2, charisma: 0.9 },
+    iconPrompt:
+      "fantasy rpg icon, old weathered cottage interior, elderly couple in worn woolen garb seated with grandchild between them, patchwork quilts on rough furniture, warm loving expressions, afternoon light through small leaded window, dried herbs hanging above, medium wide shot, painterly art style",
+    iconPath:
+      "generator/genres/fantasy/icons/FAMILY#raised_by_grandparents.webp",
   },
-  { 
-    id:'raised_by_older_sibling', 
-    label:'Raised by an older sibling', 
-    parentCount:0, 
-    siblingCount:[1,2], 
-    statAffinity:{ constitution:1.2 }, 
-    iconPrompt: 'fantasy rpg icon, teenage boy and younger bother standing in medieval marketplace selling wilted vegetables, medium shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/FAMILY#raised_by_older_sibling.webp' 
+  {
+    id: "raised_by_older_sibling",
+    label: "Raised by an older sibling",
+    parentCount: 0,
+    siblingCount: [1, 2],
+    statAffinity: { constitution: 1.2 },
+    iconPrompt:
+      "fantasy rpg icon, teenage boy and younger bother standing in medieval marketplace selling wilted vegetables, medium shot, painterly art style",
+    iconPath:
+      "generator/genres/fantasy/icons/FAMILY#raised_by_older_sibling.webp",
   },
-  { 
-    id:'orphaned_early', 
-    label:'Orphaned before age ten', 
-    parentCount:0, 
-    siblingCount:[0,2], 
-    statAffinity:{ constitution:1.3, wisdom:1.2 }, 
-    iconPrompt: 'fantasy rpg icon, stone orphanage or temple entrance steps, small child in rough shirt with cloth bundle, robed hand writing in open leather ledger, child looking up, stone steps and iron door, dawn light, medium two-shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/FAMILY#orphaned_early.webp' 
+  {
+    id: "orphaned_early",
+    label: "Orphaned before age ten",
+    parentCount: 0,
+    siblingCount: [0, 2],
+    statAffinity: { constitution: 1.3, wisdom: 1.2 },
+    iconPrompt:
+      "fantasy rpg icon, stone orphanage or temple entrance steps, small child in rough shirt with cloth bundle, robed hand writing in open leather ledger, child looking up, stone steps and iron door, dawn light, medium two-shot, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/FAMILY#orphaned_early.webp",
   },
-  { 
-    id:'temple_raised', 
-    label:'Raised by a temple or religious order', 
-    parentCount:0, 
-    siblingCount:[0,1], 
-    statAffinity:{ wisdom:1.3, intelligence:1.1 }, 
-    iconPrompt: 'fantasy rpg icon, temple courtyard, brown-robed friar with bald head teaching seated child, carved stone columns and vaulted stone arches, parchment scroll or prayer beads in child\'s hands, attentive learning posture, warm diffused sunlight on flagstones, medium two-shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/FAMILY#temple_raised.webp' 
+  {
+    id: "temple_raised",
+    label: "Raised by a temple or religious order",
+    parentCount: 0,
+    siblingCount: [0, 1],
+    statAffinity: { wisdom: 1.3, intelligence: 1.1 },
+    iconPrompt:
+      "fantasy rpg icon, temple courtyard, brown-robed friar with bald head teaching seated child, carved stone columns and vaulted stone arches, parchment scroll or prayer beads in child's hands, attentive learning posture, warm diffused sunlight on flagstones, medium two-shot, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/FAMILY#temple_raised.webp",
   },
-  { 
-    id:'guild_raised', 
-    label:'Raised by a guild or trade house', 
-    parentCount:0, 
-    siblingCount:[0,1], 
-    statAffinity:{ intelligence:1.2, dexterity:1.1 }, 
-    iconPrompt: 'fantasy rpg icon, guild workshop interior, young apprentice in leather apron at heavy workbench, iron tools hanging on wall, older guildspeople in similar garb working nearby, focused expression, forge glow and iron lantern light, medium wide shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/FAMILY#guild_raised.webp' 
+  {
+    id: "guild_raised",
+    label: "Raised by a guild or trade house",
+    parentCount: 0,
+    siblingCount: [0, 1],
+    statAffinity: { intelligence: 1.2, dexterity: 1.1 },
+    iconPrompt:
+      "fantasy rpg icon, guild workshop interior, young apprentice in leather apron at heavy workbench, iron tools hanging on wall, older guildspeople in similar garb working nearby, focused expression, forge glow and iron lantern light, medium wide shot, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/FAMILY#guild_raised.webp",
   },
-  { 
-    id:'large_family', 
-    label:'Large, chaotic household', 
-    parentCount:2, 
-    siblingCount:[3,6], 
-    statAffinity:{ charisma:1.2, constitution:1.1 }, 
-    iconPrompt: 'fantasy rpg icon, stone family home interior, mother and father surrounded by many children at long rough wooden table, homespun clothing, bread and clay bowls overflowing, animated overlapping activity, warm tallow candlelight, medium wide shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/FAMILY#large_family.webp' 
+  {
+    id: "large_family",
+    label: "Large, chaotic household",
+    parentCount: 2,
+    siblingCount: [3, 6],
+    statAffinity: { charisma: 1.2, constitution: 1.1 },
+    iconPrompt:
+      "fantasy rpg icon, stone family home interior, mother and father surrounded by many children at long rough wooden table, homespun clothing, bread and clay bowls overflowing, animated overlapping activity, warm tallow candlelight, medium wide shot, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/FAMILY#large_family.webp",
   },
-  { 
-    id:'only_child_wealthy', 
-    label:'Only child of wealthy parents', 
-    parentCount:2, 
-    siblingCount:[0,0], 
-    statAffinity:{ intelligence:1.2, charisma:1.1 }, 
-    economicHint:2, 
-    iconPrompt: 'fantasy rpg icon, noble child\'s bedroom, carved oak furniture and velvet curtains, fine carved toys and leather-bound books, single child in silk garb sitting alone, quiet solitary expression, afternoon light through tall arched window, medium shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/FAMILY#only_child_wealthy.webp' 
+  {
+    id: "only_child_wealthy",
+    label: "Only child of wealthy parents",
+    parentCount: 2,
+    siblingCount: [0, 0],
+    statAffinity: { intelligence: 1.2, charisma: 1.1 },
+    economicHint: 2,
+    iconPrompt:
+      "fantasy rpg icon, noble child's bedroom, carved oak furniture and velvet curtains, fine carved toys and leather-bound books, single child in silk garb sitting alone, quiet solitary expression, afternoon light through tall arched window, medium shot, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/FAMILY#only_child_wealthy.webp",
   },
-  { 
-    id:'only_child_isolated', 
-    label:'Only child, isolated upbringing', 
-    parentCount:2, 
-    siblingCount:[0,0], 
-    statAffinity:{ intelligence:1.2, wisdom:1.1, charisma:0.8 }, 
-    iconPrompt: 'fantasy rpg icon, large tidy stone house interior, single child in simple garb alone reading by leaded window, neat wooden bookshelves, no other children visible, absorbed self-contained expression, afternoon light, medium shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/FAMILY#only_child_isolated.webp' 
+  {
+    id: "only_child_isolated",
+    label: "Only child, isolated upbringing",
+    parentCount: 2,
+    siblingCount: [0, 0],
+    statAffinity: { intelligence: 1.2, wisdom: 1.1, charisma: 0.8 },
+    iconPrompt:
+      "fantasy rpg icon, large tidy stone house interior, single child in simple garb alone reading by leaded window, neat wooden bookshelves, no other children visible, absorbed self-contained expression, afternoon light, medium shot, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/FAMILY#only_child_isolated.webp",
   },
-  { 
-    id:'noble_household', 
-    label:'Noble household with servants and politics', 
-    parentCount:2, 
-    siblingCount:[0,3], 
-    statAffinity:{ charisma:1.3, intelligence:1.2 }, 
-    economicHint:2, 
-    iconPrompt: 'fantasy rpg icon, grand manor hall with stone columns, noble family in velvet doublets and embroidered gowns, liveried servants in tabards in background, large ancestral oil portrait above stone fireplace, formal stiff postures, iron chandelier candlelight, medium wide shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/FAMILY#noble_household.webp' 
+  {
+    id: "noble_household",
+    label: "Noble household with servants and politics",
+    parentCount: 2,
+    siblingCount: [0, 3],
+    statAffinity: { charisma: 1.3, intelligence: 1.2 },
+    economicHint: 2,
+    iconPrompt:
+      "fantasy rpg icon, grand manor hall with stone columns, noble family in velvet doublets and embroidered gowns, liveried servants in tabards in background, large ancestral oil portrait above stone fireplace, formal stiff postures, iron chandelier candlelight, medium wide shot, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/FAMILY#noble_household.webp",
   },
-  { 
-    id:'war_orphan', 
-    label:'War orphan — raised among survivors', 
-    parentCount:0, 
-    siblingCount:[0,2], 
-    statAffinity:{ constitution:1.3, strength:1.2 }, 
-    iconPrompt: 'fantasy rpg icon, child kneeling in ruins next to dead parents, smoke, fire, chaos, battle, raiders, medium wide shot, painterly art style', 
-    iconPath: 'generator/genres/fantasy/icons/FAMILY#war_orphan.webp' 
+  {
+    id: "war_orphan",
+    label: "War orphan — raised among survivors",
+    parentCount: 0,
+    siblingCount: [0, 2],
+    statAffinity: { constitution: 1.3, strength: 1.2 },
+    iconPrompt:
+      "fantasy rpg icon, child kneeling in ruins next to dead parents, smoke, fire, chaos, battle, raiders, medium wide shot, painterly art style",
+    iconPath: "generator/genres/fantasy/icons/FAMILY#war_orphan.webp",
   },
 ];

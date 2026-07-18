@@ -94,7 +94,7 @@
 - FEAT: Add more music, and make it specific to the genre selected.
 - FEAT: Make genre selector a carousel, and each Genre should get a thumbnail and brief description like "Nihongi - Japanese horror"
 - Stat adjectives need some work so AI understand them better (e.g. use "average intelligence" instead of just "average").
-- Fantasy - Human - Common folk needs "—" to prevent long string shown in roller.
+- Race `flavor` fields need a "—" early on to keep the slot-machine sub-label (and the output header line) short — both truncate at the first " — " via `identity.flavor.split(' — ')[0].trim()` (engine.js _slots.race / index.html output header); with no em-dash, the *entire* flavor string is shown. Audited all 7 genres' races.js: Fantasy/Sci-Fi/Paleolithic/Joseon/Nihongi are all clean. Manga-Osaka has 4 long flavor strings with no em-dash at all (shows the full sentence in the UI) — 'honor_student', the Den Den Town regular one, the fashion-forward one, and the "average grades" one in genres/manga-osaka-highschool1987/races.js. Modern has 14 races.js entries without an em-dash too, but those are already short ethnicity labels (e.g. "Ashkenazi Jewish"), so no actual truncation problem there — just inconsistent style vs. the rest of the file.
 - Synthetic constructs need special handling:
     - Industrial Androids should have no gender, orientation, relationship, or family background.
     - Plastic Androids and Combat Androids may have a gender for appearances, but are asexual and do not have relationships.

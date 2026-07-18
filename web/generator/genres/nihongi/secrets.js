@@ -1,101 +1,131 @@
 // genres/nihongi/secrets.js
-// Hidden truths in the Nihongi supernatural world.
+// Hidden truths in the Nihongi supernatural world. Never stated openly in the
+// character Entry. Each secret carries:
+//   id, description, severity (low | medium | high | explosive),
+//   criminalFlag (bool), iconPrompt/iconPath (slot-machine reel icon)
 
 export const SECRETS = [
   {
-    id: 'blood_pact_kami',
-    description: 'They made a private blood pact with a regional kami — not through a shrine, not with witnesses; the kami watches through their eyes at unpredictable moments and has begun asking for things it did not mention at the time',
-    severity: 'high',
+    id: "blood_pact_kami",
+    description:
+      "They made a private blood pact with a regional kami — not through a shrine, not with witnesses; the kami watches through their eyes at unpredictable moments and has begun asking for things it did not mention at the time",
+    severity: "high",
     criminalFlag: false,
-    iconPrompt: 'ancient japanese figure cutting palm offering blood to kami spirit in forest at night, divine eye watching through human face, sacred pact supernatural secret, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SECRETS#blood_pact_kami.webp',
+    iconPrompt:
+      "ancient japanese figure cutting palm offering blood to kami spirit in forest at night, divine eye watching through human face, sacred pact supernatural secret, nihon shoki yamato-e painting",
+    iconPath: "generator/genres/nihongi/icons/SECRETS#blood_pact_kami.webp",
   },
   {
-    id: 'sees_the_dead',
-    description: 'Since a near-death experience they have been unable to stop perceiving the dead — shades of the recently deceased appear overlaid on the living world, and not all of them are peaceful or quiet',
-    severity: 'medium',
+    id: "sees_the_dead",
+    description:
+      "Since a near-death experience they have been unable to stop perceiving the dead — shades of the recently deceased appear overlaid on the living world, and not all of them are peaceful or quiet",
+    severity: "medium",
     criminalFlag: false,
-    iconPrompt: 'ancient japanese figure seeing transparent ghost shade superimposed on living person, horrified face, dead pale figures visible only to them, crowded court setting, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SECRETS#sees_the_dead.webp',
+    iconPrompt:
+      "ancient japanese figure seeing transparent ghost shade superimposed on living person, horrified face, dead pale figures visible only to them, crowded court setting, nihon shoki yamato-e painting",
+    iconPath: "generator/genres/nihongi/icons/SECRETS#sees_the_dead.webp",
   },
   {
-    id: 'kitsune_blood',
-    description: 'There is fox-spirit ancestry somewhere in the line — not recent, but close enough that under sufficient stress or strong emotion they have experienced moments of involuntary change; no one who has seen it is certain what they saw',
-    severity: 'explosive',
+    id: "kitsune_blood",
+    description:
+      "There is fox-spirit ancestry somewhere in the line — not recent, but close enough that under sufficient stress or strong emotion they have experienced moments of involuntary change; no one who has seen it is certain what they saw",
+    severity: "explosive",
     criminalFlag: false,
-    iconPrompt: 'ancient japanese figure with momentary fox ears and tail visible startled expression hiding supernatural ancestry, shoji screen casting shadow revealing inhuman silhouette, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SECRETS#kitsune_blood.webp',
+    iconPrompt:
+      "ancient japanese figure with momentary fox ears and tail visible startled expression hiding supernatural ancestry, shoji screen casting shadow revealing inhuman silhouette, nihon shoki yamato-e painting",
+    iconPath: "generator/genres/nihongi/icons/SECRETS#kitsune_blood.webp",
   },
   {
-    id: 'returned_from_yomi',
-    description: 'They actually died — briefly — and entered Yomi before returning; they carry something of that place back with them, subtle and wrong, and the shades of Yomi know their name',
-    severity: 'explosive',
+    id: "returned_from_yomi",
+    description:
+      "They actually died — briefly — and entered Yomi before returning; they carry something of that place back with them, subtle and wrong, and the shades of Yomi know their name",
+    severity: "explosive",
     criminalFlag: false,
-    iconPrompt: 'ancient japanese figure emerging from dark cave underworld yomi pale changed haunted, death mark visible on them alone, dead reaching from darkness behind still trying to grasp, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SECRETS#returned_from_yomi.webp',
+    iconPrompt:
+      "ancient japanese figure emerging from dark cave underworld yomi pale changed haunted, death mark visible on them alone, dead reaching from darkness behind still trying to grasp, nihon shoki yamato-e painting",
+    iconPath: "generator/genres/nihongi/icons/SECRETS#returned_from_yomi.webp",
   },
   {
-    id: 'killed_sacred_animal',
-    description: 'They killed a sacred animal — a white deer, a crane, a fox — accidentally or in desperation; the kami of that creature has not released the debt and will not until it is settled on terms the character does not yet understand',
-    severity: 'high',
+    id: "killed_sacred_animal",
+    description:
+      "They killed a sacred animal — a white deer, a crane, a fox — accidentally or in desperation; the kami of that creature has not released the debt and will not until it is settled on terms the character does not yet understand",
+    severity: "high",
     criminalFlag: false,
-    iconPrompt: 'ancient japanese figure haunted by ghost of sacred white deer killed kami spirit watching with cold fury, debt of blood sacred animal, forest shrine supernatural guilt, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SECRETS#killed_sacred_animal.webp',
+    iconPrompt:
+      "ancient japanese figure haunted by ghost of sacred white deer killed kami spirit watching with cold fury, debt of blood sacred animal, forest shrine supernatural guilt, nihon shoki yamato-e painting",
+    iconPath:
+      "generator/genres/nihongi/icons/SECRETS#killed_sacred_animal.webp",
   },
   {
-    id: 'vessel_suppressed_kami',
-    description: 'A kami whose shrine was deliberately destroyed now inhabits them — the kami provides real knowledge and occasional power; it also makes them a target for whoever destroyed the shrine, and the two are not always in agreement about whose survival matters more',
-    severity: 'explosive',
+    id: "vessel_suppressed_kami",
+    description:
+      "A kami whose shrine was deliberately destroyed now inhabits them — the kami provides real knowledge and occasional power; it also makes them a target for whoever destroyed the shrine, and the two are not always in agreement about whose survival matters more",
+    severity: "explosive",
     criminalFlag: false,
-    iconPrompt: 'ancient japanese figure containing kami spirit of destroyed shrine, divine energy visible beneath skin, destroyed shrine ruins in background, pursuer seeking to eliminate the last vessel of suppressed kami, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SECRETS#vessel_suppressed_kami.webp',
+    iconPrompt:
+      "ancient japanese figure containing kami spirit of destroyed shrine, divine energy visible beneath skin, destroyed shrine ruins in background, pursuer seeking to eliminate the last vessel of suppressed kami, nihon shoki yamato-e painting",
+    iconPath:
+      "generator/genres/nihongi/icons/SECRETS#vessel_suppressed_kami.webp",
   },
   {
-    id: 'speaks_wrong_dead',
-    description: 'They have discovered they can communicate with malicious shades — not the peaceful ancestor spirits that oracles reach, but the angry dead who refused Yomi; the shades give accurate information and ask for favors they describe as small',
-    severity: 'high',
+    id: "speaks_wrong_dead",
+    description:
+      "They have discovered they can communicate with malicious shades — not the peaceful ancestor spirits that oracles reach, but the angry dead who refused Yomi; the shades give accurate information and ask for favors they describe as small",
+    severity: "high",
     criminalFlag: false,
-    iconPrompt: 'ancient japanese figure speaking in darkness with malevolent dead shade not ancestor spirit, wrong light in ghost eyes, information exchanged dangerous price, fear and fascination, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SECRETS#speaks_wrong_dead.webp',
+    iconPrompt:
+      "ancient japanese figure speaking in darkness with malevolent dead shade not ancestor spirit, wrong light in ghost eyes, information exchanged dangerous price, fear and fascination, nihon shoki yamato-e painting",
+    iconPath: "generator/genres/nihongi/icons/SECRETS#speaks_wrong_dead.webp",
   },
   {
-    id: 'forbidden_rite',
-    description: 'They participated in a shamanic or forbidden kami rite that the court has declared illegal — something was summoned that should not have been, and it has not entirely left',
-    severity: 'high',
+    id: "forbidden_rite",
+    description:
+      "They participated in a shamanic or forbidden kami rite that the court has declared illegal — something was summoned that should not have been, and it has not entirely left",
+    severity: "high",
     criminalFlag: true,
-    iconPrompt: 'ancient japanese forbidden shamanic rite night ritual illegal participation kami summoned still present lingering darkness not fully dismissed, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SECRETS#forbidden_rite.webp',
+    iconPrompt:
+      "ancient japanese forbidden shamanic rite night ritual illegal participation kami summoned still present lingering darkness not fully dismissed, nihon shoki yamato-e painting",
+    iconPath: "generator/genres/nihongi/icons/SECRETS#forbidden_rite.webp",
   },
   {
-    id: 'kami_promise',
-    description: 'A kami made them promise something specific during a moment of crisis — the promise felt manageable then; it has since become clear the kami\'s understanding of what they agreed to is considerably broader than their own',
-    severity: 'medium',
+    id: "kami_promise",
+    description:
+      "A kami made them promise something specific during a moment of crisis — the promise felt manageable then; it has since become clear the kami's understanding of what they agreed to is considerably broader than their own",
+    severity: "medium",
     criminalFlag: false,
-    iconPrompt: 'ancient japanese kami promise oracle conflicting obligation clan duty divine vow expanding impossible position supernatural commitment, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SECRETS#kami_promise.webp',
+    iconPrompt:
+      "ancient japanese kami promise oracle conflicting obligation clan duty divine vow expanding impossible position supernatural commitment, nihon shoki yamato-e painting",
+    iconPath: "generator/genres/nihongi/icons/SECRETS#kami_promise.webp",
   },
   {
-    id: 'false_genealogy_made',
-    description: 'They forged their own clan genealogy records to improve their standing — the forgery has been accepted at court; they have since learned their true ancestry is considerably stranger than the one they invented',
-    severity: 'explosive',
+    id: "false_genealogy_made",
+    description:
+      "They forged their own clan genealogy records to improve their standing — the forgery has been accepted at court; they have since learned their true ancestry is considerably stranger than the one they invented",
+    severity: "explosive",
     criminalFlag: true,
-    iconPrompt: 'ancient japanese forged genealogy document clan record falsified accepted court true supernatural ancestry hidden beneath lies, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SECRETS#false_genealogy_made.webp',
+    iconPrompt:
+      "ancient japanese forged genealogy document clan record falsified accepted court true supernatural ancestry hidden beneath lies, nihon shoki yamato-e painting",
+    iconPath:
+      "generator/genres/nihongi/icons/SECRETS#false_genealogy_made.webp",
   },
   {
-    id: 'hidden_buddhist',
-    description: 'They practice Buddhism in secret — and one of the Buddhist texts they have obtained describes something in the world around them that should not exist, which they have now seen twice',
-    severity: 'medium',
+    id: "hidden_buddhist",
+    description:
+      "They practice Buddhism in secret — and one of the Buddhist texts they have obtained describes something in the world around them that should not exist, which they have now seen twice",
+    severity: "medium",
     criminalFlag: false,
-    iconPrompt: 'ancient japanese secret buddhist practice hidden sutra prayer night candlelight text describing supernatural entity that exists forbidden knowledge nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SECRETS#hidden_buddhist.webp',
+    iconPrompt:
+      "ancient japanese secret buddhist practice hidden sutra prayer night candlelight text describing supernatural entity that exists forbidden knowledge nihon shoki yamato-e painting",
+    iconPath: "generator/genres/nihongi/icons/SECRETS#hidden_buddhist.webp",
   },
   {
-    id: 'forbidden_child',
-    description: 'They have a child whose other parent is something that wore a human form convincingly enough to be believed; the child is being raised under a different identity, and occasionally does things that human children do not do',
-    severity: 'explosive',
+    id: "forbidden_child",
+    description:
+      "They have a child whose other parent is something that wore a human form convincingly enough to be believed; the child is being raised under a different identity, and occasionally does things that human children do not do",
+    severity: "explosive",
     criminalFlag: false,
-    iconPrompt: 'ancient japanese hidden child with wrong eyes too still yokai supernatural parentage other parent not human secret identity danger, nihon shoki yamato-e painting',
-    iconPath: 'generator/genres/nihongi/icons/SECRETS#forbidden_child.webp',
+    iconPrompt:
+      "ancient japanese hidden child with wrong eyes too still yokai supernatural parentage other parent not human secret identity danger, nihon shoki yamato-e painting",
+    iconPath: "generator/genres/nihongi/icons/SECRETS#forbidden_child.webp",
   },
 ];

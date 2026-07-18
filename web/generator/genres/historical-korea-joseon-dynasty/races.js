@@ -1,86 +1,138 @@
 // genres/historical-korea-joseon-dynasty/races.js
-// Social classes of Joseon Dynasty Korea.
-// 'broad' is the class label used for NAME_POOLS lookup.
+// Social classes of Joseon Dynasty Korea. Each entry:
+//   id                — unique slug; used for slot-machine reel identity and icon lookup
+//   broad             — class label used for NAME_POOLS lookup
+//   label             — display label (mirrors broad for this genre)
+//   flavor            — cultural/social detail passed to Claude for description prose.
+//                        If it contains ' — ' (space-em dash-space), only the text
+//                        before the first one is shown in the UI (engine.js's
+//                        _slots.race, used as the identity reel's sub-label, and the
+//                        output header in index.html) — the full string still
+//                        reaches the AI prompt. Keep the punchy part first.
+//   allowedIndustries — professions.js industries this class may roll (optional;
+//                        omitted means any profession is eligible)
+//   weight            — relative rarity for weighted-random selection (statAndWeightPick)
+//   iconPrompt        — text-to-image prompt used to generate this class's reel icon
+//   iconPath          — served path where that icon lives
 
 export const RACES = [
   {
-    id: 'civil_yangban',
-    broad: 'Civil Yangban',
-    label: 'Civil Yangban',
-    flavor: 'Scholar-aristocrat of the gwageo path — brushwork and classical learning define both identity and ambition',
-    allowedIndustries: ['Civil Administration', 'Arts & Learning', 'Military'],
+    id: "civil_yangban",
+    broad: "Civil Yangban",
+    label: "Civil Yangban",
+    flavor:
+      "Scholar-aristocrat of the gwageo path — brushwork and classical learning define both identity and ambition",
+    allowedIndustries: ["Civil Administration", "Arts & Learning", "Military"],
     weight: 8,
-    iconPrompt: 'joseon dynasty korean civil yangban scholar official gat horsehair hat silk robes gwageo exam traditional court painting style',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#civil_yangban.webp',
+    iconPrompt:
+      "joseon dynasty korean civil yangban scholar official gat horsehair hat silk robes gwageo exam traditional court painting style",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#civil_yangban.webp",
   },
   {
-    id: 'military_yangban',
-    broad: 'Military Yangban',
-    label: 'Military Yangban',
-    flavor: 'Warrior-aristocrat of the musa path — honor measured in the archery range and on the battlefield, not in the examination hall',
-    allowedIndustries: ['Military', 'Civil Administration', 'Arts & Learning'],
+    id: "military_yangban",
+    broad: "Military Yangban",
+    label: "Military Yangban",
+    flavor:
+      "Warrior-aristocrat of the musa path — honor measured in the archery range and on the battlefield, not in the examination hall",
+    allowedIndustries: ["Military", "Civil Administration", "Arts & Learning"],
     weight: 6,
-    iconPrompt: 'joseon dynasty korean military yangban warrior officer armor sword archery proud stance traditional court painting style',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#military_yangban.webp',
+    iconPrompt:
+      "joseon dynasty korean military yangban warrior officer armor sword archery proud stance traditional court painting style",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#military_yangban.webp",
   },
   {
-    id: 'royal_court',
-    broad: 'Royal Court',
-    label: 'Royal Court',
-    flavor: 'Connected to the palace and the throne — proximity to power is both privilege and mortal risk in a dynasty of faction wars',
-    allowedIndustries: ['Civil Administration', 'Military', 'Arts & Learning', 'Service'],
+    id: "royal_court",
+    broad: "Royal Court",
+    label: "Royal Court",
+    flavor:
+      "Connected to the palace and the throne — proximity to power is both privilege and mortal risk in a dynasty of faction wars",
+    allowedIndustries: [
+      "Civil Administration",
+      "Military",
+      "Arts & Learning",
+      "Service",
+    ],
     weight: 3,
-    iconPrompt: 'joseon dynasty korean royal court official palace gyeongbokgung ceremonial robes refined posture traditional court painting style',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#royal_court.webp',
+    iconPrompt:
+      "joseon dynasty korean royal court official palace gyeongbokgung ceremonial robes refined posture traditional court painting style",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#royal_court.webp",
   },
   {
-    id: 'jungin',
-    broad: 'Jungin',
-    label: 'Jungin',
-    flavor: 'Middle functionary — interpreter, physician, or technical official; indispensable but forever locked out of real power by birth',
-    allowedIndustries: ['Civil Administration', 'Arts & Learning', 'Spiritual', 'Trade'],
+    id: "jungin",
+    broad: "Jungin",
+    label: "Jungin",
+    flavor:
+      "Middle functionary — interpreter, physician, or technical official; indispensable but forever locked out of real power by birth",
+    allowedIndustries: [
+      "Civil Administration",
+      "Arts & Learning",
+      "Spiritual",
+      "Trade",
+    ],
     weight: 7,
-    iconPrompt: 'joseon dynasty korean jungin middle class official interpreter physician practical hanbok ledger traditional painting style',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#jungin.webp',
+    iconPrompt:
+      "joseon dynasty korean jungin middle class official interpreter physician practical hanbok ledger traditional painting style",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#jungin.webp",
   },
   {
-    id: 'common_folk',
-    broad: 'Common Folk',
-    label: 'Common Folk',
-    flavor: 'Farmer, potter, weaver — the backbone of Joseon, bearing its taxes and its hungers with patient endurance',
-    allowedIndustries: ['Labor', 'Trade', 'Civil Administration', 'Spiritual'],
+    id: "common_folk",
+    broad: "Common Folk",
+    label: "Common Folk",
+    flavor:
+      "Farmer, potter, weaver — the backbone of Joseon, bearing its taxes and its hungers with patient endurance",
+    allowedIndustries: ["Labor", "Trade", "Civil Administration", "Spiritual"],
     weight: 12,
-    iconPrompt: 'joseon dynasty korean common farmer village worker plain hanbok rice field straw hat traditional minhwa folk painting style',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#common_folk.webp',
+    iconPrompt:
+      "joseon dynasty korean common farmer village worker plain hanbok rice field straw hat traditional minhwa folk painting style",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#common_folk.webp",
   },
   {
-    id: 'merchant',
-    broad: 'Merchant',
-    label: 'Merchant',
-    flavor: 'Trader and peddler — low social standing by Confucian law, yet often the wealthiest and most connected person in any room',
-    allowedIndustries: ['Trade'],
+    id: "merchant",
+    broad: "Merchant",
+    label: "Merchant",
+    flavor:
+      "Trader and peddler — low social standing by Confucian law, yet often the wealthiest and most connected person in any room",
+    allowedIndustries: ["Trade"],
     weight: 7,
-    iconPrompt: 'joseon dynasty korean merchant trader market stall goods ledger shrewd practical hanbok traditional painting style',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#merchant.webp',
+    iconPrompt:
+      "joseon dynasty korean merchant trader market stall goods ledger shrewd practical hanbok traditional painting style",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#merchant.webp",
   },
   {
-    id: 'gisaeng',
-    broad: 'Gisaeng',
-    label: 'Gisaeng',
-    flavor: 'Entertainer-scholar — more educated than most yangban daughters, music and poetry her armor, a liminal figure society both prized and discarded',
-    allowedIndustries: ['Gisaeng Arts', 'Arts & Learning', 'Service', 'Spiritual'],
+    id: "gisaeng",
+    broad: "Gisaeng",
+    label: "Gisaeng",
+    flavor:
+      "Entertainer-scholar — more educated than most yangban daughters, music and poetry her armor, a liminal figure society both prized and discarded",
+    allowedIndustries: [
+      "Gisaeng Arts",
+      "Arts & Learning",
+      "Service",
+      "Spiritual",
+    ],
     weight: 5,
-    iconPrompt: 'joseon dynasty korean gisaeng female entertainer musician haegeum elegant hanbok ornate hairpin court banquet traditional painting style',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#gisaeng.webp',
+    iconPrompt:
+      "joseon dynasty korean gisaeng female entertainer musician haegeum elegant hanbok ornate hairpin court banquet traditional painting style",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#gisaeng.webp",
   },
   {
-    id: 'cheonmin',
-    broad: 'Cheonmin',
-    label: 'Cheonmin',
-    flavor: 'Low-born — nobi slave, mudang shaman, or baekjeong butcher; outside the social order, occasionally its most dangerous element',
-    allowedIndustries: ['Labor', 'Service', 'Spiritual', 'Gisaeng Arts'],
+    id: "cheonmin",
+    broad: "Cheonmin",
+    label: "Cheonmin",
+    flavor:
+      "Low-born — nobi slave, mudang shaman, or baekjeong butcher; outside the social order, occasionally its most dangerous element",
+    allowedIndustries: ["Labor", "Service", "Spiritual", "Gisaeng Arts"],
     weight: 7,
-    iconPrompt: 'joseon dynasty korean cheonmin low born servant shaman plain rough clothing weathered defiant expression traditional painting style',
-    iconPath: 'generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#cheonmin.webp',
+    iconPrompt:
+      "joseon dynasty korean cheonmin low born servant shaman plain rough clothing weathered defiant expression traditional painting style",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#cheonmin.webp",
   },
 ];

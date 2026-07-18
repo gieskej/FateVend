@@ -1,113 +1,152 @@
 // genres/manga-osaka-highschool1987/tensions.js
-// The current situation pressing on the character.
+// The current situation pressing on the character — feeds the scenario
+// Opening and Description heavily. Each tension carries:
+//   id, description, toneTag, statAffinity (optional), criminalFlag (bool),
+//   iconPrompt/iconPath (slot-machine reel icon)
 
 export const TENSIONS = [
   {
-    id: 'university_exam_looming',
-    description: 'University entrance exams in January — the trajectory of the next forty years decided in three hours',
-    toneTag: 'dramatic',
+    id: "university_exam_looming",
+    description:
+      "University entrance exams in January — the trajectory of the next forty years decided in three hours",
+    toneTag: "dramatic",
     statAffinity: { intelligence: 1.1, wisdom: 0.9 },
     criminalFlag: false,
-    iconPrompt: 'japanese student 1987 study desk night cram books exhausted exam pressure Osaka apartment manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#university_exam_looming.webp',
+    iconPrompt:
+      "japanese student 1987 study desk night cram books exhausted exam pressure Osaka apartment manga illustration",
+    iconPath:
+      "generator/genres/manga-osaka-highschool1987/icons/TENSIONS#university_exam_looming.webp",
   },
   {
-    id: 'club_elimination',
-    description: 'One more loss and the club is eliminated — it would mean the end of something that defines who they are',
-    toneTag: 'dramatic',
+    id: "club_elimination",
+    description:
+      "One more loss and the club is eliminated — it would mean the end of something that defines who they are",
+    toneTag: "dramatic",
     statAffinity: { strength: 1.2, constitution: 1.1 },
     criminalFlag: false,
-    iconPrompt: 'japanese sports club students 1987 tense huddle coach serious elimination on the line manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#club_elimination.webp',
+    iconPrompt:
+      "japanese sports club students 1987 tense huddle coach serious elimination on the line manga illustration",
+    iconPath:
+      "generator/genres/manga-osaka-highschool1987/icons/TENSIONS#club_elimination.webp",
   },
   {
-    id: 'love_triangle',
-    description: 'Caught between two people — or two people are caught between them — and the cultural festival is in three weeks',
-    toneTag: 'dramatic',
+    id: "love_triangle",
+    description:
+      "Caught between two people — or two people are caught between them — and the cultural festival is in three weeks",
+    toneTag: "dramatic",
     statAffinity: { charisma: 1.2, wisdom: 0.9 },
     criminalFlag: false,
-    iconPrompt: 'japanese students 1987 love triangle three students awkward classroom hallway manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#love_triangle.webp',
+    iconPrompt:
+      "japanese students 1987 love triangle three students awkward classroom hallway manga illustration",
+    iconPath:
+      "generator/genres/manga-osaka-highschool1987/icons/TENSIONS#love_triangle.webp",
   },
   {
-    id: 'yankii_territory',
-    description: 'A rival school\'s yankii group has been encroaching — confrontation is coming, question is when and how bad',
-    toneTag: 'gritty',
+    id: "yankii_territory",
+    description:
+      "A rival school's yankii group has been encroaching — confrontation is coming, question is when and how bad",
+    toneTag: "gritty",
     statAffinity: { strength: 1.3, constitution: 1.2 },
     criminalFlag: true,
-    iconPrompt: 'japanese yankii delinquents 1987 rival school confrontation school gate tense manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#yankii_territory.webp',
+    iconPrompt:
+      "japanese yankii delinquents 1987 rival school confrontation school gate tense manga illustration",
+    iconPath:
+      "generator/genres/manga-osaka-highschool1987/icons/TENSIONS#yankii_territory.webp",
   },
   {
-    id: 'teacher_suspicious',
-    description: 'A homeroom teacher suspects something — the arubaito, the relationship, the incident in Namba — and hasn\'t confronted anyone yet',
-    toneTag: 'dramatic',
+    id: "teacher_suspicious",
+    description:
+      "A homeroom teacher suspects something — the arubaito, the relationship, the incident in Namba — and hasn't confronted anyone yet",
+    toneTag: "dramatic",
     statAffinity: { wisdom: 0.9, intelligence: 1.1 },
     criminalFlag: false,
-    iconPrompt: 'japanese homeroom teacher 1987 watching student from classroom doorway suspicious expression manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#teacher_suspicious.webp',
+    iconPrompt:
+      "japanese homeroom teacher 1987 watching student from classroom doorway suspicious expression manga illustration",
+    iconPath:
+      "generator/genres/manga-osaka-highschool1987/icons/TENSIONS#teacher_suspicious.webp",
   },
   {
-    id: 'parent_wants_quit',
-    description: 'Parents are pressuring them to quit the club and focus entirely on entrance exam preparation',
-    toneTag: 'dramatic',
+    id: "parent_wants_quit",
+    description:
+      "Parents are pressuring them to quit the club and focus entirely on entrance exam preparation",
+    toneTag: "dramatic",
     statAffinity: { wisdom: 0.9, constitution: 1.1 },
     criminalFlag: false,
-    iconPrompt: 'japanese student 1987 dinner table argument parents pressure quit club exam focus manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#parent_wants_quit.webp',
+    iconPrompt:
+      "japanese student 1987 dinner table argument parents pressure quit club exam focus manga illustration",
+    iconPath:
+      "generator/genres/manga-osaka-highschool1987/icons/TENSIONS#parent_wants_quit.webp",
   },
   {
-    id: 'rumor_spreading',
-    description: 'A rumor is spreading through the school — some of it true, some of it not — and it has taken on a life of its own',
-    toneTag: 'dramatic',
+    id: "rumor_spreading",
+    description:
+      "A rumor is spreading through the school — some of it true, some of it not — and it has taken on a life of its own",
+    toneTag: "dramatic",
     statAffinity: { charisma: 0.9, wisdom: 1.1 },
     criminalFlag: false,
-    iconPrompt: 'japanese students 1987 hallway whispering pointing gossip rumor manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#rumor_spreading.webp',
+    iconPrompt:
+      "japanese students 1987 hallway whispering pointing gossip rumor manga illustration",
+    iconPath:
+      "generator/genres/manga-osaka-highschool1987/icons/TENSIONS#rumor_spreading.webp",
   },
   {
-    id: 'debt_to_wrong_people',
-    description: 'Someone close to them owes money to people who are not patient — it has started to become their problem too',
-    toneTag: 'gritty',
+    id: "debt_to_wrong_people",
+    description:
+      "Someone close to them owes money to people who are not patient — it has started to become their problem too",
+    toneTag: "gritty",
     statAffinity: { constitution: 1.2, wisdom: 0.9 },
     criminalFlag: true,
-    iconPrompt: 'japanese student 1987 Osaka namba night confronted by adults demanding money worried manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#debt_to_wrong_people.webp',
+    iconPrompt:
+      "japanese student 1987 Osaka namba night confronted by adults demanding money worried manga illustration",
+    iconPath:
+      "generator/genres/manga-osaka-highschool1987/icons/TENSIONS#debt_to_wrong_people.webp",
   },
   {
-    id: 'graduation_approaching',
-    description: 'Third year. Six months until graduation. Everything unfinished is becoming urgent',
-    toneTag: 'dramatic',
+    id: "graduation_approaching",
+    description:
+      "Third year. Six months until graduation. Everything unfinished is becoming urgent",
+    toneTag: "dramatic",
     statAffinity: { wisdom: 1.2, charisma: 1.1 },
     criminalFlag: false,
-    iconPrompt: 'japanese third year students 1987 school corridor time passing graduation approaching contemplative manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#graduation_approaching.webp',
+    iconPrompt:
+      "japanese third year students 1987 school corridor time passing graduation approaching contemplative manga illustration",
+    iconPath:
+      "generator/genres/manga-osaka-highschool1987/icons/TENSIONS#graduation_approaching.webp",
   },
   {
-    id: 'arubaito_discovered',
-    description: 'Their part-time job has been discovered — or is about to be — by someone who will make it a problem',
-    toneTag: 'neutral',
+    id: "arubaito_discovered",
+    description:
+      "Their part-time job has been discovered — or is about to be — by someone who will make it a problem",
+    toneTag: "neutral",
     statAffinity: { wisdom: 0.9, charisma: 1.1 },
     criminalFlag: false,
-    iconPrompt: 'japanese student 1987 in konbini uniform panicking seeing classmate or teacher enter the store manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#arubaito_discovered.webp',
+    iconPrompt:
+      "japanese student 1987 in konbini uniform panicking seeing classmate or teacher enter the store manga illustration",
+    iconPath:
+      "generator/genres/manga-osaka-highschool1987/icons/TENSIONS#arubaito_discovered.webp",
   },
   {
-    id: 'club_captain_rivalry',
-    description: 'A fierce rivalry within the club itself — the current captain or a senior member sees them as a threat',
-    toneTag: 'dramatic',
+    id: "club_captain_rivalry",
+    description:
+      "A fierce rivalry within the club itself — the current captain or a senior member sees them as a threat",
+    toneTag: "dramatic",
     statAffinity: { strength: 1.2, charisma: 1.1 },
     criminalFlag: false,
-    iconPrompt: 'japanese students 1987 sports club friction captain and younger member glaring practice manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#club_captain_rivalry.webp',
+    iconPrompt:
+      "japanese students 1987 sports club friction captain and younger member glaring practice manga illustration",
+    iconPath:
+      "generator/genres/manga-osaka-highschool1987/icons/TENSIONS#club_captain_rivalry.webp",
   },
   {
-    id: 'secret_keeping_cost',
-    description: 'Keeping someone else\'s secret has become expensive — in time, in energy, in decisions they now can\'t make freely',
-    toneTag: 'dramatic',
+    id: "secret_keeping_cost",
+    description:
+      "Keeping someone else's secret has become expensive — in time, in energy, in decisions they now can't make freely",
+    toneTag: "dramatic",
     statAffinity: { wisdom: 1.1, charisma: 0.9 },
     criminalFlag: false,
-    iconPrompt: 'japanese student 1987 alone rooftop holding a burden invisible weight contemplating manga illustration',
-    iconPath: 'generator/genres/manga-osaka-highschool1987/icons/TENSIONS#secret_keeping_cost.webp',
+    iconPrompt:
+      "japanese student 1987 alone rooftop holding a burden invisible weight contemplating manga illustration",
+    iconPath:
+      "generator/genres/manga-osaka-highschool1987/icons/TENSIONS#secret_keeping_cost.webp",
   },
 ];
