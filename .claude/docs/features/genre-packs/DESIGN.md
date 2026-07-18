@@ -86,9 +86,65 @@ my-genre.zip
 
 `data.plotArchetypes` holds only the genre-specific archetypes — the loader
 prepends the shared `COMMON_PLOT_ARCHETYPES`. `genders`/`orientations`/`builds`/
-`hair` may be omitted to inherit the common tables. The individual table entry
-shapes match the existing built-in genre data files (e.g. a race is
-`{ id, broad, flavor, weight, iconPrompt, iconPath }`).
+`hair` may be omitted to inherit the common tables.
+
+### `data.*` table entry shapes
+
+Every table's entries follow the same shape the built-in genre `.js` files use
+(`web/generator/genres/<genre>/*.js`) — this is the canonical reference; the
+list below is a quick summary, not a substitute for reading one of those files.
+`iconPrompt`/`iconPath` are optional everywhere — a pack with no bundled icons
+(and no `iconBase` reskin) just shows the ⚙ gear placeholder for that entry.
+
+- **`races`** (or `identities`): `{ id, broad, flavor, weight, iconPrompt?, iconPath? }`.
+  `broad` is the name-pool lookup key. `weight` is a flat rarity dial — races
+  carry no `statAffinity` anywhere in the app (identity isn't correlated with
+  capability). `flavor` is shown in full in the AI prompt, but truncated in the
+  UI at the first `' — '` (the slot-machine sub-label and the output header
+  both do `flavor.split(' — ')[0].trim()`) — put the short, punchy part first,
+  or a long `flavor` with no em-dash displays in full.
+- **`professions`**: `{ title, industry, economicTier, statAffinity?, sentiments, iconPrompt?, iconPath? }`.
+  `economicTier` is 1-5. `industry` must match the keys used in
+  `tagPools.professionTags` (see below) — a common mistake is keying
+  `professionTags` by `title` instead, which silently matches nothing.
+- **`lifeEvents`**: `{ id, description, toneTag, statAffinity?, economicHint?, iconPrompt?, iconPath? }`.
+- **`tensions`**: `{ id, description, toneTag, statAffinity?, criminalFlag, iconPrompt?, iconPath? }`.
+  `criminalFlag: true` adds `tagPools.criminal` to the scenario's tags.
+- **`secrets`**: `{ id, description, toneTag, severity, statAffinity?, criminalFlag }`.
+  `severity` is `low | medium | high | explosive`. No icon fields — secrets
+  have no slot-machine reel.
+- **`familyStructures`**: `{ id, label, parentCount, siblingCount, parentGender?, toneTag, statAffinity?, economicHint?, notes?, iconPrompt?, iconPath? }`.
+  `parentCount` (0/1/2) determines which parent slots get filled; `siblingCount`
+  is `[min, max]`, resolved per character.
+- **`parentStatuses`** / **`siblingDynamics`**: `{ id, label, toneTag }`. Consumed
+  only by the cast builder to flavor a rolled parent's/sibling's status text —
+  no slot-machine reel, no icon fields.
+- **`citySettings`**: `{ id, label, flavor, toneTag, statAffinity?, iconPrompt?, iconPath? }`.
+- **`economicTiers`**: an object keyed `"1"`-`"5"` **as strings**, not a list —
+  `{ label, descriptors, housing, transport, iconPrompt?, iconPath? }` per tier.
+- **`plotArchetypes`**: `{ id, label, weight, description, iconPrompt?, iconPath? }`.
+  `description` is interpolated into the "plotEssentials" AI prompt instruction
+  as the primary story engine.
+- **`distinguishingFeatures`**: `{ id, label }`. `label: null` is the "no
+  feature" entry some built-ins include for padding — but it's not required:
+  the engine already rolls no-feature ~25% of the time regardless.
+- **`quirks`**: `{ id, quirk, statAffinity? }`.
+- **`tagPools`**: `{ always: [...], <toneTag>: [...], criminal: [...], professionTags: { <industry>: [...] } }`.
+  One `<toneTag>` array per toneTag value actually used by any `citySettings`
+  or `tensions` entry — the lookup is dynamic (`tagPools[city.toneTag]`), not a
+  fixed enum. `professionTags` **must** be keyed by `professions[].industry`,
+  not by `title`.
+- **`namePools`**: keyed by each table's `broad` value, plus a required
+  `"default"` fallback. Each pool: `{ masc, fem, neutral, last }` — first-name
+  arrays by gender plus a shared last-name array.
+- **`staticCards`** (top-level, sibling of `data`, not inside it): optional,
+  keyed `STATIC_CHARACTERS` / `STATIC_CLASSES` / `STATIC_RACES` /
+  `STATIC_LOCATIONS` / `STATIC_FACTIONS` / `STATIC_CUSTOM`. Each entry:
+  `{ name, triggers, entry }` — `name` is the card title, `triggers` a
+  comma-separated keyword string AI Dungeon matches against, `entry` the lore
+  text. (`aidungeon-importer.mjs` destructures exactly these three field names
+  plus a `type` it derives itself from which array the entry came from — don't
+  add a `type` field per entry, and don't rename `triggers` to `keys`.)
 
 ## Implementation
 
@@ -161,7 +217,12 @@ Two worked examples ship in `web/genre-packs/`:
   `build-example-pack.py`, which also shows the inverse mapping from plain data
   to the pack format and generates simple placeholder icons; re-run it to rebuild
   the zip. (A real pack would run the icon pipeline for finished art instead of
-  the placeholders.)
+  the placeholders.) Its data tables carry full shape-header comments per
+  `CLAUDE.md`'s data-table rule; two intentional bugs are left in place and
+  called out inline as cautionary examples rather than silently fixed —
+  `tagPools.professionTags` keyed by profession `title` instead of `industry`
+  (silently matches nothing), and `staticCards` entries shaped
+  `{ keys, type, entry }` instead of the correct `{ name, triggers, entry }`.
 
 ## Note on the icon pipeline
 
