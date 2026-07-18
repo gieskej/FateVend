@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-07-18
+
+### refactor: de-duplicate the two engine copies onto one generator/engine.js
+**What changed:** The character-generation engine existed as two parallel implementations: the browser used `generator/engine.js`, while the CLI/module path used `generator/skeleton-builder.js` + `cast-builder.js` + `selector.js` + `roller.js`. They had silently diverged — most notably `cast-builder.js`'s NPC gender roll (`neutralGenderId`) always allowed non-binary, ignoring the LGBQ toggle, a bug already fixed in `engine.js` but still live on the CLI path; the two also used different parent-status lists and produced different skeleton shapes (`engine.js` emitted `_slots` but no `statLabels`/`nsfw`; `skeleton-builder.js` the reverse). Converged everything onto `engine.js` as the single engine: `generator/index.js` now imports `rollStats`/`assignMBTI`/`buildSkeleton` from it, and `roller.js`/`selector.js`/`skeleton-builder.js`/`cast-builder.js` are **deleted**. `engine.js`'s `buildSkeleton` output is now a superset — it also emits `statLabels` (via `stat-adjectives.js`) and `nsfw`, and accepts either `options.includeNSFW` (browser) or `options.nsfw` (CLI).
+**Impact:** One engine, so browser and CLI can no longer drift. The CLI path inherits the LGBQ-toggle cast fix and the canonical parent-status handling. Both paths now include **stat-adjective labels** in the prompt's Stats line (e.g. `STR 50 (average strength)`) — previously the browser omitted them; this also satisfies the older "stat adjectives so the AI understands them better" note. The CLI skeleton now also carries `_slots` (unused there, harmless); the browser skeleton now carries `statLabels`/`nsfw` (additive — no top-level `scenario.nsfw` is derived from it, so no behavior change beyond the richer Stats line).
+**Test cases:** (1) Node harness — `generateCharacter({skipAI})` for all 7 genres via the rewired `index.js`, asserting each skeleton has `statLabels`/`nsfw`/`_slots`/`cast` and that the shared `buildPrompt` now emits `Stats: STR N (label)`. (2) LGBQ-off fix — 200 modern rolls with `includeLGBQ:false` through the engine, **zero** non-binary NPCs. (3) CLI `--skeleton-only` runs. (4) Live browser (Playwright, real API call) — zero console errors on load (validates the `engine.js`→`stat-adjectives.js`/`ui-data.js` chain loads in the browser), phase 1 + phase 2 succeeded, appearance populated, no error box.
+
 ## 2026-07-17
 
 ### refactor: collapse the two prompt systems onto one shared buildPrompt(skeleton, voice)

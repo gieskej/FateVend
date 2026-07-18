@@ -232,11 +232,9 @@ Return fully resolved character object
 ```
 web/generator/
   index.js              ← public API
-  roller.js             ← stat rolling (Box-Muller), age rolling, MBTI weighting
-  selector.js           ← weighted/stat-weighted table selection
-  skeleton-builder.js   ← assembles CharacterSkeleton from genre tables
-  cast-builder.js       ← NPC assembly (family, friends, foils)
-  api-client.js         ← Claude + Gemini API calls, smartTruncate, output limit enforcement
+  engine.js             ← the single engine: stat/MBTI rolls, selectors, skeleton + NPC cast (browser & CLI)
+  prompt-builder.js     ← shared buildPrompt(sk, voice) + parseResponse + output-limit enforcement
+  api-client.js         ← Claude + Gemini API calls
   stat-adjectives.js    ← stat-to-label mapping
   ui-data.js            ← re-exports all genre tables for the web UI
   types.js              ← JSDoc types (StatBlock, CharacterSkeleton, NPCSkeleton, …)

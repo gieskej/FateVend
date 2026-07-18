@@ -5,11 +5,6 @@
 
 - e2e unit test
 
-
-
-## Refactor follow-ups
-- De-duplicate the two engine copies: the browser imports `generator/engine.js` and the CLI imports `generator/skeleton-builder.js` — both contain the same engine logic (e.g. the `identity.broad === 'Android'` family override), a divergence risk from the verbatim extract. Point both at one module.
-
 ## Bugs
 - Plot essentials should be short bullet points, not wordy prose.  Ideally around 1000 characters, maximum 1500 characters.
 
@@ -58,6 +53,7 @@
 ---
 
 ## Fixed Bugs
+- De-duplicate the two engine copies — the CLI now uses generator/engine.js (the canonical, bug-fixed engine) instead of the parallel skeleton-builder.js/cast-builder.js/selector.js/roller.js, which are deleted. This also fixed a latent CLI-path bug (its NPC gender roll ignored the LGBQ toggle) and gave both paths stat-adjective labels in the prompt.
 - Collapse the two prompt systems — unified the browser's GENRE_VOICE-driven buildPrompt and the CLI/module path's per-genre prompt-template.js onto one shared `buildPrompt(skeleton, voice)` (generator/prompt-builder.js). Each genre now supplies only a voice.js (SYSTEM_PROMPT + outputRules); the scaffold is normalized. Rich per-genre content won; the 7 prompt-template.js files are deleted.
 - Create some concrete alien species instead of leaving it to be completely random — added 9 distinct sci-fi alien species (humanoid, slug, locust, reptilian, avian, amoeba, plant, vapor, typical) in place of the old generic humanoid/non-humanoid split.
 - Redo all the missing icons in Fantasy

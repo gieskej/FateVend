@@ -4,7 +4,7 @@
 // (via generator/index.js). Previously this lived inline in index.js AND was
 // hand-duplicated as getGenreTables() in index.html; this module unifies them.
 //
-// skeleton-builder expects the key RACES_OR_ETHNICITIES — each genre's
+// engine.js's buildSkeleton expects the key RACES_OR_ETHNICITIES — each genre's
 // races/ethnicities/species array is normalized to that single key below.
 //
 // No browser APIs. No Node-specific APIs. Pure JS.

@@ -13,8 +13,7 @@
 //
 // No browser APIs. No Node-specific APIs. Pure JS + fetch.
 
-import { rollStats, assignMBTI }  from './roller.js';
-import { buildSkeleton }          from './skeleton-builder.js';
+import { rollStats, assignMBTI, buildSkeleton } from './engine.js';
 import { callClaudeAPI }          from './api-client.js';
 import { GENRE_TABLES, SUPPORTED_GENRES } from './registry.js';
 

@@ -1,18 +1,18 @@
 // generator/engine.js
-// The canonical character-generation engine for the browser app.
+// The single character-generation engine — selectors, stat rolling, MBTI, the
+// supporting cast, and the full skeleton. Used by BOTH the browser app
+// (web/index.html) and the Node CLI/module path (generator/index.js). It is the
+// source of truth for how a character is rolled.
 //
-// This is a VERBATIM extraction of the engine that previously lived inline in
-// web/index.html (the "GENERATOR ENGINE — inlined" block). It is the source of
-// truth for how the live app rolls characters — selectors, stat rolling, MBTI,
-// the supporting cast, and the full skeleton. The only change from the inline
-// version is that buildSkeleton's four DOM reads (include-lgbq, include-nsfw,
-// pref-gender, pref-orientation) are now passed in via an `options` argument so
-// this module has no browser-DOM dependency; index.html reads the DOM and
-// passes them at the call site.
+// buildSkeleton takes an `options` object ({ includeLGBQ, includeNSFW | nsfw,
+// prefGender, prefOrientation }) rather than reading the DOM, so the module has
+// no browser dependency; index.html reads its checkboxes and passes them at the
+// call site, while the CLI passes { nsfw }.
 //
-// (The parallel generator/skeleton-builder.js + cast-builder.js are a separate,
-// older implementation still used only by the Node CLI; converging the two is
-// deferred to a later stage.)
+// (This replaced the former parallel generator/skeleton-builder.js +
+// cast-builder.js + selector.js + roller.js CLI implementation, which had
+// silently diverged — e.g. its NPC gender roll ignored the LGBQ toggle. Those
+// files are gone; everything now points here.)
 //
 // No browser APIs. Pure JS + the shared UI data tables.
 
@@ -23,6 +23,7 @@ import {
   PARENT_DYNAMICS_ALIVE,
   FOIL_ROLES,
 } from './ui-data.js';
+import { buildStatLabels } from './stat-adjectives.js';
 
 // ── Selectors ────────────────────────────────────────────────────────────
 export function uniformPick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
@@ -323,7 +324,7 @@ export function buildSkeleton(stats, mbti, tables, options = {}) {
           RELATIONSHIP_STATUSES:RS, PLOT_ARCHETYPES:PA } = tables;
 
   const includeLGBQ     = options.includeLGBQ     ?? true;
-  const includeNSFW     = options.includeNSFW     ?? false;
+  const includeNSFW     = options.includeNSFW     ?? options.nsfw ?? false;
   const prefGender      = options.prefGender      ?? 'any';
   const prefOrientation = options.prefOrientation ?? 'any';
   const age = (() => {
@@ -422,7 +423,8 @@ export function buildSkeleton(stats, mbti, tables, options = {}) {
     ethnicityBroad: identity.broad, ethnicityFlavor: identity.flavor,
     appearance: { build: build.label, hair, distinguishingFeature: feat, statNotes: appearanceStatNotes(stats) },
     quirk: quirk.quirk,
-    stats, mbti: mbti.type, mbtiLabel: mbti.label,
+    stats, statLabels: buildStatLabels(stats), mbti: mbti.type, mbtiLabel: mbti.label,
+    nsfw: allowNSFW,
     profession: profession.title, industry: profession.industry,
     economicTier: tier, economicLabel: econ.label,
     economicMarkers: econMarkers,

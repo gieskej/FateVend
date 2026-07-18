@@ -266,11 +266,8 @@ web/
 
   generator/                      ← Core library (no UI or Node dependencies)
     index.js                      ← Public API: generateCharacter()
-    engine.js                     ← Roll + skeleton pipeline used by the browser
-    roller.js                     ← Stat rolling (Box-Muller bell curve)
-    selector.js                   ← Weighted table selection
-    skeleton-builder.js           ← Assembles CharacterSkeleton from genre tables
-    cast-builder.js               ← Supporting cast (family, friends, foils)
+    engine.js                     ← The single engine: stat/MBTI rolls, selectors, skeleton + cast (browser & CLI)
+    stat-adjectives.js            ← Numeric stat → adjective labels (statLabels)
     registry.js                   ← GENRE_TABLES: single source of truth for genre data
     manifests.js                  ← GENRE_MANIFESTS + GENRE_VOICE: presentation, slots, prompt voice
     prompt-builder.js             ← Single shared buildPrompt(sk, voice) + parseResponse + output limits

@@ -49,8 +49,8 @@ and end with a summary count.
 
 ## Related (out of scope here)
 
-Two *engine* copies now coexist: the browser imports `generator/engine.js` while
-the CLI/module path imports `generator/skeleton-builder.js` — both contain the
-same engine logic (e.g. the `identity.broad === 'Android'` family override). That
-is a module-vs-module duplication, not an inline one, so `/sync-inline` does not
-cover it; keep it in mind as a separate consolidation.
+The generation **engine** is fully unified: both the browser and the CLI/module
+path now use `generator/engine.js` (the former parallel `skeleton-builder.js` /
+`cast-builder.js` / `selector.js` / `roller.js` are deleted). Likewise the
+**prompt builder** is shared (`generator/prompt-builder.js`). So the only inline
+duplication `/sync-inline` still covers is the HTTP API-call layer above.

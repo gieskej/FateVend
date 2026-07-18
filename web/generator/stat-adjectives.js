@@ -1,6 +1,6 @@
 // generator/stat-adjectives.js
 // Converts numeric stat values (1–100) to descriptive adjectives.
-// Used by skeleton-builder to annotate the skeleton for the AI prompt,
+// Used by engine.js to annotate the skeleton (statLabels) for the AI prompt,
 // and by the UI to label stat cells.
 
 export const STAT_ADJECTIVES = {
