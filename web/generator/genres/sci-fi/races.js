@@ -3,7 +3,7 @@
 //   id            — unique slug; used for slot-machine reel identity and icon lookup
 //   broad         — coarse species category (e.g. 'Human', 'Android'); drives name-pool
 //                    lookup, the android_origin family-structure override, and the
-//                    NON_HUMANOID face-prompt check in prompt-template.js
+//                    NON_HUMANOID face-prompt check in voice.js / prompt-builder.js
 //   syntheticType — Android entries only: 'biomechanical' | 'plastic' | 'industrial' |
 //                    undefined. Controls which of gender/orientation/relationship get
 //                    generated vs. overridden (see buildSkeleton()).

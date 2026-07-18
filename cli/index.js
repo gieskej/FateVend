@@ -20,6 +20,8 @@ import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { generateCharacter } from '../web/generator/index.js';
 import { callGeminiAPI } from '../web/generator/api-client.js';
+import { GENRE_VOICE } from '../web/generator/manifests.js';
+import { buildPrompt, parseResponse, enforceOutputLimits } from '../web/generator/prompt-builder.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -94,9 +96,9 @@ if (!skeletonOnly) {
 
 // ── Ollama call ────────────────────────────────────────────────────────────
 async function callOllamaAPI(skeleton, baseUrl, model, genreId) {
-  const tmpl = await import(`../web/generator/genres/${genreId}/prompt-template.js`);
+  const voice  = GENRE_VOICE[genreId] ?? GENRE_VOICE.modern;
   const prompt = 'Return raw JSON only — no markdown, no code fences, no commentary.\n\n'
-    + tmpl.buildPrompt(skeleton);
+    + buildPrompt(skeleton, voice);
 
   const res = await fetch(`${baseUrl.replace(/\/+$/, '')}/api/chat`, {
     method:  'POST',
@@ -104,7 +106,7 @@ async function callOllamaAPI(skeleton, baseUrl, model, genreId) {
     body: JSON.stringify({
       model,
       messages: [
-        { role: 'system', content: tmpl.SYSTEM_PROMPT },
+        { role: 'system', content: voice.systemPrompt },
         { role: 'user',   content: prompt },
       ],
       stream: false,
@@ -118,9 +120,9 @@ async function callOllamaAPI(skeleton, baseUrl, model, genreId) {
 
   const data   = await res.json();
   const raw    = data.message?.content ?? '';
-  const parsed = tmpl.parseResponse(raw);
+  const parsed = parseResponse(raw);
   if (!parsed) throw new Error('Failed to parse Ollama response as JSON');
-  return parsed;
+  return enforceOutputLimits(parsed);
 }
 
 // ── Main ───────────────────────────────────────────────────────────────────

@@ -84,7 +84,7 @@ genre's exports exactly):
 | `names.js` | `NAME_POOLS` — keyed by identity `broad` group, each `{ masc, fem, neutral, last }` |
 | `plot-archetypes.js` | `<GENRE>_PLOT_ARCHETYPES` (genre-specific only; the shared `COMMON_PLOT_ARCHETYPES` is prepended by the registry) |
 | `static-cards.js` | `STATIC_CHARACTERS/CLASSES/RACES/LOCATIONS/FACTIONS/CUSTOM` (optional AI Dungeon story cards; may be empty) |
-| `prompt-template.js` | `SYSTEM_PROMPT`, `buildPrompt(skeleton)`, `parseResponse(raw)` — **CLI path only** (see Step 5) |
+| `voice.js` | `SYSTEM_PROMPT` (the system prompt) and `outputRules(skeleton)` (the authored "OUTPUT RULES" body). Consumed by `GENRE_VOICE` via the single shared builder — see Step 3 / Step 5 |
 
 Give every array at least 3–5 real entries so generation works immediately;
 mark sparse arrays `// TODO: expand`.
@@ -112,9 +112,13 @@ In `web/generator/manifests.js` add three things:
    familyUsesIconSlug, economicTiers:[[tierId,iconSlug,label], …5]} }`. The
    `slots.*Cat` values are the icon-file CATEGORY prefixes.
 2. The id in `CAROUSEL_ORDER` (controls carousel + dropdown position).
-3. `GENRE_VOICE['<id>']` — `{ identityLabel, genreLabel, openingNote,
-   appearanceNote, systemPrompt }`. This is the browser's prompt voice; follow
-   the project's image-prompt rules in `CLAUDE.md` for `appearanceNote`.
+3. `GENRE_VOICE['<id>']` — `{ identityLabel, genreLabel, systemPrompt,
+   outputRules }`. Import `SYSTEM_PROMPT`/`outputRules` from the genre's
+   `voice.js` (Step 5) at the top of `manifests.js` and reference them here.
+   This is the single prompt voice used by **both** the browser and the CLI via
+   the shared builder (`generator/prompt-builder.js`). Follow the project's
+   image-prompt rules in `CLAUDE.md` for the `appearancePrompt` rule inside
+   `outputRules`.
 
 `GENRE_CAROUSEL_DATA`, portrait styles, TTS config, music maps, and the slot
 config all derive from these — no `index.html` edits.
@@ -126,20 +130,22 @@ In `web/generator/ui-data.js` add `import * as <Name>StaticCards from
 `STATIC_CARDS_BY_GENRE`. (Skip only if the genre truly has no static cards — but
 prefer at least a few; a missing entry silently ships an empty `staticCards`.)
 
-### Step 5 — Register the CLI prompt template
+### Step 5 — Author the genre voice module
 
-**Known duplication:** the browser builds its prompt from `GENRE_VOICE`
-(Step 3), but the **CLI/module path** (`cli/` → `generator/index.js` →
-`generator/api-client.js`) still uses per-genre `prompt-template.js` via
-`PROMPT_TEMPLATES`. So for a built-in genre you must ALSO:
+There is now **one** shared prompt builder (`generator/prompt-builder.js`) used
+by both the browser and the CLI/module path. A genre supplies only its voice:
 
-- Author `genres/<id>/prompt-template.js` (`SYSTEM_PROMPT`, `buildPrompt`,
-  `parseResponse` — copy an existing genre; `parseResponse` is genre-identical).
-- Register it in `web/generator/api-client.js` under `PROMPT_TEMPLATES`.
+- Author `genres/<id>/voice.js` exporting `SYSTEM_PROMPT` (a string) and
+  `outputRules(sk)` (returns the "OUTPUT RULES" body — the per-field
+  instructions; copy an existing genre's `voice.js` and adjust the flavor).
+  `plotEssentials` interpolates `${sk.plotArchetype}`/`${sk.tension}`.
+- Wire it into `GENRE_VOICE` in `manifests.js` (Step 3).
 
-Keep the `prompt-template.js` `SYSTEM_PROMPT` and the `GENRE_VOICE.systemPrompt`
-in sync in tone. (Collapsing these two prompt systems into one is a known
-outstanding refactor; if it lands, this step goes away.)
+The CHARACTER SKELETON scaffold, response parsing, and output-limit truncation
+are all shared — you do **not** author a `buildPrompt`/`parseResponse` per genre,
+and there is no `api-client.js` registration step. (Uploaded genre packs, which
+ship JSON only, omit `outputRules` and fall back to a generic body built from
+their `openingNote`/`appearanceNote`.)
 
 ### Step 6 — Icons
 
@@ -196,7 +202,9 @@ Do not duplicate the core's logic — all wrappers share the same `run()` signat
 `index.html` used to re-implement the entire generation engine inline; that
 engine was deleted in the Stage A refactor — `index.html` now imports
 `generator/engine.js` and the single `registry.js`. So **adding a genre requires
-zero engine or inline-generator edits**. (The `/sync-inline` skill still exists,
-but only covers the API-call/response layer that remains duplicated inline —
-`callClaude`/`callGemini`/`parseResponse`/`smartTruncate` — which is unaffected
-by adding a genre.)
+zero engine or inline-generator edits**. Prompt building and response parsing are
+also shared now (`generator/prompt-builder.js`, imported by both `index.html` and
+`api-client.js`), so there's nothing per-genre to author there beyond the
+`voice.js` in Step 5. (The `/sync-inline` skill still exists, but now only covers
+the API-call layer that remains duplicated inline — `callClaude`/`callGemini`/
+`callOllama` vs `api-client.js` — which is unaffected by adding a genre.)

@@ -273,8 +273,9 @@ web/
     cast-builder.js               ← Supporting cast (family, friends, foils)
     registry.js                   ← GENRE_TABLES: single source of truth for genre data
     manifests.js                  ← GENRE_MANIFESTS + GENRE_VOICE: presentation, slots, prompt voice
+    prompt-builder.js             ← Single shared buildPrompt(sk, voice) + parseResponse + output limits
     pack-loader.js                ← Loads/validates a genre pack into the runtime shapes
-    api-client.js                 ← Claude + Gemini API calls, output truncation (CLI path)
+    api-client.js                 ← Claude + Gemini API calls (browser + CLI share prompt-builder.js)
     ui-data.js                    ← Static story cards + shared UI constants
 
     genres/                       ← Built-in genres (each a folder of pure-data modules)
@@ -285,7 +286,7 @@ web/
         character-attributes.js   ← genders, orientations, identity, builds, hair, features, quirks
         professions.js, life-events.js, family-structures.js, tensions.js,
         secrets.js, settings.js, names.js, plot-archetypes.js, static-cards.js
-        prompt-template.js        ← Genre AI prompt + response parser (CLI path)
+        voice.js                  ← SYSTEM_PROMPT + outputRules(sk) — fed to the shared prompt-builder
         icons/                    ← Slot-machine + carousel art (+ generate_icons.py)
 
   genre-packs/                    ← Importable genre packs (data-only, no source edits)
@@ -337,7 +338,7 @@ registration sites:
 2. Import those tables and add a `GENRE_TABLES['<id>']` entry in `generator/registry.js`.
 3. Add `GENRE_MANIFESTS['<id>']`, the id in `CAROUSEL_ORDER`, and `GENRE_VOICE['<id>']` in `generator/manifests.js`.
 4. Register static story cards in `generator/ui-data.js` (`STATIC_CARDS_BY_GENRE`).
-5. Add `prompt-template.js` + register it in `api-client.js` `PROMPT_TEMPLATES` (CLI path), and add an `icons/generate_icons.py` wrapper.
+5. Add `generator/genres/<id>/voice.js` (`SYSTEM_PROMPT` + `outputRules(sk)`) and reference it from `GENRE_VOICE` in `manifests.js`; add an `icons/generate_icons.py` wrapper. The browser and CLI share one `buildPrompt` — there's no separate CLI prompt template.
 
 The engine, carousel, slot machine, TTS, and music are all data-driven, so a new
 genre needs **no `index.html` edits**. The Claude Code **`/add-genre`** skill

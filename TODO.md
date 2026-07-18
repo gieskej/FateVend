@@ -8,7 +8,6 @@
 
 
 ## Refactor follow-ups
-- Collapse the two prompt systems: the browser builds prompts from `GENRE_VOICE` (manifests.js) while the CLI/module path still uses per-genre `prompt-template.js` via `api-client.js` PROMPT_TEMPLATES. Adding a built-in genre currently means authoring both, kept in sync by hand. Unify on one shared `buildPrompt(skeleton, voice)`.
 - De-duplicate the two engine copies: the browser imports `generator/engine.js` and the CLI imports `generator/skeleton-builder.js` — both contain the same engine logic (e.g. the `identity.broad === 'Android'` family override), a divergence risk from the verbatim extract. Point both at one module.
 
 ## Bugs
@@ -59,6 +58,7 @@
 ---
 
 ## Fixed Bugs
+- Collapse the two prompt systems — unified the browser's GENRE_VOICE-driven buildPrompt and the CLI/module path's per-genre prompt-template.js onto one shared `buildPrompt(skeleton, voice)` (generator/prompt-builder.js). Each genre now supplies only a voice.js (SYSTEM_PROMPT + outputRules); the scaffold is normalized. Rich per-genre content won; the 7 prompt-template.js files are deleted.
 - Create some concrete alien species instead of leaving it to be completely random — added 9 distinct sci-fi alien species (humanoid, slug, locust, reptilian, avian, amoeba, plant, vapor, typical) in place of the old generic humanoid/non-humanoid split.
 - Redo all the missing icons in Fantasy
 - Add a new script in genre-packs to generate icons using SD or Gemini to read the icon prompts from the new genre-pack data structures.

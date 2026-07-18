@@ -815,6 +815,7 @@ import {
 import { rollStats, assignMBTI, buildSkeleton } from './generator/engine.js';
 import { GENRE_TABLES } from './generator/registry.js';
 import { GENRE_MANIFESTS, GENRE_CAROUSEL_DATA, GENRE_VOICE } from './generator/manifests.js';
+import { buildPrompt, parseResponse, enforceOutputLimits } from './generator/prompt-builder.js';
 import { loadPack, validatePack } from './generator/pack-loader.js';
 
 // ── Genre routing ─────────────────────────────────────────────────────────
@@ -826,121 +827,11 @@ import { loadPack, validatePack } from './generator/pack-loader.js';
 // ═══════════════════════════════════════════════════════════════════════════
 
 // ── Prompt builder ────────────────────────────────────────────────────────
-// Per-genre "voice" (identity/genre labels, opening + portrait notes, and the
-// system prompt) lives in GENRE_VOICE in ./generator/manifests.js. The rest of
-// the prompt template below is shared across all genres.
-
-function buildPrompt(sk, genre) {
-  const castLines = sk.cast.map(npc =>
-    `  - ${npc.name} (${npc.role}, ${npc.status}, ${npc.gender}, ${npc.race}): ${npc.traits.join(', ')}. ${npc.dynamic}`
-  ).join('\n');
-  const appParts = [sk.appearance.build, sk.appearance.hair, sk.appearance.distinguishingFeature, ...(sk.appearance.statNotes ?? [])].filter(Boolean).join('; ');
-  const _v = GENRE_VOICE[genre] ?? GENRE_VOICE['modern'];
-  const { identityLabel, genreLabel, openingNote, appearanceNote } = _v;
-
-  return `Generate ${genreLabel} content for this character. Return a single JSON object with these exact keys:
-"characterEntry", "npcEntries", "title", "description", "tags", "opening", "appearancePrompt", "plotEssentials", "authorNote"
-
-CHARACTER SKELETON:
-Name: ${sk.name}, ${sk.age}, ${sk.gender} (${sk.pronouns})
-${identityLabel}: ${sk.ethnicityFlavor}
-Orientation: ${sk.orientation}
-Relationship status: ${sk.relationshipStatus}
-Appearance: ${appParts}
-Quirk: ${sk.quirk}
-Profession: ${sk.profession} (${sk.industry}) — feels ${sk.sentiment} about it
-Stats: STR ${sk.stats.strength} | INT ${sk.stats.intelligence} | WIS ${sk.stats.wisdom} | CHA ${sk.stats.charisma} | DEX ${sk.stats.dexterity} | CON ${sk.stats.constitution}
-Personality: ${sk.mbti} — ${sk.mbtiLabel}
-Economic status: ${sk.economicLabel} — ${(sk.econMarkers || sk.economicMarkers).join('; ')}
-Housing: ${sk.housing} | Transport: ${sk.transport}
-Setting: ${sk.cityLabel} — ${sk.cityFlavor}
-Formative event: ${sk.lifeEvent}
-Plot archetype (PRIMARY STORY): ${sk.plotArchetype} — ${sk.plotArchetypeDesc}
-Background tension (secondary): ${sk.tension}
-Secret (severity: ${sk.secretSeverity}): ${sk.secret}
-
-SUPPORTING CAST:
-${castLines}
-
-OUTPUT RULES:
-
-"characterEntry": MAX 1000 chars. Open with one sentence: "[Full name] is a [age]-year-old [orientation] [gender] [race/species] with [hair length] [hair color] [hair style], [eye color] eyes, [skin tone] skin[, and any jewelry/piercings/tattoos/scars if notable], wearing [outfit suited to their occupation and background]." Then describe personality, quirks, habits, occupation, and relationships with family and key cast members by name. Do not repeat the situation, conflict, or plot already covered in the description, opening, or plot essentials.
-
-"npcEntries": An object where every key is an NPC name and every value is a PLAIN STRING (not a nested object). Each string MAX 1000 chars. Open with one sentence: "[Full name] is a [age]-year-old [orientation] [gender] [race/species] with [hair length] [hair color] [hair style], [eye color] eyes, [skin tone] skin[, and any jewelry/piercings/tattoos/scars if notable], wearing [outfit suited to their occupation and background]." Then describe personality, quirks, habits, occupation, and their relationship with the protagonist and others by name. Do not repeat the situation or plot.
-
-"title": MAX 70 chars. Hook the player. Specific, evocative. Can be darkly funny if it fits.
-
-"description": MAX 5000 chars. Second person ("You are..."). Set the scene: who the player is, what their world feels like, what's at stake. Weave in 2–3 cast members. Hint at the tension and secret without stating them plainly. End with something that makes the player want to begin.
-
-"tags": Array of 8–10 lowercase strings. Genre-appropriate.
-
-"opening": MAX 4000 chars. ${openingNote}
-
-"appearancePrompt": MAX 500 chars. ${appearanceNote}
-
-"plotEssentials": MAX 2000 chars. Using "${sk.plotArchetype}" as the primary story engine, write the plot overview for this scenario tailored to this specific character. Cover: what triggers the story (the inciting incident), the central objective, the main obstacle or antagonist, and what's at stake if the character fails. Ground it specifically in this character's skills, cast, and setting. The background tension ("${sk.tension}") is a secondary thread — weave it in but don't let it dominate. Write for a GM who needs to run this session tonight: concrete, specific, actionable.
-
-"authorNote": MAX 500 chars. Style directive for AI Dungeon's Author's Note field — injected into every AI turn to shape the game's prose. Terse imperatives tailored to this specific character and setting. Include prose style, 1–2 sensory anchors from their specific world, and the emotional/genre register. No character names, no plot details.`;
-}
-
-// Truncate to maxLen, preferring sentence boundaries for long fields, word boundaries for short.
-function smartTruncate(text, maxLen) {
-  if (!text || text.length <= maxLen) return text;
-  const sub = text.slice(0, maxLen);
-  if (maxLen >= 200) {
-    const sentEnd = Math.max(
-      sub.lastIndexOf('. '), sub.lastIndexOf('! '), sub.lastIndexOf('? '),
-      sub.lastIndexOf('.\n'), sub.lastIndexOf('!\n'), sub.lastIndexOf('?\n')
-    );
-    if (sentEnd > maxLen * 0.7) return text.slice(0, sentEnd + 1).trimEnd();
-  }
-  const wordEnd = sub.lastIndexOf(' ');
-  if (wordEnd > maxLen * 0.5) return text.slice(0, wordEnd).trimEnd() + '…';
-  return sub.trimEnd() + '…';
-}
-
-function extractJSON(raw) {
-  // 1. Code fence anywhere in the string (Gemini often adds preamble)
-  const fence = raw.match(/```(?:json)?\s*([\s\S]*?)```/i);
-  if (fence) return fence[1].trim();
-  // 2. Bare JSON object — first { to last }
-  const start = raw.indexOf('{');
-  const end   = raw.lastIndexOf('}');
-  if (start !== -1 && end > start) return raw.slice(start, end + 1);
-  // 3. Raw string as-is
-  return raw.trim();
-}
-
-function coerceEntryString(v) {
-  if (typeof v === 'string') return v;
-  if (typeof v !== 'object' || v === null) return String(v);
-  // Gemini sometimes returns { entry, description, bio, text, ... } instead of a plain string
-  for (const key of ['entry', 'description', 'bio', 'text', 'content', 'characterEntry']) {
-    if (typeof v[key] === 'string' && v[key].length > 10) return v[key];
-  }
-  // Fall back: join all string values
-  return Object.values(v).filter(x => typeof x === 'string').join(' ').trim() || JSON.stringify(v);
-}
-
-function parseResponse(raw) {
-  try {
-    const p = JSON.parse(extractJSON(raw));
-    if (typeof p !== 'object' || p === null) throw new Error('parsed value is not an object');
-    const npcEntries = {};
-    for (const [k, v] of Object.entries(p.npcEntries ?? {})) npcEntries[k] = smartTruncate(coerceEntryString(v), 1000);
-    return {
-      characterEntry:   smartTruncate(p.characterEntry   ?? '', 1000),
-      npcEntries,
-      title:            smartTruncate(p.title            ?? '',   70),
-      description:      smartTruncate(p.description      ?? '', 5000),
-      tags:             (p.tags ?? []).slice(0, 10),
-      opening:          smartTruncate(p.opening          ?? '', 4000),
-      appearancePrompt: smartTruncate(p.appearancePrompt ?? '',  500),
-      plotEssentials:   smartTruncate(p.plotEssentials   ?? '', 2000),
-      authorNote:       smartTruncate(p.authorNote       ?? '',  500),
-    };
-  } catch(e) { console.error('parseResponse failed:', e.message, '\nRaw:', raw?.slice(0, 300)); return null; }
-}
+// buildPrompt(sk, voice), parseResponse, and enforceOutputLimits are imported
+// from ./generator/prompt-builder.js — the single shared builder used by the
+// browser and the CLI/module path alike. Each genre's voice (identity/genre
+// labels, system prompt, and authored output rules) lives in GENRE_VOICE
+// (./generator/manifests.js). getSystemPrompt() below just reads it.
 
 // ── API call ──────────────────────────────────────────────────────────────
 function getSystemPrompt(genre) {
@@ -960,7 +851,7 @@ async function callClaude(skeleton, apiKey, genre) {
       model: 'claude-sonnet-4-5',
       max_tokens: 16384,
       system: getSystemPrompt(genre),
-      messages: [{ role: 'user', content: buildPrompt(skeleton, genre) }],
+      messages: [{ role: 'user', content: buildPrompt(skeleton, GENRE_VOICE[genre] ?? GENRE_VOICE['modern']) }],
     }),
   });
   if (!res.ok) { const t = await res.text().catch(()=>''); throw new Error(`API error ${res.status}: ${t}`); }
@@ -970,7 +861,7 @@ async function callClaude(skeleton, apiKey, genre) {
   const parsed = parseResponse(raw);
   if (!parsed) throw new Error('Failed to parse API response as JSON');
   return {
-    output: parsed,
+    output: enforceOutputLimits(parsed),
     usage: { inputTokens: data.usage?.input_tokens ?? 0, outputTokens: data.usage?.output_tokens ?? 0 },
   };
 }
@@ -982,7 +873,7 @@ async function callGemini(skeleton, apiKey, genre) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       systemInstruction: { parts: [{ text: getSystemPrompt(genre) }] },
-      contents: [{ role: 'user', parts: [{ text: 'Return raw JSON only — no markdown, no code fences, no commentary.\n\n' + buildPrompt(skeleton, genre) }] }],
+      contents: [{ role: 'user', parts: [{ text: 'Return raw JSON only — no markdown, no code fences, no commentary.\n\n' + buildPrompt(skeleton, GENRE_VOICE[genre] ?? GENRE_VOICE['modern']) }] }],
       generationConfig: { maxOutputTokens: 16384, temperature: 0.9, responseMimeType: 'application/json' },
     }),
   });
@@ -993,7 +884,7 @@ async function callGemini(skeleton, apiKey, genre) {
   const parsed = parseResponse(raw);
   if (!parsed) throw new Error(`Failed to parse Gemini response as JSON. Response started: ${raw.slice(0, 120)}`);
   return {
-    output: parsed,
+    output: enforceOutputLimits(parsed),
     usage: {
       inputTokens:  data.usageMetadata?.promptTokenCount     ?? 0,
       outputTokens: data.usageMetadata?.candidatesTokenCount ?? 0,
@@ -1012,7 +903,7 @@ async function callOllama(skeleton, baseUrl, modelName, genre) {
       stream: false,
       messages: [
         { role: 'system', content: getSystemPrompt(genre) },
-        { role: 'user',   content: 'Return raw JSON only — no markdown, no code fences, no commentary.\n\n' + buildPrompt(skeleton, genre) },
+        { role: 'user',   content: 'Return raw JSON only — no markdown, no code fences, no commentary.\n\n' + buildPrompt(skeleton, GENRE_VOICE[genre] ?? GENRE_VOICE['modern']) },
       ],
     }),
   });
@@ -1023,7 +914,7 @@ async function callOllama(skeleton, baseUrl, modelName, genre) {
   const parsed = parseResponse(raw);
   if (!parsed) throw new Error(`Failed to parse Ollama response as JSON. Response started: ${raw.slice(0, 120)}`);
   return {
-    output: parsed,
+    output: enforceOutputLimits(parsed),
     usage: { inputTokens: data.prompt_eval_count ?? 0, outputTokens: data.eval_count ?? 0 },
   };
 }

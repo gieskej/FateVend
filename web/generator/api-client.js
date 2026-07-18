@@ -1,146 +1,27 @@
 // generator/api-client.js
-// Handles the Anthropic Claude API call and parses the response.
+// Handles the Claude / Gemini API calls and parses the response.
 // Uses only fetch — works in browser, Node 18+, and AI Dungeon's scripted JS.
+//
+// The prompt itself (system prompt, user prompt, response parsing, output
+// limits) all come from the single shared builder in ./prompt-builder.js,
+// driven by the per-genre voice in ./manifests.js (GENRE_VOICE). There is no
+// longer a per-genre prompt-template.js.
 //
 // No browser APIs beyond fetch. No Node-specific APIs. Pure JS + fetch.
 
-import {
-  SYSTEM_PROMPT as MODERN_SYSTEM_PROMPT,
-  buildPrompt   as modernBuildPrompt,
-  parseResponse as modernParseResponse,
-} from './genres/modern/prompt-template.js';
-
-import {
-  SYSTEM_PROMPT as FANTASY_SYSTEM_PROMPT,
-  buildPrompt   as fantasyBuildPrompt,
-  parseResponse as fantasyParseResponse,
-} from './genres/fantasy/prompt-template.js';
-
-import {
-  SYSTEM_PROMPT as SCIFI_SYSTEM_PROMPT,
-  buildPrompt   as scifiBuildPrompt,
-  parseResponse as scifiParseResponse,
-} from './genres/sci-fi/prompt-template.js';
-
-import {
-  SYSTEM_PROMPT as PALEO_SYSTEM_PROMPT,
-  buildPrompt   as paleoBuildPrompt,
-  parseResponse as paleoParseResponse,
-} from './genres/paleolithic/prompt-template.js';
-
-import {
-  SYSTEM_PROMPT as MANGA_HS_SYSTEM_PROMPT,
-  buildPrompt   as mangaHsBuildPrompt,
-  parseResponse as mangaHsParseResponse,
-} from './genres/manga-osaka-highschool1987/prompt-template.js';
-
-import {
-  SYSTEM_PROMPT as JOSEON_SYSTEM_PROMPT,
-  buildPrompt   as joseonBuildPrompt,
-  parseResponse as joseonParseResponse,
-} from './genres/historical-korea-joseon-dynasty/prompt-template.js';
-
-import {
-  SYSTEM_PROMPT as NIHONGI_SYSTEM_PROMPT,
-  buildPrompt   as nihongiBuildPrompt,
-  parseResponse as nihongiParseResponse,
-} from './genres/nihongi/prompt-template.js';
+import { GENRE_VOICE } from './manifests.js';
+import { buildPrompt, parseResponse, enforceOutputLimits } from './prompt-builder.js';
 
 const ANTHROPIC_API_URL  = 'https://api.anthropic.com/v1/messages';
 const MODEL              = 'claude-sonnet-4-5';
 const CLAUDE_MAX_TOKENS  = 16384;
 const GEMINI_MAX_TOKENS  = 32768;
 
-// ── OUTPUT LIMITS ─────────────────────────────────────────────────────────
-// AI Dungeon field limits: https://help.aidungeon.com
-const LIMITS = {
-  characterEntry:   1000,
-  title:              70,
-  description:      5000,
-  opening:          4000,
-  appearancePrompt:  500,
-  plotEssentials:   2000,
-  npcEntry:         1000,
-  tags:               10,
-};
-
-function smartTruncate(text, maxLen) {
-  if (!text || text.length <= maxLen) return text;
-  const sub = text.slice(0, maxLen);
-  if (maxLen >= 200) {
-    const sentEnd = Math.max(
-      sub.lastIndexOf('. '), sub.lastIndexOf('! '), sub.lastIndexOf('? '),
-      sub.lastIndexOf('.\n'), sub.lastIndexOf('!\n'), sub.lastIndexOf('?\n')
-    );
-    if (sentEnd > maxLen * 0.7) return text.slice(0, sentEnd + 1).trimEnd();
-  }
-  const wordEnd = sub.lastIndexOf(' ');
-  if (wordEnd > maxLen * 0.5) return text.slice(0, wordEnd).trimEnd() + '…';
-  return sub.trimEnd() + '…';
-}
-
-function enforceOutputLimits(output) {
-  if (!output) return output;
-  const npcEntries = {};
-  for (const [k, v] of Object.entries(output.npcEntries ?? {})) {
-    npcEntries[k] = smartTruncate(String(v), LIMITS.npcEntry);
-  }
-  return {
-    ...output,
-    characterEntry:   smartTruncate(output.characterEntry,   LIMITS.characterEntry),
-    title:            smartTruncate(output.title,            LIMITS.title),
-    description:      smartTruncate(output.description,      LIMITS.description),
-    opening:          smartTruncate(output.opening,          LIMITS.opening),
-    appearancePrompt: smartTruncate(output.appearancePrompt, LIMITS.appearancePrompt),
-    plotEssentials:   smartTruncate(output.plotEssentials,   LIMITS.plotEssentials),
-    tags:             (output.tags ?? []).slice(0, LIMITS.tags),
-    npcEntries,
-  };
-}
-
-// ── PROMPT TEMPLATE REGISTRY ──────────────────────────────────────────────
-
-const PROMPT_TEMPLATES = {
-  modern: {
-    systemPrompt:  MODERN_SYSTEM_PROMPT,
-    buildPrompt:   modernBuildPrompt,
-    parseResponse: modernParseResponse,
-  },
-  fantasy: {
-    systemPrompt:  FANTASY_SYSTEM_PROMPT,
-    buildPrompt:   fantasyBuildPrompt,
-    parseResponse: fantasyParseResponse,
-  },
-  'sci-fi': {
-    systemPrompt:  SCIFI_SYSTEM_PROMPT,
-    buildPrompt:   scifiBuildPrompt,
-    parseResponse: scifiParseResponse,
-  },
-  paleolithic: {
-    systemPrompt:  PALEO_SYSTEM_PROMPT,
-    buildPrompt:   paleoBuildPrompt,
-    parseResponse: paleoParseResponse,
-  },
-  'manga-osaka-highschool1987': {
-    systemPrompt:  MANGA_HS_SYSTEM_PROMPT,
-    buildPrompt:   mangaHsBuildPrompt,
-    parseResponse: mangaHsParseResponse,
-  },
-  'historical-korea-joseon-dynasty': {
-    systemPrompt:  JOSEON_SYSTEM_PROMPT,
-    buildPrompt:   joseonBuildPrompt,
-    parseResponse: joseonParseResponse,
-  },
-  nihongi: {
-    systemPrompt:  NIHONGI_SYSTEM_PROMPT,
-    buildPrompt:   nihongiBuildPrompt,
-    parseResponse: nihongiParseResponse,
-  },
-};
+const voiceFor = genre => GENRE_VOICE[genre] ?? GENRE_VOICE.modern;
 
 /**
  * Calls the Claude API with the assembled character skeleton
- * and returns the parsed narrative output.
+ * and returns the parsed, limit-enforced narrative output.
  *
  * @param {import('./types.js').CharacterSkeleton} skeleton
  * @param {string} apiKey   Anthropic API key (sk-ant-...)
@@ -149,16 +30,14 @@ const PROMPT_TEMPLATES = {
  * @throws {Error} on HTTP error or parse failure
  */
 export async function callClaudeAPI(skeleton, apiKey, genre = 'modern') {
-  const template = PROMPT_TEMPLATES[genre] ?? PROMPT_TEMPLATES.modern;
-
-  const userPrompt = template.buildPrompt(skeleton);
+  const voice = voiceFor(genre);
 
   const requestBody = {
     model:      MODEL,
     max_tokens: CLAUDE_MAX_TOKENS,
-    system:     template.systemPrompt,
+    system:     voice.systemPrompt,
     messages: [
-      { role: 'user', content: userPrompt },
+      { role: 'user', content: buildPrompt(skeleton, voice) },
     ],
   };
 
@@ -180,7 +59,6 @@ export async function callClaudeAPI(skeleton, apiKey, genre = 'modern') {
 
   const data = await response.json();
 
-  // Extract raw text from the response content blocks
   const rawText = data.content
     ?.filter(block => block.type === 'text')
     .map(block => block.text)
@@ -190,7 +68,7 @@ export async function callClaudeAPI(skeleton, apiKey, genre = 'modern') {
     throw new Error('Anthropic API returned an empty response');
   }
 
-  const parsed = template.parseResponse(rawText);
+  const parsed = parseResponse(rawText);
 
   if (!parsed) {
     throw new Error('Failed to parse Claude response as JSON');
@@ -211,14 +89,14 @@ const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/
  * @throws {Error} on HTTP error or parse failure
  */
 export async function callGeminiAPI(skeleton, apiKey, genre = 'modern') {
-  const template = PROMPT_TEMPLATES[genre] ?? PROMPT_TEMPLATES.modern;
+  const voice = voiceFor(genre);
 
   const response = await fetch(`${GEMINI_API_URL}?key=${encodeURIComponent(apiKey)}`, {
     method:  'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      systemInstruction: { parts: [{ text: template.systemPrompt }] },
-      contents: [{ role: 'user', parts: [{ text: 'Return raw JSON only — no markdown, no code fences, no commentary.\n\n' + template.buildPrompt(skeleton) }] }],
+      systemInstruction: { parts: [{ text: voice.systemPrompt }] },
+      contents: [{ role: 'user', parts: [{ text: 'Return raw JSON only — no markdown, no code fences, no commentary.\n\n' + buildPrompt(skeleton, voice) }] }],
       generationConfig: { maxOutputTokens: GEMINI_MAX_TOKENS, temperature: 0.9, responseMimeType: 'application/json' },
     }),
   });
@@ -235,7 +113,7 @@ export async function callGeminiAPI(skeleton, apiKey, genre = 'modern') {
     throw new Error('Gemini API returned an empty response');
   }
 
-  const parsed = template.parseResponse(rawText);
+  const parsed = parseResponse(rawText);
 
   if (!parsed) {
     throw new Error(`Failed to parse Gemini response as JSON. Response started: ${rawText.slice(0, 120)}`);
