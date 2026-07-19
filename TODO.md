@@ -6,8 +6,6 @@
 ## Bugs
 - Plot essentials should be short bullet points, not wordy prose.  Ideally around 1000 characters, maximum 1500 characters.
 
-- Rearrange the "⚙ AI Generated Scenario" so it matches the order read out by the narrator: Title, Portrait Prompt , Description, Opening, Plot Essentials, Author's Note
-
 - Modern's races.js has 14 entries with no em-dash in `flavor` (same truncation mechanism as the Manga-Osaka fix in Fixed Bugs below), but those are already short ethnicity labels (e.g. "Ashkenazi Jewish"), so there's no actual truncation problem — just inconsistent style vs. the rest of the file. Low priority; not a functional bug.
 
 - The Settings modal recently got a new Genre tab, but it makes the modal too wide on mobile browsers.  Either make tabs smaller, use icons, scroll the tab bar, or wrap it.
@@ -59,6 +57,7 @@
 ---
 
 ## Fixed Bugs
+- Rearranged the "⚙ AI Generated Scenario" card's field order to Title, Tags, Portrait Prompt, Description, Opening, Plot Essentials, Author's Note (previously Opening was rendered last, after Author's Note). `narrateAll()`'s actual read order was already Title, Description, Opening, Plot Essentials, Author's Note — only the visual DOM order was out of sync with it.
 - Manga-Osaka's races.js had 4 `flavor` strings with no em-dash — 'honor_student', 'otaku' (Den Den Town regular), 'popular_crowd' (fashion-forward), and 'ordinary_kid' (average grades) — so the slot-machine sub-label and output header (both truncate at the first `' — '` via `identity.flavor.split(' — ')[0].trim()`) showed the entire sentence instead of a short punchy label. Added a natural em-dash break to each, preserving the full original text/meaning; the other 4 entries in this file and all of Fantasy/Sci-Fi/Paleolithic/Joseon/Nihongi's races.js were already clean.
 - web/genre-packs/build-example-pack.py's `staticCards` entries (STATIC_LOCATIONS/STATIC_FACTIONS) were shaped `{keys, type, entry}` instead of the correct `{name, triggers, entry}` that both index.html's `STATIC_CARDS_BY_GENRE` consumer and aidungeon-importer.mjs destructure — the card's title would have come through blank (`name` was missing) and `triggers` would have been `undefined`. Fixed by renaming `keys` → `triggers`, adding `name`, and dropping the per-entry `type` field (it's derived from which STATIC_* array the entry is in, not stored on the entry itself).
 - web/genre-packs/build-example-pack.py's `TAG_POOLS.professionTags` was keyed by profession *title* ("Deckhand", "Navigator", …) instead of *industry* ("Ship crew") — engine.js looks this up by `profession.industry`, so none of the keys ever matched and professionTags silently contributed nothing. Fixed by collapsing it to a single `"Ship crew"` key (all five example PROFESSIONS share that industry, matching the built-in genre convention of one industry spanning several professions) with a combined tag list.

@@ -2521,6 +2521,19 @@
           oninput="updateCount(this,'cc-desc',5000)">${escHtml(output.description)}</textarea>
       </div>
 
+      <div class="output-field">
+        <div class="field-header">
+          <span class="field-label">Details: Opening (Append to end of Description)</span>
+          <div class="field-meta">
+            <span class="char-count" id="cc-opening">${output.opening.length} / 4000</span>
+            ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('field-opening').value,this)">${SVG_NARRATE_ICON}</button>` : ""}
+            <button class="btn-copy" onclick="copyField('field-opening',this)">Copy</button>
+          </div>
+        </div>
+        <textarea class="field-textarea" id="field-opening" rows="10"
+          oninput="updateCount(this,'cc-opening',4000)">${escHtml(output.opening)}</textarea>
+      </div>
+
       ${
         output.plotEssentials
           ? `
@@ -2556,19 +2569,6 @@
       </div>`
           : ""
       }
-
-      <div class="output-field">
-        <div class="field-header">
-          <span class="field-label">Details: Opening (Append to end of Description)</span>
-          <div class="field-meta">
-            <span class="char-count" id="cc-opening">${output.opening.length} / 4000</span>
-            ${showNarrate ? `<button class="btn-narrate" onclick="narrate(document.getElementById('field-opening').value,this)">${SVG_NARRATE_ICON}</button>` : ""}
-            <button class="btn-copy" onclick="copyField('field-opening',this)">Copy</button>
-          </div>
-        </div>
-        <textarea class="field-textarea" id="field-opening" rows="10"
-          oninput="updateCount(this,'cc-opening',4000)">${escHtml(output.opening)}</textarea>
-      </div>
 
     </div>
   </div>
