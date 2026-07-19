@@ -403,10 +403,9 @@
           <p><code>serve.sh</code> reads <code>.env</code> at the project root and writes the keys into <code>generator/config.js</code> on startup, so the browser can use them without the <code>.env</code> file itself ever being served.</p>
           <ol class="help-steps">
             <li>Create a <code>.env</code> file at the project root (next to the <code>web/</code> folder).</li>
-            <li>Add one <code>KEY=value</code> line per key you want pre-filled: <code>ANTHROPIC_API_KEY</code>, <code>GEMINI_API_KEY</code>, <code>STABILITY_API_KEY</code>, <code>SD_URL</code>.</li>
+            <li>Add one <code>KEY=value</code> line per key you want pre-filled: <code>ANTHROPIC_API_KEY</code>, <code>GEMINI_API_KEY</code>, <code>STABILITY_API_KEY</code>, <code>SD_URL</code>, <code>OLLAMA_URL</code>, <code>OLLAMA_MODEL</code>, <code>TTS_KOKORO_URL</code>, <code>TTS_OPENAI_KEY</code>.</li>
             <li>Run <code>./serve.sh</code> — it regenerates <code>generator/config.js</code> from <code>.env</code> every time it starts.</li>
           </ol>
-          <p>Ollama and narration provider settings (Kokoro/OpenAI TTS) aren't part of this mechanism — enter those directly in Settings, where they're saved to your browser's local storage.</p>
           <p><code>AIDUNGEON_EMAIL</code> and <code>AIDUNGEON_PASSWORD</code> (used by Auto Import, above) work differently — they're read directly by the Node-side importer script and are never baked into <code>generator/config.js</code> or exposed to the browser.</p>
           <p><code>NSFW_IMAGE_PROMPT_SUFFIX</code> replaces the text appended to the appearance prompt when Settings → Options → NSFW is checked and the character is an adult (18+) — e.g. <code>", sexy unibrow, &lt;lora:MyFluxLoRA&gt;"</code>. Falls back to a plain <code>", sexy"</code> when unset. Leading punctuation matters: it's appended directly after the rest of the prompt with no separator added, so keep the leading <code>", "</code> unless you want it glued onto the previous word.</p>
         </div>
@@ -2428,6 +2427,10 @@ document.addEventListener('DOMContentLoaded', () => {
     'gemini-api-key': window.__GEMINI_KEY,
     'sd-url':         window.__SD_URL,
     'img-api-key':    window.__STABILITY_KEY,
+    'ollama-url':     window.__OLLAMA_URL,
+    'ollama-model':   window.__OLLAMA_MODEL,
+    'tts-kokoro-url': window.__TTS_KOKORO_URL,
+    'tts-openai-key': window.__TTS_OPENAI_KEY,
   };
   KEY_FIELDS.forEach(({ id, store }) => {
     const fromConfig = CONFIG_MAP[id];

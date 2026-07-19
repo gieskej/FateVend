@@ -74,6 +74,10 @@ out.write_text(
     f'window.__GEMINI_KEY     = {json.dumps(keys.get("GEMINI_API_KEY", ""))};\n'
     f'window.__SD_URL         = {json.dumps(keys.get("SD_URL", ""))};\n'
     f'window.__STABILITY_KEY  = {json.dumps(keys.get("STABILITY_API_KEY", ""))};\n'
+    f'window.__OLLAMA_URL     = {json.dumps(keys.get("OLLAMA_URL", ""))};\n'
+    f'window.__OLLAMA_MODEL   = {json.dumps(keys.get("OLLAMA_MODEL", ""))};\n'
+    f'window.__TTS_KOKORO_URL = {json.dumps(keys.get("TTS_KOKORO_URL", ""))};\n'
+    f'window.__TTS_OPENAI_KEY = {json.dumps(keys.get("TTS_OPENAI_KEY", ""))};\n'
     f'window.__NSFW_SUFFIX    = {json.dumps(keys.get("NSFW_IMAGE_PROMPT_SUFFIX", ""))};\n'
     f'window.__GIT_VERSION__  = {json.dumps(git_version)};\n'
 )
