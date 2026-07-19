@@ -31,7 +31,7 @@ export const RACES = [
     broad: "Honor Student",
     label: "Honor Student",
     flavor:
-      "Cram school veteran, textbook-perfect answers, quietly exhausted from being everyone's benchmark",
+      "Cram school veteran — textbook-perfect answers, quietly exhausted from being everyone's benchmark",
     weight: 8,
     iconPrompt:
       "japanese honor student 1987 thick glasses textbooks serious cram school studying manga style illustration",
@@ -79,7 +79,7 @@ export const RACES = [
     broad: "Otaku",
     label: "Otaku",
     flavor:
-      "Den Den Town regular, knows every mecha anime, somehow always figures out the actual mystery",
+      "Den Den Town regular — knows every mecha anime, somehow always figures out the actual mystery",
     weight: 6,
     iconPrompt:
       "japanese otaku student 1987 manga anime fan den den town Nipponbashi electronics street manga style illustration",
@@ -91,7 +91,7 @@ export const RACES = [
     broad: "Popular Crowd",
     label: "Popular Crowd",
     flavor:
-      "Fashion-forward, sets social trends, considerably more complicated beneath the surface",
+      "Fashion-forward trendsetter — considerably more complicated beneath the surface",
     weight: 7,
     iconPrompt:
       "japanese popular students 1987 fashion Shinsaibashi shopping confident laughing school corridor manga style illustration",
@@ -103,7 +103,7 @@ export const RACES = [
     broad: "Ordinary Kid",
     label: "Ordinary Kid",
     flavor:
-      "Average grades, average looks, somehow always at the center of extraordinary things anyway",
+      "Average grades, average looks — somehow always at the center of extraordinary things anyway",
     weight: 10,
     iconPrompt:
       "japanese ordinary protagonist student 1987 school uniform unremarkable determined classic manga hero style illustration",
