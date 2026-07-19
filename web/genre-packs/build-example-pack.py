@@ -68,8 +68,7 @@ IDENTITIES = [
 # PROFESSIONS — feeds MANIFEST["data"]["professions"] (the "Trade" reel):
 #   title         — display title
 #   industry      — used for tag lookup: TAG_POOLS["professionTags"] below must
-#                    be keyed by this exact string, NOT by title (see the
-#                    warning at TAG_POOLS — this file currently keys it wrong)
+#                    be keyed by this exact string, NOT by title (see TAG_POOLS)
 #   economicTier  — 1-5, this profession's baseline economic tier
 #   statAffinity  — optional; stats that make this profession more likely.
 #                    Defaults to no bias when omitted.
@@ -534,13 +533,14 @@ QUIRKS = [
 #                     dramatic, neutral, cozy); added when the rolled city or
 #                     tension has that toneTag
 #   criminal        — added when the rolled tension's (or secret's) criminalFlag is True
-#   professionTags  — MUST be keyed by each profession's "industry" field
-#                     (e.g. "Ship crew"), NOT by "title". BUG in this example:
-#                     the keys below ("Deckhand", "Navigator", …) are titles, so
-#                     none of them ever match PROFESSIONS' industry ("Ship crew"
-#                     for all five) and professionTags silently contributes
-#                     nothing. Left as-is here to document the trap rather than
-#                     silently fix it — a real pack should key this by industry.
+#   professionTags  — keyed by each profession's "industry" field, not "title"
+#                     (engine.js looks this up via `profession.industry`; see
+#                     PROFESSIONS above). All five PROFESSIONS entries share
+#                     the same industry, "Ship crew", so — matching the
+#                     built-in genre convention where one industry covers
+#                     several professions (e.g. Fantasy's "Martial" spans 8
+#                     professions) — this is a single shared entry, not one
+#                     entry per profession.
 TAG_POOLS = {
     "always": ["pirate", "age-of-sail", "high seas", "adventure"],
     "gritty": ["survival", "hardship", "desperation"],
@@ -549,11 +549,7 @@ TAG_POOLS = {
     "cozy": ["shanties", "crewmates", "warm galley"],
     "criminal": ["smuggling", "bounty", "contraband"],
     "professionTags": {
-        "Deckhand": ["rigging", "labour"],
-        "Navigator": ["charts", "stars"],
-        "Ship's Cook": ["galley", "rations"],
-        "Gunner": ["cannon", "powder"],
-        "Quartermaster": ["loot", "ledger"],
+        "Ship crew": ["rigging", "gunnery", "navigation", "ship's stores"],
     },
 }
 
