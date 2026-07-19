@@ -218,12 +218,11 @@ Two worked examples ship in `web/genre-packs/`:
   to the pack format and generates simple placeholder icons; re-run it to rebuild
   the zip. (A real pack would run the icon pipeline for finished art instead of
   the placeholders.) Its data tables carry full shape-header comments per
-  `CLAUDE.md`'s data-table rule; one intentional bug is left in place and
-  called out inline as a cautionary example rather than silently fixed —
-  `staticCards` entries shaped `{ keys, type, entry }` instead of the correct
-  `{ name, triggers, entry }`. (A previous version of this pack also had
-  `tagPools.professionTags` keyed by profession `title` instead of `industry`;
-  that one has since been corrected.)
+  `CLAUDE.md`'s data-table rule. (Two earlier versions of this pack each had an
+  intentional bug left in place as a cautionary example — `tagPools.professionTags`
+  keyed by profession `title` instead of `industry`, and `staticCards` entries
+  shaped `{ keys, type, entry }` instead of `{ name, triggers, entry }` — both
+  have since been corrected.)
 
 ## Note on the icon pipeline
 

@@ -602,14 +602,12 @@ NAME_POOLS = {
 #
 # staticCards — optional AI Dungeon story cards, keyed by STATIC_CHARACTERS /
 # STATIC_CLASSES / STATIC_RACES / STATIC_LOCATIONS / STATIC_FACTIONS /
-# STATIC_CUSTOM (see pack-loader.js STATIC_CARD_KEYS). Each entry's correct
-# shape is { name, triggers, entry } — matching every built-in genre's
-# static-cards.js and what aidungeon-importer.mjs actually destructures.
-# BUG in this example: the entries below use { keys, type, entry } instead —
-# "keys" should be "triggers", "name" is missing entirely (so the card's title
-# would come through blank), and "type" isn't a per-entry field at all — the
-# importer derives it from which STATIC_* array the entry came from. Left
-# as-is here to document the trap; a real pack should use { name, triggers, entry }.
+# STATIC_CUSTOM (see pack-loader.js STATIC_CARD_KEYS). Each entry's shape is
+# { name, triggers, entry } — matching every built-in genre's static-cards.js
+# and what both index.html (STATIC_CARDS_BY_GENRE consumer) and
+# aidungeon-importer.mjs destructure. "type" is not a per-entry field — it's
+# derived from which STATIC_* array the entry came from, so it isn't included
+# here.
 MANIFEST = {
     "id": "example-pirate-cove",
     "label": "Pirate Cove (Example)",
@@ -666,20 +664,20 @@ MANIFEST = {
     "staticCards": {
         "STATIC_LOCATIONS": [
             {
-                "keys": "Port Royale",
-                "type": "location",
+                "name": "Port Royale",
+                "triggers": "Port Royale",
                 "entry": "Port Royale — a lawless boomtown of taverns, gambling dens, and a busy gallows, where a fortune can be won and lost before sunrise.",
             }
         ],
         "STATIC_FACTIONS": [
             {
-                "keys": "The Brethren",
-                "type": "faction",
+                "name": "The Brethren",
+                "triggers": "The Brethren",
                 "entry": "The Brethren of the Cove — a loose pirate confederation bound by a shared code, quick to feud and quicker to unite against the navy.",
             },
             {
-                "keys": "Royal Navy",
-                "type": "faction",
+                "name": "Royal Navy",
+                "triggers": "Royal Navy",
                 "entry": "The Royal Navy — disciplined, well-gunned, and hanging pirates by the dozen; safety and death in the same blue coat.",
             },
         ],

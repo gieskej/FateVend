@@ -22,9 +22,8 @@ registered into the running app. Start there before authoring a pack.
 - **`build-example-pack.py`** — the reproducible source for the zip above.
   Re-run it (`python3 web/genre-packs/build-example-pack.py`) after editing it
   to rebuild the zip. Its data tables are fully shape-documented per
-  `CLAUDE.md`'s data-table rule, including one intentional bug left in place
-  and called out inline as a cautionary example — see DESIGN.md's "Authoring a
-  pack" section before copying from it.
+  `CLAUDE.md`'s data-table rule — see DESIGN.md's "Authoring a pack" section
+  before copying from it.
 - **`generate-icons.py`** — generates real icons (via Stable Diffusion or
   Gemini) for a pack's `iconPrompt`/`iconPath` pairs, modeled on the built-in
   genres' icon pipeline. Never overwrites an existing icon.
