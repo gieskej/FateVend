@@ -1,0 +1,4 @@
+{
+  "note": "Appended to the generated appearancePrompt when Settings → Options → NSFW is checked and the character is an adult (age >= 18). Edit `suffix` freely to match your own image backend/LoRAs. Leading punctuation matters: it's appended directly after the rest of the prompt with no separator added, so keep the leading ', ' unless you want it glued onto the previous word.",
+  "suffix": ", sexy, navel"
+}

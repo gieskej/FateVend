@@ -1,8 +1,6 @@
 # TODO
 - Play scenarios from each genre and make sure they are fun, not just some grim chatbot trying to kill you or chat you to death.  Most of the genre's AI generated try to be factual, historical, and boring.
 
-- Move the NSFW image prompt slug to an external JSON file so users can modify it to do whatever they want.
-
 - e2e unit test
 
 ## Bugs
@@ -54,7 +52,7 @@
 - Add settings option to disable BGM.
 - Kokoro'e english voices don't pronounce Japanese or Korean words properly, but the Japanese voices produce incomprehensible English.  So either we preprocess English -> Katakana so the Japanese voice works?  Or even better, extend the Kokoro service to do this heavy lifting.  Consider using CMU Pronouncing Dictionary (CMUdict)
 - Add more AI providers
-
+- Add anonymous telemetry.  I am curious what genres are popular, and what country users are from.
 
 ## Open Questions
 - Should Plot Essentials be considers as spoilers, and therefore not automatically read by the narrator?
@@ -65,6 +63,7 @@
 ---
 
 ## Fixed Bugs
+- Move the NSFW image prompt slug to an external JSON file so users can modify it to do whatever they want — added `web/generator/nsfw-suffix.json` (a `suffix` string + a `note` explaining the format/why), loaded once at startup (`loadNsfwSuffix()`) into a module-level fallback-backed variable, and the hardcoded append in index.html now uses it. Verified end-to-end: the actual generated appearancePrompt ends with the exact suffix read from the JSON file.
 - De-duplicate the two engine copies — the CLI now uses generator/engine.js (the canonical, bug-fixed engine) instead of the parallel skeleton-builder.js/cast-builder.js/selector.js/roller.js, which are deleted. This also fixed a latent CLI-path bug (its NPC gender roll ignored the LGBQ toggle) and gave both paths stat-adjective labels in the prompt.
 - Collapse the two prompt systems — unified the browser's GENRE_VOICE-driven buildPrompt and the CLI/module path's per-genre prompt-template.js onto one shared `buildPrompt(skeleton, voice)` (generator/prompt-builder.js). Each genre now supplies only a voice.js (SYSTEM_PROMPT + outputRules); the scaffold is normalized. Rich per-genre content won; the 7 prompt-template.js files are deleted.
 - Create some concrete alien species instead of leaving it to be completely random — added 9 distinct sci-fi alien species (humanoid, slug, locust, reptilian, avian, amoeba, plant, vapor, typical) in place of the old generic humanoid/non-humanoid split.

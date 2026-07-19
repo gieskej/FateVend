@@ -660,6 +660,11 @@ let currentSkeleton    = null;
 let currentOutput      = null;
 let currentGeneratedAt = null;
 let currentStats       = null;
+// Appended to appearancePrompt when NSFW is on for an adult character.
+// Externalized to generator/nsfw-suffix.json (loaded by loadNsfwSuffix() below)
+// so it's editable without touching source; this is just the fallback used if
+// that fetch fails for any reason.
+let nsfwSuffix = ', sexy';
 let npcPortraitData       = {};
 let npcPortraitGenerating = false;
 let ttsProvider    = 'off';
@@ -1817,6 +1822,19 @@ async function removeInstalledPack(id) {
   renderGenrePackList();
 }
 
+// Loads the user-editable NSFW appearancePrompt suffix from generator/nsfw-suffix.json,
+// overwriting the built-in fallback declared above. See that file for the format.
+async function loadNsfwSuffix() {
+  try {
+    const res = await fetch('generator/nsfw-suffix.json', { cache: 'no-store' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const cfg = await res.json();
+    if (typeof cfg.suffix === 'string') nsfwSuffix = cfg.suffix;
+  } catch (e) {
+    console.warn('Could not load generator/nsfw-suffix.json, using built-in default:', e);
+  }
+}
+
 // Lists the sample/example packs checked into web/genre-packs/ as plain download
 // links (via a small hand-maintained index.json) so a phone — which can't browse
 // a repo folder the way a desktop file picker can — has some way to grab a pack
@@ -2134,8 +2152,7 @@ async function runAIPhase() {
 
     const { output, stats: textStats } = await callAI(currentSkeleton, currentGenre);
     if (output.appearancePrompt && document.getElementById('include-nsfw')?.checked && currentSkeleton.age >= 18) {
-      output.appearancePrompt = output.appearancePrompt.trimEnd().replace(/,?\s*$/, '')
-        + ', sexy, navel, skimpy clothing,  <lora:Flux-uncensored:0.85> nsfw';
+      output.appearancePrompt = output.appearancePrompt.trimEnd().replace(/,?\s*$/, '') + nsfwSuffix;
     }
     currentOutput      = output;
     currentGeneratedAt = new Date();
@@ -2491,6 +2508,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   loadStoredGenrePacks();
   renderDownloadablePacks();
+  loadNsfwSuffix();
 
   // Init genre carousel
   carouselIndex = Math.max(0, GENRE_CAROUSEL_DATA.findIndex(g => g.id === currentGenre));
