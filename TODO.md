@@ -16,6 +16,11 @@
 
 - web/genre-packs/build-example-pack.py's `staticCards` entries (STATIC_LOCATIONS/STATIC_FACTIONS) are shaped `{keys, type, entry}` instead of the correct `{name, triggers, entry}` that aidungeon-importer.mjs actually destructures — the card's title would come through blank (`name` is missing) and `triggers` would be `undefined` (it's called `keys` here instead) if this pack's story cards were ever generated. Same "left as a documented trap" status as the professionTags bug above.
 
+- The Settings modal recently got a new Genre tab, but it makes the modal too wide on mobile browsers.  Either make tabs smaller, use icons, scroll the tab bar, or wrap it.
+
+- Need consistent style for text.  I see text in 3-4 colors and the fonts tend to be tiny for some reason.  Other than the disclaimer, all text should be 1.0em.  Maybe even put this in the DESIGN.md because Claude seems to forget after a time.
+
+
 ## Bugs - Fantasy
 - The text-to-image prompt needs to handle special cases:
   - Dragonborn: Illustration of a person with golden dragon scale skin, muscular body, fiery golden eyes, sharp filed teeth, prominent facial scales, subtle horns protruding from hair, scaly tail
@@ -48,6 +53,7 @@
 - Add a NPC portrait Zoom to popup menu?
 - Add settings option to disable BGM.
 - Kokoro'e english voices don't pronounce Japanese or Korean words properly, but the Japanese voices produce incomprehensible English.  So either we preprocess English -> Katakana so the Japanese voice works?  Or even better, extend the Kokoro service to do this heavy lifting.  Consider using CMU Pronouncing Dictionary (CMUdict)
+- Add more AI providers
 
 
 ## Open Questions
