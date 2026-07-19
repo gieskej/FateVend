@@ -15,16 +15,16 @@ $ python ./generate_icons.py --missing ../../../common/icons/none.webp
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[3] / 'common' / 'icons'))
+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "common" / "icons"))
 from generate_icons_core import run
 
-GENRE_DIR = Path(__file__).resolve().parent.parent   # genres/manga-osaka-highschool1987/
-ICON_DIR  = Path(__file__).resolve().parent          # genres/manga-osaka-highschool1987/icons/
+GENRE_DIR = Path(__file__).resolve().parent.parent  # genres/manga-osaka-highschool1987/
+ICON_DIR = Path(__file__).resolve().parent  # genres/manga-osaka-highschool1987/icons/
 
 GENRE_PROMPT = (
     "Illustration of a male student wearing black gakuran and female student wearing serafuku and pleated skirt, ",
     "standing in front of high school gate,  holding hands, 1980s shounen manga illustration style, bold ink linework, ",
-    " nostalgic bittersweet atmosphere, medium wide shot"
+    " nostalgic bittersweet atmosphere, medium wide shot",
 )
 
 STYLE = (
@@ -35,16 +35,23 @@ STYLE = (
 )
 
 PARAMS = dict(
-    negative_prompt     = "",
-    steps               = 30,
-    width               = 256,
-    height              = 256,
-    cfg_scale           = 1,
-    distilled_cfg_scale = 7,
-    sampler_name        = "Euler",
-    scheduler           = "Simple",
-    batch_size          = 3,
+    negative_prompt="",
+    steps=30,
+    width=256,
+    height=256,
+    cfg_scale=1,
+    distilled_cfg_scale=7,
+    sampler_name="Euler",
+    scheduler="Simple",
+    batch_size=3,
 )
 
-run(GENRE_DIR, ICON_DIR, STYLE, PARAMS, description=__doc__,
-    exclude_filenames={'plot-archetypes.js'}, genre_prompt=GENRE_PROMPT)
+run(
+    GENRE_DIR,
+    ICON_DIR,
+    STYLE,
+    PARAMS,
+    description=__doc__,
+    exclude_filenames={"plot-archetypes.js"},
+    genre_prompt=GENRE_PROMPT,
+)

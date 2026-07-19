@@ -18,8 +18,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 
 scripts = sorted(
-    p for p in ROOT.rglob("generate_icons.py")
-    if p != Path(__file__).resolve()
+    p for p in ROOT.rglob("generate_icons.py") if p != Path(__file__).resolve()
 )
 
 if not scripts:

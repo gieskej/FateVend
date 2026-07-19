@@ -13,9 +13,9 @@
 //
 // No browser APIs. No Node-specific APIs. Pure JS + fetch.
 
-import { rollStats, assignMBTI, buildSkeleton } from './engine.js';
-import { callClaudeAPI }          from './api-client.js';
-import { GENRE_TABLES, SUPPORTED_GENRES } from './registry.js';
+import { rollStats, assignMBTI, buildSkeleton } from "./engine.js";
+import { callClaudeAPI } from "./api-client.js";
+import { GENRE_TABLES, SUPPORTED_GENRES } from "./registry.js";
 
 /**
  * Generates a fully resolved RPG character.
@@ -39,17 +39,19 @@ import { GENRE_TABLES, SUPPORTED_GENRES } from './registry.js';
  * console.log(skeleton.stats);
  */
 export async function generateCharacter({
-  genre   = 'modern',
-  apiKey  = null,
-  skipAI  = false,
-  nsfw    = false,
+  genre = "modern",
+  apiKey = null,
+  skipAI = false,
+  nsfw = false,
 } = {}) {
   if (!GENRE_TABLES[genre]) {
-    throw new Error(`Genre "${genre}" is not supported. Available: ${SUPPORTED_GENRES.join(', ')}`);
+    throw new Error(
+      `Genre "${genre}" is not supported. Available: ${SUPPORTED_GENRES.join(", ")}`,
+    );
   }
 
   if (!skipAI && !apiKey) {
-    throw new Error('apiKey is required unless skipAI is true');
+    throw new Error("apiKey is required unless skipAI is true");
   }
 
   const tables = GENRE_TABLES[genre];
@@ -93,9 +95,11 @@ export function rerollStat(currentStats, statName) {
  * @param {string} [genre='modern']
  * @returns {import('./types.js').CharacterSkeleton}
  */
-export function regenerateSkeleton(stats, genre = 'modern', opts = {}) {
+export function regenerateSkeleton(stats, genre = "modern", opts = {}) {
   if (!GENRE_TABLES[genre]) {
-    throw new Error(`Genre "${genre}" is not supported. Available: ${SUPPORTED_GENRES.join(', ')}`);
+    throw new Error(
+      `Genre "${genre}" is not supported. Available: ${SUPPORTED_GENRES.join(", ")}`,
+    );
   }
   const mbti = assignMBTI(stats);
   return buildSkeleton(stats, mbti, GENRE_TABLES[genre], opts);
@@ -110,10 +114,10 @@ export function regenerateSkeleton(stats, genre = 'modern', opts = {}) {
  * @param {string} [genre='modern']
  * @returns {Promise<import('./types.js').GeneratedOutput>}
  */
-export async function regenerateOutput(skeleton, apiKey, genre = 'modern') {
-  if (!apiKey) throw new Error('apiKey is required');
+export async function regenerateOutput(skeleton, apiKey, genre = "modern") {
+  if (!apiKey) throw new Error("apiKey is required");
   return callClaudeAPI(skeleton, apiKey, genre);
 }
 
 // Re-export types file for consumers who want the JSDoc typedefs
-export * from './types.js';
+export * from "./types.js";

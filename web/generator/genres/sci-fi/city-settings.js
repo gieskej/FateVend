@@ -12,7 +12,8 @@ export const CITY_SETTINGS = [
     statAffinity: { intelligence: 1.2, dexterity: 1.1 },
     iconPrompt:
       "orbital space station exterior, corporate megastructure in orbit, neon-lit docking rings, void and distant planet below",
-    iconPath: "generator/genres/sci-fi/icons/CITY_SETTINGS#orbital_station.webp",
+    iconPath:
+      "generator/genres/sci-fi/icons/CITY_SETTINGS#orbital_station.webp",
   },
   {
     id: "megacity_sprawl",
@@ -23,7 +24,8 @@ export const CITY_SETTINGS = [
     statAffinity: { charisma: 1.1, constitution: 1.1 },
     iconPrompt:
       "cyberpunk megacity vertical sprawl, towering skyscrapers vanishing into smog, neon advertisements, drone traffic",
-    iconPath: "generator/genres/sci-fi/icons/CITY_SETTINGS#megacity_sprawl.webp",
+    iconPath:
+      "generator/genres/sci-fi/icons/CITY_SETTINGS#megacity_sprawl.webp",
   },
   {
     id: "corp_arcology",
@@ -79,7 +81,8 @@ export const CITY_SETTINGS = [
     statAffinity: { wisdom: 1.2, charisma: 1.1 },
     iconPrompt:
       "generation ship interior, rows of cryo-pods glowing a faint blue, cathedral corridors of metal, multiple generations of people living inside a vast hull",
-    iconPath: "generator/genres/sci-fi/icons/CITY_SETTINGS#generation_ship.webp",
+    iconPath:
+      "generator/genres/sci-fi/icons/CITY_SETTINGS#generation_ship.webp",
   },
   {
     id: "post_collapse_ruins",

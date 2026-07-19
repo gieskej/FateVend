@@ -15,11 +15,11 @@ $ python ./generate_icons.py --missing ../../../common/icons/none.webp
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[3] / 'common' / 'icons'))
+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "common" / "icons"))
 from generate_icons_core import run
 
-GENRE_DIR = Path(__file__).resolve().parent.parent   # genres/fantasy/
-ICON_DIR  = Path(__file__).resolve().parent          # genres/fantasy/icons/
+GENRE_DIR = Path(__file__).resolve().parent.parent  # genres/fantasy/
+ICON_DIR = Path(__file__).resolve().parent  # genres/fantasy/icons/
 
 GENRE_PROMPT = (
     "armored knight and a green orc locked in battle, dramatic stormy purple sky, "
@@ -33,16 +33,23 @@ STYLE = (
 )
 
 PARAMS = dict(
-    negative_prompt     = "",
-    steps               = 30,
-    width               = 256,
-    height              = 256,
-    cfg_scale           = 1,
-    distilled_cfg_scale = 7,
-    sampler_name        = "Euler",
-    scheduler           = "Simple",
-    batch_size          = 3,
+    negative_prompt="",
+    steps=30,
+    width=256,
+    height=256,
+    cfg_scale=1,
+    distilled_cfg_scale=7,
+    sampler_name="Euler",
+    scheduler="Simple",
+    batch_size=3,
 )
 
-run(GENRE_DIR, ICON_DIR, STYLE, PARAMS, description=__doc__,
-    exclude_filenames={'plot-archetypes.js'}, genre_prompt=GENRE_PROMPT)
+run(
+    GENRE_DIR,
+    ICON_DIR,
+    STYLE,
+    PARAMS,
+    description=__doc__,
+    exclude_filenames={"plot-archetypes.js"},
+    genre_prompt=GENRE_PROMPT,
+)

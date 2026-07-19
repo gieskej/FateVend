@@ -4,12 +4,24 @@
 // and by the UI to label stat cells.
 
 export const STAT_ADJECTIVES = {
-  strength:     ['feeble',    'weak',             'average strength',      'strong',     'mighty'    ],
-  intelligence: ['dim',       'slow minded',      'average intelligence',  'sharp',      'brilliant' ],
-  wisdom:       ['reckless',  'naive',            'average wisdom',        'perceptive', 'sage'      ],
-  charisma:     ['repellent', 'socially awkward', 'personable',            'charming',   'magnetic personality'  ],
-  dexterity:    ['clumsy',    'sluggish',         'nimble',                'agile',      'acrobatic' ],
-  constitution: ['frail',     'sickly',           'hardy',                 'tough',      'resilient' ],
+  strength: ["feeble", "weak", "average strength", "strong", "mighty"],
+  intelligence: [
+    "dim",
+    "slow minded",
+    "average intelligence",
+    "sharp",
+    "brilliant",
+  ],
+  wisdom: ["reckless", "naive", "average wisdom", "perceptive", "sage"],
+  charisma: [
+    "repellent",
+    "socially awkward",
+    "personable",
+    "charming",
+    "magnetic personality",
+  ],
+  dexterity: ["clumsy", "sluggish", "nimble", "agile", "acrobatic"],
+  constitution: ["frail", "sickly", "hardy", "tough", "resilient"],
 };
 
 /**
@@ -21,7 +33,7 @@ export const STAT_ADJECTIVES = {
  */
 export function statAdjective(stat, value) {
   const tiers = STAT_ADJECTIVES[stat];
-  if (!tiers) return '';
+  if (!tiers) return "";
   return tiers[Math.min(4, Math.floor((value - 1) / 20))];
 }
 
@@ -32,6 +44,6 @@ export function statAdjective(stat, value) {
  */
 export function buildStatLabels(stats) {
   return Object.fromEntries(
-    Object.entries(stats).map(([k, v]) => [k, statAdjective(k, v)])
+    Object.entries(stats).map(([k, v]) => [k, statAdjective(k, v)]),
   );
 }

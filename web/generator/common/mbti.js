@@ -58,7 +58,6 @@ export const MBTI_TYPES = [
     iconPath: "generator/common/icons/MBTI_TYPES#ESTP.webp",
   },
 
-
   {
     type: "INFJ",
     label: "The Advocate",

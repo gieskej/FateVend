@@ -11,8 +11,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from generate_icons_core import run
 
-GENRE_DIR   = Path(__file__).resolve().parent.parent             # generator/common/
-ICON_DIR    = Path(__file__).resolve().parent                    # generator/common/icons/
+GENRE_DIR = Path(__file__).resolve().parent.parent  # generator/common/
+ICON_DIR = Path(__file__).resolve().parent  # generator/common/icons/
 
 STYLE = (
     "square icon, clean white background, subtle drop shadow, "
@@ -21,15 +21,15 @@ STYLE = (
 )
 
 PARAMS = dict(
-    negative_prompt     = "",
-    steps               = 20,
-    width               = 256,
-    height              = 256,
-    cfg_scale           = 1,
-    distilled_cfg_scale = 6,
-    sampler_name        = "Euler",
-    scheduler           = "Simple",
-    batch_size          = 3,
+    negative_prompt="",
+    steps=20,
+    width=256,
+    height=256,
+    cfg_scale=1,
+    distilled_cfg_scale=6,
+    sampler_name="Euler",
+    scheduler="Simple",
+    batch_size=3,
 )
 
 run(GENRE_DIR, ICON_DIR, STYLE, PARAMS, description=__doc__, recursive=True)

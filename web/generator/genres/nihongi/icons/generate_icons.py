@@ -15,15 +15,13 @@ $ python ./generate_icons.py --missing ../../../common/icons/none.webp
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[3] / 'common' / 'icons'))
+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "common" / "icons"))
 from generate_icons_core import run
 
-GENRE_DIR = Path(__file__).resolve().parent.parent   # genres/nihongi/
-ICON_DIR  = Path(__file__).resolve().parent          # genres/nihongi/icons/
+GENRE_DIR = Path(__file__).resolve().parent.parent  # genres/nihongi/
+ICON_DIR = Path(__file__).resolve().parent  # genres/nihongi/icons/
 
-GENRE_PROMPT = (
-    "Illustration of a terrified Japanese elder bald Buddhist monk wearing saffron robe running from a Japanese female ghost with black eyes and long black hair tattered white robe floating chasing, moonlit temple, spooky theme, ancient japan, apparition, spirit, foxfire, kitsune, torii, fog, "
-)
+GENRE_PROMPT = "Illustration of a terrified Japanese elder bald Buddhist monk wearing saffron robe running from a Japanese female ghost with black eyes and long black hair tattered white robe floating chasing, moonlit temple, spooky theme, ancient japan, apparition, spirit, foxfire, kitsune, torii, fog, "
 
 STYLE = (
     "square icon, ancient Japan yamato-e court painting style, "
@@ -34,16 +32,23 @@ STYLE = (
 )
 
 PARAMS = dict(
-    negative_prompt     = "modern, photograph, western, anime, manga, 3d render, noisy background",
-    steps               = 30,
-    width               = 256,
-    height              = 256,
-    cfg_scale           = 1,
-    distilled_cfg_scale = 7,
-    sampler_name        = "Euler",
-    scheduler           = "Simple",
-    batch_size          = 3,
+    negative_prompt="modern, photograph, western, anime, manga, 3d render, noisy background",
+    steps=30,
+    width=256,
+    height=256,
+    cfg_scale=1,
+    distilled_cfg_scale=7,
+    sampler_name="Euler",
+    scheduler="Simple",
+    batch_size=3,
 )
 
-run(GENRE_DIR, ICON_DIR, STYLE, PARAMS, description=__doc__,
-    exclude_filenames={'plot-archetypes.js'}, genre_prompt=GENRE_PROMPT)
+run(
+    GENRE_DIR,
+    ICON_DIR,
+    STYLE,
+    PARAMS,
+    description=__doc__,
+    exclude_filenames={"plot-archetypes.js"},
+    genre_prompt=GENRE_PROMPT,
+)

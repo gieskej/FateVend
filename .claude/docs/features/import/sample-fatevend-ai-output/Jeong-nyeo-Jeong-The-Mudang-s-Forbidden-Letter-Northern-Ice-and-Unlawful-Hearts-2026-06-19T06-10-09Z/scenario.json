@@ -66,10 +66,7 @@
         "status": "Father is a posted official in another province (absent)",
         "gender": "Woman",
         "race": "Common Folk",
-        "traits": [
-          "embarrassingly earnest",
-          "idealistic"
-        ],
+        "traits": ["embarrassingly earnest", "idealistic"],
         "dynamic": "Proud of Jeong-nyeo Jeong in ways they mostly express sideways, at inconvenient moments"
       },
       {
@@ -90,10 +87,7 @@
         "status": "Older brother died — inherited the role and the ghost",
         "gender": "Woman",
         "race": "Common Folk",
-        "traits": [
-          "hot-tempered but quick to apologise",
-          "fiercely loyal"
-        ],
+        "traits": ["hot-tempered but quick to apologise", "fiercely loyal"],
         "dynamic": "Part of Jeong-nyeo Jeong's story in ways that are hard to untangle"
       },
       {
@@ -102,10 +96,7 @@
         "status": "Older brother died — inherited the role and the ghost",
         "gender": "Man",
         "race": "Common Folk",
-        "traits": [
-          "the most reliable person alive",
-          "protective"
-        ],
+        "traits": ["the most reliable person alive", "protective"],
         "dynamic": "Part of Jeong-nyeo Jeong's story in ways that are hard to untangle"
       },
       {
@@ -127,10 +118,7 @@
         "status": "present",
         "gender": "Woman",
         "race": "Civil Yangban",
-        "traits": [
-          "cynical",
-          "charming and unreliable"
-        ],
+        "traits": ["cynical", "charming and unreliable"],
         "dynamic": "The only person who can beat Jeong-nyeo Jeong — which Jeong-nyeo Jeong finds both infuriating and motivating"
       }
     ],

@@ -25,26 +25,30 @@ import time
 from datetime import datetime
 from pathlib import Path
 
-PACKS_DIR = Path(__file__).resolve().parent   # web/genre-packs/
-WEB_ROOT  = PACKS_DIR.parent                  # web/
+PACKS_DIR = Path(__file__).resolve().parent  # web/genre-packs/
+WEB_ROOT = PACKS_DIR.parent  # web/
 
 sys.path.insert(0, str(WEB_ROOT / "generator" / "common" / "icons"))
 from generate_icons_core import (
-    DEFAULT_GEMINI_MODEL, _generate_sd, _generate_gemini, _init_gemini_client, _save_webp,
+    DEFAULT_GEMINI_MODEL,
+    _generate_sd,
+    _generate_gemini,
+    _init_gemini_client,
+    _save_webp,
 )
 
 SD_BASE = "http://bonobo.local:7860"
 
 PARAMS = dict(
-    negative_prompt     = "",
-    steps               = 30,
-    width               = 256,
-    height              = 256,
-    cfg_scale           = 1,
-    distilled_cfg_scale = 7,
-    sampler_name        = "Euler",
-    scheduler           = "Simple",
-    batch_size          = 3,
+    negative_prompt="",
+    steps=30,
+    width=256,
+    height=256,
+    cfg_scale=1,
+    distilled_cfg_scale=7,
+    sampler_name="Euler",
+    scheduler="Simple",
+    batch_size=3,
 )
 
 
@@ -67,7 +71,9 @@ def load_pack_items(pack_path):
     pack = json.loads(pack_path.read_text(encoding="utf-8"))
     style = pack.get("portraitStyle", "")
     if not style:
-        sys.stdout.write(f"WARNING {pack_path.name}: no portraitStyle, icons will have no style suffix\n")
+        sys.stdout.write(
+            f"WARNING {pack_path.name}: no portraitStyle, icons will have no style suffix\n"
+        )
     style = "square icon, " + style.rstrip(", ")
 
     items = []
@@ -83,23 +89,32 @@ def main():
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
     parser.add_argument(
-        "packs", nargs="*", metavar="PACK.json",
+        "packs",
+        nargs="*",
+        metavar="PACK.json",
         help="Genre-pack JSON file(s) to process (default: every *.json in this folder).",
     )
     parser.add_argument(
-        "--missing", metavar="PATH",
+        "--missing",
+        metavar="PATH",
         help="Path to the placeholder/default image. When given, only regenerate icons whose existing file is byte-identical to this image.",
     )
     parser.add_argument(
-        "--backend", choices=["sd", "gemini"], default="sd",
+        "--backend",
+        choices=["sd", "gemini"],
+        default="sd",
         help="Image generation backend (default: sd).",
     )
     parser.add_argument(
-        "--model", default=DEFAULT_GEMINI_MODEL,
+        "--model",
+        default=DEFAULT_GEMINI_MODEL,
         help=f"Gemini model name, only used with --backend gemini (default: {DEFAULT_GEMINI_MODEL}).",
     )
     parser.add_argument(
-        "--limit", type=int, default=None, metavar="N",
+        "--limit",
+        type=int,
+        default=None,
+        metavar="N",
         help="Only attempt the first N not-already-skipped items (for smoke-testing before a full run).",
     )
     args = parser.parse_args()
@@ -125,7 +140,9 @@ def main():
             sys.stderr.write(f"ERROR: --missing path not found: {missing_path}\n")
             sys.exit(1)
         missing_bytes = missing_path.read_bytes()
-        sys.stdout.write(f"Filter: only regenerate icons matching {missing_path} ({len(missing_bytes):,} bytes)\n\n")
+        sys.stdout.write(
+            f"Filter: only regenerate icons matching {missing_path} ({len(missing_bytes):,} bytes)\n\n"
+        )
 
     # Merge items from every requested pack, keyed by destination directory, so a
     # directory shared by multiple packs (e.g. a reused base genre's icons/) is
@@ -141,7 +158,9 @@ def main():
             by_dir.setdefault(icon_dir, {})[slug] = prompt
 
     total = sum(len(slugs) for slugs in by_dir.values())
-    sys.stdout.write(f"\nLoaded {total} unique icon(s) across {len(by_dir)} director{'y' if len(by_dir) == 1 else 'ies'}.\n\n")
+    sys.stdout.write(
+        f"\nLoaded {total} unique icon(s) across {len(by_dir)} director{'y' if len(by_dir) == 1 else 'ies'}.\n\n"
+    )
 
     variants = PARAMS.get("batch_size", 3)
     done = skipped = 0
@@ -158,7 +177,9 @@ def main():
             if missing_bytes is not None and p.read_bytes() == missing_bytes:
                 continue
             parts = p.stem.rsplit("#", 1)
-            existing_slugs.add(parts[0] if len(parts) == 2 and parts[1].isdigit() else p.stem)
+            existing_slugs.add(
+                parts[0] if len(parts) == 2 and parts[1].isdigit() else p.stem
+            )
 
         timestamp = datetime.now().strftime("%Y-%m-%d_%H%M%S")
         outdir = icon_dir / timestamp
@@ -186,14 +207,18 @@ def main():
             sys.stdout.flush()
             try:
                 if args.backend == "sd":
-                    raw_images  = _generate_sd(SD_BASE, prompt, PARAMS)
+                    raw_images = _generate_sd(SD_BASE, prompt, PARAMS)
                     target_size = None
                 else:
-                    raw_images  = _generate_gemini(gemini_client, args.model, prompt, variants)
+                    raw_images = _generate_gemini(
+                        gemini_client, args.model, prompt, variants
+                    )
                     target_size = (PARAMS["width"], PARAMS["height"])
 
                 sizes = []
-                for v, (img_bytes, out_path) in enumerate(zip(raw_images, out_paths), 1):
+                for v, (img_bytes, out_path) in enumerate(
+                    zip(raw_images, out_paths), 1
+                ):
                     webp_size = _save_webp(img_bytes, out_path, target_size=target_size)
                     sizes.append(f"#{v}:{webp_size:,}b")
                 sys.stdout.write(f"         {' '.join(sizes)}\n")
@@ -207,7 +232,9 @@ def main():
             if args.backend == "sd":
                 time.sleep(0.3)
 
-    sys.stdout.write(f"\nDone. generated={done}  skipped={skipped}  errors={len(errors)}\n")
+    sys.stdout.write(
+        f"\nDone. generated={done}  skipped={skipped}  errors={len(errors)}\n"
+    )
     if errors:
         sys.stdout.write("Failed: " + ", ".join(errors) + "\n")
 

@@ -13,8 +13,8 @@ from datetime import datetime
 from pathlib import Path
 
 DEFAULT_GEMINI_MODEL = "gemini-2.5-flash-image"
-GEMINI_MAX_RETRIES   = 3
-GEMINI_BACKOFF_BASE  = 2.0   # seconds; exponential: 2s, 4s, 8s
+GEMINI_MAX_RETRIES = 3
+GEMINI_BACKOFF_BASE = 2.0  # seconds; exponential: 2s, 4s, 8s
 # Gemini tends to render the "clean white background, subtle drop shadow" style
 # text as a literal framed card/badge rather than a full-bleed square scene.
 # Prepending this counters that tendency; SD doesn't have the same issue.
@@ -23,17 +23,21 @@ GEMINI_PROMPT_PREFIX = "square, borderless, full bleed illustration, "
 
 def extract_pairs(js_text):
     """Return list of (iconPrompt, iconPath) from a JS file's text."""
-    flat    = re.sub(r'[\r\n]+\s*', ' ', js_text)
+    flat = re.sub(r"[\r\n]+\s*", " ", js_text)
     prompts = re.findall(r'iconPrompt\s*:\s*["\'](.+?)["\']', flat)
-    paths   = re.findall(r'iconPath\s*:\s*["\'](.+?)["\']',   flat)
+    paths = re.findall(r'iconPath\s*:\s*["\'](.+?)["\']', flat)
     if len(prompts) != len(paths):
-        raise ValueError(f"iconPrompt/iconPath count mismatch: {len(prompts)} vs {len(paths)}")
+        raise ValueError(
+            f"iconPrompt/iconPath count mismatch: {len(prompts)} vs {len(paths)}"
+        )
     return list(zip(prompts, paths))
 
 
 def _generate_sd(base, prompt, params, timeout=360):
     """Calls the local SD WebUI Forge txt2img API. Returns a list of raw PNG bytes."""
-    r = requests.post(base + "/sdapi/v1/txt2img", json=dict(prompt=prompt, **params), timeout=timeout)
+    r = requests.post(
+        base + "/sdapi/v1/txt2img", json=dict(prompt=prompt, **params), timeout=timeout
+    )
     r.raise_for_status()
     return [base64.b64decode(img_b64) for img_b64 in r.json()["images"]]
 
@@ -41,16 +45,21 @@ def _generate_sd(base, prompt, params, timeout=360):
 def _init_gemini_client():
     """Loads GEMINI_API_KEY from the repo-root .env and returns an authenticated genai.Client."""
     from dotenv import load_dotenv
+
     repo_root = Path(__file__).resolve().parents[4]
     load_dotenv(dotenv_path=repo_root / ".env")
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
-        sys.stderr.write("Error: GEMINI_API_KEY not set. Add it to .env or export it.\n")
+        sys.stderr.write(
+            "Error: GEMINI_API_KEY not set. Add it to .env or export it.\n"
+        )
         sys.exit(1)
     try:
         from google import genai
     except ImportError:
-        sys.stderr.write("Error: google-genai not installed. Run: pip install google-genai\n")
+        sys.stderr.write(
+            "Error: google-genai not installed. Run: pip install google-genai\n"
+        )
         sys.exit(1)
     return genai.Client(api_key=api_key)
 
@@ -61,6 +70,7 @@ def _generate_gemini(client, model, prompt, count):
     other failures (or exhausted retries) propagate to the caller's existing per-item
     try/except, which logs the slug as failed and continues the batch."""
     from google.genai import types
+
     config = types.GenerateContentConfig(
         response_modalities=["IMAGE"],
         image_config=types.ImageConfig(aspect_ratio="1:1"),
@@ -70,8 +80,13 @@ def _generate_gemini(client, model, prompt, count):
     for _ in range(count):
         for attempt in range(GEMINI_MAX_RETRIES + 1):
             try:
-                response = client.models.generate_content(model=model, contents=full_prompt, config=config)
-                part = next((p for p in response.candidates[0].content.parts if p.inline_data), None)
+                response = client.models.generate_content(
+                    model=model, contents=full_prompt, config=config
+                )
+                part = next(
+                    (p for p in response.candidates[0].content.parts if p.inline_data),
+                    None,
+                )
                 if part is None:
                     raise RuntimeError("Gemini response contained no image part")
                 results.append(part.inline_data.data)
@@ -80,7 +95,9 @@ def _generate_gemini(client, model, prompt, count):
                 transient = "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e)
                 if attempt < GEMINI_MAX_RETRIES and transient:
                     delay = GEMINI_BACKOFF_BASE * (2 ** attempt)
-                    sys.stdout.write(f"         rate-limited, retry {attempt+1}/{GEMINI_MAX_RETRIES} in {delay:.0f}s...\n")
+                    sys.stdout.write(
+                        f"         rate-limited, retry {attempt+1}/{GEMINI_MAX_RETRIES} in {delay:.0f}s...\n"
+                    )
                     sys.stdout.flush()
                     time.sleep(delay)
                     continue
@@ -99,8 +116,17 @@ def _save_webp(image_bytes, path, target_size=None):
     return path.stat().st_size
 
 
-def run(genre_dir, icon_dir, style, params, description="", recursive=False,
-        extra_js_files=None, exclude_filenames=None, genre_prompt=None):
+def run(
+    genre_dir,
+    icon_dir,
+    style,
+    params,
+    description="",
+    recursive=False,
+    extra_js_files=None,
+    exclude_filenames=None,
+    genre_prompt=None,
+):
     """
     Collect iconPrompt/iconPath pairs from all JS files in genre_dir,
     generate images via SD WebUI Forge, and save to icon_dir/<timestamp>/.
@@ -125,15 +151,21 @@ def run(genre_dir, icon_dir, style, params, description="", recursive=False,
         help="Path to the placeholder/default image. When given, only regenerate icons whose existing file is byte-identical to this image.",
     )
     parser.add_argument(
-        "--backend", choices=["sd", "gemini"], default="sd",
+        "--backend",
+        choices=["sd", "gemini"],
+        default="sd",
         help="Image generation backend (default: sd).",
     )
     parser.add_argument(
-        "--model", default=DEFAULT_GEMINI_MODEL,
+        "--model",
+        default=DEFAULT_GEMINI_MODEL,
         help=f"Gemini model name, only used with --backend gemini (default: {DEFAULT_GEMINI_MODEL}).",
     )
     parser.add_argument(
-        "--limit", type=int, default=None, metavar="N",
+        "--limit",
+        type=int,
+        default=None,
+        metavar="N",
         help="Only attempt the first N not-already-skipped items (for smoke-testing before a full run).",
     )
     args = parser.parse_args()
@@ -147,7 +179,9 @@ def run(genre_dir, icon_dir, style, params, description="", recursive=False,
             sys.stderr.write(f"ERROR: --missing path not found: {missing_path}\n")
             sys.exit(1)
         missing_bytes = missing_path.read_bytes()
-        sys.stdout.write(f"Filter: only regenerate icons matching {missing_path} ({len(missing_bytes):,} bytes)\n\n")
+        sys.stdout.write(
+            f"Filter: only regenerate icons matching {missing_path} ({len(missing_bytes):,} bytes)\n\n"
+        )
 
     js_files = sorted(genre_dir.glob("*.js"))
     if exclude_filenames:
@@ -156,7 +190,7 @@ def run(genre_dir, icon_dir, style, params, description="", recursive=False,
         extra_paths = {Path(f) for f in extra_js_files}
         existing = set(js_files)
         js_files = sorted(existing | extra_paths, key=lambda p: str(p))
-    items    = []
+    items = []
 
     for js_path in js_files:
         text = js_path.read_text(encoding="utf-8")
@@ -172,7 +206,7 @@ def run(genre_dir, icon_dir, style, params, description="", recursive=False,
     sys.stdout.write(f"Loaded {len(items)} items from {len(js_files)} JS files.\n\n")
 
     timestamp = datetime.now().strftime("%Y-%m-%d_%H%M%S")
-    outdir    = icon_dir / timestamp
+    outdir = icon_dir / timestamp
     outdir.mkdir(parents=True, exist_ok=True)
 
     existing_slugs = set()
@@ -183,19 +217,25 @@ def run(genre_dir, icon_dir, style, params, description="", recursive=False,
         if missing_bytes is not None and p.read_bytes() == missing_bytes:
             continue
         parts = p.stem.rsplit("#", 1)
-        existing_slugs.add(parts[0] if len(parts) == 2 and parts[1].isdigit() else p.stem)
+        existing_slugs.add(
+            parts[0] if len(parts) == 2 and parts[1].isdigit() else p.stem
+        )
 
-    base     = "http://bonobo.local:7860"
+    base = "http://bonobo.local:7860"
     variants = params.get("batch_size", 3)
-    total    = len(items)
-    skipped  = 0
-    done     = 0
-    errors   = []
+    total = len(items)
+    skipped = 0
+    done = 0
+    errors = []
 
     if genre_prompt is not None:
         genre_out = icon_dir / "_genre.webp"
         genre_exists = genre_out.exists()
-        genre_is_placeholder = genre_exists and missing_bytes is not None and genre_out.read_bytes() == missing_bytes
+        genre_is_placeholder = (
+            genre_exists
+            and missing_bytes is not None
+            and genre_out.read_bytes() == missing_bytes
+        )
         if genre_exists and not genre_is_placeholder:
             sys.stdout.write(f"skip  _genre.webp (exists)\n\n")
         else:
@@ -203,11 +243,18 @@ def run(genre_dir, icon_dir, style, params, description="", recursive=False,
             sys.stdout.flush()
             try:
                 if args.backend == "sd":
-                    genre_params = {**params, "batch_size": 1, "width": 512, "height": 512}
+                    genre_params = {
+                        **params,
+                        "batch_size": 1,
+                        "width": 512,
+                        "height": 512,
+                    }
                     raw = _generate_sd(base, genre_prompt, genre_params)[0]
                     target_size = None
                 else:
-                    raw = _generate_gemini(gemini_client, args.model, genre_prompt, 1)[0]
+                    raw = _generate_gemini(gemini_client, args.model, genre_prompt, 1)[
+                        0
+                    ]
                     target_size = (512, 512)
                 webp_size = _save_webp(raw, genre_out, target_size=target_size)
                 sys.stdout.write(f"         {webp_size:,}b\n\n")
@@ -232,10 +279,12 @@ def run(genre_dir, icon_dir, style, params, description="", recursive=False,
         sys.stdout.flush()
         try:
             if args.backend == "sd":
-                raw_images  = _generate_sd(base, prompt, params)
+                raw_images = _generate_sd(base, prompt, params)
                 target_size = None
             else:
-                raw_images  = _generate_gemini(gemini_client, args.model, prompt, variants)
+                raw_images = _generate_gemini(
+                    gemini_client, args.model, prompt, variants
+                )
                 target_size = (params["width"], params["height"])
 
             sizes = []
@@ -253,7 +302,9 @@ def run(genre_dir, icon_dir, style, params, description="", recursive=False,
         if args.backend == "sd":
             time.sleep(0.3)
 
-    sys.stdout.write(f"\nDone. generated={done}  skipped={skipped}  errors={len(errors)}\n")
+    sys.stdout.write(
+        f"\nDone. generated={done}  skipped={skipped}  errors={len(errors)}\n"
+    )
     sys.stdout.write(f"Output: {outdir}\n")
     if errors:
         sys.stdout.write("Failed: " + ", ".join(errors) + "\n")
