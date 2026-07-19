@@ -12,3 +12,4 @@ web/.serve-static.pid
 web/.serve-aidungeon.pid
 images.txt
 tools/regenerate-icons-gemini.py
+web/generator/nsfw-suffix.json
