@@ -408,6 +408,7 @@
           </ol>
           <p>Ollama and narration provider settings (Kokoro/OpenAI TTS) aren't part of this mechanism — enter those directly in Settings, where they're saved to your browser's local storage.</p>
           <p><code>AIDUNGEON_EMAIL</code> and <code>AIDUNGEON_PASSWORD</code> (used by Auto Import, above) work differently — they're read directly by the Node-side importer script and are never baked into <code>generator/config.js</code> or exposed to the browser.</p>
+          <p><code>NSFW_IMAGE_PROMPT_SUFFIX</code> replaces the text appended to the appearance prompt when Settings → Options → NSFW is checked and the character is an adult (18+) — e.g. <code>", sexy unibrow, &lt;lora:MyFluxLoRA&gt;"</code>. Falls back to a plain <code>", sexy"</code> when unset. Leading punctuation matters: it's appended directly after the rest of the prompt with no separator added, so keep the leading <code>", "</code> unless you want it glued onto the previous word.</p>
         </div>
 
       </div>
@@ -661,9 +662,9 @@ let currentOutput      = null;
 let currentGeneratedAt = null;
 let currentStats       = null;
 // Appended to appearancePrompt when NSFW is on for an adult character.
-// Externalized to generator/nsfw-suffix.json (loaded by loadNsfwSuffix() below)
-// so it's editable without touching source; this is just the fallback used if
-// that fetch fails for any reason.
+// Overridden by NSFW_IMAGE_PROMPT_SUFFIX in .env (via serve.sh's config.js,
+// window.__NSFW_SUFFIX — see DOMContentLoaded below) so it's editable without
+// touching source; this is just the fallback when no .env key is set.
 let nsfwSuffix = ', sexy';
 let npcPortraitData       = {};
 let npcPortraitGenerating = false;
@@ -1822,19 +1823,6 @@ async function removeInstalledPack(id) {
   renderGenrePackList();
 }
 
-// Loads the user-editable NSFW appearancePrompt suffix from generator/nsfw-suffix.json,
-// overwriting the built-in fallback declared above. See that file for the format.
-async function loadNsfwSuffix() {
-  try {
-    const res = await fetch('generator/nsfw-suffix.json', { cache: 'no-store' });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const cfg = await res.json();
-    if (typeof cfg.suffix === 'string') nsfwSuffix = cfg.suffix;
-  } catch (e) {
-    console.warn('Could not load generator/nsfw-suffix.json, using built-in default:', e);
-  }
-}
-
 // Lists the sample/example packs checked into web/genre-packs/ as plain download
 // links (via a small hand-maintained index.json) so a phone — which can't browse
 // a repo folder the way a desktop file picker can — has some way to grab a pack
@@ -2451,6 +2439,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  if (window.__NSFW_SUFFIX) nsfwSuffix = window.__NSFW_SUFFIX;
+
   // Save on every change; update provider selector when AI keys change
   KEY_FIELDS.forEach(({ id, store }) => {
     document.getElementById(id).addEventListener('input', e => {
@@ -2508,7 +2498,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   loadStoredGenrePacks();
   renderDownloadablePacks();
-  loadNsfwSuffix();
 
   // Init genre carousel
   carouselIndex = Math.max(0, GENRE_CAROUSEL_DATA.findIndex(g => g.id === currentGenre));

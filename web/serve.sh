@@ -48,7 +48,10 @@ if env_path.exists():
     for line in env_path.read_text().splitlines():
         m = re.match(r'^([A-Z_]+)=(.+)', line.strip())
         if m:
-            keys[m.group(1)] = m.group(2)
+            v = m.group(2)
+            if len(v) >= 2 and v[0] == v[-1] and v[0] in '"\'':
+                v = v[1:-1]
+            keys[m.group(1)] = v
 
 try:
     git_version = subprocess.run(
@@ -71,6 +74,7 @@ out.write_text(
     f'window.__GEMINI_KEY     = {json.dumps(keys.get("GEMINI_API_KEY", ""))};\n'
     f'window.__SD_URL         = {json.dumps(keys.get("SD_URL", ""))};\n'
     f'window.__STABILITY_KEY  = {json.dumps(keys.get("STABILITY_API_KEY", ""))};\n'
+    f'window.__NSFW_SUFFIX    = {json.dumps(keys.get("NSFW_IMAGE_PROMPT_SUFFIX", ""))};\n'
     f'window.__GIT_VERSION__  = {json.dumps(git_version)};\n'
 )
 print(f'config.js written (anthropic key length: {len(keys.get("ANTHROPIC_API_KEY",""))}, gemini key length: {len(keys.get("GEMINI_API_KEY",""))}, git version: {git_version})')
