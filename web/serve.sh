@@ -4,37 +4,68 @@
 # watch the "Serving HTTP on ..." line below for the actual port used).
 cd "$(dirname "$0")"
 
-STATIC_PID_FILE=".serve-static.pid"
-AIDUNGEON_PID_FILE=".serve-aidungeon.pid"
+# Stop stale instances from a previous run before starting new ones — a
+# closed terminal or a killed shell doesn't always take its background
+# children with it, so a stale process can otherwise keep running (and
+# serving stale code, or squatting on a port) indefinitely.
+#
+# This used to work by writing each process's PID to a file and killing it
+# next time. That was unreliable: this script gets run from whatever shell
+# the developer prefers (Cygwin, Git Bash, WSL, ...), and a PID recorded by
+# one shell's Python/Node process is frequently meaningless in another
+# shell's process namespace — `kill <pid>` silently no-ops, and even
+# `taskkill //F //PID <pid>` can target the wrong real Windows process if the
+# recorded PID came from a POSIX subsystem with its own PID space (Cygwin).
+#
+# Instead, both servers below identify themselves over their own HTTP
+# port (a `/ping`-style marker) and expose a loopback-only shutdown route.
+# HTTP works identically no matter which shell launched the other process,
+# so there's no PID-namespace mismatch to worry about. See the Python and
+# aidungeon-server.mjs code below for the actual marker/shutdown routes.
+python3 - <<'PY'
+import http.client, time
 
-# Stop anything left running from a previous run of this script before
-# starting new instances — a closed terminal or a killed shell doesn't always
-# take its background children with it, so a stale process can otherwise keep
-# running (and serving stale code) indefinitely.
-kill_stale() {
-  local pidfile="$1" label="$2"
-  if [ -f "$pidfile" ]; then
-    local pid
-    pid=$(cat "$pidfile" 2>/dev/null)
-    if [ -n "$pid" ]; then
-      echo "Stopping previous $label (PID $pid)…"
-      # Plain `kill` only reliably signals processes this same shell/MSYS
-      # runtime spawned itself (e.g. `node ... &` backgrounded in this
-      # script) — a PID that a *different* prior run wrote to disk (like a
-      # Python process's own self-reported native Windows PID) often isn't
-      # in bash's PID namespace at all, so `kill` silently no-ops on it.
-      # `taskkill` operates on real Windows PIDs directly and reliably
-      # catches that case; try both, ignore errors either way.
-      kill "$pid" 2>/dev/null
-      command -v taskkill &>/dev/null && taskkill //F //PID "$pid" >/dev/null 2>&1
-      sleep 0.3
-      kill -9 "$pid" 2>/dev/null
-    fi
-    rm -f "$pidfile"
-  fi
-}
-kill_stale "$AIDUNGEON_PID_FILE" "AI Dungeon import server"
-kill_stale "$STATIC_PID_FILE" "static file server"
+def ping(port, path, ok):
+    try:
+        conn = http.client.HTTPConnection("127.0.0.1", port, timeout=0.25)
+        conn.request("GET", path)
+        resp = conn.getresponse()
+        body = resp.read()
+        conn.close()
+        return resp.status == 200 and ok(body)
+    except Exception:
+        return False
+
+def shutdown(port, method, path):
+    try:
+        conn = http.client.HTTPConnection("127.0.0.1", port, timeout=0.5)
+        conn.request(method, path)
+        conn.getresponse()
+        conn.close()
+    except Exception:
+        pass
+
+# AI Dungeon import server always binds the same fixed port.
+if ping(7432, "/ping", lambda b: b'"ok":true' in b or b'"ok": true' in b):
+    print("Stopping previous AI Dungeon import server (port 7432)…")
+    shutdown(7432, "POST", "/shutdown")
+    time.sleep(0.3)
+
+# Static file server picks whatever free port it lands on (see find_free_port
+# below), so a stale instance from an earlier run could be sitting on any of
+# them — sweep a generous range rather than assuming it's still on 8080.
+killed = []
+for p in range(8080, 8110):
+    if ping(p, "/__fatevend_ping__", lambda b: b == b"fatevend-static"):
+        shutdown(p, "GET", "/__fatevend_shutdown__")
+        killed.append(p)
+if killed:
+    print(
+        f"Stopped {len(killed)} stale static file server instance(s) on port(s): "
+        + ", ".join(map(str, killed))
+    )
+    time.sleep(0.3)
+PY
 
 # Write config.js from the root .env so the browser can read the API key
 # without the .env file itself ever being served. Also stamps the current git
@@ -89,10 +120,12 @@ PY
 if command -v node &>/dev/null; then
   node tools/aidungeon-server.mjs &
   AIDUNGEON_SERVER_PID=$!
-  echo "$AIDUNGEON_SERVER_PID" > "$AIDUNGEON_PID_FILE"
+  # This kill is same-shell job control (the child this bash process just
+  # spawned), which — unlike a PID recorded by a *different* prior run — is
+  # always in this shell's own process namespace and reliable everywhere.
   # INT/TERM explicitly, not just EXIT — systemd stops services with SIGTERM,
   # and without a handler for it bash kills the child but skips the EXIT trap.
-  trap 'kill $AIDUNGEON_SERVER_PID 2>/dev/null; rm -f "$AIDUNGEON_PID_FILE" "$STATIC_PID_FILE"; exit 0' EXIT INT TERM
+  trap 'kill $AIDUNGEON_SERVER_PID 2>/dev/null; exit 0' EXIT INT TERM
 else
   echo "node not found — AI Dungeon import server not started."
 fi
@@ -103,11 +136,7 @@ fi
 # -u: unbuffered stdout, so the port/URL message (and journalctl -f) show up
 # immediately instead of sitting in a buffer that's lost if the process is killed.
 python3 -u - <<'PY'
-import http.server, socket, os, pathlib, platform, subprocess
-
-# Record our own PID so the next run of serve.sh can stop us if we're
-# still around (e.g. this terminal got closed without a clean Ctrl+C).
-pathlib.Path('.serve-static.pid').write_text(str(os.getpid()))
+import http.server, socket, os, platform, subprocess
 
 def describe_port_owner(port):
     """Best-effort lookup of what's already listening on `port`, so the
@@ -143,6 +172,30 @@ def describe_port_owner(port):
         return None
 
 class NoCacheHandler(http.server.SimpleHTTPRequestHandler):
+    # Self-identification + shutdown routes so the next serve.sh run can find
+    # and retire a stale instance of this exact server over HTTP, regardless
+    # of which shell/PID namespace started it (see the comment above the
+    # kill-stale sweep near the top of this script for why that matters).
+    def do_GET(self):
+        if self.path == '/__fatevend_ping__':
+            body = b'fatevend-static'
+            self.send_response(200)
+            self.send_header('Content-Type', 'text/plain')
+            self.send_header('Content-Length', str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+            return
+        if self.path == '/__fatevend_shutdown__':
+            if self.client_address[0] not in ('127.0.0.1', '::1'):
+                self.send_response(403)
+                self.end_headers()
+                return
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.flush()
+            os._exit(0)  # throwaway dev instance being replaced; no state to save
+        super().do_GET()
+
     def end_headers(self):
         self.send_header('Cache-Control', 'no-store')
         super().end_headers()

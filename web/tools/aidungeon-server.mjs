@@ -51,6 +51,25 @@ const server = createServer(async (req, res) => {
     return;
   }
 
+  // ── POST /shutdown ─────────────────────────────────────────────────────────
+  // Lets serve.sh retire a stale instance over HTTP instead of by PID — a PID
+  // recorded by one shell (Cygwin, Git Bash, WSL, ...) often isn't valid in
+  // another's process namespace, which made the old PID-file approach
+  // unreliable. Loopback-only: a request from anywhere else is refused.
+  if (req.method === "POST" && req.url === "/shutdown") {
+    if (
+      req.socket.remoteAddress !== "127.0.0.1" &&
+      req.socket.remoteAddress !== "::1"
+    ) {
+      res.writeHead(403);
+      res.end();
+      return;
+    }
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ ok: true }), () => process.exit(0));
+    return;
+  }
+
   // ── POST /import ───────────────────────────────────────────────────────────
   if (req.method === "POST" && req.url === "/import") {
     let body = "";
