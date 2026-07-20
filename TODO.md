@@ -6,8 +6,6 @@
 ## Bugs
 - Plot essentials should be short bullet points, not wordy prose.  Ideally around 1000 characters, maximum 1500 characters.
 
-- Modern's races.js has 14 entries with no em-dash in `flavor` (same truncation mechanism as the Manga-Osaka fix in Fixed Bugs below), but those are already short ethnicity labels (e.g. "Ashkenazi Jewish"), so there's no actual truncation problem — just inconsistent style vs. the rest of the file. Low priority; not a functional bug.
-
 - The Settings modal recently got a new Genre tab, but it makes the modal too wide on mobile browsers.  Either make tabs smaller, use icons, scroll the tab bar, or wrap it.
 
 - Need consistent style for text.  I see text in 3-4 colors and the fonts tend to be tiny for some reason.  Other than the disclaimer, all text should be 1.0em.  Maybe even put this in the DESIGN.md because Claude seems to forget after a time.
@@ -53,6 +51,8 @@
 
 ## Rejected ideas
 - Auto-load web/genre-packs (N/A - Uploaded genre-packs are stored in the browser's index DB )
+- Modern's races.js has 14 entries with no em-dash in `flavor` (same truncation mechanism as the Manga-Osaka fix in Fixed Bugs below), but those are already short ethnicity labels (e.g. "Ashkenazi Jewish"), so there's no actual truncation problem — just inconsistent style vs. the rest of the file. Low priority; not a functional bug.
+
 
 ---
 
