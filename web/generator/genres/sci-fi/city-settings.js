@@ -119,4 +119,167 @@ export const CITY_SETTINGS = [
       "subterranean undercity, lowest levels below the main city, pipes, wires, puddles, flickering shadows, trash, rats, illegal trade, forgotten underclass in cramped tunnels",
     iconPath: "generator/genres/sci-fi/icons/CITY_SETTINGS#undercity.webp",
   },
+  {
+    id: "trade_hub_station",
+    label: "A thriving trade hub station",
+    flavor:
+      "a hundred flags on a hundred ships, deals cut in six languages before breakfast, nobody owns this place and everybody profits",
+    toneTag: "cozy",
+    statAffinity: { charisma: 1.3, intelligence: 1.1 },
+    iconPrompt:
+      "bustling multicultural space trade station, colorful ship pennants and market stalls along a wide docking concourse, diverse alien and human traders haggling, warm golden light, festive lived-in atmosphere",
+    iconPath:
+      "generator/genres/sci-fi/icons/CITY_SETTINGS#trade_hub_station.webp",
+  },
+  {
+    id: "solarpunk_arcology",
+    label: "A solarpunk arcology",
+    flavor:
+      "terraced gardens climb every wall, the power grid runs on sunlight and goodwill, and for once the future looks like it's actually working",
+    toneTag: "cozy",
+    statAffinity: { wisdom: 1.2, charisma: 1.1 },
+    iconPrompt:
+      "green solarpunk arcology, terraced gardens and vertical farms climbing a curved glass tower, solar sails overhead, people relaxing among plants, warm daylight, utopian atmosphere",
+    iconPath:
+      "generator/genres/sci-fi/icons/CITY_SETTINGS#solarpunk_arcology.webp",
+  },
+  {
+    id: "independent_free_port",
+    label: "An independent free port",
+    flavor:
+      "no corp flag flies here, the council votes on everything twice, and somehow the streets still get swept",
+    toneTag: "neutral",
+    statAffinity: { charisma: 1.1, wisdom: 1.1 },
+    iconPrompt:
+      "independent space port free of corporate branding, mismatched modular architecture built by many hands over many years, communal market square, hand-painted signage, warm evening lighting, self-governed atmosphere",
+    iconPath:
+      "generator/genres/sci-fi/icons/CITY_SETTINGS#independent_free_port.webp",
+  },
+  {
+    id: "alien_homeworld_benevolent",
+    label: "The homeworld of a benevolent advanced alien civilization",
+    flavor:
+      "post-scarcity, achingly patient, humans are guests here and everyone remembers it — kindly",
+    toneTag: "cozy",
+    statAffinity: { wisdom: 1.3, intelligence: 1.1 },
+    iconPrompt:
+      "utopian alien homeworld, bioluminescent organic architecture grown rather than built, twin suns, alien and human figures walking together peacefully, serene golden light",
+    iconPath:
+      "generator/genres/sci-fi/icons/CITY_SETTINGS#alien_homeworld_benevolent.webp",
+  },
+  {
+    id: "family_exploration_ship",
+    label: "A deep-space exploration ship with families aboard",
+    flavor:
+      "school schedules and stellar cartography share the same corridor, it's a mission and also just home",
+    toneTag: "cozy",
+    statAffinity: { wisdom: 1.1, charisma: 1.2 },
+    iconPrompt:
+      "deep-space exploration ship interior, families and children in a communal living deck, observation windows showing starfield, warm homey lighting, plants and personal touches",
+    iconPath:
+      "generator/genres/sci-fi/icons/CITY_SETTINGS#family_exploration_ship.webp",
+  },
+  {
+    id: "military_starship",
+    label: "Aboard a military starship",
+    flavor:
+      "chain of command down to the last bulkhead, drills at 0500, the war might be cold but the discipline isn't",
+    toneTag: "gritty",
+    statAffinity: { strength: 1.2, constitution: 1.2 },
+    iconPrompt:
+      "military starship corridor, uniformed crew at battle stations, red alert lighting, blast doors, disciplined formation, tense readiness",
+    iconPath:
+      "generator/genres/sci-fi/icons/CITY_SETTINGS#military_starship.webp",
+  },
+  {
+    id: "tourism_planet",
+    label: "A tourism planet",
+    flavor:
+      "manufactured paradise, curated sunsets, the locals work the resorts their ancestors used to own",
+    toneTag: "neutral",
+    statAffinity: { charisma: 1.2, dexterity: 1.1 },
+    iconPrompt:
+      "manufactured tourist resort planet, curated pristine beach and artificial sunset, luxury domes, service workers in uniform in the background, glossy vacation-brochure lighting",
+    iconPath: "generator/genres/sci-fi/icons/CITY_SETTINGS#tourism_planet.webp",
+  },
+  {
+    id: "garbage_dump_planet",
+    label: "A garbage-dump planet",
+    flavor:
+      "the rest of the galaxy's trash lands here, an entire economy built on sorting it, some of it beautiful once you know where to look",
+    toneTag: "gritty",
+    statAffinity: { constitution: 1.2, intelligence: 1.1 },
+    iconPrompt:
+      "planetary garbage-dump world, mountains of sorted scrap and salvage under an orange sky, workers in patched suits sorting debris, industrial haze, scavenger economy atmosphere",
+    iconPath:
+      "generator/genres/sci-fi/icons/CITY_SETTINGS#garbage_dump_planet.webp",
+  },
+  {
+    id: "neotokyo",
+    label: "NeoTokyo",
+    flavor:
+      "vertical neon canyons, vending machines that know your name, a hundred subcultures stacked on top of each other",
+    toneTag: "neutral",
+    statAffinity: { dexterity: 1.1, charisma: 1.2 },
+    iconPrompt:
+      "neon-drenched NeoTokyo megacity street level, towering holographic advertisements, crowded crosswalk, vending machines and ramen stalls, vibrant subculture energy, night rain reflections",
+    iconPath: "generator/genres/sci-fi/icons/CITY_SETTINGS#neotokyo.webp",
+  },
+  {
+    id: "secret_research_station",
+    label: "A secret military research station",
+    flavor:
+      "clearance levels above your clearance level, doors that don't officially exist, everyone here signed something",
+    toneTag: "dramatic",
+    statAffinity: { intelligence: 1.3, wisdom: 1.1 },
+    iconPrompt:
+      "hidden military research station, sterile restricted corridors, unmarked blast doors, personnel in hazmat suits and lab coats, classified equipment under harsh fluorescent light",
+    iconPath:
+      "generator/genres/sci-fi/icons/CITY_SETTINGS#secret_research_station.webp",
+  },
+  {
+    id: "aquatic_planet",
+    label: "An aquatic planet",
+    flavor:
+      "cities built on floating platforms and coral scaffolds, the depths are unexplored on purpose, everyone can swim by age five",
+    toneTag: "neutral",
+    statAffinity: { constitution: 1.2, dexterity: 1.1 },
+    iconPrompt:
+      "aquatic planet city, floating platforms and coral scaffolding above an endless ocean, submerged towers visible below the surface, bioluminescent sea life, turquoise water light",
+    iconPath: "generator/genres/sci-fi/icons/CITY_SETTINGS#aquatic_planet.webp",
+  },
+  {
+    id: "forest_planet",
+    label: "A forest planet",
+    flavor:
+      "canopy cities strung between trees a kilometer tall, the ecosystem is alive and occasionally opinionated, settlers tread carefully",
+    toneTag: "neutral",
+    statAffinity: { wisdom: 1.2, dexterity: 1.1 },
+    iconPrompt:
+      "forest planet canopy city, wooden walkways strung between kilometer-tall alien trees, dappled green light, native fauna in the underbrush, misty atmosphere",
+    iconPath: "generator/genres/sci-fi/icons/CITY_SETTINGS#forest_planet.webp",
+  },
+  {
+    id: "frozen_planet",
+    label: "A frozen planet",
+    flavor:
+      "endless white, heated corridors between domes, the cold outside kills in minutes and everyone respects it",
+    toneTag: "gritty",
+    statAffinity: { constitution: 1.3, wisdom: 1.1 },
+    iconPrompt:
+      "frozen planet outpost, heated dome habitats connected by enclosed tunnels, endless white tundra and blizzard beyond the glass, harsh pale light",
+    iconPath: "generator/genres/sci-fi/icons/CITY_SETTINGS#frozen_planet.webp",
+  },
+  {
+    id: "primitive_planet",
+    label: "A pre-industrial frontier planet",
+    flavor:
+      "no grid, no satellites, tech from home slowly failing and nobody's coming to fix it, the locals figured out how to live here first",
+    toneTag: "gritty",
+    statAffinity: { constitution: 1.2, wisdom: 1.2 },
+    iconPrompt:
+      "pre-industrial frontier planet settlement, thatched huts built around failing salvaged tech, dense alien jungle at the edge of the clearing, cookfire smoke, isolated frontier atmosphere",
+    iconPath:
+      "generator/genres/sci-fi/icons/CITY_SETTINGS#primitive_planet.webp",
+  },
 ];

@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-07-20
+
+### content: 14 new sci-fi city settings, breaking up the uniformly-dystopian setting pool
+**What changed:** Investigated a report that Sci-Fi plays as relentlessly dystopian. The system prompt (`genres/sci-fi/voice.js`) was already fine — it explicitly pushes *against* pure grimness ("not just grim," "dark comedy welcome," "every character should have at least one quality that makes you root for them"). The actual cause was `city-settings.js`: all 10 original entries were cyberpunk/corporate-dystopia coded with no exceptions ("corp logos blocking out the sky," "post-collapse ruins," "the undercity... forgotten underclass"), so no matter what tension/life-event/secret rolled alongside it, the physical backdrop was always dark. Added 3 settings specifically to counter that (a thriving trade hub, a solarpunk arcology, an independent free port — 2 newly using the previously-unreachable `cozy` toneTag), then 11 more requested directly: a benevolent alien homeworld, a family-crewed exploration ship, a military starship, a tourism planet, a garbage-dump planet, NeoTokyo, a secret research station, and aquatic/forest/frozen/pre-industrial frontier planets. `city-settings.js` now has 24 entries with a real tone spread (`cozy`: 4, `neutral`: 9, `gritty`: 9, `dramatic`: 2 — was 0/4/5/1). Generated real icons for all 14 via the existing SD pipeline (`generate_icons.py`), matching every other entry in the file.
+**Impact:** Sci-Fi scenarios can now land somewhere genuinely different in tone — found-family, exploration, utopian, or just a decent vacation — instead of every roll defaulting to corporate-dystopia or its collapse. No existing entries changed; this is additive only.
+**Test cases:** Verified via a direct Node harness (`buildSkeleton()`, 500 rolls) that all 3 first-batch settings actually get selected at normal frequency; confirmed all 24 entries parse with unique ids and complete required fields (id/label/flavor/toneTag/iconPrompt/iconPath); confirmed every one of the 14 new `iconPath` values resolves to a real file on disk; confirmed every city-settings icon (all 24) is served with HTTP 200 by the running dev server, with zero 404s.
+
 ## 2026-07-19
 
 ### fix: serve.sh's stale-process cleanup was unreliable across shells
