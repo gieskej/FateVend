@@ -135,12 +135,11 @@ export const RACES = [
     label: "Gisaeng",
     flavor:
       "Entertainer-scholar — more educated than most yangban daughters, music and poetry her armor, a liminal figure society both prized and discarded",
-    allowedIndustries: [
-      "Gisaeng Arts",
-      "Court Arts",
-      "Palace Service",
-      "Spiritual",
-    ],
+    // Spiritual (Mudang/shaman) deliberately excluded — a gisaeng's training
+    // is performance and court refinement, not the folk ritual specialty a
+    // shaman practices. Both are marginal-status roles, but they're distinct
+    // professions, not overlapping skill sets.
+    allowedIndustries: ["Gisaeng Arts", "Court Arts", "Palace Service"],
     weight: 5,
     iconPrompt:
       "joseon dynasty korean gisaeng female entertainer musician haegeum elegant hanbok ornate hairpin court banquet traditional painting style",
