@@ -36,5 +36,6 @@ export const TAG_POOLS = {
     Communications: ["tech", "espionage"],
     Logistics: ["working-class", "survival"],
     Transit: ["working-class"],
+    Education: ["coming-of-age", "academia"],
   },
 };

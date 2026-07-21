@@ -652,7 +652,9 @@ export function buildSkeleton(stats, mbti, tables, options = {}) {
       (p) => !p.allowedGenders || isNB || p.allowedGenders.includes(gender.id),
     );
     const genderFiltered = byGender.length > 0 ? byGender : base;
-    const byAge = genderFiltered.filter((p) => age >= (p.minAge ?? 0));
+    const byAge = genderFiltered.filter(
+      (p) => age >= (p.minAge ?? 0) && age <= (p.maxAge ?? Infinity),
+    );
     return byAge.length > 0 ? byAge : genderFiltered;
   })();
   let orientation = weightedPick(orientPool);

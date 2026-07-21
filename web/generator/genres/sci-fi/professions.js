@@ -18,6 +18,9 @@
 //   an executive-level career. Deliberately NOT added to hacking/art/
 //   journalism/manual-labor/criminal roles — teenage prodigies fit the
 //   genre fine there.
+// maxAge — optional; same filter, opposite direction: drops this profession
+//   for a character older than this. Currently only Student (a role you age
+//   out of, unlike the minAge entries above, which you age into).
 
 import { SENTIMENTS } from "../../common/sentiments.js";
 
@@ -429,6 +432,19 @@ export const PROFESSIONS = [
       "An underground journalist in a dark room, surrounded by documents.",
     iconPath:
       "generator/genres/sci-fi/icons/PROFESSIONS#underground_journalist.webp",
+  },
+
+  // ── EDUCATION ─────────────────────────────────────────────────────────────
+  {
+    title: "Student",
+    industry: "Education",
+    economicTier: 2,
+    maxAge: 25,
+    statAffinity: { intelligence: 1.2, wisdom: 1.1 },
+    sentiments: ["passionate", "burned out", "desperate", "quietly satisfied"],
+    iconPrompt:
+      "A student in a lecture hall or study pod, surrounded by holographic textbooks and datapads.",
+    iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#student.webp",
   },
 
   // ── ELITE ─────────────────────────────────────────────────────────────────
