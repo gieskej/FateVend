@@ -762,11 +762,20 @@ export function buildSkeleton(stats, mbti, tables, options = {}) {
     plotArchetypeDesc: plotArchetypeEntry.description,
     ethnicityBroad: identity.broad,
     ethnicityFlavor: identity.flavor,
+    // 'biomechanical' | 'plastic' | 'industrial' | null — lets a genre's
+    // voice.js special-case output rules per Android subtype (e.g. Sci-Fi's
+    // industrial-chassis appearance override), same idea as ethnicityBroad.
+    syntheticType,
     appearance: {
       build: build.label,
-      hair,
-      distinguishingFeature: feat,
-      statNotes: appearanceStatNotes(stats),
+      // hair/distinguishingFeature/statNotes are all body/grooming concepts
+      // (scars, tattoos, "well-groomed", etc.) that don't apply to a
+      // machine chassis — an Industrial Android keeps only the size/bulk
+      // descriptor (build), which reads fine either way ("heavyset").
+      hair: syntheticType === "industrial" ? null : hair,
+      distinguishingFeature: syntheticType === "industrial" ? null : feat,
+      statNotes:
+        syntheticType === "industrial" ? [] : appearanceStatNotes(stats),
     },
     quirk: quirk.quirk,
     stats,

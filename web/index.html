@@ -3328,7 +3328,8 @@
           if (
             output.appearancePrompt &&
             document.getElementById("include-nsfw")?.checked &&
-            currentSkeleton.age >= 18
+            currentSkeleton.age >= 18 &&
+            currentSkeleton.syntheticType !== "industrial"
           ) {
             output.appearancePrompt =
               output.appearancePrompt.trimEnd().replace(/,?\s*$/, "") +
