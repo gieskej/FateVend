@@ -293,6 +293,28 @@ export const PROFESSIONS = [
       "generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#palace_court_lady.webp",
   },
   {
+    title: "Royal Kitchen Worker",
+    industry: "Palace Service",
+    economicTier: 2,
+    statAffinity: { constitution: 1.2, dexterity: 1.2, wisdom: 1.0 },
+    sentiments: ["exhausted", "watchful", "unsentimental"],
+    iconPrompt:
+      "joseon dynasty korean royal kitchen worker palace cooking pots steam plain servant clothing hardworking traditional folk painting",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#royal_kitchen_worker.webp",
+  },
+  {
+    title: "Palace Groundskeeper",
+    industry: "Palace Service",
+    economicTier: 2,
+    statAffinity: { strength: 1.2, constitution: 1.2, wisdom: 1.0 },
+    sentiments: ["dutiful", "watchful", "invisible"],
+    iconPrompt:
+      "joseon dynasty korean palace groundskeeper sweeping courtyard stable duties plain servant clothing humble traditional folk painting",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#palace_groundskeeper.webp",
+  },
+  {
     title: "Nobi (House Slave)",
     industry: "Bonded Service",
     economicTier: 1,

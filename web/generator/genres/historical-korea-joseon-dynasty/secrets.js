@@ -3,6 +3,13 @@
 // Never stated openly in the character Entry. Each secret carries:
 //   id, label (optional display override), description, severity (low |
 //   medium | high | explosive), criminalFlag (bool), toneTag,
+//   allowedGenders    — optional array of gender ids (see genders.js); engine.js
+//                       filters this secret out for a character whose gender
+//                       isn't in the list (non_binary/genderfluid/genderless
+//                       characters bypass the check entirely, same as
+//                       professions' allowedGenders), falling back to the
+//                       unfiltered pool if that would leave nothing. Omitted
+//                       means any gender can roll it.
 //   iconPrompt/iconPath (slot-machine reel icon)
 
 export const SECRETS = [
@@ -167,6 +174,19 @@ export const SECRETS = [
       "joseon dynasty korean plagiarism ghost writer scholarly work poem essay famous attribution false shame traditional painting",
     iconPath:
       "generator/genres/historical-korea-joseon-dynasty/icons/SECRETS#borrowed_scholarship.webp",
+  },
+  {
+    id: "living_as_a_man",
+    label: "Lives Publicly as a Man",
+    description:
+      "Passes as a man in public and professional life — for the freedom to study, soldier, or work in ways their birth sex forbids — a disguise that depends on no one ever looking too closely",
+    severity: "explosive",
+    toneTag: "identity",
+    allowedGenders: ["woman", "trans_woman"],
+    iconPrompt:
+      "joseon dynasty korean woman disguised as a man topknot male scholar or soldier hanbok determined secretive glance traditional court painting",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/SECRETS#living_as_a_man.webp",
   },
   {
     id: "conversion_ancestor",

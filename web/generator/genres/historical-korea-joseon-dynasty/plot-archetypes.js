@@ -71,6 +71,17 @@ export const JOSEON_PLOT_ARCHETYPES = [
       "generator/genres/historical-korea-joseon-dynasty/icons/PLOT_ARCHETYPES#exile_return.webp",
   },
   {
+    id: "switched_at_birth",
+    label: "Switched at Birth",
+    weight: 4,
+    description:
+      "Two infants — one high-born, one low — were swapped through accident, malice, or a mother's desperate gamble, and the life being lived now was never meant for them",
+    iconPrompt:
+      "joseon dynasty korean two swaddled infants swapped in a candlelit room, midwife's nervous glance, dramatic secret irony, traditional court painting",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/PLOT_ARCHETYPES#switched_at_birth.webp",
+  },
+  {
     id: "false_standing",
     label: "False Standing",
     weight: 6,

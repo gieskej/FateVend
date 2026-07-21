@@ -4,13 +4,25 @@
 //   (optional — stats that make this more likely), toneTag (gritty | dramatic | cozy | neutral |
 //   triumph, etc.) for filtering, economicHint (optional tier shift
 //   suggestion), iconPrompt/iconPath (slot-machine reel icon)
+//   forcedIndustries — optional array of professions.js industries; when
+//   set, engine.js's buildSkeleton() picks this character's profession from
+//   ONLY this list, ignoring the race's own `allowedIndustries` entirely (the
+//   life event overrides caste as the deciding factor). For life events
+//   significant enough to lock in a specific career track regardless of what
+//   the character would otherwise have done — e.g. palace_selection: a child
+//   taken for palace service doesn't grow up to be whatever their caste
+//   would normally allow, they grow up palace staff.
 //   excludedBroad — optional array of race `broad` values (see races.js);
 //   engine.js's buildSkeleton() drops this event from the pool for a
 //   character of one of these castes (falling back to the full pool if that
-//   would leave nothing). Omitted everywhere except events that assume legal
-//   access to the elite gwageo civil examination track — Jungin were
-//   "forever locked out of real power by birth" per their own flavor, and
-//   Military Yangban pursued the separate martial exam, not this one.
+//   would leave nothing). Omitted on events with no caste assumption baked
+//   in. Used for: events that assume legal access to the elite gwageo civil
+//   examination track (passed_gwageo/failed_gwageo — Jungin were "forever
+//   locked out of real power by birth" per their own flavor, and Military
+//   Yangban pursued the separate martial exam, not this one); adopted_up
+//   (being adopted *into* a noble household only makes sense for castes that
+//   have one); palace_selection (being *selected* for palace service doesn't
+//   apply to castes who'd already have palace access by birth).
 
 export const LIFE_EVENTS = [
   {
@@ -160,6 +172,37 @@ export const LIFE_EVENTS = [
       "joseon dynasty korean widowed figure mourning white mourning clothes grief solitary traditional court painting",
     iconPath:
       "generator/genres/historical-korea-joseon-dynasty/icons/LIFE_EVENTS#widowed.webp",
+  },
+  {
+    id: "adopted_up",
+    label: "Adopted into a Noble Household",
+    description:
+      "Was born into a common or low family but formally adopted as a child into their current household — a change of fortune that everyone around them never quite lets them forget",
+    toneTag: "identity",
+    excludedBroad: ["Jungin", "Common Folk", "Merchant", "Gisaeng", "Cheonmin"],
+    iconPrompt:
+      "joseon dynasty korean adopted child noble household formal ceremony new family uncertain gratitude belonging traditional court painting",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/LIFE_EVENTS#adopted_up.webp",
+  },
+  {
+    id: "palace_selection",
+    label: "Selected as a Child for Palace Service",
+    description:
+      "Was chosen young by palace officials and raised apart from their birth family for a life of court service — an honor and a loss in the same breath",
+    toneTag: "bitter",
+    forcedIndustries: ["Palace Service"],
+    economicHint: -1,
+    excludedBroad: [
+      "Civil Yangban",
+      "Military Yangban",
+      "Royal Court",
+      "Merchant",
+    ],
+    iconPrompt:
+      "joseon dynasty korean child selected palace service officials examining candidates courtyard uncertain family watching traditional painting",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/LIFE_EVENTS#palace_selection.webp",
   },
   {
     id: "escaped_servitude",

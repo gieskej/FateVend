@@ -642,15 +642,22 @@ export function buildSkeleton(stats, mbti, tables, options = {}) {
   const identity = statAndWeightPick(ROE, stats);
   const syntheticType = identity.syntheticType ?? null;
   let gender = statAndWeightPick(genderPool, stats);
+  const isNB =
+    gender.id === "non_binary" ||
+    gender.id === "genderfluid" ||
+    gender.id === "genderless";
+  // Computed before profPool: a life event can override caste as the
+  // deciding factor in profession selection (see forcedIndustries below).
+  const lifeEvent = statWeightedPick(excludeByBroad(LE, identity.broad), stats);
   const nsfwPool = allowNSFW ? P : P.filter((p) => !p.nsfw);
   const profPool = (() => {
-    const isNB =
-      gender.id === "non_binary" ||
-      gender.id === "genderfluid" ||
-      gender.id === "genderless";
-    const byIndustry = identity.allowedIndustries
-      ? nsfwPool.filter((p) => identity.allowedIndustries.includes(p.industry))
-      : nsfwPool;
+    const byIndustry = lifeEvent.forcedIndustries
+      ? nsfwPool.filter((p) => lifeEvent.forcedIndustries.includes(p.industry))
+      : identity.allowedIndustries
+        ? nsfwPool.filter((p) =>
+            identity.allowedIndustries.includes(p.industry),
+          )
+        : nsfwPool;
     const base = byIndustry.length > 0 ? byIndustry : nsfwPool;
     const byGender = base.filter(
       (p) => !p.allowedGenders || isNB || p.allowedGenders.includes(gender.id),
@@ -727,7 +734,6 @@ export function buildSkeleton(stats, mbti, tables, options = {}) {
           toneTag: "neutral",
         })
       : statWeightedPick(excludeByBroad(FS, identity.broad), stats);
-  const lifeEvent = statWeightedPick(excludeByBroad(LE, identity.broad), stats);
   let tier =
     profession.economicTier +
     (lifeEvent.economicHint ?? 0) +
@@ -738,7 +744,14 @@ export function buildSkeleton(stats, mbti, tables, options = {}) {
     .sort(() => Math.random() - 0.5)
     .slice(0, 2);
   const tension = statWeightedPick(excludeByBroad(T, identity.broad), stats);
-  const secret = statWeightedPick(excludeByBroad(S, identity.broad), stats);
+  const secretPool = (() => {
+    const byBroad = excludeByBroad(S, identity.broad);
+    const byGender = byBroad.filter(
+      (s) => !s.allowedGenders || isNB || s.allowedGenders.includes(gender.id),
+    );
+    return byGender.length > 0 ? byGender : byBroad;
+  })();
+  const secret = statWeightedPick(secretPool, stats);
   const city = statWeightedPick(CS, stats);
   const cast = buildCast(
     name,
