@@ -35,7 +35,8 @@ export const RACES = [
       "Magistracy",
       "Local Administration",
       "Arts & Learning",
-      "Court Arts",
+      "Court Painting",
+      "Court Records",
       "Military",
     ],
     weight: 8,
@@ -50,12 +51,13 @@ export const RACES = [
     label: "Military Yangban",
     flavor:
       "Warrior-aristocrat of the musa path — honor measured in the archery range and on the battlefield, not in the examination hall",
+    // No Court Painting/Court Records — those are civil scholarly pursuits,
+    // and this class's own flavor text says explicitly that isn't their path.
     allowedIndustries: [
       "Military",
       "Frontier Defense",
       "Magistracy",
       "Local Administration",
-      "Court Arts",
     ],
     weight: 6,
     iconPrompt:
@@ -75,7 +77,8 @@ export const RACES = [
       "Local Administration",
       "Military",
       "Arts & Learning",
-      "Court Arts",
+      "Court Painting",
+      "Court Records",
       "Court Medicine",
       "Palace Service",
     ],
@@ -93,7 +96,8 @@ export const RACES = [
       "Middle functionary — interpreter, physician, or technical official; indispensable but forever locked out of real power by birth",
     allowedIndustries: [
       "Local Administration",
-      "Court Arts",
+      "Court Painting",
+      "Court Records",
       "Court Medicine",
       "Trade",
     ],
@@ -138,8 +142,11 @@ export const RACES = [
     // Spiritual (Mudang/shaman) deliberately excluded — a gisaeng's training
     // is performance and court refinement, not the folk ritual specialty a
     // shaman practices. Both are marginal-status roles, but they're distinct
-    // professions, not overlapping skill sets.
-    allowedIndustries: ["Gisaeng Arts", "Court Arts", "Palace Service"],
+    // professions, not overlapping skill sets. Court Painting (not Court
+    // Records) for the same reason: painting is an art a gisaeng plausibly
+    // practices, but Court Historian is a formal exam-vetted government
+    // office a gisaeng had no legal path into.
+    allowedIndustries: ["Gisaeng Arts", "Court Painting", "Palace Service"],
     weight: 5,
     iconPrompt:
       "joseon dynasty korean gisaeng female entertainer musician haegeum elegant hanbok ornate hairpin court banquet traditional painting style",

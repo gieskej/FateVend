@@ -117,7 +117,7 @@ export const PROFESSIONS = [
   },
   {
     title: "Royal Painter",
-    industry: "Court Arts",
+    industry: "Court Painting",
     economicTier: 3,
     statAffinity: { dexterity: 1.3, intelligence: 1.2, wisdom: 1.1 },
     sentiments: ["perceptive", "liminal", "conflicted"],
@@ -128,7 +128,7 @@ export const PROFESSIONS = [
   },
   {
     title: "Court Historian",
-    industry: "Court Arts",
+    industry: "Court Records",
     allowedGenders: ["man", "trans_man"],
     economicTier: 4,
     statAffinity: { intelligence: 1.3, wisdom: 1.3, charisma: 0.9 },

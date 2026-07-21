@@ -84,9 +84,11 @@ export function statAndWeightPick(arr, stats) {
 
 // Excludes entries whose optional `excludedBroad` list contains this
 // character's race — e.g. a secret about secretly being an android doesn't
-// fit a race already established as Android, and a tension about a
-// biological body rejecting an implant doesn't fit one with no biological
-// body. Falls back to the full array if excluding would leave nothing.
+// fit a race already established as Android, a tension about a biological
+// body rejecting an implant doesn't fit one with no biological body, and a
+// life event about passing an exam doesn't fit a caste legally barred from
+// sitting it. Used for tensions, secrets, and life events. Falls back to the
+// full array if excluding would leave nothing.
 export function excludeByBroad(arr, broad) {
   const filtered = arr.filter((item) => !item.excludedBroad?.includes(broad));
   return filtered.length > 0 ? filtered : arr;
@@ -723,7 +725,7 @@ export function buildSkeleton(stats, mbti, tables, options = {}) {
           toneTag: "neutral",
         })
       : statWeightedPick(FS, stats);
-  const lifeEvent = statWeightedPick(LE, stats);
+  const lifeEvent = statWeightedPick(excludeByBroad(LE, identity.broad), stats);
   let tier =
     profession.economicTier +
     (lifeEvent.economicHint ?? 0) +

@@ -3,6 +3,12 @@
 // the scenario Opening and Description heavily. Each tension carries:
 //   id, label (optional display override), description, toneTag,
 //   iconPrompt/iconPath (slot-machine reel icon)
+//   excludedBroad — optional array of race `broad` values (see races.js);
+//   engine.js's buildSkeleton() drops this tension from the pool for a
+//   character of one of these castes (falling back to the full pool if that
+//   would leave nothing). Omitted everywhere except tensions tied to the
+//   court bungdang faction system or the gwageo exam track, neither of which
+//   the common/merchant/entertainer/bonded castes had any real stake in.
 
 export const TENSIONS = [
   {
@@ -11,6 +17,7 @@ export const TENSIONS = [
     description:
       "Enemies in the court bungdang system are actively working to discredit or destroy them through slander, false accusation, or manipulation of the examination system",
     toneTag: "political",
+    excludedBroad: ["Common Folk", "Merchant", "Gisaeng", "Cheonmin"],
     iconPrompt:
       "joseon dynasty korean court faction intrigue rival officials whispers plotting scheming palace corridor traditional court painting",
     iconPath:
@@ -66,6 +73,14 @@ export const TENSIONS = [
     description:
       "The entire household's status, finances, and hopes rest on them passing the gwageo — and they are not sure they want to",
     toneTag: "dramatic",
+    excludedBroad: [
+      "Military Yangban",
+      "Jungin",
+      "Common Folk",
+      "Merchant",
+      "Gisaeng",
+      "Cheonmin",
+    ],
     iconPrompt:
       "joseon dynasty korean gwageo exam family pressure studying night candle anxious scholar family watching expecting traditional painting",
     iconPath:

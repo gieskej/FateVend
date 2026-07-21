@@ -4,6 +4,13 @@
 //   (optional — stats that make this more likely), toneTag (gritty | dramatic | cozy | neutral |
 //   triumph, etc.) for filtering, economicHint (optional tier shift
 //   suggestion), iconPrompt/iconPath (slot-machine reel icon)
+//   excludedBroad — optional array of race `broad` values (see races.js);
+//   engine.js's buildSkeleton() drops this event from the pool for a
+//   character of one of these castes (falling back to the full pool if that
+//   would leave nothing). Omitted everywhere except events that assume legal
+//   access to the elite gwageo civil examination track — Jungin were
+//   "forever locked out of real power by birth" per their own flavor, and
+//   Military Yangban pursued the separate martial exam, not this one.
 
 export const LIFE_EVENTS = [
   {
@@ -12,6 +19,14 @@ export const LIFE_EVENTS = [
     description:
       "Achieved what generations of their family sacrificed for: a place in the official class through the civil service examinations",
     toneTag: "triumph",
+    excludedBroad: [
+      "Military Yangban",
+      "Jungin",
+      "Common Folk",
+      "Merchant",
+      "Gisaeng",
+      "Cheonmin",
+    ],
     iconPrompt:
       "joseon dynasty korean gwageo civil exam success royal posting announcement celebration scholar silk hanbok traditional court painting",
     iconPath:
@@ -23,6 +38,14 @@ export const LIFE_EVENTS = [
     description:
       "Has taken the examination three or more times and failed — not for lack of learning but for faction, luck, or something darker",
     toneTag: "bitter",
+    excludedBroad: [
+      "Military Yangban",
+      "Jungin",
+      "Common Folk",
+      "Merchant",
+      "Gisaeng",
+      "Cheonmin",
+    ],
     iconPrompt:
       "joseon dynasty korean gwageo exam failure walking away dismissed scholar plain hanbok shame disappointment traditional painting",
     iconPath:
