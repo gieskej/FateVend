@@ -10,6 +10,11 @@
 //                       professions' allowedGenders), falling back to the
 //                       unfiltered pool if that would leave nothing. Omitted
 //                       means any gender can roll it.
+//   excludedBroad     — optional array of race `broad` values (see races.js);
+//                       engine.js's buildSkeleton() drops this secret from the
+//                       pool for a character of one of these castes (falling
+//                       back to the full pool if that would leave nothing).
+//                       Omitted means any caste can roll it.
 //   iconPrompt/iconPath (slot-machine reel icon)
 
 export const SECRETS = [
@@ -174,6 +179,25 @@ export const SECRETS = [
       "joseon dynasty korean plagiarism ghost writer scholarly work poem essay famous attribution false shame traditional painting",
     iconPath:
       "generator/genres/historical-korea-joseon-dynasty/icons/SECRETS#borrowed_scholarship.webp",
+  },
+  {
+    id: "secret_literacy",
+    label: "Secretly Taught Themselves to Read and Write",
+    description:
+      "Learned their letters and classical texts in stolen moments — listening from behind a screen or a wall while a yangban child's tutor taught the lesson meant for someone else — and has never once let it show",
+    severity: "medium",
+    toneTag: "identity",
+    excludedBroad: [
+      "Civil Yangban",
+      "Military Yangban",
+      "Royal Court",
+      "Jungin",
+      "Gisaeng",
+    ],
+    iconPrompt:
+      "joseon dynasty korean low born child hiding behind screen door secretly listening to tutor teaching yangban child calligraphy books secret longing traditional folk painting",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/SECRETS#secret_literacy.webp",
   },
   {
     id: "living_as_a_man",
