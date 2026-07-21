@@ -31,6 +31,11 @@ export const HAIR = [
   "bald scalp-mounted antenna array",
   "purple glowing bioluminescent-dyed hair",
   "purple chrome-tipped hair",
+  // moved from the shared pool — synthetic neon dye is anachronistic for
+  // Fantasy but fits Sci-Fi (and Modern) fine
+  "blue hair, short, neon-dyed",
+  "black hair, with streaks of neon blue",
+  "multicolored hair, dyed in neon colors",
 ];
 
 // ── DISTINGUISHING FEATURES ───────────────────────────────────────────────

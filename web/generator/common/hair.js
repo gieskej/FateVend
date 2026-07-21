@@ -12,17 +12,12 @@ export const HAIR = [
   { id: "black_braided", label: "black hair, braided" },
   { id: "black_voluminous", label: "black hair, voluminous" },
   { id: "black_shaved_undercut", label: "black hair, with a shaved undercut" },
-  {
-    id: "black_streaks_neon_blue",
-    label: "black hair, with streaks of neon blue",
-  },
   { id: "black_bobcut", label: "black hair, bobcut" },
   { id: "black_short_spiky", label: "black hair, short and spiky" },
   { id: "blonde_long_loose", label: "blonde hair, long and loose" },
   { id: "blonde_shoulder_length", label: "blonde hair, shoulder-length" },
   { id: "blonde_short_spiky", label: "blonde hair, short and spiky" },
   { id: "blonde_pixie_cut", label: "blonde hair, pixie cut" },
-  { id: "blue_neon_dyed", label: "blue hair, short, neon-dyed" },
   { id: "brown_dreadlocks", label: "brown hair, dreadlocks" },
   { id: "brown_pulled_back", label: "brown hair, pulled back" },
   { id: "brown_shoulder_length", label: "brown hair, shoulder-length" },
@@ -35,10 +30,6 @@ export const HAIR = [
   { id: "gray_ponytail", label: "gray hair, ponytail" },
   { id: "gray_buzzed_short", label: "gray hair, buzzed short" },
   { id: "green_mohawk", label: "green hair, mohawk" },
-  {
-    id: "multicolored_neon_colors",
-    label: "multicolored hair, dyed in neon colors",
-  },
   {
     id: "platinum_impeccably_styled",
     label: "platinum hair, impeccably styled",

@@ -18,7 +18,19 @@ export { GENDERS } from "../../common/genders.js";
 export { ORIENTATIONS } from "../../common/orientations.js";
 export { RACES as ETHNICITIES } from "./races.js";
 export { BUILDS } from "../../common/build.js";
-export { HAIR } from "../../common/hair.js";
+
+import { HAIR as HAIR_COMMON } from "../../common/hair.js";
+
+// ── HAIR ─────────────────────────────────────────────────────────────────
+// Synthetic neon dye lives here rather than in the shared pool (used by
+// Fantasy too) since it's a real contemporary subculture look, not
+// something that fits a medieval setting.
+export const HAIR = [
+  ...HAIR_COMMON,
+  "blue hair, short, neon-dyed",
+  "black hair, with streaks of neon blue",
+  "multicolored hair, dyed in neon colors",
+];
 
 export const DISTINGUISHING_FEATURES = [
   { id: "scar_face", label: "a scar across the face or jaw" },

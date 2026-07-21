@@ -6,6 +6,15 @@
 //   3 = craftsperson / soldier / journeyman
 //   4 = merchant / knight / skilled mage
 //   5 = noble / archmage / guild master
+//
+// minAge — optional; engine.js's profPool filter drops this profession for a
+//   character younger than this (falling back to the unfiltered pool if that
+//   would leave nothing). Omitted everywhere except professions that require
+//   years the character wouldn't have had yet — having already been
+//   knighted/ordained before falling (Disgraced Knight, Fallen Paladin),
+//   ship command, or an established, trusted senior post (Court Wizard,
+//   Inquisitor, Royal Advisor, Spymaster, Crime Lord). Deliberately NOT
+//   added elsewhere — young mage/warrior prodigies fit the genre fine.
 
 import { SENTIMENTS } from "../../common/sentiments.js";
 
@@ -47,6 +56,7 @@ export const PROFESSIONS = [
     title: "Disgraced knight",
     industry: "Martial",
     economicTier: 2,
+    minAge: 24,
     statAffinity: { strength: 1.3, wisdom: 1.1 },
     sentiments: ["ashamed", "resentful", "desperate", "quietly satisfied"],
     iconPrompt:
@@ -192,6 +202,7 @@ export const PROFESSIONS = [
     title: "Court wizard",
     industry: "Arcane",
     economicTier: 4,
+    minAge: 24,
     statAffinity: { intelligence: 1.5, charisma: 1.2, wisdom: 1.2 },
     sentiments: ["quietly satisfied", "burned out", "resentful", "proud"],
     iconPrompt:
@@ -284,6 +295,7 @@ export const PROFESSIONS = [
     title: "Inquisitor",
     industry: "Divine",
     economicTier: 4,
+    minAge: 26,
     statAffinity: { wisdom: 1.3, strength: 1.2, intelligence: 1.1 },
     sentiments: ["proud", "passionate", "quietly satisfied", "burned out"],
     iconPrompt:
@@ -294,6 +306,7 @@ export const PROFESSIONS = [
     title: "Fallen paladin",
     industry: "Divine",
     economicTier: 2,
+    minAge: 24,
     statAffinity: { strength: 1.3, wisdom: 1.2, constitution: 1.1 },
     sentiments: ["ashamed", "resentful", "desperate", "quietly satisfied"],
   },
@@ -426,6 +439,7 @@ export const PROFESSIONS = [
     title: "Ship captain",
     industry: "Trade",
     economicTier: 4,
+    minAge: 24,
     statAffinity: { charisma: 1.3, wisdom: 1.2, strength: 1.1 },
     sentiments: ["proud", "passionate", "quietly satisfied"],
     iconPrompt:
@@ -515,6 +529,7 @@ export const PROFESSIONS = [
     title: "Royal advisor",
     industry: "Nobility",
     economicTier: 5,
+    minAge: 28,
     statAffinity: { intelligence: 1.5, charisma: 1.3, wisdom: 1.2 },
     sentiments: ["quietly satisfied", "burned out", "proud", "resentful"],
     iconPrompt:
@@ -525,6 +540,7 @@ export const PROFESSIONS = [
     title: "Spymaster",
     industry: "Nobility",
     economicTier: 5,
+    minAge: 28,
     statAffinity: { intelligence: 1.5, charisma: 1.3, wisdom: 1.2 },
     sentiments: ["quietly satisfied", "indifferent", "proud"],
     iconPrompt:
@@ -535,6 +551,7 @@ export const PROFESSIONS = [
     title: "Crime lord",
     industry: "Criminal",
     economicTier: 5,
+    minAge: 30,
     statAffinity: { charisma: 1.5, intelligence: 1.4, strength: 1.1 },
     sentiments: ["proud", "quietly satisfied", "indifferent"],
     iconPrompt:
