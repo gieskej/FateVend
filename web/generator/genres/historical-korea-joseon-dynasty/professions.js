@@ -11,6 +11,28 @@
 //                          village posts), even though both are "administration"
 //                          in plain English. See races.js for why.
 //   allowedGenders       — optional; restricts which genders may roll this profession
+//   minAge, maxAge       — optional; engine.js's profPool filters this profession
+//                          out for characters younger than minAge or older than
+//                          maxAge (falling back to the unfiltered pool if that
+//                          would leave nothing). Omitting both means no age
+//                          bound — either an open trade learnable at any age, or
+//                          (Palace Court Lady, Nobi, Gisaeng entertainer) a role
+//                          historically entered in childhood/adolescence, so a
+//                          young age is accurate rather than a gap.
+//                          IMPORTANT: because the age filter falls back to
+//                          ignoring age entirely once a caste+gender's pool is
+//                          empty, every (race.allowedIndustries × allowedGenders)
+//                          combination that exists in this genre must keep at
+//                          least one profession valid at every age from 15-75 —
+//                          otherwise the fallback silently reintroduces an
+//                          age-inappropriate result instead of erroring loudly.
+//                          "Yangban Household Heir"/"Household Steward (Anchae)"
+//                          and "Gisaeng Trainee (Dongi)" exist specifically to
+//                          plug gaps of this kind for narrow, heavily
+//                          gender-restricted castes (see races.js's
+//                          allowedIndustries) — don't add a minAge/maxAge to an
+//                          existing profession without re-running that coverage
+//                          check for every caste and gender that can reach it.
 //   economicTier         — 1-5, social/economic standing
 //   statAffinity         — optional; stats that make this profession more likely
 //   sentiments           — pool of feelings-about-the-job drawn from randomly
@@ -22,6 +44,7 @@ export const PROFESSIONS = [
     title: "Scholar-Official",
     industry: "Civil Administration",
     allowedGenders: ["man", "trans_man"],
+    minAge: 22,
     economicTier: 5,
     statAffinity: { intelligence: 1.4, wisdom: 1.2, charisma: 1.1 },
     sentiments: ["principled", "suspicious", "exacting"],
@@ -34,6 +57,7 @@ export const PROFESSIONS = [
     title: "Local Magistrate",
     industry: "Magistracy",
     allowedGenders: ["man", "trans_man"],
+    minAge: 26,
     economicTier: 4,
     statAffinity: { wisdom: 1.3, charisma: 1.2, strength: 1.0 },
     sentiments: ["proud", "beleaguered", "canny"],
@@ -46,6 +70,7 @@ export const PROFESSIONS = [
     title: "Magistrate's Aide",
     industry: "Local Administration",
     allowedGenders: ["man", "trans_man"],
+    minAge: 18,
     economicTier: 3,
     statAffinity: { intelligence: 1.2, dexterity: 1.1, wisdom: 1.1 },
     sentiments: ["indispensable", "calculating", "knowing"],
@@ -57,6 +82,7 @@ export const PROFESSIONS = [
   {
     title: "Village Elder",
     industry: "Local Administration",
+    minAge: 45,
     economicTier: 3,
     statAffinity: { wisdom: 1.4, charisma: 1.2, constitution: 1.1 },
     sentiments: ["tenacious", "mediating", "subversive"],
@@ -70,6 +96,7 @@ export const PROFESSIONS = [
     title: "Royal Guard",
     industry: "Military",
     allowedGenders: ["man", "trans_man"],
+    minAge: 18,
     economicTier: 4,
     statAffinity: { strength: 1.3, constitution: 1.2, dexterity: 1.1 },
     sentiments: ["loyal", "skeptical", "alert"],
@@ -82,6 +109,7 @@ export const PROFESSIONS = [
     title: "Cavalry Officer",
     industry: "Military",
     allowedGenders: ["man", "trans_man"],
+    minAge: 22,
     economicTier: 4,
     statAffinity: { strength: 1.3, dexterity: 1.2, constitution: 1.1 },
     sentiments: ["contemptuous", "loyal", "haunted"],
@@ -94,6 +122,7 @@ export const PROFESSIONS = [
     title: "Fortress Soldier",
     industry: "Frontier Defense",
     allowedGenders: ["man", "trans_man"],
+    minAge: 18,
     economicTier: 2,
     statAffinity: { strength: 1.2, constitution: 1.3, dexterity: 1.0 },
     sentiments: ["resigned", "protective", "homesick"],
@@ -102,11 +131,37 @@ export const PROFESSIONS = [
     iconPath:
       "generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#fortress_soldier.webp",
   },
+  // ── Household Study ───────────────────────────────────────────────────
+  {
+    title: "Yangban Household Heir",
+    industry: "Household Study",
+    maxAge: 21,
+    economicTier: 4,
+    statAffinity: { intelligence: 1.1, wisdom: 1.1, charisma: 1.1 },
+    sentiments: ["restless", "dutiful", "watched"],
+    iconPrompt:
+      "joseon dynasty korean yangban household heir young noble child tutor calligraphy practice family compound traditional painting",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#yangban_household_heir.webp",
+  },
+  {
+    title: "Household Steward (Anchae)",
+    industry: "Household Study",
+    minAge: 22,
+    economicTier: 4,
+    statAffinity: { wisdom: 1.3, charisma: 1.2, constitution: 1.0 },
+    sentiments: ["capable", "watchful", "unyielding"],
+    iconPrompt:
+      "joseon dynasty korean anchae household steward managing estate ledger keys inner quarters composed authoritative traditional painting",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#household_steward.webp",
+  },
   // ── Arts & Learning ───────────────────────────────────────────────────
   {
     title: "Sungkyunkwan Scholar",
     industry: "Arts & Learning",
     allowedGenders: ["man", "trans_man"],
+    minAge: 16,
     economicTier: 4,
     statAffinity: { intelligence: 1.4, wisdom: 1.2, charisma: 1.0 },
     sentiments: ["ambitious", "exacting", "obsessive"],
@@ -118,6 +173,7 @@ export const PROFESSIONS = [
   {
     title: "Royal Painter",
     industry: "Court Painting",
+    minAge: 22,
     economicTier: 3,
     statAffinity: { dexterity: 1.3, intelligence: 1.2, wisdom: 1.1 },
     sentiments: ["perceptive", "liminal", "conflicted"],
@@ -130,6 +186,7 @@ export const PROFESSIONS = [
     title: "Court Historian",
     industry: "Court Records",
     allowedGenders: ["man", "trans_man"],
+    minAge: 26,
     economicTier: 4,
     statAffinity: { intelligence: 1.3, wisdom: 1.3, charisma: 0.9 },
     sentiments: ["fearful", "knowing", "principled"],
@@ -164,6 +221,7 @@ export const PROFESSIONS = [
   {
     title: "Maritime Trader",
     industry: "Trade",
+    minAge: 24,
     economicTier: 4,
     statAffinity: { charisma: 1.2, constitution: 1.2, intelligence: 1.2 },
     sentiments: ["pragmatic", "worldly", "duplicitous"],
@@ -200,6 +258,7 @@ export const PROFESSIONS = [
   {
     title: "Court Physician",
     industry: "Court Medicine",
+    minAge: 24,
     economicTier: 3,
     statAffinity: { intelligence: 1.3, wisdom: 1.3, dexterity: 1.1 },
     sentiments: ["entrusted", "indispensable", "knowing"],
@@ -246,9 +305,22 @@ export const PROFESSIONS = [
   },
   // ── Gisaeng Arts ──────────────────────────────────────────────────────
   {
+    title: "Gisaeng Trainee (Dongi)",
+    industry: "Gisaeng Arts",
+    maxAge: 21,
+    economicTier: 2,
+    statAffinity: { charisma: 1.2, dexterity: 1.2, wisdom: 1.0 },
+    sentiments: ["watchful", "eager", "uncertain"],
+    iconPrompt:
+      "joseon dynasty korean young gisaeng trainee dongi practicing dance instrument gisaeng house courtyard traditional folk painting",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#gisaeng_trainee.webp",
+  },
+  {
     title: "Gisaeng Madam",
     industry: "Gisaeng Arts",
     allowedGenders: ["woman", "trans_woman"],
+    minAge: 35,
     economicTier: 4,
     statAffinity: { charisma: 1.4, intelligence: 1.3, wisdom: 1.2 },
     sentiments: ["calculating", "enduring", "unsentimental"],

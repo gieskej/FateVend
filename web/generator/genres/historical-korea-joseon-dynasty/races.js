@@ -38,6 +38,7 @@ export const RACES = [
       "Court Painting",
       "Court Records",
       "Military",
+      "Household Study",
     ],
     weight: 8,
     iconPrompt:
@@ -58,6 +59,7 @@ export const RACES = [
       "Frontier Defense",
       "Magistracy",
       "Local Administration",
+      "Household Study",
     ],
     weight: 6,
     iconPrompt:
@@ -81,6 +83,7 @@ export const RACES = [
       "Court Records",
       "Court Medicine",
       "Palace Service",
+      "Household Study",
     ],
     weight: 3,
     iconPrompt:

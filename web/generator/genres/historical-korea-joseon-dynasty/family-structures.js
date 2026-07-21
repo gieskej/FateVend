@@ -14,6 +14,15 @@
 //   statAffinity         — optional stat-weighted selection bias
 //   economicHint         — optional tier shift suggestion
 //   notes                — internal note on what this structure represents
+//   excludedBroad        — optional array of race `broad` values (see races.js);
+//                          engine.js's buildSkeleton() drops this structure from
+//                          the pool for a character of one of these castes
+//                          (falling back to the full pool if that would leave
+//                          nothing). Joseon caste was inherited from your family
+//                          of birth, so a household's social standing has to be
+//                          compatible with the character's own caste — omitted
+//                          only on structures with no caste assumption baked in
+//                          (widow_household, monastery_raised).
 //   iconPrompt, iconPath — slot-machine reel icon
 
 export const PARENT_STATUSES = [
@@ -185,6 +194,9 @@ export const FAMILY_STRUCTURES = [
     siblingCount: [1, 3],
     toneTag: "prestigious",
     statAffinity: { intelligence: 1.2, charisma: 1.1 },
+    // A yangban-title household — restricted to castes that could actually
+    // hold that title (or be raised alongside it, for Royal Court).
+    excludedBroad: ["Jungin", "Common Folk", "Merchant", "Gisaeng", "Cheonmin"],
     notes:
       "High expectations, faction politics start at the dinner table, the family genealogy book is read like scripture",
     iconPrompt:
@@ -199,6 +211,9 @@ export const FAMILY_STRUCTURES = [
     siblingCount: [0, 2],
     toneTag: "proud_but_poor",
     statAffinity: { wisdom: 1.2, intelligence: 1.1 },
+    // Same yangban-title restriction as noble_compound above — this is that
+    // same title fallen on hard times, not a different caste's poverty.
+    excludedBroad: ["Jungin", "Common Folk", "Merchant", "Gisaeng", "Cheonmin"],
     notes:
       "Still uses the title, still holds the standard, the silk hanbok is carefully mended — ambition is proportional to how far they have fallen",
     iconPrompt:
@@ -213,6 +228,16 @@ export const FAMILY_STRUCTURES = [
     siblingCount: [2, 4],
     toneTag: "grounded",
     statAffinity: { constitution: 1.2, strength: 1.1 },
+    // Free peasant farming — not for castes with their own household (yangban,
+    // royal court), a technical/urban trade (Jungin), or their own dedicated
+    // household type (Merchant → merchant_family).
+    excludedBroad: [
+      "Civil Yangban",
+      "Military Yangban",
+      "Royal Court",
+      "Jungin",
+      "Merchant",
+    ],
     notes:
       "Hard life, close family, seasonal rhythm of labor, the village is the world and everyone knows everything",
     iconPrompt:
@@ -241,6 +266,17 @@ export const FAMILY_STRUCTURES = [
     siblingCount: [0, 2],
     toneTag: "pragmatic",
     statAffinity: { charisma: 1.2, intelligence: 1.1 },
+    // This household's whole identity is being in trade — reserved for the
+    // Merchant caste itself, not just anyone with money.
+    excludedBroad: [
+      "Civil Yangban",
+      "Military Yangban",
+      "Royal Court",
+      "Jungin",
+      "Common Folk",
+      "Gisaeng",
+      "Cheonmin",
+    ],
     notes:
       "Wealthy by Confucian standards should not be, the children understand commerce better than protocol, social ceiling is visible from birth",
     iconPrompt:
@@ -255,6 +291,10 @@ export const FAMILY_STRUCTURES = [
     siblingCount: [0, 2],
     toneTag: "bitter",
     statAffinity: { wisdom: 1.2, dexterity: 1.1 },
+    // A political-purge exile is a court/government-adjacent phenomenon —
+    // plausible for yangban, royal court, and Jungin (court-adjacent
+    // technical officials), not for castes with no capital-politics stake.
+    excludedBroad: ["Common Folk", "Merchant", "Gisaeng", "Cheonmin"],
     notes:
       "The whole family was removed after a political purge; everyone speaks quietly, everyone knows the reason, nobody discusses it openly",
     iconPrompt:
@@ -283,6 +323,19 @@ export const FAMILY_STRUCTURES = [
     siblingCount: [1, 3],
     toneTag: "survival",
     statAffinity: { constitution: 1.2, dexterity: 1.2 },
+    // Legal bondage was hereditary in Joseon — a Civil Yangban scholar-
+    // aristocrat can't have been "born into" a slave family, since caste
+    // passed down through your own household. Left open to Gisaeng too:
+    // gisaeng were frequently drawn from nobi or commoner families before
+    // being sold or assigned into gisaeng service.
+    excludedBroad: [
+      "Civil Yangban",
+      "Military Yangban",
+      "Royal Court",
+      "Jungin",
+      "Common Folk",
+      "Merchant",
+    ],
     notes:
       "Born into legal bondage; the parents have learned every technique for surviving a world that does not include them in its moral calculus",
     iconPrompt:

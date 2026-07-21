@@ -27,6 +27,7 @@ export const TAG_POOLS = {
     Military: ["combat", "archery", "honor"],
     "Frontier Defense": ["combat", "fortress", "frontier"],
     "Arts & Learning": ["poetry", "scholarship", "gwageo"],
+    "Household Study": ["family", "tutoring", "coming-of-age", "gwageo"],
     "Court Painting": ["painting", "art", "scholarship"],
     "Court Records": ["calligraphy", "scholarship", "gwageo", "confucian"],
     Trade: ["merchant", "market", "barter", "wealth"],
