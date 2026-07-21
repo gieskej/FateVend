@@ -9,6 +9,15 @@
 //   3 = working / lower-middle class
 //   4 = middle / upper-middle class
 //   5 = wealthy / elite
+//
+// minAge — optional; engine.js's profPool filter drops this profession for a
+//   character younger than this (falling back to the unfiltered pool if that
+//   would leave nothing). Omitted everywhere except professions that
+//   genuinely require years of real-world credentialing or career
+//   progression the character wouldn't have had yet (a medical/law degree,
+//   licensure, senior leadership, military discharge). Deliberately NOT
+//   added to trades, creative work, tech, or street-level crime — teenage
+//   prodigies/workers are realistic there.
 
 import { SENTIMENTS } from "../../common/sentiments.js";
 
@@ -306,6 +315,7 @@ export const PROFESSIONS = [
     title: "Accountant",
     industry: "Finance",
     economicTier: 4,
+    minAge: 22,
     statAffinity: { intelligence: 1.4, wisdom: 1.2 },
     sentiments: ["indifferent", "quietly satisfied", "burned out", "resentful"],
     iconPrompt:
@@ -373,6 +383,7 @@ export const PROFESSIONS = [
     title: "Lawyer",
     industry: "Legal",
     economicTier: 4,
+    minAge: 25,
     statAffinity: { intelligence: 1.4, charisma: 1.3, wisdom: 1.1 },
     sentiments: ["proud", "burned out", "indifferent", "quietly satisfied"],
     iconPrompt:
@@ -394,6 +405,7 @@ export const PROFESSIONS = [
     title: "Financial analyst",
     industry: "Finance",
     economicTier: 4,
+    minAge: 22,
     statAffinity: { intelligence: 1.5, wisdom: 1.1 },
     sentiments: ["indifferent", "proud", "burned out", "quietly satisfied"],
     iconPrompt:
@@ -414,6 +426,7 @@ export const PROFESSIONS = [
     title: "Therapist",
     industry: "Mental health",
     economicTier: 4,
+    minAge: 26,
     statAffinity: { wisdom: 1.5, charisma: 1.2, intelligence: 1.1 },
     sentiments: ["passionate", "quietly satisfied", "burned out"],
     iconPrompt:
@@ -424,6 +437,7 @@ export const PROFESSIONS = [
     title: "Pharmacist",
     industry: "Healthcare",
     economicTier: 4,
+    minAge: 24,
     statAffinity: { intelligence: 1.3, wisdom: 1.2 },
     sentiments: ["indifferent", "quietly satisfied", "burned out"],
     iconPrompt:
@@ -479,6 +493,7 @@ export const PROFESSIONS = [
     title: "Police officer",
     industry: "Law enforcement",
     economicTier: 3,
+    minAge: 21,
     statAffinity: { strength: 1.3, constitution: 1.2, charisma: 1.1 },
     sentiments: ["proud", "burned out", "resentful", "quietly satisfied"],
     iconPrompt:
@@ -515,6 +530,7 @@ export const PROFESSIONS = [
     title: "Military veteran (recently discharged)",
     industry: "Military",
     economicTier: 2,
+    minAge: 22,
     statAffinity: { strength: 1.4, constitution: 1.3, wisdom: 1.1 },
     sentiments: ["lost", "proud", "resentful", "burned out"],
     iconPrompt:
@@ -664,6 +680,7 @@ export const PROFESSIONS = [
     title: "Investment banker",
     industry: "Finance",
     economicTier: 5,
+    minAge: 23,
     statAffinity: { intelligence: 1.5, charisma: 1.3 },
     sentiments: ["proud", "burned out", "indifferent", "quietly satisfied"],
     iconPrompt:
@@ -674,6 +691,7 @@ export const PROFESSIONS = [
     title: "Surgeon",
     industry: "Healthcare",
     economicTier: 5,
+    minAge: 30,
     statAffinity: { intelligence: 1.5, dexterity: 1.4, wisdom: 1.2 },
     sentiments: ["proud", "burned out", "passionate", "quietly satisfied"],
     iconPrompt:
@@ -684,6 +702,7 @@ export const PROFESSIONS = [
     title: "Corporate executive",
     industry: "Corporate",
     economicTier: 5,
+    minAge: 32,
     statAffinity: { charisma: 1.4, intelligence: 1.3, wisdom: 1.2 },
     sentiments: ["proud", "indifferent", "burned out", "quietly satisfied"],
     iconPrompt:
@@ -695,6 +714,7 @@ export const PROFESSIONS = [
     title: "Corrupt politician",
     industry: "Government",
     economicTier: 5,
+    minAge: 28,
     statAffinity: { charisma: 1.5, intelligence: 1.3, wisdom: 0.9 },
     sentiments: ["proud", "quietly satisfied", "indifferent"],
     iconPrompt:
@@ -706,6 +726,7 @@ export const PROFESSIONS = [
     title: "Crime boss",
     industry: "Criminal",
     economicTier: 5,
+    minAge: 30,
     statAffinity: { charisma: 1.5, intelligence: 1.4, strength: 1.1 },
     sentiments: ["proud", "quietly satisfied", "indifferent"],
     iconPrompt:

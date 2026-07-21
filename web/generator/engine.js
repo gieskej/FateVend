@@ -652,10 +652,14 @@ export function buildSkeleton(stats, mbti, tables, options = {}) {
       (p) => !p.allowedGenders || isNB || p.allowedGenders.includes(gender.id),
     );
     const genderFiltered = byGender.length > 0 ? byGender : base;
-    const byAge = genderFiltered.filter(
+    const ageFiltered = genderFiltered.filter(
       (p) => age >= (p.minAge ?? 0) && age <= (p.maxAge ?? Infinity),
     );
-    return byAge.length > 0 ? byAge : genderFiltered;
+    const byAge = ageFiltered.length > 0 ? ageFiltered : genderFiltered;
+    const byBroad = byAge.filter(
+      (p) => !p.allowedBroad || p.allowedBroad.includes(identity.broad),
+    );
+    return byBroad.length > 0 ? byBroad : byAge;
   })();
   let orientation = weightedPick(orientPool);
   const isMinor = age < 18;
