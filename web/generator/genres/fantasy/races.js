@@ -1,8 +1,8 @@
 // ── RACES ─────────────────────────────────────────────────────────────────
 // Each entry:
 //   id         — unique slug; used for slot-machine reel identity and icon lookup
-//   broad      — race label used for name pool lookup and the NON_HUMANOID face-prompt
-//                check in prompt-template.js
+//   broad      — race label used for name pool lookup and the NON_HUMANOID_BROAD
+//                face-prompt exclusion in voice.js's outputRules()
 //   flavor     — physical/cultural detail passed to Claude for description prose.
 //                If it contains ' — ' (space-em dash-space), only the text before
 //                the first one is shown in the UI (engine.js's _slots.race, used

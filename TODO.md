@@ -28,9 +28,8 @@
 ## Bugs - Sci-Fi
 - The text-to-image prompt needs to handle special cases:
   - Aliens: The text-to-image generator has no idea what an alien looks like, so we need specific alien features mentioned in their portrait prompts (e.g. unusual skin color, horns, scales, webbed fingers, forked tongue, pointed ears, etc).  Likewise, non-humanoid aliens should be even more unusual looking (e.g. four legs, no legs, amoeba, tentacles, insect, vapor, lava, jelly, etc)
-  - "Android — Industrial Android" are genderless machines, so they shouldn't have hair, age, clothes, tattoos, a face like (famous person) and should ignore the NSFW flag.
+  - "Android — Industrial Android" are genderless machines, so they shouldn't have hair, age, clothes, tattoos (the "face of [famous person]" part is fixed — see Fixed Bugs) and should ignore the NSFW flag.
   - "Plastic Android": portrait of Plastic Android, female, tall and electronic eyes, pale plastic skin, subtle corporate insignia, 
-
 
 ### Low Priority Bugs
 - Sometimes generate_icons hangs and you have to restart the whole shell to recover.
@@ -57,6 +56,7 @@
 ---
 
 ## Fixed Bugs
+- Sci-Fi's and Fantasy's appearancePrompt output rules unconditionally asked the text-to-image model to include "face of [a real, well-documented person]" for every character, regardless of species/race. Combined with a non-human-faced race's own description, this has produced actively racist output in practice. Fixed in both genres' `voice.js`: added a `NON_HUMANOID_BROAD` set (Sci-Fi: Android, Uplifted, Hybrid, Mutant, Alien; Fantasy: Orc, Half-Orc, Dragonborn, Tiefling — races whose face is not human-shaped) and the "face of" instruction is skipped entirely for any race in that set. Human-passing races (Human, Cyborg, Clone in Sci-Fi; Elf, Half-Elf, Dwarf, Halfling, Gnome, Aasimar in Fantasy) are unaffected. Verified via direct unit checks that the instruction is present/absent for the correct races in both genres.
 - Rearranged the "⚙ AI Generated Scenario" card's field order to Title, Tags, Portrait Prompt, Description, Opening, Plot Essentials, Author's Note (previously Opening was rendered last, after Author's Note). `narrateAll()`'s actual read order was already Title, Description, Opening, Plot Essentials, Author's Note — only the visual DOM order was out of sync with it.
 - Manga-Osaka's races.js had 4 `flavor` strings with no em-dash — 'honor_student', 'otaku' (Den Den Town regular), 'popular_crowd' (fashion-forward), and 'ordinary_kid' (average grades) — so the slot-machine sub-label and output header (both truncate at the first `' — '` via `identity.flavor.split(' — ')[0].trim()`) showed the entire sentence instead of a short punchy label. Added a natural em-dash break to each, preserving the full original text/meaning; the other 4 entries in this file and all of Fantasy/Sci-Fi/Paleolithic/Joseon/Nihongi's races.js were already clean.
 - web/genre-packs/build-example-pack.py's `staticCards` entries (STATIC_LOCATIONS/STATIC_FACTIONS) were shaped `{keys, type, entry}` instead of the correct `{name, triggers, entry}` that both index.html's `STATIC_CARDS_BY_GENRE` consumer and aidungeon-importer.mjs destructure — the card's title would have come through blank (`name` was missing) and `triggers` would have been `undefined`. Fixed by renaming `keys` → `triggers`, adding `name`, and dropping the per-entry `type` field (it's derived from which STATIC_* array the entry is in, not stored on the entry itself).

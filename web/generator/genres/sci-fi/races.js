@@ -3,7 +3,7 @@
 //   id            — unique slug; used for slot-machine reel identity and icon lookup
 //   broad         — coarse species category (e.g. 'Human', 'Android'); drives name-pool
 //                    lookup, the android_origin family-structure override, and the
-//                    NON_HUMANOID face-prompt check in voice.js / prompt-builder.js
+//                    NON_HUMANOID_BROAD face-prompt exclusion in voice.js's outputRules()
 //   syntheticType — Android entries only: 'biomechanical' | 'plastic' | 'industrial' |
 //                    undefined. Controls which of gender/orientation/relationship get
 //                    generated vs. overridden (see buildSkeleton()).
@@ -114,7 +114,7 @@ export const RACES = [
       "Uplifted primate — enhanced cognition and fine motor precision from a corps-funded programme that's since been shut down, navigates a world built for a species that still isn't sure how to treat them",
     weight: 4,
     iconPrompt:
-      "sci-fi rpg icon, laboratory or tech corridor, uplifted primate bipedal figure in lab coveralls, fine motor work with tools, sapient focused expression, corp lab environment, overhead lab lighting, medium shot, digital concept art",
+      "sci-fi rpg icon, uplifted primate bipedal figure in lab coveralls, fine motor work with tools, sapient focused expression, corp lab environment, overhead lab lighting, medium shot, digital concept art",
     iconPath: "generator/genres/sci-fi/icons/SPECIES#uplift_primate.webp",
   },
   {
