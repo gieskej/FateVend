@@ -10,7 +10,15 @@
 //                        output header in index.html) — the full string still
 //                        reaches the AI prompt. Keep the punchy part first.
 //   allowedIndustries — professions.js industries this class may roll (optional;
-//                        omitted means any profession is eligible)
+//                        omitted means any profession is eligible). Several
+//                        industries are split more finely than their plain-English
+//                        name suggests specifically to keep this restriction
+//                        meaningful — e.g. "Civil Administration" (Scholar-Official,
+//                        gwageo-exam-track only) is separate from "Local
+//                        Administration" (Magistrate's Aide/Village Elder, open to
+//                        commoners), and "Gisaeng Arts" is intentionally Gisaeng-only
+//                        even though gisaeng were legally Cheonmin historically —
+//                        this game models them as distinct identities.
 //   weight            — relative rarity for weighted-random selection (statAndWeightPick)
 //   iconPrompt        — text-to-image prompt used to generate this class's reel icon
 //   iconPath          — served path where that icon lives
@@ -22,7 +30,14 @@ export const RACES = [
     label: "Civil Yangban",
     flavor:
       "Scholar-aristocrat of the gwageo path — brushwork and classical learning define both identity and ambition",
-    allowedIndustries: ["Civil Administration", "Arts & Learning", "Military"],
+    allowedIndustries: [
+      "Civil Administration",
+      "Magistracy",
+      "Local Administration",
+      "Arts & Learning",
+      "Court Arts",
+      "Military",
+    ],
     weight: 8,
     iconPrompt:
       "joseon dynasty korean civil yangban scholar official gat horsehair hat silk robes gwageo exam traditional court painting style",
@@ -35,7 +50,13 @@ export const RACES = [
     label: "Military Yangban",
     flavor:
       "Warrior-aristocrat of the musa path — honor measured in the archery range and on the battlefield, not in the examination hall",
-    allowedIndustries: ["Military", "Civil Administration", "Arts & Learning"],
+    allowedIndustries: [
+      "Military",
+      "Frontier Defense",
+      "Magistracy",
+      "Local Administration",
+      "Court Arts",
+    ],
     weight: 6,
     iconPrompt:
       "joseon dynasty korean military yangban warrior officer armor sword archery proud stance traditional court painting style",
@@ -50,9 +71,13 @@ export const RACES = [
       "Connected to the palace and the throne — proximity to power is both privilege and mortal risk in a dynasty of faction wars",
     allowedIndustries: [
       "Civil Administration",
+      "Magistracy",
+      "Local Administration",
       "Military",
       "Arts & Learning",
-      "Service",
+      "Court Arts",
+      "Court Medicine",
+      "Palace Service",
     ],
     weight: 3,
     iconPrompt:
@@ -67,9 +92,9 @@ export const RACES = [
     flavor:
       "Middle functionary — interpreter, physician, or technical official; indispensable but forever locked out of real power by birth",
     allowedIndustries: [
-      "Civil Administration",
-      "Arts & Learning",
-      "Spiritual",
+      "Local Administration",
+      "Court Arts",
+      "Court Medicine",
       "Trade",
     ],
     weight: 7,
@@ -84,7 +109,7 @@ export const RACES = [
     label: "Common Folk",
     flavor:
       "Farmer, potter, weaver — the backbone of Joseon, bearing its taxes and its hungers with patient endurance",
-    allowedIndustries: ["Labor", "Trade", "Civil Administration", "Spiritual"],
+    allowedIndustries: ["Labor", "Trade", "Local Administration", "Spiritual"],
     weight: 12,
     iconPrompt:
       "joseon dynasty korean common farmer village worker plain hanbok rice field straw hat traditional minhwa folk painting style",
@@ -112,8 +137,8 @@ export const RACES = [
       "Entertainer-scholar — more educated than most yangban daughters, music and poetry her armor, a liminal figure society both prized and discarded",
     allowedIndustries: [
       "Gisaeng Arts",
-      "Arts & Learning",
-      "Service",
+      "Court Arts",
+      "Palace Service",
       "Spiritual",
     ],
     weight: 5,
@@ -128,7 +153,7 @@ export const RACES = [
     label: "Cheonmin",
     flavor:
       "Low-born — nobi slave, mudang shaman, or baekjeong butcher; outside the social order, occasionally its most dangerous element",
-    allowedIndustries: ["Labor", "Service", "Spiritual", "Gisaeng Arts"],
+    allowedIndustries: ["Labor", "Bonded Service", "Spiritual"],
     weight: 7,
     iconPrompt:
       "joseon dynasty korean cheonmin low born servant shaman plain rough clothing weathered defiant expression traditional painting style",

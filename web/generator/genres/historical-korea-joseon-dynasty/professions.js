@@ -1,18 +1,16 @@
 // genres/historical-korea-joseon-dynasty/professions.js
 // Professions of Joseon Dynasty Korea. Each entry:
 //   title, industry     — display title + industry (industry must match
-//                          TAG_POOLS.professionTags keys in settings.js exactly)
+//                          TAG_POOLS.professionTags keys in settings.js exactly).
+//                          Caste eligibility is controlled entirely from the race
+//                          side (races.js's `allowedIndustries`), same mechanism
+//                          as every other genre — so industries here are split
+//                          more finely than a topic label: "Civil Administration"
+//                          is the elite gwageo-exam-track office specifically,
+//                          separate from "Local Administration" (open clerical/
+//                          village posts), even though both are "administration"
+//                          in plain English. See races.js for why.
 //   allowedGenders       — optional; restricts which genders may roll this profession
-//   allowedBroad         — optional array of race `broad` values (see races.js);
-//                          engine.js's profPool filter restricts this profession
-//                          to characters of one of these castes (falling back to
-//                          the unfiltered pool if that would leave nothing).
-//                          Omitted everywhere except professions that required a
-//                          specific caste's legal/social access in this setting —
-//                          the civil exam (gwageo) track, a Jungin technical
-//                          hereditary post, military-yangban officer training, or
-//                          the Gisaeng profession itself. Omitted for open trades
-//                          (farming, peddling, shamanism) that any caste could do.
 //   economicTier         — 1-5, social/economic standing
 //   statAffinity         — optional; stats that make this profession more likely
 //   sentiments           — pool of feelings-about-the-job drawn from randomly
@@ -24,7 +22,6 @@ export const PROFESSIONS = [
     title: "Scholar-Official",
     industry: "Civil Administration",
     allowedGenders: ["man", "trans_man"],
-    allowedBroad: ["Civil Yangban", "Royal Court"],
     economicTier: 5,
     statAffinity: { intelligence: 1.4, wisdom: 1.2, charisma: 1.1 },
     sentiments: ["principled", "suspicious", "exacting"],
@@ -35,9 +32,8 @@ export const PROFESSIONS = [
   },
   {
     title: "Local Magistrate",
-    industry: "Civil Administration",
+    industry: "Magistracy",
     allowedGenders: ["man", "trans_man"],
-    allowedBroad: ["Civil Yangban", "Military Yangban", "Royal Court"],
     economicTier: 4,
     statAffinity: { wisdom: 1.3, charisma: 1.2, strength: 1.0 },
     sentiments: ["proud", "beleaguered", "canny"],
@@ -48,7 +44,7 @@ export const PROFESSIONS = [
   },
   {
     title: "Magistrate's Aide",
-    industry: "Civil Administration",
+    industry: "Local Administration",
     allowedGenders: ["man", "trans_man"],
     economicTier: 3,
     statAffinity: { intelligence: 1.2, dexterity: 1.1, wisdom: 1.1 },
@@ -60,7 +56,7 @@ export const PROFESSIONS = [
   },
   {
     title: "Village Elder",
-    industry: "Civil Administration",
+    industry: "Local Administration",
     economicTier: 3,
     statAffinity: { wisdom: 1.4, charisma: 1.2, constitution: 1.1 },
     sentiments: ["tenacious", "mediating", "subversive"],
@@ -74,7 +70,6 @@ export const PROFESSIONS = [
     title: "Royal Guard",
     industry: "Military",
     allowedGenders: ["man", "trans_man"],
-    allowedBroad: ["Military Yangban", "Royal Court"],
     economicTier: 4,
     statAffinity: { strength: 1.3, constitution: 1.2, dexterity: 1.1 },
     sentiments: ["loyal", "skeptical", "alert"],
@@ -87,7 +82,6 @@ export const PROFESSIONS = [
     title: "Cavalry Officer",
     industry: "Military",
     allowedGenders: ["man", "trans_man"],
-    allowedBroad: ["Military Yangban", "Royal Court"],
     economicTier: 4,
     statAffinity: { strength: 1.3, dexterity: 1.2, constitution: 1.1 },
     sentiments: ["contemptuous", "loyal", "haunted"],
@@ -98,7 +92,7 @@ export const PROFESSIONS = [
   },
   {
     title: "Fortress Soldier",
-    industry: "Military",
+    industry: "Frontier Defense",
     allowedGenders: ["man", "trans_man"],
     economicTier: 2,
     statAffinity: { strength: 1.2, constitution: 1.3, dexterity: 1.0 },
@@ -113,7 +107,6 @@ export const PROFESSIONS = [
     title: "Sungkyunkwan Scholar",
     industry: "Arts & Learning",
     allowedGenders: ["man", "trans_man"],
-    allowedBroad: ["Civil Yangban", "Royal Court"],
     economicTier: 4,
     statAffinity: { intelligence: 1.4, wisdom: 1.2, charisma: 1.0 },
     sentiments: ["ambitious", "exacting", "obsessive"],
@@ -124,7 +117,7 @@ export const PROFESSIONS = [
   },
   {
     title: "Royal Painter",
-    industry: "Arts & Learning",
+    industry: "Court Arts",
     economicTier: 3,
     statAffinity: { dexterity: 1.3, intelligence: 1.2, wisdom: 1.1 },
     sentiments: ["perceptive", "liminal", "conflicted"],
@@ -135,7 +128,7 @@ export const PROFESSIONS = [
   },
   {
     title: "Court Historian",
-    industry: "Arts & Learning",
+    industry: "Court Arts",
     allowedGenders: ["man", "trans_man"],
     economicTier: 4,
     statAffinity: { intelligence: 1.3, wisdom: 1.3, charisma: 0.9 },
@@ -206,8 +199,7 @@ export const PROFESSIONS = [
   },
   {
     title: "Court Physician",
-    industry: "Spiritual",
-    allowedBroad: ["Jungin", "Royal Court"],
+    industry: "Court Medicine",
     economicTier: 3,
     statAffinity: { intelligence: 1.3, wisdom: 1.3, dexterity: 1.1 },
     sentiments: ["entrusted", "indispensable", "knowing"],
@@ -231,9 +223,8 @@ export const PROFESSIONS = [
   // ── Service ───────────────────────────────────────────────────────────
   {
     title: "Palace Court Lady",
-    industry: "Service",
+    industry: "Palace Service",
     allowedGenders: ["woman", "trans_woman"],
-    allowedBroad: ["Royal Court", "Gisaeng"],
     economicTier: 3,
     statAffinity: { charisma: 1.2, wisdom: 1.2, intelligence: 1.1 },
     sentiments: ["discreet", "dangerous", "constrained"],
@@ -244,8 +235,7 @@ export const PROFESSIONS = [
   },
   {
     title: "Nobi (House Slave)",
-    industry: "Service",
-    allowedBroad: ["Cheonmin"],
+    industry: "Bonded Service",
     economicTier: 1,
     statAffinity: { dexterity: 1.2, constitution: 1.2, wisdom: 1.1 },
     sentiments: ["perceptive", "calculating", "yearning"],
@@ -259,7 +249,6 @@ export const PROFESSIONS = [
     title: "Gisaeng Madam",
     industry: "Gisaeng Arts",
     allowedGenders: ["woman", "trans_woman"],
-    allowedBroad: ["Gisaeng"],
     economicTier: 4,
     statAffinity: { charisma: 1.4, intelligence: 1.3, wisdom: 1.2 },
     sentiments: ["calculating", "enduring", "unsentimental"],
@@ -272,7 +261,6 @@ export const PROFESSIONS = [
     title: "Gisaeng (Entertainer-Courtesan)",
     industry: "Gisaeng Arts",
     allowedGenders: ["woman", "trans_woman"],
-    allowedBroad: ["Gisaeng"],
     economicTier: 3,
     nsfw: true,
     statAffinity: { charisma: 1.4, dexterity: 1.2, intelligence: 1.2 },

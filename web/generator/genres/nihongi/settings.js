@@ -80,5 +80,6 @@ export const TAG_POOLS = {
     Agriculture: ["rice", "village", "harvest", "toil", "land-spirits"],
     Trade: ["continental", "ship", "contraband", "market", "forbidden-goods"],
     Performance: ["music", "dance", "spirit-calling", "banquet", "trance"],
+    Governance: ["village", "leadership", "mediation", "local-authority"],
   },
 };

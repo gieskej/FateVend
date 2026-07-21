@@ -655,11 +655,7 @@ export function buildSkeleton(stats, mbti, tables, options = {}) {
     const ageFiltered = genderFiltered.filter(
       (p) => age >= (p.minAge ?? 0) && age <= (p.maxAge ?? Infinity),
     );
-    const byAge = ageFiltered.length > 0 ? ageFiltered : genderFiltered;
-    const byBroad = byAge.filter(
-      (p) => !p.allowedBroad || p.allowedBroad.includes(identity.broad),
-    );
-    return byBroad.length > 0 ? byBroad : byAge;
+    return ageFiltered.length > 0 ? ageFiltered : genderFiltered;
   })();
   let orientation = weightedPick(orientPool);
   const isMinor = age < 18;

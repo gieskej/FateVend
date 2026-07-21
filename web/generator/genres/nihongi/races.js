@@ -10,7 +10,12 @@
 //                        output header in index.html) — the full string still
 //                        reaches the AI prompt. Keep the punchy part first.
 //   allowedIndustries — professions.js industries this clan may roll (optional;
-//                        omitted means any profession is eligible)
+//                        omitted means any profession is eligible). "Governance"
+//                        is its own industry, separate from "Agriculture", even
+//                        though Village Chief (its only profession) is a rural
+//                        role — it's a position of authority over free people,
+//                        which Bondsman (allowed "Agriculture" for Rice Farmer)
+//                        should not be able to reach.
 //   weight            — relative rarity for weighted-random selection (statAndWeightPick)
 //   iconPrompt        — text-to-image prompt used to generate this clan's reel icon
 //   iconPath          — served path where that icon lives
@@ -94,6 +99,7 @@ export const RACES = [
       "Agriculture",
       "Trade",
       "Religion",
+      "Governance",
     ],
     weight: 6,
     iconPrompt:
@@ -118,7 +124,7 @@ export const RACES = [
     label: "Free Farmer (Tami)",
     flavor:
       "Free Farmer (Tami) — free peasant of the rice paddies; the foundational productive unit of Yamato civilization and the last to benefit from its arrangements",
-    allowedIndustries: ["Agriculture", "Trade"],
+    allowedIndustries: ["Agriculture", "Trade", "Governance"],
     weight: 10,
     iconPrompt:
       "ancient japanese free farmer tami rice paddy field village simple clothing agricultural rural ancient yamato landscape nihon shoki folk painting",

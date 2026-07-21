@@ -220,7 +220,7 @@ export const PROFESSIONS = [
   {
     id: "village_chief",
     title: "Village Chief",
-    industry: "Agriculture",
+    industry: "Governance",
     economicTier: 3,
     nsfw: false,
     statAffinity: { wisdom: 1.3, charisma: 1.2 },
