@@ -6,6 +6,13 @@
 // Each secret carries:
 //   id, description, toneTag, severity (low | medium | high | explosive),
 //   statAffinity (optional), criminalFlag (bool)
+//   excludedBroad — optional array of race `broad` values (see races.js);
+//     engine.js's buildSkeleton() drops this secret from the pool for a
+//     character of one of these races (falling back to the full pool if
+//     that would leave nothing). Omitted everywhere except entries that
+//     would be redundant or self-contradictory for a specific race — e.g.
+//     "secretly an android" doesn't work for a race already established as
+//     Android.
 
 export const SECRETS = [
   // ── CORPORATE / POLITICAL ─────────────────────────────────────────────────
@@ -55,6 +62,7 @@ export const SECRETS = [
     severity: "explosive",
     statAffinity: { constitution: 1.1, wisdom: 1.1 },
     criminalFlag: false,
+    excludedBroad: ["Clone"],
   },
   {
     id: "android_passing",
@@ -64,6 +72,7 @@ export const SECRETS = [
     severity: "explosive",
     statAffinity: { charisma: 1.2, intelligence: 1.1 },
     criminalFlag: false,
+    excludedBroad: ["Android"],
   },
   {
     id: "illegal_augs",

@@ -82,6 +82,16 @@ export function statAndWeightPick(arr, stats) {
   return w[w.length - 1].item;
 }
 
+// Excludes entries whose optional `excludedBroad` list contains this
+// character's race — e.g. a secret about secretly being an android doesn't
+// fit a race already established as Android, and a tension about a
+// biological body rejecting an implant doesn't fit one with no biological
+// body. Falls back to the full array if excluding would leave nothing.
+export function excludeByBroad(arr, broad) {
+  const filtered = arr.filter((item) => !item.excludedBroad?.includes(broad));
+  return filtered.length > 0 ? filtered : arr;
+}
+
 // ── Stat rolling ─────────────────────────────────────────────────────────
 function rollStat() {
   const u1 = Math.random() || 1e-10;
@@ -719,8 +729,8 @@ export function buildSkeleton(stats, mbti, tables, options = {}) {
   const econMarkers = [...econ.descriptors]
     .sort(() => Math.random() - 0.5)
     .slice(0, 2);
-  const tension = statWeightedPick(T, stats);
-  const secret = statWeightedPick(S, stats);
+  const tension = statWeightedPick(excludeByBroad(T, identity.broad), stats);
+  const secret = statWeightedPick(excludeByBroad(S, identity.broad), stats);
   const city = statWeightedPick(CS, stats);
   const cast = buildCast(
     name,

@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-07-21
+
+### fix: race-inappropriate hair, secrets, and tensions found via consistency testing
+**What changed:** Rolled a batch of sci-fi skeletons to spot-check appearance/secret/tension/life-event fit against race. Found three issues: (1) `common/hair.js` (shared by Fantasy, Modern, and Sci-Fi) included a magical "Medusa hair that moves on its own, almost alive" entry, which rolled for a plain Human and a Hybrid Hare — moved it out of the shared pool into Fantasy's own `character-attributes.js` hair additions (mirroring the pattern Sci-Fi already uses for its own hair extras), so only Fantasy can roll it. (2) Secret `is_a_clone` rolled for a race already established as Clone (redundant), and `android_passing` ("passing as biological") rolled for Industrial Android, which is visibly a machine and not trying to pass as anything (self-contradictory). (3) Tension `aug_rejection_onset` assumes a biological body rejecting an implant, but could roll for Android. Rather than one-off patches, added a general mechanism: secrets.js/tensions.js entries can carry an optional `excludedBroad: [race broad, ...]` array, and `engine.js` exports a new `excludeByBroad(pool, broad)` helper (filters, falling back to the unfiltered pool if that would leave nothing) now used when picking both tension and secret.
+**Impact:** `is_a_clone` no longer rolls for Clone, `android_passing` and `aug_rejection_onset` no longer roll for Android, and Medusa hair no longer rolls outside Fantasy — while all three remain fully available for every other race they already worked for. The `excludedBroad` mechanism is reusable for any future race/content mismatch across any genre, not just these three.
+**Test cases:** Forced 500 rolls each of Android and Clone confirming the excluded secret/tension never appear (0/500 both), then 2000 rolls of Human confirming all three remain reachable normally (87-134 occurrences each, ruling out the fallback silently disabling the pool). Confirmed via module import that Medusa hair exists in Fantasy's HAIR but not Sci-Fi's or Modern's. Stress-tested 2000 sci-fi rolls plus 300 rolls in each of the other 6 genres — zero errors, confirming `excludeByBroad`'s generic `identity.broad` check doesn't break genres that don't use `excludedBroad` at all.
+
 ## 2026-07-20
 
 ### fix: Industrial Android got a human characterEntry, appearance, and profession pool

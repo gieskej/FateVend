@@ -11,8 +11,18 @@
 export { GENDERS } from "../../common/genders.js";
 export { ORIENTATIONS } from "../../common/orientations.js";
 export { BUILDS } from "../../common/build.js";
-export { HAIR } from "../../common/hair.js";
 export { RACES } from "./races.js";
+
+import { HAIR as HAIR_COMMON } from "../../common/hair.js";
+
+// ── HAIR ─────────────────────────────────────────────────────────────────
+// Mostly shared with modern/sci-fi — hairstyles are largely universal. A
+// magical trait like Medusa hair lives here rather than in the shared pool
+// since it doesn't fit a non-magical genre.
+export const HAIR = [
+  ...HAIR_COMMON,
+  "black hair, Medusa hair that moves on its own, almost alive",
+];
 
 // ── DISTINGUISHING FEATURES ───────────────────────────────────────────────
 export const DISTINGUISHING_FEATURES = [

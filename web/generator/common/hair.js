@@ -5,10 +5,6 @@ export const HAIR = [
   { id: "black_close_cropped", label: "black hair, close-cropped" },
   { id: "black_long_straight", label: "black hair, long and straight" },
   {
-    id: "black_medusa",
-    label: "black hair, Medusa hair that moves on its own, almost alive",
-  },
-  {
     id: "black_medium_greased",
     label: "black hair, medium-length, greased and slicked back",
   },

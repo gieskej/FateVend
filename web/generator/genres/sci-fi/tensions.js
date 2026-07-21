@@ -5,6 +5,11 @@
 // Each tension carries:
 //   id, description, toneTag, statAffinity (optional),
 //   economicHint (optional), criminalFlag (bool)
+//   excludedBroad — optional array of race `broad` values (see races.js);
+//     engine.js's buildSkeleton() drops this tension from the pool for a
+//     character of one of these races (falling back to the full pool if
+//     that would leave nothing). Omitted everywhere except entries that
+//     assume a biological body a given race doesn't have.
 
 export const TENSIONS = [
   // ── FINANCIAL ─────────────────────────────────────────────────────────────
@@ -153,6 +158,7 @@ export const TENSIONS = [
     toneTag: "dramatic",
     statAffinity: { constitution: 0.9, wisdom: 1.1 },
     criminalFlag: false,
+    excludedBroad: ["Android"],
     iconPrompt:
       "sci-fi rpg icon, station restroom, woman examining artificial eye in mirror, visible rash around eye, touching own face, worried assessing expression, bright restroom lighting, close-up on arm and reflected face, digital art",
     iconPath: "generator/genres/sci-fi/icons/TENSIONS#aug_rejection_onset.webp",
