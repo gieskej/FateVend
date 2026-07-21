@@ -9,6 +9,15 @@
 //   3 = independent contractor / working class
 //   4 = corporate citizen / professional class
 //   5 = elite / executive
+//
+// minAge — optional; engine.js's profPool filter drops this profession for a
+//   character younger than this (falling back to the unfiltered pool if that
+//   would leave nothing). Omitted everywhere except professions that
+//   genuinely require years the character wouldn't have had yet — a
+//   completed professional degree, veteran status (served, then left), or
+//   an executive-level career. Deliberately NOT added to hacking/art/
+//   journalism/manual-labor/criminal roles — teenage prodigies fit the
+//   genre fine there.
 
 import { SENTIMENTS } from "../../common/sentiments.js";
 
@@ -101,6 +110,7 @@ export const PROFESSIONS = [
     title: "Military Veteran",
     industry: "Military",
     economicTier: 2,
+    minAge: 26,
     statAffinity: { strength: 1.4, constitution: 1.3, wisdom: 1.1 },
     sentiments: ["lost", "proud", "resentful", "burned out"],
     iconPrompt:
@@ -205,6 +215,7 @@ export const PROFESSIONS = [
     title: "Corporate Physician",
     industry: "Medical",
     economicTier: 4,
+    minAge: 24,
     statAffinity: { intelligence: 1.4, wisdom: 1.3 },
     sentiments: ["indifferent", "quietly satisfied", "burned out", "proud"],
     iconPrompt:
@@ -216,6 +227,7 @@ export const PROFESSIONS = [
     title: "Gene-Tech",
     industry: "Biotech",
     economicTier: 4,
+    minAge: 24,
     statAffinity: { intelligence: 1.5, dexterity: 1.2 },
     sentiments: ["passionate", "proud", "indifferent", "quietly satisfied"],
     iconPrompt: "A gene-tech working on genetic material, wearing a lab coat.",
@@ -225,6 +237,7 @@ export const PROFESSIONS = [
     title: "Psych-Tech",
     industry: "Medical",
     economicTier: 4,
+    minAge: 24,
     statAffinity: { wisdom: 1.5, intelligence: 1.3 },
     sentiments: [
       "passionate",
@@ -260,6 +273,7 @@ export const PROFESSIONS = [
     title: "Corporate Spy",
     industry: "Criminal",
     economicTier: 4,
+    minAge: 24,
     statAffinity: { charisma: 1.4, intelligence: 1.3, wisdom: 1.2 },
     sentiments: ["indifferent", "quietly satisfied", "burned out", "proud"],
     iconPrompt: "A corporate spy in a dark room, surrounded by documents.",
@@ -269,6 +283,7 @@ export const PROFESSIONS = [
     title: "Fixer",
     industry: "Criminal",
     economicTier: 4,
+    minAge: 26,
     statAffinity: { intelligence: 1.4, charisma: 1.4, wisdom: 1.2 },
     sentiments: ["proud", "quietly satisfied", "indifferent"],
     iconPrompt: "A fixer in a dark room, surrounded by documents.",
@@ -311,6 +326,7 @@ export const PROFESSIONS = [
     title: "Mid-Level Corporate Suit",
     industry: "Corporate",
     economicTier: 4,
+    minAge: 22,
     statAffinity: { charisma: 1.3, intelligence: 1.2 },
     sentiments: ["indifferent", "burned out", "quietly satisfied", "resentful"],
     iconPrompt:
@@ -321,6 +337,7 @@ export const PROFESSIONS = [
     title: "Compliance Officer",
     industry: "Corporate",
     economicTier: 4,
+    minAge: 24,
     statAffinity: { wisdom: 1.3, intelligence: 1.2 },
     sentiments: ["indifferent", "burned out", "quietly satisfied", "ashamed"],
     iconPrompt: "A compliance officer in a dark room, surrounded by documents.",
@@ -344,6 +361,7 @@ export const PROFESSIONS = [
     title: "Terraforming Engineer",
     industry: "Science",
     economicTier: 3,
+    minAge: 22,
     statAffinity: { intelligence: 1.4, wisdom: 1.2, constitution: 1.1 },
     sentiments: ["passionate", "proud", "burned out", "quietly satisfied"],
     iconPrompt:
@@ -355,6 +373,7 @@ export const PROFESSIONS = [
     title: "Xenobiologist",
     industry: "Science",
     economicTier: 3,
+    minAge: 24,
     statAffinity: { intelligence: 1.5, wisdom: 1.3 },
     sentiments: ["passionate", "proud", "indifferent", "quietly satisfied"],
     iconPrompt:
@@ -417,6 +436,7 @@ export const PROFESSIONS = [
     title: "Megacorp Executive",
     industry: "Corporate",
     economicTier: 5,
+    minAge: 32,
     statAffinity: { charisma: 1.4, intelligence: 1.3, wisdom: 1.2 },
     sentiments: ["proud", "indifferent", "quietly satisfied", "burned out"],
     iconPrompt:
@@ -428,6 +448,7 @@ export const PROFESSIONS = [
     title: "AI Architect",
     industry: "Technology",
     economicTier: 5,
+    minAge: 30,
     statAffinity: { intelligence: 1.6, wisdom: 1.2 },
     sentiments: ["passionate", "proud", "indifferent", "quietly satisfied"],
     iconPrompt: "An AI architect in a dark room, surrounded by AI components.",
@@ -437,6 +458,7 @@ export const PROFESSIONS = [
     title: "Orbital Mogul",
     industry: "Corporate",
     economicTier: 5,
+    minAge: 32,
     statAffinity: { charisma: 1.5, intelligence: 1.3 },
     sentiments: ["proud", "indifferent", "quietly satisfied"],
     iconPrompt:
