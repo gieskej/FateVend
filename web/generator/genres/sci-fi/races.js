@@ -16,6 +16,16 @@
 //                    everywhere except android_industrial, where it keeps the roll to
 //                    physically-plausible manual-labor/security work for a heavy
 //                    industrial chassis.
+//   nonHumanoidBody — optional boolean, defaults to false/human-bodied when omitted.
+//                    True for races whose body doesn't have human-style hair or skin
+//                    (giant insects, plants, gas, fur-covered uplifts, etc.) — engine.js
+//                    nulls out appearance.hair/distinguishingFeature/statNotes for these
+//                    (same treatment as syntheticType 'industrial'; both are checked in
+//                    buildSkeleton()), since a locust or a cloud of gas doesn't have a
+//                    "blonde pixie cut" or a "well-groomed" grooming note to give.
+//                    Humanoid-bodied races (alien_humanoid, Hybrid, Mutant, etc.) are
+//                    left false — their flavor text already says everything except a
+//                    named feature (ears, tail, scales) is human, hair included.
 //   flavor        — physical/cultural detail passed to Claude for description prose;
 //                    never stated as a clinical label in the output. If it contains
 //                    ' — ' (space-em dash-space), only the text before the first
@@ -134,6 +144,7 @@ export const RACES = [
     flavor:
       "Uplifted primate — enhanced cognition and fine motor precision from a corps-funded programme that's since been shut down, navigates a world built for a species that still isn't sure how to treat them",
     weight: 1,
+    nonHumanoidBody: true,
     iconPrompt:
       "sci-fi rpg icon, uplifted primate bipedal figure in lab coveralls, fine motor work with tools, sapient focused expression, corp lab environment, overhead lab lighting, medium shot, digital concept art",
     iconPath: "generator/genres/sci-fi/icons/SPECIES#uplift_primate.webp",
@@ -144,6 +155,7 @@ export const RACES = [
     flavor:
       "Uplifted feline — heightened reflexes and senses, bipedal and fully sapient, the ears, paws and tail are real, the patience for human inefficiency is synthetic",
     weight: 1,
+    nonHumanoidBody: true,
     iconPrompt:
       "sci-fi rpg icon, transit concourse, bipedal uplifted feline in tactical clothing, cat ears, paws, tail visible, yellow cat eyes with vertical slit pupils, neon transit lighting, medium shot, digital concept art",
     iconPath: "generator/genres/sci-fi/icons/SPECIES#uplift_feline.webp",
@@ -211,6 +223,7 @@ export const RACES = [
     flavor:
       "Slug alien — the interface between their natural form and human-built space requires ongoing adaptation in both directions; they have opinions about the chair situation",
     weight: 1,
+    nonHumanoidBody: true,
     iconPrompt:
       "sci-fi rpg icon, giant slug alien slithering down a ship corridor, antennae, eyepods, snail trail, rearing up, navel, overhead station lighting, wide shot, digital concept art",
     iconPath: "generator/genres/sci-fi/icons/SPECIES#alien_nonhumanoid.webp",
@@ -221,6 +234,7 @@ export const RACES = [
     flavor:
       "Locust alien — Resembles terran locust, except they are man-sized, walk upright and are surprisingly clever.  Always hungry.",
     weight: 1,
+    nonHumanoidBody: true,
     iconPrompt:
       "sci-fi rpg icon, giant locust holding a laser gun, digital concept art",
     iconPath: "generator/genres/sci-fi/icons/SPECIES#alien_locust.webp",
@@ -231,6 +245,7 @@ export const RACES = [
     flavor:
       "Reptilian alien — Resembles terran lizard, except they are man-sized, walk upright and are surprisingly clever.  Always hungry.",
     weight: 1,
+    nonHumanoidBody: true,
     iconPrompt:
       "sci-fi rpg icon, giant iguana standing upright holding a laser gun, digital concept art",
     iconPath: "generator/genres/sci-fi/icons/SPECIES#alien_reptilian.webp",
@@ -240,6 +255,7 @@ export const RACES = [
     broad: "Alien",
     flavor: "Avian alien — Humanoid alien with bird-like features.",
     weight: 1,
+    nonHumanoidBody: true,
     iconPrompt:
       "sci-fi rpg icon, bird man with beak, feathers, arms, wings, holding a laser gun, digital concept art",
     iconPath: "generator/genres/sci-fi/icons/SPECIES#alien_avian.webp",
@@ -249,6 +265,7 @@ export const RACES = [
     broad: "Alien",
     flavor: "Amoeba alien — A shapeshifting alien made of gelatinous goo",
     weight: 1,
+    nonHumanoidBody: true,
     iconPrompt:
       "sci-fi rpg icon, green jelly girl holding a laser gun, digital concept art",
     iconPath: "generator/genres/sci-fi/icons/SPECIES#alien_amoeba.webp",
@@ -258,6 +275,7 @@ export const RACES = [
     broad: "Alien",
     flavor: "Plant alien — A sentient alien plant",
     weight: 1,
+    nonHumanoidBody: true,
     iconPrompt:
       "sci-fi rpg icon, blue bald woman with small flowers budding from her head holding a laser gun, digital concept art",
     iconPath: "generator/genres/sci-fi/icons/SPECIES#alien_plant.webp",
@@ -267,6 +285,7 @@ export const RACES = [
     broad: "Alien",
     flavor: "Vapor alien — A sentient shapeshifting gaseous alien",
     weight: 1,
+    nonHumanoidBody: true,
     iconPrompt:
       "sci-fi rpg icon, cloud man standing in corridor, digital concept art",
     iconPath: "generator/genres/sci-fi/icons/SPECIES#alien_vapor.webp",
@@ -276,6 +295,7 @@ export const RACES = [
     broad: "Alien",
     flavor: "Typical alien — A typical green alien with big eyes",
     weight: 1,
+    nonHumanoidBody: true,
     iconPrompt:
       "sci-fi rpg icon, typical green alien with big eyes, digital concept art",
     iconPath: "generator/genres/sci-fi/icons/SPECIES#alien_typical.webp",

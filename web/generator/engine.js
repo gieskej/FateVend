@@ -691,6 +691,11 @@ export function buildSkeleton(stats, mbti, tables, options = {}) {
   const hair = typeof hairItem === "string" ? hairItem : hairItem.label;
   const feat =
     Math.random() < 0.25 ? null : uniformPick(DF.filter((f) => f.label)).label;
+  // True for a body with no human-style hair/skin to describe at all —
+  // either equipment (Industrial Android) or a non-humanoid species body
+  // (identity.nonHumanoidBody). See the `appearance` block below.
+  const noBodyText =
+    syntheticType === "industrial" || !!identity.nonHumanoidBody;
   const quirk = statWeightedPick(Q, stats);
   const profession = statWeightedPick(profPool, stats);
   const sentiment = uniformPick(profession.sentiments);
@@ -769,13 +774,15 @@ export function buildSkeleton(stats, mbti, tables, options = {}) {
     appearance: {
       build: build.label,
       // hair/distinguishingFeature/statNotes are all body/grooming concepts
-      // (scars, tattoos, "well-groomed", etc.) that don't apply to a
-      // machine chassis — an Industrial Android keeps only the size/bulk
-      // descriptor (build), which reads fine either way ("heavyset").
-      hair: syntheticType === "industrial" ? null : hair,
-      distinguishingFeature: syntheticType === "industrial" ? null : feat,
-      statNotes:
-        syntheticType === "industrial" ? [] : appearanceStatNotes(stats),
+      // (human hairstyles, scars, tattoos, "well-groomed", etc.) that don't
+      // apply to a machine chassis (Industrial Android) or a body with no
+      // human-style hair/skin at all (identity.nonHumanoidBody — giant
+      // insects, plants, gas, fur-covered uplifts). Both keep only the
+      // size/bulk descriptor (build), which reads fine either way
+      // ("heavyset", "lean, wiry").
+      hair: noBodyText ? null : hair,
+      distinguishingFeature: noBodyText ? null : feat,
+      statNotes: noBodyText ? [] : appearanceStatNotes(stats),
     },
     quirk: quirk.quirk,
     stats,
