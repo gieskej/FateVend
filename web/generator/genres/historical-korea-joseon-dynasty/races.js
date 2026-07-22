@@ -84,6 +84,7 @@ export const RACES = [
       "Court Medicine",
       "Palace Service",
       "Household Study",
+      "Royal Bloodline",
     ],
     weight: 3,
     iconPrompt:

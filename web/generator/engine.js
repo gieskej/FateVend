@@ -743,7 +743,16 @@ export function buildSkeleton(stats, mbti, tables, options = {}) {
   const econMarkers = [...econ.descriptors]
     .sort(() => Math.random() - 0.5)
     .slice(0, 2);
-  const tension = statWeightedPick(excludeByBroad(T, identity.broad), stats);
+  const tensionPool = (() => {
+    const byProfession = T.filter(
+      (t) =>
+        !t.requiredProfessions ||
+        t.requiredProfessions.includes(profession.title),
+    );
+    const base = byProfession.length > 0 ? byProfession : T;
+    return excludeByBroad(base, identity.broad);
+  })();
+  const tension = statWeightedPick(tensionPool, stats);
   const secretPool = (() => {
     const byBroad = excludeByBroad(S, identity.broad);
     const byGender = byBroad.filter(

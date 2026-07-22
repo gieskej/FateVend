@@ -9,6 +9,16 @@
 //   would leave nothing). Omitted everywhere except tensions tied to the
 //   court bungdang faction system or the gwageo exam track, neither of which
 //   the common/merchant/entertainer/bonded castes had any real stake in.
+//   requiredProfessions — optional array of professions.js `title` values;
+//   engine.js's buildSkeleton() picks this tension ONLY if the character's
+//   own profession title is in this list (falling back to the full pool if
+//   that would leave nothing) — the inverse of excludedBroad: an opt-IN
+//   rather than an opt-out, for tensions specific to one exact profession
+//   rather than a whole caste. Used for the succession-politics tensions,
+//   which only make sense for a character who is themselves literally in
+//   the line of succession ("Prince (Blood Royal)") — Joseon succession was
+//   strictly patrilineal, so this deliberately does not include "Princess
+//   (Blood Royal)" even though both share the "Royal Bloodline" industry.
 
 export const TENSIONS = [
   {
@@ -22,6 +32,79 @@ export const TENSIONS = [
       "joseon dynasty korean court faction intrigue rival officials whispers plotting scheming palace corridor traditional court painting",
     iconPath:
       "generator/genres/historical-korea-joseon-dynasty/icons/TENSIONS#faction_enemy.webp",
+  },
+  {
+    id: "succession_rivalry",
+    label: "Vying to Be Named Heir Apparent",
+    description:
+      "Locked in open competition with brothers and half-brothers for the one title that matters — Crown Prince — where faction backing and a mother's rank count for as much as birth order",
+    toneTag: "dramatic",
+    requiredProfessions: ["Prince (Blood Royal)"],
+    iconPrompt:
+      "joseon dynasty korean princes rivals competing for crown prince title tense formal court audience wary glances traditional court painting",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/TENSIONS#succession_rivalry.webp",
+  },
+  {
+    id: "succession_crisis",
+    label: "The Succession Is Dangerously Unclear",
+    description:
+      "No heir has been formally named — through death, disgrace, or the king's own hesitation — and the court is fracturing into camps behind every plausible claimant, including them",
+    toneTag: "high_stakes",
+    requiredProfessions: ["Prince (Blood Royal)"],
+    iconPrompt:
+      "joseon dynasty korean empty throne succession crisis officials arguing factions divided palace hall tense traditional court painting",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/TENSIONS#succession_crisis.webp",
+  },
+  {
+    id: "living_under_heir",
+    label: "Living Under an Elder Sibling's Shadow",
+    description:
+      "Was passed over for the succession and must now publicly defer to the brother who won it — smiling at court, and privately unsure whether that brother sees them as family or as a threat still to be managed",
+    toneTag: "bitter",
+    requiredProfessions: ["Prince (Blood Royal)"],
+    iconPrompt:
+      "joseon dynasty korean younger prince bowing deferring to elder brother crown prince tense formal court traditional court painting",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/TENSIONS#living_under_heir.webp",
+  },
+  {
+    id: "prince_exile",
+    label: "Stripped of Succession Rights and Exiled",
+    description:
+      "Was formally removed from the line of succession and sent to live far from the capital — alive, watched, and permanently barred from ever returning to real power",
+    toneTag: "bitter",
+    requiredProfessions: ["Prince (Blood Royal)"],
+    iconPrompt:
+      "joseon dynasty korean exiled prince remote provincial residence watched guards distant capital view melancholy traditional court painting",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/TENSIONS#prince_exile.webp",
+  },
+  {
+    id: "prince_hiding",
+    label: "Living in Hiding, Erased from the Royal Line",
+    description:
+      "Their birth was never officially recorded, or the record was destroyed — they live under a lesser identity because acknowledging their blood would mark them for elimination",
+    toneTag: "dangerous",
+    requiredProfessions: ["Prince (Blood Royal)"],
+    iconPrompt:
+      "joseon dynasty korean hidden prince disguised commoner clothing anxious glance hidden identity shadow traditional folk painting",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/TENSIONS#prince_hiding.webp",
+  },
+  {
+    id: "prince_target",
+    label: "Marked for Death by a Rival Claimant",
+    description:
+      "A sibling or a faction backing a rival claimant has decided the succession would be safer with them dead — poison, an arranged accident, or an assassin are all live possibilities",
+    toneTag: "dark",
+    criminalFlag: true,
+    requiredProfessions: ["Prince (Blood Royal)"],
+    iconPrompt:
+      "joseon dynasty korean prince alert wary night shadow assassin threat palace corridor tense dangerous traditional court painting",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/TENSIONS#prince_target.webp",
   },
   {
     id: "debt_of_favor",

@@ -34,11 +34,45 @@
 //                          existing profession without re-running that coverage
 //                          check for every caste and gender that can reach it.
 //   economicTier         — 1-5, social/economic standing
+//   weight               — optional relative rarity for weighted-random
+//                          selection (statWeightedPick); defaults to 10 when
+//                          omitted (see effectiveWeight in engine.js). Used to
+//                          make a profession rare within its own industry —
+//                          e.g. actual blood-royal Prince/Princess should be a
+//                          small fraction of Royal Court's other, more common
+//                          court professions, not equally likely.
 //   statAffinity         — optional; stats that make this profession more likely
 //   sentiments           — pool of feelings-about-the-job drawn from randomly
 //   iconPrompt, iconPath — slot-machine reel icon
 
 export const PROFESSIONS = [
+  // ── Royal Bloodline ───────────────────────────────────────────────────
+  {
+    title: "Prince (Blood Royal)",
+    industry: "Royal Bloodline",
+    allowedGenders: ["man", "trans_man"],
+    weight: 3,
+    economicTier: 5,
+    statAffinity: { charisma: 1.3, wisdom: 1.2, intelligence: 1.1 },
+    sentiments: ["ambitious", "suspicious", "burdened"],
+    iconPrompt:
+      "joseon dynasty korean royal prince ornate crown prince robes gold dragon embroidery palace throne room formal wary traditional court painting",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#prince_blood_royal.webp",
+  },
+  {
+    title: "Princess (Blood Royal)",
+    industry: "Royal Bloodline",
+    allowedGenders: ["woman", "trans_woman"],
+    weight: 3,
+    economicTier: 5,
+    statAffinity: { charisma: 1.3, wisdom: 1.2, intelligence: 1.1 },
+    sentiments: ["shrewd", "constrained", "watchful"],
+    iconPrompt:
+      "joseon dynasty korean royal princess ornate silk robes gold hair ornaments palace courtyard formal composed watchful traditional court painting",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/PROFESSIONS#princess_blood_royal.webp",
+  },
   // ── Civil Administration ──────────────────────────────────────────────
   {
     title: "Scholar-Official",

@@ -21,6 +21,12 @@ export const TAG_POOLS = {
   cozy: ["village", "festival", "ondol", "poetry", "found-family"],
   criminal: ["banditry", "black-market", "rebellion", "treason"],
   professionTags: {
+    "Royal Bloodline": [
+      "succession",
+      "royal-blood",
+      "court-intrigue",
+      "throne",
+    ],
     "Civil Administration": ["gwageo", "governance", "confucian"],
     Magistracy: ["magistrate", "governance", "justice"],
     "Local Administration": ["village", "governance", "mediation"],
