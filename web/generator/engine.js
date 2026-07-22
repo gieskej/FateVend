@@ -758,7 +758,13 @@ export function buildSkeleton(stats, mbti, tables, options = {}) {
     const byGender = byBroad.filter(
       (s) => !s.allowedGenders || isNB || s.allowedGenders.includes(gender.id),
     );
-    return byGender.length > 0 ? byGender : byBroad;
+    const genderFiltered = byGender.length > 0 ? byGender : byBroad;
+    const byProfession = genderFiltered.filter(
+      (s) =>
+        !s.excludedProfessions ||
+        !s.excludedProfessions.includes(profession.title),
+    );
+    return byProfession.length > 0 ? byProfession : genderFiltered;
   })();
   const secret = statWeightedPick(secretPool, stats);
   const city = statWeightedPick(CS, stats);

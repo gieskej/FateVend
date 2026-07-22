@@ -22,7 +22,9 @@
 //   Yangban pursued the separate martial exam, not this one); adopted_up
 //   (being adopted *into* a noble household only makes sense for castes that
 //   have one); palace_selection (being *selected* for palace service doesn't
-//   apply to castes who'd already have palace access by birth).
+//   apply to castes who'd already have palace access by birth); and
+//   escaped_servitude (a hereditary elite caste's status IS their documented
+//   birth — it can't also have started as bonded servitude).
 
 export const LIFE_EVENTS = [
   {
@@ -210,6 +212,11 @@ export const LIFE_EVENTS = [
     description:
       "Left behind a life of legal bondage — still carries the papers, the habits, and the specific kind of alertness that service requires",
     toneTag: "gritty",
+    // A hereditary elite caste's status IS their documented birth — it
+    // can't also have started as bonded servitude without a dedicated
+    // narrative device (adopted_up, switched_at_birth), which this
+    // generic event isn't.
+    excludedBroad: ["Civil Yangban", "Military Yangban", "Royal Court"],
     iconPrompt:
       "joseon dynasty korean escaped nobi slave freedom running hiding new identity fearful hopeful traditional folk painting",
     iconPath:

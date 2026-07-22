@@ -15,6 +15,18 @@
 //                       pool for a character of one of these castes (falling
 //                       back to the full pool if that would leave nothing).
 //                       Omitted means any caste can roll it.
+//   excludedProfessions — optional array of professions.js `title` values;
+//                       engine.js drops this secret for a character with one
+//                       of these exact professions (falling back to the full
+//                       pool if that would leave nothing) — for secrets that
+//                       are fine for a whole caste in general but contradict
+//                       one specific profession within it. E.g. royal_blood
+//                       (an undisclosed royal connection) fits an ordinary
+//                       Royal Court courtier but contradicts "Prince/Princess
+//                       (Blood Royal)," whose royal connection is by
+//                       definition official and undisputed — excludedBroad
+//                       can't express that distinction since it only
+//                       operates at the caste level.
 //   iconPrompt/iconPath (slot-machine reel icon)
 
 export const SECRETS = [
@@ -26,6 +38,17 @@ export const SECRETS = [
     severity: "explosive",
     criminalFlag: true,
     toneTag: "identity",
+    // Only Civil/Military Yangban actually claim "yangban status" via a
+    // jokbo register — Royal Court status doesn't rest on one, and the
+    // other castes aren't claiming yangban status to begin with.
+    excludedBroad: [
+      "Royal Court",
+      "Jungin",
+      "Common Folk",
+      "Merchant",
+      "Gisaeng",
+      "Cheonmin",
+    ],
     iconPrompt:
       "joseon dynasty korean false genealogy record forged jokbo document hidden secret flame burning evidence traditional court painting",
     iconPath:
@@ -91,6 +114,9 @@ export const SECRETS = [
     severity: "explosive",
     criminalFlag: true,
     toneTag: "guilt",
+    // Same court bungdang faction system as the faction_enemy tension —
+    // restricted to the same castes with a real stake in it.
+    excludedBroad: ["Common Folk", "Merchant", "Gisaeng", "Cheonmin"],
     iconPrompt:
       "joseon dynasty korean clan betrayal secret meeting rival faction whisper document passed guilt shame traditional court painting",
     iconPath:
@@ -115,6 +141,11 @@ export const SECRETS = [
       "Was born into legal slavery and escaped or was manumitted — now lives under a fabricated identity that does not survive close inspection",
     severity: "high",
     toneTag: "identity",
+    // A hereditary elite caste's status IS their documented birth — it
+    // can't also secretly be nobi birth without a dedicated narrative device
+    // (see life-events.js's adopted_up, plot-archetypes.js's
+    // switched_at_birth), which this generic secret isn't.
+    excludedBroad: ["Civil Yangban", "Military Yangban", "Royal Court"],
     iconPrompt:
       "joseon dynasty korean nobi born free now identity hidden papers forged anxiety watchful careful traditional folk painting",
     iconPath:
@@ -127,6 +158,16 @@ export const SECRETS = [
       "Has told their family and clan they passed or are still eligible — while the examination board has a different record entirely",
     severity: "medium",
     toneTag: "shame",
+    // Same gwageo civil-exam-track eligibility as life-events.js's
+    // passed_gwageo/failed_gwageo — same excludedBroad list.
+    excludedBroad: [
+      "Military Yangban",
+      "Jungin",
+      "Common Folk",
+      "Merchant",
+      "Gisaeng",
+      "Cheonmin",
+    ],
     iconPrompt:
       "joseon dynasty korean gwageo exam failure hidden lie shame family expectations performance scholar anxious traditional painting",
     iconPath:
@@ -139,6 +180,11 @@ export const SECRETS = [
       "Has a blood connection to the royal family that is not in any official record — through an illegitimate line, a concubine, or a deliberate erasure",
     severity: "explosive",
     toneTag: "identity",
+    // Fits an ordinary Royal Court courtier fine (a secret, unofficial tie
+    // explaining their proximity to power) but contradicts Prince/Princess
+    // (Blood Royal) specifically — their royal connection is already
+    // official, not something that could also be undisclosed.
+    excludedProfessions: ["Prince (Blood Royal)", "Princess (Blood Royal)"],
     iconPrompt:
       "joseon dynasty korean secret royal blood connection palace genealogy hidden lineage dangerous beauty traditional court painting",
     iconPath:

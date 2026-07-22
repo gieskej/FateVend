@@ -36,11 +36,17 @@
 //   economicTier         — 1-5, social/economic standing
 //   weight               — optional relative rarity for weighted-random
 //                          selection (statWeightedPick); defaults to 10 when
-//                          omitted (see effectiveWeight in engine.js). Used to
-//                          make a profession rare within its own industry —
-//                          e.g. actual blood-royal Prince/Princess should be a
-//                          small fraction of Royal Court's other, more common
-//                          court professions, not equally likely.
+//                          omitted (see effectiveWeight in engine.js). Used
+//                          sparingly, and kept close to the default rather
+//                          than crushingly low — e.g. blood-royal Prince/
+//                          Princess (weight 7) are a bit less common than
+//                          Royal Court's other court professions, but this is
+//                          a game, not a lottery: a player should actually
+//                          see this content at the table sometimes, not chase
+//                          a jackpot. Compounding rarities (a rare race times
+//                          a rare profession within it) get rare fast, so keep
+//                          per-field weights relaxed even when the flavor
+//                          calls for something to feel special.
 //   statAffinity         — optional; stats that make this profession more likely
 //   sentiments           — pool of feelings-about-the-job drawn from randomly
 //   iconPrompt, iconPath — slot-machine reel icon
@@ -51,7 +57,7 @@ export const PROFESSIONS = [
     title: "Prince (Blood Royal)",
     industry: "Royal Bloodline",
     allowedGenders: ["man", "trans_man"],
-    weight: 3,
+    weight: 7,
     economicTier: 5,
     statAffinity: { charisma: 1.3, wisdom: 1.2, intelligence: 1.1 },
     sentiments: ["ambitious", "suspicious", "burdened"],
@@ -64,7 +70,7 @@ export const PROFESSIONS = [
     title: "Princess (Blood Royal)",
     industry: "Royal Bloodline",
     allowedGenders: ["woman", "trans_woman"],
-    weight: 3,
+    weight: 7,
     economicTier: 5,
     statAffinity: { charisma: 1.3, wisdom: 1.2, intelligence: 1.1 },
     sentiments: ["shrewd", "constrained", "watchful"],

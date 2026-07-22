@@ -61,7 +61,7 @@ export const RACES = [
       "Local Administration",
       "Household Study",
     ],
-    weight: 6,
+    weight: 7,
     iconPrompt:
       "joseon dynasty korean military yangban warrior officer armor sword archery proud stance traditional court painting style",
     iconPath:
@@ -86,7 +86,7 @@ export const RACES = [
       "Household Study",
       "Royal Bloodline",
     ],
-    weight: 3,
+    weight: 7,
     iconPrompt:
       "joseon dynasty korean royal court official palace gyeongbokgung ceremonial robes refined posture traditional court painting style",
     iconPath:
@@ -118,7 +118,7 @@ export const RACES = [
     flavor:
       "Farmer, potter, weaver — the backbone of Joseon, bearing its taxes and its hungers with patient endurance",
     allowedIndustries: ["Labor", "Trade", "Local Administration", "Spiritual"],
-    weight: 12,
+    weight: 10,
     iconPrompt:
       "joseon dynasty korean common farmer village worker plain hanbok rice field straw hat traditional minhwa folk painting style",
     iconPath:
@@ -151,7 +151,7 @@ export const RACES = [
     // practices, but Court Historian is a formal exam-vetted government
     // office a gisaeng had no legal path into.
     allowedIndustries: ["Gisaeng Arts", "Court Painting", "Palace Service"],
-    weight: 5,
+    weight: 6,
     iconPrompt:
       "joseon dynasty korean gisaeng female entertainer musician haegeum elegant hanbok ornate hairpin court banquet traditional painting style",
     iconPath:

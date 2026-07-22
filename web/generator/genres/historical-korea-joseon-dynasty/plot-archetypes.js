@@ -1,7 +1,9 @@
 // genres/historical-korea-joseon-dynasty/plot-archetypes.js
 // Joseon Dynasty-specific plot archetypes, added on top of COMMON_PLOT_ARCHETYPES.
 // Same shape as common/plot-archetypes.js: id, label, weight, description,
-// iconPrompt, iconPath.
+// iconPrompt, iconPath. Weights are kept in a tight 6-7 band deliberately —
+// this is a game, not a lottery, so no plot here should feel like a rare
+// jackpot pull relative to the others or to COMMON_PLOT_ARCHETYPES.
 
 export const JOSEON_PLOT_ARCHETYPES = [
   {
@@ -18,7 +20,7 @@ export const JOSEON_PLOT_ARCHETYPES = [
   {
     id: "court_conspiracy",
     label: "Court Conspiracy",
-    weight: 5,
+    weight: 6,
     description:
       "The bungdang faction wars have drawn them in — one side wants them as an ally, the other wants them eliminated, and neutrality is not an option the court permits",
     iconPrompt:
@@ -40,7 +42,7 @@ export const JOSEON_PLOT_ARCHETYPES = [
   {
     id: "debt_of_blood",
     label: "A Debt of Blood",
-    weight: 5,
+    weight: 6,
     description:
       "A killing — deliberate or accidental, justified or not — has created an obligation that cannot be discharged through ordinary means",
     iconPrompt:
@@ -51,7 +53,7 @@ export const JOSEON_PLOT_ARCHETYPES = [
   {
     id: "fires_of_imjin",
     label: "Fires of the Imjin",
-    weight: 4,
+    weight: 6,
     description:
       "Set during the Japanese invasion of 1592–1598: survival, resistance, collaboration, and the question of what Joseon will be when the fighting ends",
     iconPrompt:
@@ -62,7 +64,7 @@ export const JOSEON_PLOT_ARCHETYPES = [
   {
     id: "exile_return",
     label: "Return from Exile",
-    weight: 5,
+    weight: 6,
     description:
       "After years in provincial exile, the political winds have shifted — but coming home means confronting everything left unresolved when they were forced to leave",
     iconPrompt:
@@ -73,7 +75,7 @@ export const JOSEON_PLOT_ARCHETYPES = [
   {
     id: "switched_at_birth",
     label: "Switched at Birth",
-    weight: 4,
+    weight: 6,
     description:
       "Two infants — one high-born, one low — were swapped through accident, malice, or a mother's desperate gamble, and the life being lived now was never meant for them",
     iconPrompt:
