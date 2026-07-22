@@ -26,11 +26,11 @@ ICON_DIR = (
 )  # genres/historical-korea-joseon-dynasty/icons/
 
 GENRE_PROMPT = (
-    "Ancient Joseon Korean king sitting on throne wearing royal red silk hanbok with gold dragon embroidery",
-    "and Won-yugwan crown, flanked by two eunic advisors wearing green hanbok with black ceremonial hats",
+    "Ancient Joseon Korean king sitting on throne wearing royal red silk hanbok with gold dragon embroidery "
+    "and Won-yugwan crown, flanked by two eunic advisors wearing green hanbok with black ceremonial hats, "
     "cherry blossoms drifting, stone lanterns glowing at dusk, wooden pavilion with curved tile roof, "
-    "serene dignified atmosphere, minhwa folk art style,"
-    "detailed mineral pigments, decorative nature motifs",
+    "serene dignified atmosphere, minhwa folk art style, "
+    "detailed mineral pigments, decorative nature motifs"
 )
 
 STYLE = (

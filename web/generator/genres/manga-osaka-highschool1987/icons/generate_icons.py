@@ -22,9 +22,9 @@ GENRE_DIR = Path(__file__).resolve().parent.parent  # genres/manga-osaka-highsch
 ICON_DIR = Path(__file__).resolve().parent  # genres/manga-osaka-highschool1987/icons/
 
 GENRE_PROMPT = (
-    "Illustration of a male student wearing black gakuran and female student wearing serafuku and pleated skirt, ",
-    "standing in front of high school gate,  holding hands, 1980s shounen manga illustration style, bold ink linework, ",
-    " nostalgic bittersweet atmosphere, medium wide shot",
+    "Illustration of a male student wearing black gakuran and female student wearing serafuku and pleated skirt, "
+    "standing in front of high school gate,  holding hands, 1980s shounen manga illustration style, bold ink linework, "
+    " nostalgic bittersweet atmosphere, medium wide shot"
 )
 
 STYLE = (
