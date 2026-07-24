@@ -26,6 +26,14 @@ Every `web/generator/genres/<genre>/*.js` data-table file (races, professions, l
 - Document special runtime/UI behavior tied to a field's exact content, not just its type. Example: a race's `flavor` field is truncated at the first `' — '` wherever it's displayed in the UI (the slot-machine sub-label in `engine.js`'s `_slots.race`, and the output header in `index.html`) — so a long `flavor` string with no em-dash shows in full instead of a short punchy sub-label.
 - When you add or change a property in one genre's copy of a data file, check whether the same file in the other 6 genres needs the same treatment — these tables are meant to stay structurally parallel across genres, and a header/property that's true in one is usually true (or should be made true) in all.
 
+### Keep JS and CSS in separate files
+
+HTML files hold markup only. JavaScript lives in `.js` files, CSS lives in `.css` files — never inline a `<script type="module">…</script>` body or a `<style>…</style>` block in an HTML file. `index.html` references its logic as `<script type="module" src="app.js"></script>` and its styles as `<link rel="stylesheet" href="styles.css" />`; keep it that way.
+
+- This keeps HTML readable, gives the JS/CSS proper editor tooling, lets Prettier format them cleanly, and keeps git diffs from churning a giant HTML blob on every logic tweak.
+- External `<script type="module">` files behave identically to an inline module — same relative-import resolution (paths resolve relative to the JS file's own URL), same access to globals set by other scripts (`window.__ANTHROPIC_KEY`, the JSZip CDN global, etc.). Inline `on*="handler()"` attributes in the HTML resolve against the global scope, so module functions they call must be bridged onto `window` (see the `Object.assign(window, {…})` block at the end of `app.js`).
+- Small `<script src="…">` tags for third-party CDN libraries or the auto-generated `generator/config.js` are fine — the rule targets first-party logic and styles, not external includes or the config shim.
+
 ## Track Design Changes
 
 When making design changes, document them clearly:
