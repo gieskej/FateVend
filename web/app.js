@@ -26,6 +26,23 @@ import {
   GENRE_TTS_CONFIG,
   buildTtsConfigEntry,
 } from "./narration.js";
+import {
+  GENRE_MUSIC_PREFIX,
+  GENRE_MUSIC_TRACKS,
+  _lastMusicTrack,
+  pickGenreTrack,
+  showPlayer,
+  hidePlayer,
+  playerPrev,
+  playerNext,
+  playerStop,
+  playerPlay,
+  fadeOutAudio,
+  _bellSfx,
+  _musicSfx,
+  _slotMachinePullSfx,
+  _slotMachineReelStopSfx,
+} from "./audio.js";
 
 // ── Genre routing ─────────────────────────────────────────────────────────
 
@@ -191,7 +208,7 @@ const PACK_ASSET_BASE = {};
 // PACK_ICON_URLS[id] maps a logical icon filename ("CAT#slug.webp" or
 // "_genre.webp") → blob URL; PACK_AUDIO_URLS[id] maps a track filename → blob URL.
 const PACK_ICON_URLS = {};
-const PACK_AUDIO_URLS = {};
+export const PACK_AUDIO_URLS = {};
 
 // Build blob: URLs from a pack's extracted asset Blobs (keyed "icons/…"/"audio/…").
 // Returns a truthy marker when the pack ships its own assets. No-op for JSON packs.
@@ -749,113 +766,6 @@ function renderSlotMachine(genre) {
     )
     .join("");
   return `<div class="slot-machine" id="slot-machine">${slots}</div>`;
-}
-
-// Music prefix (by genre id) and tracks (by prefix) derived from the manifests.
-const GENRE_MUSIC_PREFIX = Object.fromEntries(
-  Object.values(GENRE_MANIFESTS).map((m) => [m.id, m.music.prefix]),
-);
-const GENRE_MUSIC_TRACKS = Object.fromEntries(
-  Object.values(GENRE_MANIFESTS).map((m) => [m.music.prefix, m.music.tracks]),
-);
-
-let _lastMusicTrack = null;
-let _playerTrackIndex = -1;
-function currentGenreTracks() {
-  const prefix = GENRE_MUSIC_PREFIX[state.currentGenre] || "fantasy";
-  return GENRE_MUSIC_TRACKS[prefix] || GENRE_MUSIC_TRACKS.fantasy;
-}
-// Resolve a BGM filename to a pack blob: URL (uploaded pack) or the served path.
-function trackSrc(file) {
-  return (
-    PACK_AUDIO_URLS[state.currentGenre]?.[file] ??
-    `audio/music/${encodeURIComponent(file)}`
-  );
-}
-function pickGenreTrack(genre) {
-  const tracks = currentGenreTracks();
-  let choice = tracks[Math.floor(Math.random() * tracks.length)];
-  if (tracks.length > 1 && choice === _lastMusicTrack) {
-    choice = tracks[(tracks.indexOf(choice) + 1) % tracks.length];
-  }
-  _lastMusicTrack = choice;
-  _playerTrackIndex = tracks.indexOf(choice);
-  return trackSrc(choice);
-}
-
-// Human-readable track title from a filename like "joseon-A Red Letter Under the Moonlight.mp3"
-function trackTitleFromFilename(filename) {
-  return filename
-    .replace(/\.mp3$/i, "")
-    .replace(/^[a-z0-9]+-/i, "")
-    .replace(/_/g, " ");
-}
-
-function updatePlayerTitle(filename) {
-  const el = document.getElementById("player-track-title");
-  if (el) el.textContent = trackTitleFromFilename(filename);
-}
-
-// Shown while the generation-phase BGM plays; swaps places with the disclaimer.
-function showPlayer(filename) {
-  updatePlayerTitle(filename);
-  document.getElementById("statusbar-player").hidden = false;
-  document.getElementById("statusbar-disclaimer").hidden = true;
-}
-function hidePlayer() {
-  document.getElementById("statusbar-player").hidden = true;
-  document.getElementById("statusbar-disclaimer").hidden = false;
-}
-
-function playerLoadIndex(idx) {
-  const tracks = currentGenreTracks();
-  if (!tracks.length) return;
-  _playerTrackIndex = ((idx % tracks.length) + tracks.length) % tracks.length;
-  const file = tracks[_playerTrackIndex];
-  _lastMusicTrack = file;
-  _musicSfx.src = trackSrc(file);
-  _musicSfx.currentTime = 0;
-  _musicSfx.volume = 1;
-  _musicSfx.play().catch(() => {});
-  updatePlayerTitle(file);
-}
-function playerPrev() {
-  playerLoadIndex(_playerTrackIndex - 1);
-}
-function playerNext() {
-  playerLoadIndex(_playerTrackIndex + 1);
-}
-function playerStop() {
-  _musicSfx.pause();
-}
-function playerPlay() {
-  _musicSfx.play().catch(() => {});
-}
-
-const _bellSfx = new Audio("audio/fx/u_omspjqprot-bell-222490.mp3");
-const _musicSfx = new Audio();
-_musicSfx.preload = "none";
-const _slotMachinePullSfx = new Audio("audio/fx/slotmachine-pull.mp3");
-const _slotMachineReelStopSfx = new Audio("audio/fx/slotmachine-reelstop.mp3");
-
-function fadeOutAudio(audio, duration = 5000) {
-  if (audio.paused) return Promise.resolve();
-  const steps = 40;
-  const decrement = audio.volume / steps;
-  return new Promise((resolve) => {
-    const timer = setInterval(() => {
-      if (audio.volume > decrement) {
-        audio.volume -= decrement;
-      } else {
-        audio.volume = 0;
-        audio.pause();
-        audio.currentTime = 0;
-        audio.volume = 1;
-        clearInterval(timer);
-        resolve();
-      }
-    }, duration / steps);
-  });
 }
 
 async function animateSlots(skeleton, genre) {
