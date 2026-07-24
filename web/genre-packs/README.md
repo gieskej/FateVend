@@ -14,8 +14,14 @@ registered into the running app. Start there before authoring a pack.
 
 - **`sample-neon-drift.json`** — a JSON-only pack (a "reskin" of Sci-Fi that
   reuses Sci-Fi's served icons via `iconBase` instead of shipping its own art).
-  The lightest-weight example; a frozen snapshot from when it was authored, not
-  a live derivation of Sci-Fi's current data.
+  The lightest-weight example. It's a snapshot of Sci-Fi's data (with Neon
+  Drift's own identity wrapper), so it must be re-snapshotted when Sci-Fi's data
+  changes — otherwise it references species/sentiments that no longer exist.
+- **`build-neon-drift-pack.mjs`** — the reproducible source for the pack above.
+  Re-run it (`node web/genre-packs/build-neon-drift-pack.mjs`) after changing the
+  Sci-Fi genre to refresh `sample-neon-drift.json` from current Sci-Fi data while
+  preserving the Neon Drift identity (id/label/voice/portraitStyle/iconBase/tts/
+  music). It's the inverse of `pack-loader.js`'s `loadPack()`.
 - **`example-pirate-cove.zip`** — a self-contained `.zip` bundling its own
   `icons/` + `audio/`, built by `build-example-pack.py`. Exercises the
   blob-URL asset path end to end.

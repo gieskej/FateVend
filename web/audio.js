@@ -7,14 +7,13 @@
 // an uploaded pack's bundled tracks. Frontend module (lives in web/, not
 // web/generator/, which is backend/CLI-shared code only).
 //
-// Circular-import note: this imports PACK_AUDIO_URLS from app.js while app.js
-// imports this module's players/SFX. Safe in ESM because every cross-module
-// reference is used at call time (playback, generation), never during module
-// evaluation.
+// PACK_AUDIO_URLS comes from the pack-assets leaf module (bundled-track blob
+// URLs for uploaded packs); app.js imports this module's players/SFX. No
+// circular dependency.
 
 import { state } from "./state.js";
 import { GENRE_MANIFESTS } from "./generator/manifests.js";
-import { PACK_AUDIO_URLS } from "./app.js";
+import { PACK_AUDIO_URLS } from "./pack-assets.js";
 
 // Music prefix (by genre id) and tracks (by prefix) derived from the manifests.
 export const GENRE_MUSIC_PREFIX = Object.fromEntries(

@@ -226,7 +226,7 @@ export const RACES = [
     nonHumanoidBody: true,
     iconPrompt:
       "sci-fi rpg icon, giant slug alien slithering down a ship corridor, antennae, eyepods, snail trail, rearing up, navel, overhead station lighting, wide shot, digital concept art",
-    iconPath: "generator/genres/sci-fi/icons/SPECIES#alien_nonhumanoid.webp",
+    iconPath: "generator/genres/sci-fi/icons/SPECIES#alien_slug.webp",
   },
   {
     id: "alien_locust",
