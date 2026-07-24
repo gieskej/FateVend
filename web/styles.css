@@ -761,6 +761,15 @@ body::before {
   color: var(--brass-dark);
   opacity: 0.4;
 }
+.slot-emoji {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4.5rem;
+  line-height: 1;
+}
 .slot.rolling .slot-window {
   border-color: var(--brass-dark);
 }

@@ -107,6 +107,90 @@ export const TENSIONS = [
       "generator/genres/historical-korea-joseon-dynasty/icons/TENSIONS#prince_target.webp",
   },
   {
+    id: "crown_prince_burden",
+    label: "Bears the Weight of Being Named Heir",
+    description:
+      "Has already been formally named Crown Prince — unlike the sibling still fighting for the title — and the crushing weight of that designation now defines every relationship, every rival, and every expectation placed on them",
+    toneTag: "dramatic",
+    requiredProfessions: ["Prince (Blood Royal)"],
+    iconPrompt:
+      "joseon dynasty korean crown prince blue robe formal investiture ceremony solemn weight of expectation court officials bowing traditional court painting",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/TENSIONS#crown_prince_burden.webp",
+  },
+  {
+    id: "reign_under_threat",
+    label: "Plots Against the Throne Itself",
+    description:
+      "Ambitious ministers, a rival claimant, or a foreign power testing weakness are actively working to undermine or replace them — the crown is a target, not just a privilege",
+    toneTag: "high_stakes",
+    requiredProfessions: ["King (Wang)"],
+    iconPrompt:
+      "joseon dynasty korean king red dragon robe throne room officials whispering conspiracy tense formal traditional court painting",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/TENSIONS#reign_under_threat.webp",
+  },
+  {
+    id: "queen_rival_consort",
+    label: "A Favored Consort Threatens Her Position",
+    description:
+      "A concubine has captured the king's attention and possibly her son's future as heir — the queen's own standing depends on staying a step ahead in a rivalry she cannot be seen fighting openly",
+    toneTag: "dramatic",
+    requiredProfessions: ["Queen (Wangbi)"],
+    iconPrompt:
+      "joseon dynasty korean queen watching rival concubine across palace courtyard tense composed rivalry traditional court painting",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/TENSIONS#queen_rival_consort.webp",
+  },
+  {
+    id: "dowager_influence",
+    label: "Wields Decisive Influence from Behind the Throne",
+    description:
+      "Controls succession and court appointments from behind the throne through her son or grandson the king — and a rival faction wants that influence for itself",
+    toneTag: "political",
+    requiredProfessions: ["Queen Dowager (Daebi)"],
+    iconPrompt:
+      "joseon dynasty korean queen dowager seated behind throne screen advising young king officials bowing traditional court painting",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/TENSIONS#dowager_influence.webp",
+  },
+  {
+    id: "concubine_rivalry",
+    label: "Competing to Have Her Son Named Heir",
+    description:
+      "Locked in a quiet, ongoing rivalry with the queen and other consorts to have her own son named heir — every gift, every audience, every whispered word is a move in that game",
+    toneTag: "dramatic",
+    requiredProfessions: ["Royal Concubine (Hugung)"],
+    iconPrompt:
+      "joseon dynasty korean royal concubine cradling infant son calculating glance toward the queen's quarters palace traditional court painting",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/TENSIONS#concubine_rivalry.webp",
+  },
+  {
+    id: "corruption_investigation",
+    label: "Sent to Investigate a Corrupt Official, Undercover",
+    description:
+      "Sent by the throne to investigate a magistrate or official suspected of corruption — undercover, alone, and one misstep away from being killed to protect the secret",
+    toneTag: "high_stakes",
+    requiredProfessions: ["Royal Inspector (Amhaeng-eosa)"],
+    iconPrompt:
+      "joseon dynasty korean royal inspector disguised scholar observing corrupt magistrate from shadows tense concealed traditional court painting",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/TENSIONS#corruption_investigation.webp",
+  },
+  {
+    id: "shadow_influence",
+    label: "Wields Real Power From a Position No One Suspects",
+    description:
+      "Has real influence over palace affairs from a position everyone underestimates — and someone has started asking uncomfortable questions about how",
+    toneTag: "dangerous",
+    requiredProfessions: ["Palace Eunuch (Naesi)"],
+    iconPrompt:
+      "joseon dynasty korean eunuch green robe standing quietly at the edge of a court audience watchful concealed influence traditional court painting",
+    iconPath:
+      "generator/genres/historical-korea-joseon-dynasty/icons/TENSIONS#shadow_influence.webp",
+  },
+  {
     id: "debt_of_favor",
     label: "Owe an Unpayable Debt of Obligation",
     description:

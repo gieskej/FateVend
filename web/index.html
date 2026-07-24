@@ -1833,6 +1833,7 @@
       function preloadGenreIcons(genre) {
         const cfg = getSlotConfig(genre);
         cfg.defs.forEach((def) => {
+          if (def.cat === "SENTIMENTS") return; // rendered as emoji text, no image to preload
           const entries = cfg.catalog[def.cat] ?? [];
           entries.forEach((entry) => {
             const img = new Image();
@@ -1890,11 +1891,10 @@
             );
             return [p.id, m?.[2] ?? p.id, p.label, m?.[1] ?? COMMON_ICON_BASE];
           });
-        const SENT_CAT = SENTIMENTS.map((s) => [
-          s.id,
-          s.iconPath?.match(/#([^.]+)\.webp$/i)?.[1] ?? s.id,
-          s.label,
-        ]);
+        // 4th tuple element: the sentiment's Unicode emoji glyph, rendered as
+        // text (not an <img>) — see the SENTIMENTS branch in renderSlotMachine()
+        // and the two reveal/spin call sites.
+        const SENT_CAT = SENTIMENTS.map((s) => [s.id, s.id, s.label, s.emoji]);
 
         const manifest = GENRE_MANIFESTS[genre] ?? GENRE_MANIFESTS["modern"];
         const m = manifest.slots;
@@ -2039,8 +2039,12 @@
     <div class="slot rolling" id="slot-${d.key}">
       <div class="slot-header">${d.header}</div>
       <div class="slot-window">
-        <img id="slot-img-${d.key}" src="" alt=""
-          onerror="this.onerror=null;this.closest('.slot-window').innerHTML='<div class=slot-placeholder>⚙</div>'">
+        ${
+          d.cat === "SENTIMENTS"
+            ? `<div id="slot-img-${d.key}" class="slot-emoji"></div>`
+            : `<img id="slot-img-${d.key}" src="" alt=""
+          onerror="this.onerror=null;this.closest('.slot-window').innerHTML='<div class=slot-placeholder>⚙</div>'">`
+        }
       </div>
       <div class="slot-label" id="slot-lbl-${d.key}"></div>
       <div class="slot-sublabel" id="slot-sublbl-${d.key}"></div>
@@ -2184,9 +2188,13 @@
 
           const showFrame = () => {
             const entry = entries[indices[def.key]];
-            img.src =
-              packIconUrl(cfg.genre, def.cat, entry[1]) ??
-              iconPath(iconBaseFor(entry, def, cfg), def.cat, entry[1]);
+            if (def.cat === "SENTIMENTS") {
+              img.textContent = entry[3] ?? "";
+            } else {
+              img.src =
+                packIconUrl(cfg.genre, def.cat, entry[1]) ??
+                iconPath(iconBaseFor(entry, def, cfg), def.cat, entry[1]);
+            }
           };
           showFrame();
 
@@ -2224,11 +2232,16 @@
 
           const sublblEl = document.getElementById(`slot-sublbl-${def.key}`);
           if (entry) {
-            const [, iconSlug, label] = entry;
-            if (img)
-              img.src =
-                packIconUrl(cfg.genre, def.cat, iconSlug) ??
-                iconPath(iconBaseFor(entry, def, cfg), def.cat, iconSlug);
+            const [, iconSlug, label, emoji] = entry;
+            if (img) {
+              if (def.cat === "SENTIMENTS") {
+                img.textContent = emoji ?? "";
+              } else {
+                img.src =
+                  packIconUrl(cfg.genre, def.cat, iconSlug) ??
+                  iconPath(iconBaseFor(entry, def, cfg), def.cat, iconSlug);
+              }
+            }
             // innerHTML (not textContent): MBTI_CAT's label embeds <br/>/<i> markup.
             // Safe — every catalog label comes from our own static data files, never user input.
             if (lblEl) lblEl.innerHTML = label;

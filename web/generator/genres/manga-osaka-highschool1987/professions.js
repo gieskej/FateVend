@@ -5,7 +5,11 @@
 //                          TAG_POOLS.professionTags keys in settings.js)
 //   economicTier         — 1-5, family/personal economic standing
 //   statAffinity         — optional; stats that make this role more likely
-//   sentiments           — pool of feelings-about-the-role drawn from randomly
+//   sentiments           — pool of feelings-about-the-role, one drawn at random
+//                          per roll; values MUST be chosen from the fixed
+//                          canonical list in common/sentiments.js — don't
+//                          invent a new one-off word, pick the closest
+//                          existing id instead (see that file's own header).
 //   iconPrompt, iconPath — slot-machine reel icon
 
 export const PROFESSIONS = [
@@ -15,7 +19,7 @@ export const PROFESSIONS = [
     industry: "Academic",
     economicTier: 3,
     statAffinity: { intelligence: 1.3, charisma: 1.2, wisdom: 1.1 },
-    sentiments: ["proud", "burned out", "quietly satisfied", "resentful"],
+    sentiments: ["proud", "exhausted", "content", "angry"],
     iconPrompt:
       "japanese class representative student 1987 standing front class roll call confident serious manga illustration",
     iconPath:
@@ -26,7 +30,7 @@ export const PROFESSIONS = [
     industry: "Academic",
     economicTier: 3,
     statAffinity: { intelligence: 1.5, wisdom: 1.2 },
-    sentiments: ["burned out", "proud", "lost", "resentful"],
+    sentiments: ["exhausted", "proud", "confused", "angry"],
     iconPrompt:
       "japanese cram school student 1987 night study desk books exam pressure stress manga illustration",
     iconPath:
@@ -37,7 +41,7 @@ export const PROFESSIONS = [
     industry: "Academic",
     economicTier: 2,
     statAffinity: { intelligence: 1.4, dexterity: 1.2 },
-    sentiments: ["passionate", "quietly satisfied", "indifferent", "proud"],
+    sentiments: ["ambitious", "content", "bored", "proud"],
     iconPrompt:
       "japanese science club student 1987 chemistry lab bubbling flask curious excited experiment manga illustration",
     iconPath:
@@ -48,7 +52,7 @@ export const PROFESSIONS = [
     industry: "Academic",
     economicTier: 3,
     statAffinity: { intelligence: 1.3, charisma: 1.2, wisdom: 1.1 },
-    sentiments: ["passionate", "proud", "burned out", "quietly satisfied"],
+    sentiments: ["ambitious", "proud", "exhausted", "content"],
     iconPrompt:
       "japanese school newspaper club student editor 1987 typewriter deadline papers deadline manga illustration",
     iconPath:
@@ -61,7 +65,7 @@ export const PROFESSIONS = [
     industry: "Athletics",
     economicTier: 3,
     statAffinity: { strength: 1.4, constitution: 1.3, dexterity: 1.2 },
-    sentiments: ["proud", "passionate", "burned out", "quietly satisfied"],
+    sentiments: ["proud", "ambitious", "exhausted", "content"],
     iconPrompt:
       "japanese high school baseball pitcher 1987 Koshien windup full power summer heat manga illustration",
     iconPath:
@@ -72,7 +76,7 @@ export const PROFESSIONS = [
     industry: "Athletics",
     economicTier: 3,
     statAffinity: { strength: 1.3, charisma: 1.2, constitution: 1.2 },
-    sentiments: ["proud", "passionate", "burned out", "quietly satisfied"],
+    sentiments: ["proud", "ambitious", "exhausted", "content"],
     iconPrompt:
       "japanese high school basketball captain 1987 court dribbling leading team confident manga illustration",
     iconPath:
@@ -83,7 +87,7 @@ export const PROFESSIONS = [
     industry: "Athletics",
     economicTier: 2,
     statAffinity: { dexterity: 1.4, constitution: 1.3 },
-    sentiments: ["passionate", "quietly satisfied", "proud", "lost"],
+    sentiments: ["ambitious", "content", "proud", "confused"],
     iconPrompt:
       "japanese high school track sprinter 1987 starting blocks explosion speed athletic manga illustration",
     iconPath:
@@ -94,7 +98,7 @@ export const PROFESSIONS = [
     industry: "Athletics",
     economicTier: 3,
     statAffinity: { wisdom: 1.3, strength: 1.2, dexterity: 1.2 },
-    sentiments: ["proud", "passionate", "quietly satisfied", "indifferent"],
+    sentiments: ["proud", "ambitious", "content", "bored"],
     iconPrompt:
       "japanese kendo club student 1987 full bogu armor sparring match dojo manga illustration",
     iconPath:
@@ -107,7 +111,7 @@ export const PROFESSIONS = [
     industry: "Arts",
     economicTier: 2,
     statAffinity: { dexterity: 1.3, charisma: 1.2 },
-    sentiments: ["passionate", "proud", "quietly satisfied", "burned out"],
+    sentiments: ["ambitious", "proud", "content", "exhausted"],
     iconPrompt:
       "japanese school band student 1987 electric guitar bass rehearsal room after school manga illustration",
     iconPath:
@@ -118,7 +122,7 @@ export const PROFESSIONS = [
     industry: "Arts",
     economicTier: 3,
     statAffinity: { charisma: 1.5, intelligence: 1.2 },
-    sentiments: ["passionate", "proud", "lost", "quietly satisfied"],
+    sentiments: ["ambitious", "proud", "confused", "content"],
     iconPrompt:
       "japanese drama club lead student 1987 stage performance spotlight expressive acting manga illustration",
     iconPath:
@@ -129,7 +133,7 @@ export const PROFESSIONS = [
     industry: "Arts",
     economicTier: 2,
     statAffinity: { dexterity: 1.4, intelligence: 1.2 },
-    sentiments: ["passionate", "quietly satisfied", "indifferent", "proud"],
+    sentiments: ["ambitious", "content", "bored", "proud"],
     iconPrompt:
       "japanese art club student 1987 canvas painting brushes after school sunlight studio manga illustration",
     iconPath:
@@ -142,7 +146,7 @@ export const PROFESSIONS = [
     industry: "Leadership",
     economicTier: 4,
     statAffinity: { charisma: 1.5, intelligence: 1.3, wisdom: 1.2 },
-    sentiments: ["proud", "burned out", "passionate", "quietly satisfied"],
+    sentiments: ["proud", "exhausted", "ambitious", "content"],
     iconPrompt:
       "japanese student council president 1987 election poster podium speech authoritative manga illustration",
     iconPath:
@@ -153,7 +157,7 @@ export const PROFESSIONS = [
     industry: "Leadership",
     economicTier: 2,
     statAffinity: { wisdom: 1.3, charisma: 1.1 },
-    sentiments: ["quietly satisfied", "burned out", "indifferent", "resentful"],
+    sentiments: ["content", "exhausted", "bored", "angry"],
     iconPrompt:
       "japanese sports club manager student 1987 towels scorebook water bottles sideline dedicated manga illustration",
     iconPath:
@@ -166,7 +170,7 @@ export const PROFESSIONS = [
     industry: "Delinquent",
     economicTier: 3,
     statAffinity: { strength: 1.4, charisma: 1.3, constitution: 1.2 },
-    sentiments: ["proud", "passionate", "resentful", "burned out"],
+    sentiments: ["proud", "ambitious", "angry", "exhausted"],
     iconPrompt:
       "japanese yankii gang leader 1987 bleached pompadour school gate confrontation intimidating sukajan manga illustration",
     iconPath:
@@ -177,7 +181,7 @@ export const PROFESSIONS = [
     industry: "Delinquent",
     economicTier: 2,
     statAffinity: { strength: 1.3, constitution: 1.2 },
-    sentiments: ["resentful", "indifferent", "passionate", "burned out"],
+    sentiments: ["angry", "bored", "ambitious", "exhausted"],
     iconPrompt:
       "japanese yankii delinquent student 1987 outside school fence cigarette sukajan bored tough manga illustration",
     iconPath:
@@ -190,7 +194,7 @@ export const PROFESSIONS = [
     industry: "Part-time",
     economicTier: 2,
     statAffinity: { constitution: 1.2, charisma: 1.1 },
-    sentiments: ["indifferent", "burned out", "quietly satisfied", "resentful"],
+    sentiments: ["bored", "exhausted", "content", "angry"],
     iconPrompt:
       "japanese convenience store konbini clerk student 1987 uniform counter late night manga illustration",
     iconPath:
@@ -201,7 +205,7 @@ export const PROFESSIONS = [
     industry: "Part-time",
     economicTier: 1,
     statAffinity: { constitution: 1.2, dexterity: 1.1 },
-    sentiments: ["indifferent", "resentful", "burned out", "lost"],
+    sentiments: ["bored", "angry", "exhausted", "confused"],
     iconPrompt:
       "japanese fast food student worker 1987 Osaka hamburger apron tired after school arubaito manga illustration",
     iconPath:
@@ -214,7 +218,7 @@ export const PROFESSIONS = [
     industry: "Faculty",
     economicTier: 4,
     statAffinity: { wisdom: 1.4, charisma: 1.2, intelligence: 1.2 },
-    sentiments: ["burned out", "passionate", "quietly satisfied", "lost"],
+    sentiments: ["exhausted", "ambitious", "content", "confused"],
     iconPrompt:
       "japanese homeroom teacher sensei 1987 chalkboard class tired knowing eyes authority manga illustration",
     iconPath:
@@ -228,7 +232,7 @@ export const PROFESSIONS = [
     economicTier: 1,
     nsfw: true,
     statAffinity: { charisma: 1.4, constitution: 1.1 },
-    sentiments: ["desperate", "resentful", "indifferent", "lost"],
+    sentiments: ["anxious", "angry", "bored", "confused"],
     iconPrompt:
       "japanese teenage girl wearing a serafuku holding money in front of a bar with a neon martini sign, manga illustration",
     iconPath:

@@ -7,7 +7,11 @@
 //   economicTier         — 1-5, social/economic standing
 //   nsfw                 — whether this profession is excluded unless the NSFW toggle is on
 //   statAffinity         — optional; stats that make this profession more likely
-//   sentiments           — pool of feelings-about-the-job drawn from randomly
+//   sentiments           — pool of feelings-about-the-job, one drawn at random
+//                          per roll; values MUST be chosen from the fixed
+//                          canonical list in common/sentiments.js — don't
+//                          invent a new one-off word, pick the closest
+//                          existing id instead (see that file's own header).
 //   iconPrompt, iconPath — slot-machine reel icon
 
 export const PROFESSIONS = [
@@ -19,7 +23,7 @@ export const PROFESSIONS = [
     economicTier: 4,
     nsfw: false,
     statAffinity: { intelligence: 1.4, wisdom: 1.2 },
-    sentiments: ["methodical", "careful", "status_conscious"],
+    sentiments: ["meticulous", "watchful", "ambitious"],
     iconPrompt:
       "ancient japanese court scribe writing brush ink silk robes asuka palace imperial decree careful literate nihon shoki yamato-e painting",
     iconPath: "generator/genres/nihongi/icons/PROFESSIONS#court_scribe.webp",
@@ -31,7 +35,7 @@ export const PROFESSIONS = [
     economicTier: 4,
     nsfw: false,
     statAffinity: { charisma: 1.3, wisdom: 1.3 },
-    sentiments: ["pragmatic", "observant", "discreet"],
+    sentiments: ["thoughtful", "watchful", "discreet"],
     iconPrompt:
       "ancient japanese palace steward managing household imperial compound directing servants logistics silk robes asuka period nihon shoki yamato-e painting",
     iconPath: "generator/genres/nihongi/icons/PROFESSIONS#palace_steward.webp",
@@ -43,7 +47,7 @@ export const PROFESSIONS = [
     economicTier: 4,
     nsfw: false,
     statAffinity: { wisdom: 1.5, intelligence: 1.2 },
-    sentiments: ["cryptic", "observant", "ritually_precise"],
+    sentiments: ["discreet", "watchful", "meticulous"],
     iconPrompt:
       "ancient japanese court diviner tortoiseshell reading omen ritual ceremonial robes asuka court prediction nihon shoki yamato-e painting",
     iconPath: "generator/genres/nihongi/icons/PROFESSIONS#court_diviner.webp",
@@ -55,7 +59,7 @@ export const PROFESSIONS = [
     economicTier: 3,
     nsfw: false,
     statAffinity: { charisma: 1.2, intelligence: 1.2 },
-    sentiments: ["dutiful", "politically_aware", "quietly_ambitious"],
+    sentiments: ["principled", "shrewd", "ambitious"],
     iconPrompt:
       "ancient japanese provincial aide official implementing edicts provincial compound away from capital practical nihon shoki yamato-e painting",
     iconPath: "generator/genres/nihongi/icons/PROFESSIONS#provincial_aide.webp",
@@ -69,7 +73,7 @@ export const PROFESSIONS = [
     economicTier: 4,
     nsfw: false,
     statAffinity: { strength: 1.4, constitution: 1.3 },
-    sentiments: ["loyal", "alert", "proud"],
+    sentiments: ["devout", "watchful", "proud"],
     iconPrompt:
       "ancient japanese imperial guard asuka palace protective armor weapon ceremonial formal loyal nihon shoki yamato-e painting",
     iconPath: "generator/genres/nihongi/icons/PROFESSIONS#imperial_guard.webp",
@@ -81,7 +85,7 @@ export const PROFESSIONS = [
     economicTier: 3,
     nsfw: false,
     statAffinity: { strength: 1.4, dexterity: 1.2 },
-    sentiments: ["loyal", "direct", "proud"],
+    sentiments: ["devout", "commanding", "proud"],
     iconPrompt:
       "ancient japanese clan warrior hereditary military retainer armor sword bow provincial nihon shoki yamato-e painting",
     iconPath: "generator/genres/nihongi/icons/PROFESSIONS#clan_warrior.webp",
@@ -93,7 +97,7 @@ export const PROFESSIONS = [
     economicTier: 2,
     nsfw: false,
     statAffinity: { constitution: 1.3, strength: 1.3 },
-    sentiments: ["stoic", "bored", "homesick"],
+    sentiments: ["principled", "bored", "yearning"],
     iconPrompt:
       "ancient japanese fortress garrison soldier watchpost provincial border duty spear rough gear nihon shoki yamato-e painting",
     iconPath:
@@ -108,7 +112,7 @@ export const PROFESSIONS = [
     economicTier: 3,
     nsfw: false,
     statAffinity: { wisdom: 1.5, intelligence: 1.3 },
-    sentiments: ["contemplative", "learned", "diplomatic"],
+    sentiments: ["thoughtful", "thoughtful", "thoughtful"],
     iconPrompt:
       "ancient japanese buddhist monk newly arrived continental faith robes scriptures asuka period temple incense nihon shoki yamato-e painting",
     iconPath: "generator/genres/nihongi/icons/PROFESSIONS#buddhist_monk.webp",
@@ -120,7 +124,7 @@ export const PROFESSIONS = [
     economicTier: 3,
     nsfw: false,
     statAffinity: { wisdom: 1.4, charisma: 1.2 },
-    sentiments: ["traditional", "proud", "skeptical"],
+    sentiments: ["principled", "proud", "suspicious"],
     iconPrompt:
       "ancient japanese kami shrine priest hereditary custodian ritual ceremony white robes sacred forest nihon shoki yamato-e painting",
     iconPath: "generator/genres/nihongi/icons/PROFESSIONS#kami_priest.webp",
@@ -133,7 +137,7 @@ export const PROFESSIONS = [
     economicTier: 3,
     nsfw: false,
     statAffinity: { charisma: 1.3, wisdom: 1.4 },
-    sentiments: ["receptive", "otherworldly", "practical"],
+    sentiments: ["welcoming", "astonished", "thoughtful"],
     iconPrompt:
       "ancient japanese miko shrine maiden spirit medium ritual dance white red robes sacred forest oracle nihon shoki yamato-e painting",
     iconPath: "generator/genres/nihongi/icons/PROFESSIONS#miko.webp",
@@ -145,7 +149,7 @@ export const PROFESSIONS = [
     economicTier: 4,
     nsfw: false,
     statAffinity: { intelligence: 1.5, wisdom: 1.3 },
-    sentiments: ["ritually_precise", "worldly", "calculating"],
+    sentiments: ["meticulous", "confident", "shrewd"],
     iconPrompt:
       "ancient japanese onmyoji yin yang diviner continental cosmology calendar astronomical calculation court asuka period nihon shoki yamato-e painting",
     iconPath: "generator/genres/nihongi/icons/PROFESSIONS#onmyoji.webp",
@@ -159,7 +163,7 @@ export const PROFESSIONS = [
     economicTier: 3,
     nsfw: false,
     statAffinity: { intelligence: 1.5, wisdom: 1.2 },
-    sentiments: ["analytical", "worldly", "adaptable"],
+    sentiments: ["thoughtful", "confident", "confident"],
     iconPrompt:
       "ancient japanese court physician baekje continental medicine herbs diagnosis asuka court newcomer learning nihon shoki yamato-e painting",
     iconPath: "generator/genres/nihongi/icons/PROFESSIONS#court_physician.webp",
@@ -171,7 +175,7 @@ export const PROFESSIONS = [
     economicTier: 4,
     nsfw: false,
     statAffinity: { intelligence: 1.5, wisdom: 1.3 },
-    sentiments: ["methodical", "visionary", "observant"],
+    sentiments: ["meticulous", "ambitious", "watchful"],
     iconPrompt:
       "ancient japanese astronomer scribe celestial observation records calendar omen stars court asuka period nihon shoki yamato-e painting",
     iconPath:
@@ -186,7 +190,7 @@ export const PROFESSIONS = [
     economicTier: 3,
     nsfw: false,
     statAffinity: { dexterity: 1.4, intelligence: 1.2 },
-    sentiments: ["patient", "proud", "perceptive"],
+    sentiments: ["content", "proud", "watchful"],
     iconPrompt:
       "ancient japanese master potter fine ceramics court ritual vessel continental technique craft guild nihon shoki yamato-e painting",
     iconPath: "generator/genres/nihongi/icons/PROFESSIONS#master_potter.webp",
@@ -198,7 +202,7 @@ export const PROFESSIONS = [
     economicTier: 3,
     nsfw: false,
     statAffinity: { dexterity: 1.4, wisdom: 1.2 },
-    sentiments: ["methodical", "understated", "resigned"],
+    sentiments: ["meticulous", "discreet", "disappointed"],
     iconPrompt:
       "ancient japanese silk weaver loom continental technique craft guild prestige cloth production nihon shoki yamato-e painting",
     iconPath: "generator/genres/nihongi/icons/PROFESSIONS#silk_weaver.webp",
@@ -210,7 +214,7 @@ export const PROFESSIONS = [
     economicTier: 3,
     nsfw: false,
     statAffinity: { strength: 1.3, dexterity: 1.3 },
-    sentiments: ["direct", "self_sufficient", "indispensable"],
+    sentiments: ["commanding", "confident", "confident"],
     iconPrompt:
       "ancient japanese forge master smithing iron weapons mirrors agricultural tools fire anvil craft guild nihon shoki yamato-e painting",
     iconPath: "generator/genres/nihongi/icons/PROFESSIONS#forge_master.webp",
@@ -224,7 +228,7 @@ export const PROFESSIONS = [
     economicTier: 3,
     nsfw: false,
     statAffinity: { wisdom: 1.3, charisma: 1.2 },
-    sentiments: ["pragmatic", "protective", "mediating"],
+    sentiments: ["thoughtful", "warm", "thoughtful"],
     iconPrompt:
       "ancient japanese village chief mediating rice paddy community provincial administration mediator respected elder nihon shoki folk painting",
     iconPath: "generator/genres/nihongi/icons/PROFESSIONS#village_chief.webp",
@@ -236,7 +240,7 @@ export const PROFESSIONS = [
     economicTier: 2,
     nsfw: false,
     statAffinity: { constitution: 1.3, strength: 1.2 },
-    sentiments: ["seasonal", "community_bound", "pragmatic"],
+    sentiments: ["content", "warm", "thoughtful"],
     iconPrompt:
       "ancient japanese rice farmer paddy field planting harvest seasonal rural tami commoner plain clothing nihon shoki folk painting",
     iconPath: "generator/genres/nihongi/icons/PROFESSIONS#rice_farmer.webp",
@@ -250,7 +254,7 @@ export const PROFESSIONS = [
     economicTier: 3,
     nsfw: false,
     statAffinity: { charisma: 1.3, intelligence: 1.2 },
-    sentiments: ["alert", "politically_aware", "perceptive"],
+    sentiments: ["watchful", "shrewd", "watchful"],
     iconPrompt:
       "ancient japanese harbor official continental ship receiving tribute diplomatic goods naniwa port asuka period nihon shoki yamato-e painting",
     iconPath: "generator/genres/nihongi/icons/PROFESSIONS#harbor_official.webp",
@@ -262,7 +266,7 @@ export const PROFESSIONS = [
     economicTier: 2,
     nsfw: false,
     statAffinity: { charisma: 1.3, dexterity: 1.2 },
-    sentiments: ["adaptable", "observant", "perceptive"],
+    sentiments: ["confident", "watchful", "watchful"],
     iconPrompt:
       "ancient japanese traveling merchant goods pack provincial roads moving between markets ancient japan nihon shoki folk painting",
     iconPath:
@@ -277,7 +281,7 @@ export const PROFESSIONS = [
     economicTier: 3,
     nsfw: true,
     statAffinity: { charisma: 1.5, dexterity: 1.3 },
-    sentiments: ["graceful", "perceptive", "calculating"],
+    sentiments: ["content", "watchful", "shrewd"],
     iconPrompt:
       "ancient japanese court entertainer unebi music dance elegant silk robes banquet clan lord patron intimate performance nihon shoki yamato-e painting",
     iconPath:

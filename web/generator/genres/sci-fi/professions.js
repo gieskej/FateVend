@@ -1,7 +1,10 @@
 // genres/sci-fi/professions.js
 // Each profession carries: title, industry, economicTier (1-5),
 // statAffinity (optional — stats that make this profession more likely),
-// sentiments (pool to draw from randomly)
+// sentiments (pool of feelings-about-the-job, one drawn at random per roll;
+//   values MUST be chosen from the fixed canonical list in
+//   common/sentiments.js — don't invent a new one-off word, pick the closest
+//   existing id instead, see that file's own header)
 //
 // Economic tiers:
 //   1 = below the line / grey-market survival
@@ -22,8 +25,6 @@
 //   for a character older than this. Currently only Student (a role you age
 //   out of, unlike the minAge entries above, which you age into).
 
-import { SENTIMENTS } from "../../common/sentiments.js";
-
 export const PROFESSIONS = [
   // ── CREW & HAULERS ────────────────────────────────────────────────────────
   {
@@ -31,7 +32,7 @@ export const PROFESSIONS = [
     industry: "Shipping & transit",
     economicTier: 3,
     statAffinity: { dexterity: 1.4, wisdom: 1.2 },
-    sentiments: ["proud", "quietly satisfied", "burned out", "indifferent"],
+    sentiments: ["proud", "content", "exhausted", "bored"],
     iconPrompt:
       "A seasoned freighter pilot navigating through asteroid fields, wearing a weathered flight suit and goggles.",
     iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#freighter_pilot.webp",
@@ -41,7 +42,7 @@ export const PROFESSIONS = [
     industry: "Shipping & transit",
     economicTier: 3,
     statAffinity: { intelligence: 1.3, dexterity: 1.3 },
-    sentiments: ["proud", "passionate", "quietly satisfied", "burned out"],
+    sentiments: ["proud", "ambitious", "content", "exhausted"],
     iconPrompt:
       "A ship engineer working on a spaceship engine, wearing a mechanic suit with tools.",
     iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#ship_engineer.webp",
@@ -51,7 +52,7 @@ export const PROFESSIONS = [
     industry: "Logistics",
     economicTier: 2,
     statAffinity: { constitution: 1.3, strength: 1.2 },
-    sentiments: ["resentful", "indifferent", "burned out", "desperate"],
+    sentiments: ["angry", "bored", "exhausted", "anxious"],
     iconPrompt:
       "A cargo hauler loading goods onto a freighter, wearing a utilitarian work suit.",
     iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#cargo_hauler.webp",
@@ -61,7 +62,7 @@ export const PROFESSIONS = [
     industry: "Shipping & transit",
     economicTier: 3,
     statAffinity: { intelligence: 1.4, wisdom: 1.2 },
-    sentiments: ["proud", "quietly satisfied", "indifferent", "passionate"],
+    sentiments: ["proud", "content", "bored", "ambitious"],
     iconPrompt:
       "A navigation specialist plotting a course through a star map, wearing a command uniform with a headset.",
     iconPath:
@@ -72,7 +73,7 @@ export const PROFESSIONS = [
     industry: "Transit",
     economicTier: 2,
     statAffinity: { dexterity: 1.2 },
-    sentiments: ["indifferent", "burned out", "quietly satisfied", "resentful"],
+    sentiments: ["bored", "exhausted", "content", "angry"],
     iconPrompt:
       "A shuttle operator guiding a small spacecraft through docking ports, wearing a transit uniform.",
     iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#shuttle_operator.webp",
@@ -84,7 +85,7 @@ export const PROFESSIONS = [
     industry: "Security",
     economicTier: 3,
     statAffinity: { strength: 1.5, constitution: 1.3 },
-    sentiments: ["proud", "indifferent", "resentful", "burned out"],
+    sentiments: ["proud", "bored", "angry", "exhausted"],
     iconPrompt:
       "A corporate mercenary in a tactical uniform, carrying a high-tech weapon.",
     iconPath:
@@ -95,7 +96,7 @@ export const PROFESSIONS = [
     industry: "Security",
     economicTier: 3,
     statAffinity: { strength: 1.3, dexterity: 1.2, wisdom: 1.2 },
-    sentiments: ["proud", "indifferent", "passionate", "quietly satisfied"],
+    sentiments: ["proud", "bored", "ambitious", "content"],
     iconPrompt: "A bounty hunter in a rugged suit, holding a tracking device.",
     iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#bounty_hunter.webp",
   },
@@ -104,7 +105,7 @@ export const PROFESSIONS = [
     industry: "Security",
     economicTier: 2,
     statAffinity: { strength: 1.2, constitution: 1.2 },
-    sentiments: ["indifferent", "burned out", "resentful", "quietly satisfied"],
+    sentiments: ["bored", "exhausted", "angry", "content"],
     iconPrompt:
       "A station security officer on patrol, wearing a standard security uniform with a radio.",
     iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#station_security.webp",
@@ -115,7 +116,7 @@ export const PROFESSIONS = [
     economicTier: 2,
     minAge: 26,
     statAffinity: { strength: 1.4, constitution: 1.3, wisdom: 1.1 },
-    sentiments: ["lost", "proud", "resentful", "burned out"],
+    sentiments: ["confused", "proud", "angry", "exhausted"],
     iconPrompt:
       "A military veteran in a worn uniform, carrying a service medal.",
     iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#military_veteran.webp",
@@ -125,7 +126,7 @@ export const PROFESSIONS = [
     industry: "Medical",
     economicTier: 3,
     statAffinity: { wisdom: 1.3, dexterity: 1.3, constitution: 1.2 },
-    sentiments: ["proud", "burned out", "passionate", "quietly satisfied"],
+    sentiments: ["proud", "exhausted", "ambitious", "content"],
     iconPrompt:
       "A combat medic in a medical uniform, tending to a wounded soldier.",
     iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#combat_medic.webp",
@@ -137,7 +138,7 @@ export const PROFESSIONS = [
     industry: "Criminal",
     economicTier: 3,
     statAffinity: { intelligence: 1.6, dexterity: 1.2 },
-    sentiments: ["passionate", "proud", "indifferent", "quietly satisfied"],
+    sentiments: ["ambitious", "proud", "bored", "content"],
     iconPrompt: "A hacker in a dark room, surrounded by screens and cables.",
     iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#hacker_netrunner.webp",
   },
@@ -146,7 +147,7 @@ export const PROFESSIONS = [
     industry: "Technology",
     economicTier: 4,
     statAffinity: { intelligence: 1.5, wisdom: 1.2 },
-    sentiments: ["passionate", "proud", "indifferent", "burned out"],
+    sentiments: ["ambitious", "proud", "bored", "exhausted"],
     iconPrompt:
       "An AI technician working on a holographic interface, wearing a tech uniform.",
     iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#ai_technician.webp",
@@ -156,7 +157,7 @@ export const PROFESSIONS = [
     industry: "Information",
     economicTier: 4,
     statAffinity: { intelligence: 1.4, charisma: 1.3, wisdom: 1.1 },
-    sentiments: ["quietly satisfied", "indifferent", "proud", "burned out"],
+    sentiments: ["content", "bored", "proud", "exhausted"],
     iconPrompt: "A data broker in a sleek office, surrounded by data streams.",
     iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#data_broker.webp",
   },
@@ -165,12 +166,7 @@ export const PROFESSIONS = [
     industry: "Technology",
     economicTier: 4,
     statAffinity: { intelligence: 1.4, dexterity: 1.1 },
-    sentiments: [
-      "indifferent",
-      "quietly satisfied",
-      "burned out",
-      "passionate",
-    ],
+    sentiments: ["bored", "content", "exhausted", "ambitious"],
     iconPrompt:
       "A systems analyst working at a console, reviewing data streams.",
     iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#systems_analyst.webp",
@@ -180,7 +176,7 @@ export const PROFESSIONS = [
     industry: "Communications",
     economicTier: 3,
     statAffinity: { intelligence: 1.2, dexterity: 1.2 },
-    sentiments: ["indifferent", "burned out", "quietly satisfied", "resentful"],
+    sentiments: ["bored", "exhausted", "content", "angry"],
     iconPrompt:
       "A comm tech working on communication equipment, wearing a tech uniform.",
     iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#comm_tech.webp",
@@ -190,13 +186,7 @@ export const PROFESSIONS = [
     industry: "Entertainment",
     economicTier: 3,
     statAffinity: { intelligence: 1.1, dexterity: 1.2 },
-    sentiments: [
-      "indifferent",
-      "burned out",
-      "resentful",
-      "ashamed",
-      "desperate",
-    ],
+    sentiments: ["bored", "exhausted", "angry", "guilty", "anxious"],
     iconPrompt:
       "A maintenance tech cleaning a pleasure droid, wearing a tech uniform and rubber gloves, disgusted.",
     iconPath:
@@ -209,7 +199,7 @@ export const PROFESSIONS = [
     industry: "Medical",
     economicTier: 3,
     statAffinity: { intelligence: 1.4, dexterity: 1.3, wisdom: 1.2 },
-    sentiments: ["passionate", "burned out", "proud", "resentful"],
+    sentiments: ["ambitious", "exhausted", "proud", "angry"],
     iconPrompt:
       "A street doc working in a makeshift clinic, wearing a medical uniform.",
     iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#street_doc.webp",
@@ -220,7 +210,7 @@ export const PROFESSIONS = [
     economicTier: 4,
     minAge: 24,
     statAffinity: { intelligence: 1.4, wisdom: 1.3 },
-    sentiments: ["indifferent", "quietly satisfied", "burned out", "proud"],
+    sentiments: ["bored", "content", "exhausted", "proud"],
     iconPrompt:
       "A corporate physician in a sleek office, wearing a medical uniform.",
     iconPath:
@@ -232,7 +222,7 @@ export const PROFESSIONS = [
     economicTier: 4,
     minAge: 24,
     statAffinity: { intelligence: 1.5, dexterity: 1.2 },
-    sentiments: ["passionate", "proud", "indifferent", "quietly satisfied"],
+    sentiments: ["ambitious", "proud", "bored", "content"],
     iconPrompt: "A gene-tech working on genetic material, wearing a lab coat.",
     iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#gene_tech.webp",
   },
@@ -242,12 +232,7 @@ export const PROFESSIONS = [
     economicTier: 4,
     minAge: 24,
     statAffinity: { wisdom: 1.5, intelligence: 1.3 },
-    sentiments: [
-      "passionate",
-      "burned out",
-      "quietly satisfied",
-      "indifferent",
-    ],
+    sentiments: ["ambitious", "exhausted", "content", "bored"],
     iconPrompt: "A psych-tech working on a patient, wearing a medical uniform.",
     iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#psych_tech.webp",
   },
@@ -258,7 +243,7 @@ export const PROFESSIONS = [
     industry: "Criminal",
     economicTier: 3,
     statAffinity: { dexterity: 1.3, charisma: 1.2, wisdom: 1.1 },
-    sentiments: ["proud", "indifferent", "quietly satisfied", "desperate"],
+    sentiments: ["proud", "bored", "content", "anxious"],
     iconPrompt: "A smuggler in a dark room, surrounded by cargo.",
     iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#smuggler.webp",
   },
@@ -267,7 +252,7 @@ export const PROFESSIONS = [
     industry: "Criminal",
     economicTier: 3,
     statAffinity: { charisma: 1.4, intelligence: 1.2 },
-    sentiments: ["proud", "quietly satisfied", "indifferent", "desperate"],
+    sentiments: ["proud", "content", "bored", "anxious"],
     iconPrompt: "A black-market dealer in a dark room, surrounded by goods.",
     iconPath:
       "generator/genres/sci-fi/icons/PROFESSIONS#black_market_dealer.webp",
@@ -278,7 +263,7 @@ export const PROFESSIONS = [
     economicTier: 4,
     minAge: 24,
     statAffinity: { charisma: 1.4, intelligence: 1.3, wisdom: 1.2 },
-    sentiments: ["indifferent", "quietly satisfied", "burned out", "proud"],
+    sentiments: ["bored", "content", "exhausted", "proud"],
     iconPrompt: "A corporate spy in a dark room, surrounded by documents.",
     iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#corporate_spy.webp",
   },
@@ -288,7 +273,7 @@ export const PROFESSIONS = [
     economicTier: 4,
     minAge: 26,
     statAffinity: { intelligence: 1.4, charisma: 1.4, wisdom: 1.2 },
-    sentiments: ["proud", "quietly satisfied", "indifferent"],
+    sentiments: ["proud", "content", "bored"],
     iconPrompt: "A fixer in a dark room, surrounded by documents.",
     iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#fixer.webp",
   },
@@ -297,7 +282,7 @@ export const PROFESSIONS = [
     industry: "Criminal",
     economicTier: 3,
     statAffinity: { intelligence: 1.3, dexterity: 1.2 },
-    sentiments: ["proud", "passionate", "indifferent", "desperate"],
+    sentiments: ["proud", "ambitious", "bored", "anxious"],
     iconPrompt:
       "An augmentation bootlegger in a dark room, surrounded by augmented parts.",
     iconPath:
@@ -308,7 +293,7 @@ export const PROFESSIONS = [
     industry: "Criminal",
     economicTier: 3,
     statAffinity: { dexterity: 1.4, intelligence: 1.3 },
-    sentiments: ["indifferent", "quietly satisfied", "ashamed", "proud"],
+    sentiments: ["bored", "content", "guilty", "proud"],
     iconPrompt: "A memory thief in a dark room, surrounded by memory chips.",
     iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#memory_thief.webp",
   },
@@ -317,7 +302,7 @@ export const PROFESSIONS = [
     industry: "Criminal",
     economicTier: 2,
     statAffinity: { strength: 1.5, constitution: 1.3 },
-    sentiments: ["proud", "indifferent", "resentful", "ashamed"],
+    sentiments: ["proud", "bored", "angry", "guilty"],
     iconPrompt:
       "An undercity enforcer in a dark room, surrounded by criminals.",
     iconPath:
@@ -331,7 +316,7 @@ export const PROFESSIONS = [
     economicTier: 4,
     minAge: 22,
     statAffinity: { charisma: 1.3, intelligence: 1.2 },
-    sentiments: ["indifferent", "burned out", "quietly satisfied", "resentful"],
+    sentiments: ["bored", "exhausted", "content", "angry"],
     iconPrompt:
       "A mid-level corporate suit in a dark room, surrounded by documents.",
     iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#corporate_suit.webp",
@@ -342,7 +327,7 @@ export const PROFESSIONS = [
     economicTier: 4,
     minAge: 24,
     statAffinity: { wisdom: 1.3, intelligence: 1.2 },
-    sentiments: ["indifferent", "burned out", "quietly satisfied", "ashamed"],
+    sentiments: ["bored", "exhausted", "content", "guilty"],
     iconPrompt: "A compliance officer in a dark room, surrounded by documents.",
     iconPath:
       "generator/genres/sci-fi/icons/PROFESSIONS#compliance_officer.webp",
@@ -352,7 +337,7 @@ export const PROFESSIONS = [
     industry: "Corporate",
     economicTier: 4,
     statAffinity: { charisma: 1.5, intelligence: 1.2 },
-    sentiments: ["indifferent", "ashamed", "quietly satisfied", "burned out"],
+    sentiments: ["bored", "guilty", "content", "exhausted"],
     iconPrompt:
       "A propaganda specialist in a dark room, surrounded by propaganda materials.",
     iconPath:
@@ -366,7 +351,7 @@ export const PROFESSIONS = [
     economicTier: 3,
     minAge: 22,
     statAffinity: { intelligence: 1.4, wisdom: 1.2, constitution: 1.1 },
-    sentiments: ["passionate", "proud", "burned out", "quietly satisfied"],
+    sentiments: ["ambitious", "proud", "exhausted", "content"],
     iconPrompt:
       "A terraforming engineer in a dark room, surrounded by engineering tools.",
     iconPath:
@@ -378,7 +363,7 @@ export const PROFESSIONS = [
     economicTier: 3,
     minAge: 24,
     statAffinity: { intelligence: 1.5, wisdom: 1.3 },
-    sentiments: ["passionate", "proud", "indifferent", "quietly satisfied"],
+    sentiments: ["ambitious", "proud", "bored", "content"],
     iconPrompt:
       "A xenobiologist in a dark room, surrounded by biological samples.",
     iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#xenobiologist.webp",
@@ -388,7 +373,7 @@ export const PROFESSIONS = [
     industry: "Exploration",
     economicTier: 3,
     statAffinity: { constitution: 1.3, wisdom: 1.2, dexterity: 1.1 },
-    sentiments: ["passionate", "proud", "indifferent", "burned out"],
+    sentiments: ["ambitious", "proud", "bored", "exhausted"],
     iconPrompt:
       "A deep-space scout in a dark room, surrounded by exploration tools.",
     iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#deep_space_scout.webp",
@@ -398,7 +383,7 @@ export const PROFESSIONS = [
     industry: "Settlement",
     economicTier: 2,
     statAffinity: { constitution: 1.3, strength: 1.2, wisdom: 1.1 },
-    sentiments: ["proud", "desperate", "quietly satisfied", "resentful"],
+    sentiments: ["proud", "anxious", "content", "angry"],
     iconPrompt: "A colonist in a dark room, surrounded by settlement tools.",
     iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#colonist.webp",
   },
@@ -407,7 +392,7 @@ export const PROFESSIONS = [
     industry: "Salvage",
     economicTier: 2,
     statAffinity: { dexterity: 1.3, wisdom: 1.2, constitution: 1.1 },
-    sentiments: ["indifferent", "quietly satisfied", "desperate", "proud"],
+    sentiments: ["bored", "content", "anxious", "proud"],
     iconPrompt: "A salvager in a dark room, surrounded by salvaged items.",
     iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#salvager.webp",
   },
@@ -418,7 +403,7 @@ export const PROFESSIONS = [
     industry: "Creative",
     economicTier: 2,
     statAffinity: { intelligence: 1.3, charisma: 1.3 },
-    sentiments: ["passionate", "desperate", "burned out", "quietly satisfied"],
+    sentiments: ["ambitious", "anxious", "exhausted", "content"],
     iconPrompt: "A netspace artist in a dark room, surrounded by digital art.",
     iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#netspace_artist.webp",
   },
@@ -427,7 +412,7 @@ export const PROFESSIONS = [
     industry: "Media",
     economicTier: 2,
     statAffinity: { intelligence: 1.3, charisma: 1.2, wisdom: 1.2 },
-    sentiments: ["passionate", "resentful", "burned out", "proud"],
+    sentiments: ["ambitious", "angry", "exhausted", "proud"],
     iconPrompt:
       "An underground journalist in a dark room, surrounded by documents.",
     iconPath:
@@ -441,7 +426,7 @@ export const PROFESSIONS = [
     economicTier: 2,
     maxAge: 25,
     statAffinity: { intelligence: 1.2, wisdom: 1.1 },
-    sentiments: ["passionate", "burned out", "desperate", "quietly satisfied"],
+    sentiments: ["ambitious", "exhausted", "anxious", "content"],
     iconPrompt:
       "A student in a lecture hall or study pod, surrounded by holographic textbooks and datapads.",
     iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#student.webp",
@@ -454,7 +439,7 @@ export const PROFESSIONS = [
     economicTier: 5,
     minAge: 32,
     statAffinity: { charisma: 1.4, intelligence: 1.3, wisdom: 1.2 },
-    sentiments: ["proud", "indifferent", "quietly satisfied", "burned out"],
+    sentiments: ["proud", "bored", "content", "exhausted"],
     iconPrompt:
       "A megacorp executive in a dark room, surrounded by corporate documents.",
     iconPath:
@@ -466,7 +451,7 @@ export const PROFESSIONS = [
     economicTier: 5,
     minAge: 30,
     statAffinity: { intelligence: 1.6, wisdom: 1.2 },
-    sentiments: ["passionate", "proud", "indifferent", "quietly satisfied"],
+    sentiments: ["ambitious", "proud", "bored", "content"],
     iconPrompt: "An AI architect in a dark room, surrounded by AI components.",
     iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#ai_architect.webp",
   },
@@ -476,7 +461,7 @@ export const PROFESSIONS = [
     economicTier: 5,
     minAge: 32,
     statAffinity: { charisma: 1.5, intelligence: 1.3 },
-    sentiments: ["proud", "indifferent", "quietly satisfied"],
+    sentiments: ["proud", "bored", "content"],
     iconPrompt:
       "An orbital mogul in a dark room, surrounded by orbital structures.",
     iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#orbital_mogul.webp",
@@ -488,7 +473,7 @@ export const PROFESSIONS = [
     economicTier: 2,
     nsfw: true,
     statAffinity: { charisma: 1.4, intelligence: 0.9, wisdom: 0.8 },
-    sentiments: ["proud", "indifferent", "quietly satisfied", "burned out"],
+    sentiments: ["proud", "bored", "content", "exhausted"],
     iconPrompt:
       "A female sex worker wearing a skimpy outfit outside a dimly lit club, surrounded by neon lights.",
     iconPath: "generator/genres/sci-fi/icons/PROFESSIONS#sex_worker.webp",

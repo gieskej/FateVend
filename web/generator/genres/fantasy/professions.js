@@ -15,8 +15,11 @@
 //   ship command, or an established, trusted senior post (Court Wizard,
 //   Inquisitor, Royal Advisor, Spymaster, Crime Lord). Deliberately NOT
 //   added elsewhere — young mage/warrior prodigies fit the genre fine.
-
-import { SENTIMENTS } from "../../common/sentiments.js";
+//
+// sentiments — pool of feelings-about-the-job, one drawn at random per roll;
+//   values MUST be chosen from the fixed canonical list in
+//   common/sentiments.js — don't invent a new one-off word, pick the closest
+//   existing id instead (see that file's own header).
 
 export const PROFESSIONS = [
   // ── MARTIAL ───────────────────────────────────────────────────────────────
@@ -25,7 +28,7 @@ export const PROFESSIONS = [
     industry: "Martial",
     economicTier: 3,
     statAffinity: { strength: 1.3, constitution: 1.2 },
-    sentiments: ["proud", "burned out", "resentful", "quietly satisfied"],
+    sentiments: ["proud", "exhausted", "angry", "content"],
     iconPrompt:
       "Fantasy RPG icon. An armored city guard standing at a gatehouse archway, spear in hand, surveying the street below with a tired but watchful eye, the city walls looming behind them.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#city_guard.webp",
@@ -35,7 +38,7 @@ export const PROFESSIONS = [
     industry: "Martial",
     economicTier: 3,
     statAffinity: { strength: 1.4, constitution: 1.3, dexterity: 1.1 },
-    sentiments: ["indifferent", "proud", "burned out", "desperate"],
+    sentiments: ["bored", "proud", "exhausted", "anxious"],
     iconPrompt:
       "Fantasy RPG icon. A battle-scarred mercenary in mismatched armor, a fraying company banner behind them, coin purse at their belt, appraising the next contract with professional indifference.",
     iconPath:
@@ -46,7 +49,7 @@ export const PROFESSIONS = [
     industry: "Martial",
     economicTier: 4,
     statAffinity: { strength: 1.4, charisma: 1.2, wisdom: 1.1 },
-    sentiments: ["proud", "quietly satisfied", "burned out", "resentful"],
+    sentiments: ["proud", "content", "exhausted", "angry"],
     iconPrompt:
       "Fantasy RPG icon. A fully armored knight kneeling before a noble lord on a dais, receiving a blessed sword, heraldic banners hanging from stone pillars in a great hall.",
     iconPath:
@@ -58,7 +61,7 @@ export const PROFESSIONS = [
     economicTier: 2,
     minAge: 24,
     statAffinity: { strength: 1.3, wisdom: 1.1 },
-    sentiments: ["ashamed", "resentful", "desperate", "quietly satisfied"],
+    sentiments: ["guilty", "angry", "anxious", "content"],
     iconPrompt:
       "Fantasy RPG icon. A knight in dented, unpolished armor sitting alone at a tavern table, a tarnished heraldic emblem visible on their chest, staring into an untouched cup.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#disgraced_knight.webp",
@@ -68,7 +71,7 @@ export const PROFESSIONS = [
     industry: "Martial",
     economicTier: 2,
     statAffinity: { strength: 1.5, dexterity: 1.2 },
-    sentiments: ["indifferent", "proud", "burned out"],
+    sentiments: ["bored", "proud", "exhausted"],
     iconPrompt:
       "Fantasy RPG icon. A lean fighter for hire leaning against a market square wall, sword casually visible at their hip, watching passersby with calculating eyes, no allegiance to anyone.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#sellsword.webp",
@@ -78,7 +81,7 @@ export const PROFESSIONS = [
     industry: "Martial",
     economicTier: 3,
     statAffinity: { strength: 1.3, dexterity: 1.3, wisdom: 1.1 },
-    sentiments: ["indifferent", "passionate", "quietly satisfied"],
+    sentiments: ["bored", "ambitious", "content"],
     iconPrompt:
       "Fantasy RPG icon. A cloaked bounty hunter studying a wanted poster on a tavern wall, manacles and a chain visible at their belt, patient and methodical, already planning the route.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#bounty_hunter.webp",
@@ -88,7 +91,7 @@ export const PROFESSIONS = [
     industry: "Martial",
     economicTier: 2,
     statAffinity: { strength: 1.5, constitution: 1.4 },
-    sentiments: ["proud", "desperate", "burned out", "resentful"],
+    sentiments: ["proud", "anxious", "exhausted", "angry"],
     iconPrompt:
       "Fantasy RPG icon. A gladiator standing on blood-stained sand, weapons raised, the roaring crowd of a stone colosseum surrounding them, sweat and grit on their face, surviving on skill alone.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#arena_fighter.webp",
@@ -98,7 +101,7 @@ export const PROFESSIONS = [
     industry: "Martial",
     economicTier: 3,
     statAffinity: { strength: 1.3, constitution: 1.2, wisdom: 1.1 },
-    sentiments: ["indifferent", "quietly satisfied", "proud"],
+    sentiments: ["bored", "content", "proud"],
     iconPrompt:
       "Fantasy RPG icon. A broad-shouldered bodyguard standing half a step behind a wealthy patron in a crowded market, hand resting on their weapon's pommel, eyes scanning the crowd for threats.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#bodyguard.webp",
@@ -110,7 +113,7 @@ export const PROFESSIONS = [
     industry: "Criminal",
     economicTier: 2,
     statAffinity: { dexterity: 1.5, intelligence: 1.2 },
-    sentiments: ["proud", "desperate", "indifferent", "passionate"],
+    sentiments: ["proud", "anxious", "bored", "ambitious"],
     iconPrompt:
       "Fantasy RPG icon. A nimble thief perched on a rooftop at night, reaching through a shuttered window toward a glinting jewel inside, the moonlit city spread out below them.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#thief.webp",
@@ -120,7 +123,7 @@ export const PROFESSIONS = [
     industry: "Criminal",
     economicTier: 3,
     statAffinity: { charisma: 1.3, intelligence: 1.2 },
-    sentiments: ["quietly satisfied", "indifferent", "proud"],
+    sentiments: ["content", "bored", "proud"],
     iconPrompt:
       "Fantasy RPG icon. A fence examining a stolen artifact under candlelight in a cluttered back-room shop, shelves of dubious goods on every wall, appraising the piece with a practiced and unimpressed eye.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#fence.webp",
@@ -130,7 +133,7 @@ export const PROFESSIONS = [
     industry: "Criminal",
     economicTier: 4,
     statAffinity: { dexterity: 1.5, intelligence: 1.3, wisdom: 1.1 },
-    sentiments: ["indifferent", "quietly satisfied", "ashamed", "proud"],
+    sentiments: ["bored", "content", "guilty", "proud"],
     iconPrompt:
       "Fantasy RPG icon. A black-clad assassin poised in the shadows of a moonlit corridor, twin daggers drawn, a target visible through a doorway ahead, absolutely still and utterly lethal.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#assassin.webp",
@@ -140,7 +143,7 @@ export const PROFESSIONS = [
     industry: "Criminal",
     economicTier: 3,
     statAffinity: { dexterity: 1.4, charisma: 1.1, intelligence: 1.2 },
-    sentiments: ["proud", "indifferent", "passionate"],
+    sentiments: ["proud", "bored", "ambitious"],
     iconPrompt:
       "Fantasy RPG icon. A guild thief in the middle of a precision vault job, lockpicks spread on the floor, a guild mark visible on their wrist, working with the calm of someone who has done this many times.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#guild_thief.webp",
@@ -150,7 +153,7 @@ export const PROFESSIONS = [
     industry: "Criminal",
     economicTier: 3,
     statAffinity: { charisma: 1.6, intelligence: 1.3 },
-    sentiments: ["passionate", "proud", "indifferent"],
+    sentiments: ["ambitious", "proud", "bored"],
     iconPrompt:
       "Fantasy RPG icon. A charming grifter mid-performance at a tavern table, a crowd of marks leaning in, cards and coin spread between them, a warm smile that never quite reaches their eyes.",
     iconPath:
@@ -161,7 +164,7 @@ export const PROFESSIONS = [
     industry: "Criminal",
     economicTier: 3,
     statAffinity: { dexterity: 1.3, charisma: 1.2, wisdom: 1.1 },
-    sentiments: ["indifferent", "proud", "desperate", "quietly satisfied"],
+    sentiments: ["bored", "proud", "anxious", "content"],
     iconPrompt:
       "Fantasy RPG icon. A smuggler guiding a loaded cart down a hidden forest path at night, lantern shuttered, one hand raised to halt the group while listening for patrol sounds.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#smuggler.webp",
@@ -171,7 +174,7 @@ export const PROFESSIONS = [
     industry: "Criminal",
     economicTier: 4,
     statAffinity: { intelligence: 1.4, charisma: 1.3, dexterity: 1.2 },
-    sentiments: ["indifferent", "quietly satisfied", "ashamed"],
+    sentiments: ["bored", "content", "guilty"],
     iconPrompt:
       "Fantasy RPG icon. A spy in aristocratic dress at a candlelit court gathering, appearing to sip wine while listening intently, a folded cipher note half-concealed in their sleeve.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#spy_informant.webp",
@@ -183,7 +186,7 @@ export const PROFESSIONS = [
     industry: "Arcane",
     economicTier: 2,
     statAffinity: { intelligence: 1.3, wisdom: 1.2 },
-    sentiments: ["proud", "quietly satisfied", "indifferent", "resentful"],
+    sentiments: ["proud", "content", "bored", "angry"],
     iconPrompt:
       "Fantasy RPG icon. A weathered hedge witch in a cluttered woodland cottage, drying herbs hanging from the rafters, a worn spellbook open on the table, knowledge earned through practice not privilege.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#hedge_witch.webp",
@@ -193,7 +196,7 @@ export const PROFESSIONS = [
     industry: "Arcane",
     economicTier: 2,
     statAffinity: { intelligence: 1.5, wisdom: 1.1 },
-    sentiments: ["passionate", "desperate", "burned out", "proud"],
+    sentiments: ["ambitious", "anxious", "exhausted", "proud"],
     iconPrompt:
       "Fantasy RPG icon. A young apprentice mage hunched over a towering stack of spellbooks by candlelight, a failed spell sending sparks across the study, determination refusing to become defeat.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#apprentice_mage.webp",
@@ -204,7 +207,7 @@ export const PROFESSIONS = [
     economicTier: 4,
     minAge: 24,
     statAffinity: { intelligence: 1.5, charisma: 1.2, wisdom: 1.2 },
-    sentiments: ["quietly satisfied", "burned out", "resentful", "proud"],
+    sentiments: ["content", "exhausted", "angry", "proud"],
     iconPrompt:
       "Fantasy RPG icon. A court wizard in fine robes standing at the king's shoulder in the throne room, advising quietly, arcane instruments on a nearby table, power wielded through knowledge rather than force.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#court_wizard.webp",
@@ -214,7 +217,7 @@ export const PROFESSIONS = [
     industry: "Arcane",
     economicTier: 4,
     statAffinity: { intelligence: 1.4, strength: 1.2, constitution: 1.1 },
-    sentiments: ["proud", "burned out", "passionate"],
+    sentiments: ["proud", "exhausted", "ambitious"],
     iconPrompt:
       "Fantasy RPG icon. A battle mage in armored robes channeling destructive energy between gauntleted hands, soldiers falling back around them on a smoky battlefield, power and discipline held in equal measure.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#battle_mage.webp",
@@ -224,7 +227,7 @@ export const PROFESSIONS = [
     industry: "Arcane",
     economicTier: 3,
     statAffinity: { intelligence: 1.3, charisma: 1.3, wisdom: 0.9 },
-    sentiments: ["proud", "quietly satisfied", "desperate", "ashamed"],
+    sentiments: ["proud", "content", "anxious", "guilty"],
     iconPrompt:
       "Fantasy RPG icon. A warlock standing in a summoning circle, dark energy coiling around their outstretched hand, the faint and massive suggestion of an otherworldly patron looming in the shadows behind them.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#warlock.webp",
@@ -234,7 +237,7 @@ export const PROFESSIONS = [
     industry: "Arcane",
     economicTier: 3,
     statAffinity: { intelligence: 1.5, wisdom: 0.9 },
-    sentiments: ["passionate", "indifferent", "quietly satisfied", "ashamed"],
+    sentiments: ["ambitious", "bored", "content", "guilty"],
     iconPrompt:
       "Fantasy RPG icon. A necromancer in dark robes raising skeletal forms from cracked earth, cold blue light emanating from their staff, clinical curiosity rather than malice on their face.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#necromancer.webp",
@@ -244,7 +247,7 @@ export const PROFESSIONS = [
     industry: "Arcane",
     economicTier: 4,
     statAffinity: { intelligence: 1.4, dexterity: 1.3 },
-    sentiments: ["passionate", "proud", "quietly satisfied"],
+    sentiments: ["ambitious", "proud", "content"],
     iconPrompt:
       "Fantasy RPG icon. A runesmith etching glowing sigils into a sword blade with a fine chisel, the metal coming alive with arcane light, rune diagrams and reference scrolls spread across the workbench.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#runesmith.webp",
@@ -254,7 +257,7 @@ export const PROFESSIONS = [
     industry: "Arcane",
     economicTier: 3,
     statAffinity: { intelligence: 1.5, dexterity: 1.2 },
-    sentiments: ["passionate", "burned out", "quietly satisfied", "proud"],
+    sentiments: ["ambitious", "exhausted", "content", "proud"],
     iconPrompt:
       "Fantasy RPG icon. An alchemist surrounded by bubbling flasks and labeled vials in a cluttered laboratory, carefully measuring a luminous substance over a flame, the air around them faintly smoking.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#alchemist.webp",
@@ -264,7 +267,7 @@ export const PROFESSIONS = [
     industry: "Arcane",
     economicTier: 3,
     statAffinity: { wisdom: 1.3, strength: 1.2, constitution: 1.1 },
-    sentiments: ["proud", "burned out", "resentful"],
+    sentiments: ["proud", "exhausted", "angry"],
     iconPrompt:
       "Fantasy RPG icon. A grim witch hunter in heavy leather armor moving through a misty village at night, silver-tipped crossbow raised, a ward-medallion around their neck, absolutely certain of their purpose.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#witch_hunter.webp",
@@ -276,7 +279,7 @@ export const PROFESSIONS = [
     industry: "Divine",
     economicTier: 3,
     statAffinity: { wisdom: 1.4, charisma: 1.2 },
-    sentiments: ["passionate", "quietly satisfied", "burned out", "proud"],
+    sentiments: ["ambitious", "content", "exhausted", "proud"],
     iconPrompt:
       "Fantasy RPG icon. A robed priest conducting a candlelit ritual at a stone altar, divine symbols carved into the walls behind them, the faithful gathered in the shadows, devotion in every gesture.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#temple_priest.webp",
@@ -286,7 +289,7 @@ export const PROFESSIONS = [
     industry: "Divine",
     economicTier: 2,
     statAffinity: { wisdom: 1.4, constitution: 1.2 },
-    sentiments: ["passionate", "quietly satisfied", "indifferent"],
+    sentiments: ["ambitious", "content", "bored"],
     iconPrompt:
       "Fantasy RPG icon. A cleric in travel-worn robes kneeling to tend an injured stranger at a roadside, holy symbol glowing softly at their chest, a walking staff leaning against a tree nearby.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#wandering_cleric.webp",
@@ -297,7 +300,7 @@ export const PROFESSIONS = [
     economicTier: 4,
     minAge: 26,
     statAffinity: { wisdom: 1.3, strength: 1.2, intelligence: 1.1 },
-    sentiments: ["proud", "passionate", "quietly satisfied", "burned out"],
+    sentiments: ["proud", "ambitious", "content", "exhausted"],
     iconPrompt:
       "Fantasy RPG icon. A steel-eyed inquisitor in ceremonial armor standing over a bound suspect in a stone chamber, a holy seal carved into the wall behind them, righteous and utterly certain.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#inquisitor.webp",
@@ -308,19 +311,14 @@ export const PROFESSIONS = [
     economicTier: 2,
     minAge: 24,
     statAffinity: { strength: 1.3, wisdom: 1.2, constitution: 1.1 },
-    sentiments: ["ashamed", "resentful", "desperate", "quietly satisfied"],
+    sentiments: ["guilty", "angry", "anxious", "content"],
   },
   {
     title: "Oracle / seer",
     industry: "Divine",
     economicTier: 3,
     statAffinity: { wisdom: 1.5, intelligence: 1.2 },
-    sentiments: [
-      "quietly satisfied",
-      "burned out",
-      "indifferent",
-      "passionate",
-    ],
+    sentiments: ["content", "exhausted", "bored", "ambitious"],
     iconPrompt:
       "Fantasy RPG icon. A veiled oracle seated before a glowing scrying pool, hands hovering over the water's surface, visions of distant events reflected in their clouded eyes, voice hollow and precise.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#oracle_seer.webp",
@@ -330,7 +328,7 @@ export const PROFESSIONS = [
     industry: "Divine",
     economicTier: 2,
     statAffinity: { wisdom: 1.4, constitution: 1.3 },
-    sentiments: ["quietly satisfied", "passionate", "indifferent"],
+    sentiments: ["content", "ambitious", "bored"],
     iconPrompt:
       "Fantasy RPG icon. A druid standing in an ancient stone circle at dawn, arms raised, roots and vines stirring in response, one hand resting on the bark of a vast and gnarled oak tree.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#druid.webp",
@@ -342,7 +340,7 @@ export const PROFESSIONS = [
     industry: "Craft",
     economicTier: 3,
     statAffinity: { strength: 1.4, dexterity: 1.2, constitution: 1.1 },
-    sentiments: ["proud", "quietly satisfied", "indifferent"],
+    sentiments: ["proud", "content", "bored"],
     iconPrompt:
       "Fantasy RPG icon. A blacksmith at a roaring forge, hammer raised over a glowing blade on the anvil, sparks flying, strong arms and a lifetime of practiced precision in every strike.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#blacksmith.webp",
@@ -352,7 +350,7 @@ export const PROFESSIONS = [
     industry: "Craft",
     economicTier: 4,
     statAffinity: { strength: 1.3, dexterity: 1.4, intelligence: 1.1 },
-    sentiments: ["passionate", "proud", "quietly satisfied"],
+    sentiments: ["ambitious", "proud", "content"],
     iconPrompt:
       "Fantasy RPG icon. A weaponsmith holding a freshly finished sword up to the light, inspecting every edge with exacting care, a wall of completed blades and armaments displayed behind them.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#weaponsmith.webp",
@@ -362,7 +360,7 @@ export const PROFESSIONS = [
     industry: "Craft",
     economicTier: 3,
     statAffinity: { intelligence: 1.2, strength: 1.2, dexterity: 1.2 },
-    sentiments: ["proud", "quietly satisfied", "burned out"],
+    sentiments: ["proud", "content", "exhausted"],
     iconPrompt:
       "Fantasy RPG icon. A shipwright standing atop a half-built hull in a harbor yard, blueprints in hand, directing workers below, a finished tall-masted ship waiting in the water behind them.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#shipwright.webp",
@@ -372,7 +370,7 @@ export const PROFESSIONS = [
     industry: "Craft",
     economicTier: 2,
     statAffinity: { wisdom: 1.3, intelligence: 1.2, dexterity: 1.1 },
-    sentiments: ["quietly satisfied", "passionate", "indifferent"],
+    sentiments: ["content", "ambitious", "bored"],
     iconPrompt:
       "Fantasy RPG icon. An herbalist at a garden table carefully sorting and bundling dried plants, shelves of labeled tinctures and poultices behind them, healing knowledge rooted in the natural world.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#herbalist.webp",
@@ -382,7 +380,7 @@ export const PROFESSIONS = [
     industry: "Craft",
     economicTier: 3,
     statAffinity: { intelligence: 1.4, dexterity: 1.2, wisdom: 1.1 },
-    sentiments: ["passionate", "quietly satisfied", "proud"],
+    sentiments: ["ambitious", "content", "proud"],
     iconPrompt:
       "Fantasy RPG icon. A cartographer bent over a large map on a cluttered desk, quill tracing a newly discovered coastline, explorer's notes and specimen jars scattered across the surface, the world growing under their hand.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#cartographer.webp",
@@ -392,7 +390,7 @@ export const PROFESSIONS = [
     industry: "Craft",
     economicTier: 3,
     statAffinity: { dexterity: 1.5, charisma: 1.1 },
-    sentiments: ["passionate", "quietly satisfied", "proud"],
+    sentiments: ["ambitious", "content", "proud"],
     iconPrompt:
       "Fantasy RPG icon. A tattooist with ink-stained fingers working an intricate pattern onto a client's arm, the design glowing faintly with magical resonance in the dim light of a parlor filled with art.",
     iconPath:
@@ -405,12 +403,7 @@ export const PROFESSIONS = [
     industry: "Performance",
     economicTier: 2,
     statAffinity: { charisma: 1.5, dexterity: 1.2 },
-    sentiments: [
-      "passionate",
-      "indifferent",
-      "quietly satisfied",
-      "burned out",
-    ],
+    sentiments: ["ambitious", "bored", "content", "exhausted"],
     iconPrompt:
       "Fantasy RPG icon. A bard mid-performance on a tavern stage, lute in hand, a crowded room hanging on every note, mischief in their smile, a story unfolding in every pause between chords.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#bard.webp",
@@ -420,7 +413,7 @@ export const PROFESSIONS = [
     industry: "Service",
     economicTier: 3,
     statAffinity: { charisma: 1.3, wisdom: 1.2, constitution: 1.1 },
-    sentiments: ["quietly satisfied", "burned out", "proud", "indifferent"],
+    sentiments: ["content", "exhausted", "proud", "bored"],
     iconPrompt:
       "Fantasy RPG icon. A stout innkeeper behind a well-worn bar, polishing a tankard with calm authority, overseeing a full and rowdy common room with the ease of someone who has seen everything.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#innkeeper.webp",
@@ -430,7 +423,7 @@ export const PROFESSIONS = [
     industry: "Trade",
     economicTier: 4,
     statAffinity: { charisma: 1.4, intelligence: 1.3 },
-    sentiments: ["proud", "quietly satisfied", "passionate", "burned out"],
+    sentiments: ["proud", "content", "ambitious", "exhausted"],
     iconPrompt:
       "Fantasy RPG icon. A prosperous merchant at a market stall reviewing trade documents with a partner, scales and coin on the table between them, a loaded caravan waiting in the street behind.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#merchant.webp",
@@ -441,7 +434,7 @@ export const PROFESSIONS = [
     economicTier: 4,
     minAge: 24,
     statAffinity: { charisma: 1.3, wisdom: 1.2, strength: 1.1 },
-    sentiments: ["proud", "passionate", "quietly satisfied"],
+    sentiments: ["proud", "ambitious", "content"],
     iconPrompt:
       "Fantasy RPG icon. A ship captain at the helm in heavy weather, coat whipping in the wind, commanding the crew with calm certainty, the sea crashing over the bow below.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#ship_captain.webp",
@@ -451,7 +444,7 @@ export const PROFESSIONS = [
     industry: "Trade",
     economicTier: 2,
     statAffinity: { constitution: 1.3, strength: 1.2 },
-    sentiments: ["indifferent", "proud", "burned out", "desperate"],
+    sentiments: ["bored", "proud", "exhausted", "anxious"],
     iconPrompt:
       "Fantasy RPG icon. A weathered sailor hauling rope on the deck of a tall-masted ship at sea, the deck pitching beneath their feet, wind-burned and capable, the open horizon ahead.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#sailor_deckhand.webp",
@@ -461,7 +454,7 @@ export const PROFESSIONS = [
     industry: "Service",
     economicTier: 3,
     statAffinity: { charisma: 1.2, constitution: 1.2, wisdom: 1.1 },
-    sentiments: ["quietly satisfied", "burned out", "indifferent"],
+    sentiments: ["content", "exhausted", "bored"],
     iconPrompt:
       "Fantasy RPG icon. A tavern keeper managing a rowdy night crowd with practiced efficiency, breaking up a minor argument at one table while refilling cups at another, master of their domain.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#tavern_keeper.webp",
@@ -471,12 +464,7 @@ export const PROFESSIONS = [
     industry: "Service",
     economicTier: 3,
     statAffinity: { intelligence: 1.4, dexterity: 1.2 },
-    sentiments: [
-      "indifferent",
-      "quietly satisfied",
-      "burned out",
-      "passionate",
-    ],
+    sentiments: ["bored", "content", "exhausted", "ambitious"],
     iconPrompt:
       "Fantasy RPG icon. A scribe hunched over parchment by candlelight in a scriptorium, quill moving in careful strokes, stacks of finished documents and wax seals beside them, copying without sentiment.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#scribe.webp",
@@ -486,7 +474,7 @@ export const PROFESSIONS = [
     industry: "Service",
     economicTier: 2,
     statAffinity: { dexterity: 1.3, constitution: 1.2 },
-    sentiments: ["indifferent", "quietly satisfied", "desperate"],
+    sentiments: ["bored", "content", "anxious"],
     iconPrompt:
       "Fantasy RPG icon. A courier on horseback galloping hard down a road at dusk, sealed message satchel over their shoulder, urgency in every line of their posture, distance still to cover.",
     iconPath:
@@ -497,7 +485,7 @@ export const PROFESSIONS = [
     industry: "Service",
     economicTier: 2,
     statAffinity: { constitution: 1.3, strength: 1.2 },
-    sentiments: ["indifferent", "quietly satisfied", "resentful", "ashamed"],
+    sentiments: ["bored", "content", "angry", "guilty"],
     iconPrompt:
       "Fantasy RPG icon. A gravedigger at work in a torch-lit cemetery at night, shovel over their shoulder, an open grave behind them, matter-of-fact about the work that no one else will do.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#gravedigger.webp",
@@ -509,7 +497,7 @@ export const PROFESSIONS = [
     industry: "Nobility",
     economicTier: 4,
     statAffinity: { charisma: 1.3, intelligence: 1.2 },
-    sentiments: ["proud", "quietly satisfied", "resentful", "burned out"],
+    sentiments: ["proud", "content", "angry", "exhausted"],
     iconPrompt:
       "Fantasy RPG icon. A minor noble in fine but not extravagant dress standing in a modest manor hall, aware of their station but equally aware of the greater names above them in the hierarchy.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#minor_noble.webp",
@@ -519,7 +507,7 @@ export const PROFESSIONS = [
     industry: "Nobility",
     economicTier: 2,
     statAffinity: { charisma: 1.3, intelligence: 1.2 },
-    sentiments: ["resentful", "ashamed", "desperate", "proud"],
+    sentiments: ["angry", "guilty", "anxious", "proud"],
     iconPrompt:
       "Fantasy RPG icon. A well-dressed figure in clothes that were once finer standing outside the closed gates of an estate that is no longer theirs, pride and bitterness struggling on their face.",
     iconPath:
@@ -531,7 +519,7 @@ export const PROFESSIONS = [
     economicTier: 5,
     minAge: 28,
     statAffinity: { intelligence: 1.5, charisma: 1.3, wisdom: 1.2 },
-    sentiments: ["quietly satisfied", "burned out", "proud", "resentful"],
+    sentiments: ["content", "exhausted", "proud", "angry"],
     iconPrompt:
       "Fantasy RPG icon. A lean advisor standing at the shoulder of a throne, leaning close to whisper counsel, a scroll of intelligence in one hand, every word to the king chosen with precise intent.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#royal_advisor.webp",
@@ -542,7 +530,7 @@ export const PROFESSIONS = [
     economicTier: 5,
     minAge: 28,
     statAffinity: { intelligence: 1.5, charisma: 1.3, wisdom: 1.2 },
-    sentiments: ["quietly satisfied", "indifferent", "proud"],
+    sentiments: ["content", "bored", "proud"],
     iconPrompt:
       "Fantasy RPG icon. A figure in unremarkable dress seated in a candlelit room full of maps and correspondence, a network of strings connecting locations on the wall behind them, knowing everything.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#spymaster.webp",
@@ -553,7 +541,7 @@ export const PROFESSIONS = [
     economicTier: 5,
     minAge: 30,
     statAffinity: { charisma: 1.5, intelligence: 1.4, strength: 1.1 },
-    sentiments: ["proud", "quietly satisfied", "indifferent"],
+    sentiments: ["proud", "content", "bored"],
     iconPrompt:
       "Fantasy RPG icon. A crime lord seated in a shadowed throne of their own making, lieutenants at each side, the city visible through the window below, owning it all without ever being seen to.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#crime_lord.webp",
@@ -565,7 +553,7 @@ export const PROFESSIONS = [
     industry: "Wilderness",
     economicTier: 2,
     statAffinity: { dexterity: 1.4, wisdom: 1.2, constitution: 1.1 },
-    sentiments: ["quietly satisfied", "proud", "indifferent"],
+    sentiments: ["content", "proud", "bored"],
     iconPrompt:
       "Fantasy RPG icon. A hunter moving silently through a dense forest, bow in hand, reading the signs in the underbrush with practiced ease, utterly at home in the wilderness.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#hunter_trapper.webp",
@@ -575,12 +563,7 @@ export const PROFESSIONS = [
     industry: "Wilderness",
     economicTier: 3,
     statAffinity: { dexterity: 1.4, wisdom: 1.3, constitution: 1.2 },
-    sentiments: [
-      "quietly satisfied",
-      "indifferent",
-      "passionate",
-      "burned out",
-    ],
+    sentiments: ["content", "bored", "ambitious", "exhausted"],
     iconPrompt:
       "Fantasy RPG icon. A ranger crouched at a treeline, studying the landscape ahead, longbow across their back, reading the land like a map, guardian of the boundary between civilization and wild.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#ranger.webp",
@@ -590,7 +573,7 @@ export const PROFESSIONS = [
     industry: "Wilderness",
     economicTier: 3,
     statAffinity: { strength: 1.3, dexterity: 1.3, wisdom: 1.2 },
-    sentiments: ["passionate", "burned out", "proud", "indifferent"],
+    sentiments: ["ambitious", "exhausted", "proud", "bored"],
     iconPrompt:
       "Fantasy RPG icon. A monster hunter checking silver-tipped bolts before entering a dark cave, specialized hunting kit spread on a flat rock, a monster trophy visible on their worn gear.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#monster_hunter.webp",
@@ -600,7 +583,7 @@ export const PROFESSIONS = [
     industry: "Criminal",
     economicTier: 2,
     statAffinity: { strength: 1.3, dexterity: 1.2, wisdom: 0.9 },
-    sentiments: ["proud", "desperate", "resentful", "indifferent"],
+    sentiments: ["proud", "anxious", "angry", "bored"],
     iconPrompt:
       "Fantasy RPG icon. An outlaw resting at a roadside camp in the trees, a stolen saddlebag nearby, cloth mask pulled down, watching the road below with wary and calculating eyes.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#outlaw_bandit.webp",
@@ -610,7 +593,7 @@ export const PROFESSIONS = [
     industry: "Criminal",
     economicTier: 3,
     statAffinity: { strength: 1.3, charisma: 1.2, dexterity: 1.2 },
-    sentiments: ["proud", "passionate", "indifferent", "desperate"],
+    sentiments: ["proud", "ambitious", "bored", "anxious"],
     iconPrompt:
       "Fantasy RPG icon. A pirate at the prow of a ship, a merchant vessel closing in the distance, crew armed and ready at their back, a flag of no allegiance cracking in the wind above.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#pirate.webp",
@@ -620,7 +603,7 @@ export const PROFESSIONS = [
     industry: "Arcane",
     economicTier: 1,
     statAffinity: { intelligence: 1.4, wisdom: 1.1 },
-    sentiments: ["resentful", "ashamed", "desperate", "quietly satisfied"],
+    sentiments: ["angry", "guilty", "anxious", "content"],
     iconPrompt:
       "Fantasy RPG icon. A mage walking a lonely road alone, staff in hand, the city that cast them out fading on the horizon behind them, their robes stripped of every guild mark and insignia.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#exiled_mage.webp",
@@ -630,7 +613,7 @@ export const PROFESSIONS = [
     industry: "Outcast",
     economicTier: 1,
     statAffinity: { constitution: 1.3, strength: 1.2 },
-    sentiments: ["desperate", "resentful", "proud", "quietly satisfied"],
+    sentiments: ["anxious", "angry", "proud", "content"],
     iconPrompt:
       "Fantasy RPG icon. A figure moving fast through a dark forest at night, the broken remnant of a shackle still on one wrist, determined expression, putting as much distance as possible between themselves and what they left.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#escaped_slave.webp",
@@ -640,7 +623,7 @@ export const PROFESSIONS = [
     industry: "Divine",
     economicTier: 1,
     statAffinity: { wisdom: 1.4, constitution: 1.2 },
-    sentiments: ["quietly satisfied", "passionate", "indifferent"],
+    sentiments: ["content", "ambitious", "bored"],
     iconPrompt:
       "Fantasy RPG icon. A wandering monk on a dusty road with a simple staff, a single small pack on their back, pausing to help a stranger at the roadside, carrying nothing that cannot be carried alone.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#wandering_monk.webp",
@@ -652,7 +635,7 @@ export const PROFESSIONS = [
     economicTier: 2,
     nsfw: true,
     statAffinity: { charisma: 1.4, intelligence: 0.9, wisdom: 0.8 },
-    sentiments: ["proud", "indifferent", "quietly satisfied", "burned out"],
+    sentiments: ["proud", "bored", "content", "exhausted"],
     iconPrompt:
       "Fantasy RPG icon. A woman wearing a corset showing cleavage with a sultry smile standing outside a dimly lit tavern.",
     iconPath: "generator/genres/fantasy/icons/PROFESSION#sex_worker.webp",

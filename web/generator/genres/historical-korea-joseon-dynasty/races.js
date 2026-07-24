@@ -39,10 +39,12 @@ export const RACES = [
       "Court Records",
       "Military",
       "Household Study",
+      "Royal Inspection",
+      "Royal Secretariat",
     ],
     weight: 8,
     iconPrompt:
-      "joseon dynasty korean civil yangban scholar official gat horsehair hat silk robes gwageo exam traditional court painting style",
+      "joseon dynasty korean civil yangban scholar official gat horsehair hat manggeon headband topknot silk robes gwageo exam traditional court painting style",
     iconPath:
       "generator/genres/historical-korea-joseon-dynasty/icons/CLASSES#civil_yangban.webp",
   },
@@ -85,6 +87,9 @@ export const RACES = [
       "Palace Service",
       "Household Study",
       "Royal Bloodline",
+      "Royal Consort",
+      "Royal Inspection",
+      "Royal Secretariat",
     ],
     weight: 7,
     iconPrompt:
@@ -104,6 +109,7 @@ export const RACES = [
       "Court Records",
       "Court Medicine",
       "Trade",
+      "Constabulary",
     ],
     weight: 7,
     iconPrompt:
@@ -117,7 +123,14 @@ export const RACES = [
     label: "Common Folk",
     flavor:
       "Farmer, potter, weaver — the backbone of Joseon, bearing its taxes and its hungers with patient endurance",
-    allowedIndustries: ["Labor", "Trade", "Local Administration", "Spiritual"],
+    allowedIndustries: [
+      "Labor",
+      "Trade",
+      "Local Administration",
+      "Spiritual",
+      "Folk Medicine",
+      "Constabulary",
+    ],
     weight: 10,
     iconPrompt:
       "joseon dynasty korean common farmer village worker plain hanbok rice field straw hat traditional minhwa folk painting style",
@@ -163,7 +176,12 @@ export const RACES = [
     label: "Cheonmin",
     flavor:
       "Low-born — nobi slave, mudang shaman, or baekjeong butcher; outside the social order, occasionally its most dangerous element",
-    allowedIndustries: ["Labor", "Bonded Service", "Spiritual"],
+    allowedIndustries: [
+      "Labor",
+      "Bonded Service",
+      "Spiritual",
+      "Folk Medicine",
+    ],
     weight: 7,
     iconPrompt:
       "joseon dynasty korean cheonmin low born servant shaman plain rough clothing weathered defiant expression traditional painting style",
