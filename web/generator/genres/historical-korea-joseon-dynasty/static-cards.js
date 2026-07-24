@@ -81,6 +81,24 @@ export const STATIC_CLASSES = [
     entry:
       "Shamans, most often women, who served as intermediaries between the human world and the spirits through ritual, trance, and divination. Officially condemned by the Confucian state as superstition and vice, mudang nonetheless remained in constant demand — for exorcisms, fortune-telling, and rites the yangban would publicly scorn and privately pay handsomely for.",
   },
+  {
+    name: "Palace Eunuch (Naesi)",
+    triggers: "Naesi, Palace Eunuch, Eunuch",
+    entry:
+      "Castrated men of the Naesi-bu who staffed the innermost workings of the royal household — delivering meals, guarding sleeping quarters, and standing within arm's reach of the throne when almost no one else could. Their plain green robes and simple black service caps marked them as palace household, not civil bureaucracy, a deliberately unglamorous appearance that hid how much any one of them might actually know. Barred by law from holding real office or founding a lineage, the ambitious among them instead built influence the only way left to them: information, access, and the quiet favor of whoever they served closest.",
+  },
+  {
+    name: "Royal Inspector (Amhaeng-eosa)",
+    triggers: "Amhaeng-eosa, Royal Inspector, Royal Secret Inspector",
+    entry:
+      "A secret investigator commissioned directly by the king and sent into the provinces disguised as an ordinary traveling scholar, tasked with exposing corrupt magistrates, crooked tax collectors, and local officials who assumed no one from the capital was watching. An Amhaeng-eosa carried a mapae — a bronze horse-requisition tablet — concealed until the moment came to reveal it, at which point every local official's authority instantly evaporated before the king's own. The classic shape of the role's stories runs the same course each time: a village suffers under a corrupt governor, a plain-dressed stranger arrives asking quiet questions, and only at the climax does the mapae come out.",
+  },
+  {
+    name: "Constable (Pojol)",
+    triggers: "Pojol, Constable, Podocheong",
+    entry:
+      "Foot soldiers of the Podocheong, Hanyang's police bureau, recognizable at a glance by their blue uniforms and broad black jeollip hats. Pojol patrolled the capital's streets, made arrests, escorted prisoners, and guarded government offices — the routine, unglamorous end of law enforcement, a world away from the amhaeng-eosa's dramatic province-wide investigations. Officers above them in the Podocheong's chain of command handled murders, theft, and fires citywide, but it was the pojol on the street corner whose club and hat every commoner in Hanyang learned to recognize, and to avoid.",
+  },
 ];
 
 export const STATIC_RACES = [
