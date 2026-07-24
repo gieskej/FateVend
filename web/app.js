@@ -12,12 +12,20 @@ import {
   GENRE_CAROUSEL_DATA,
   GENRE_VOICE,
 } from "./generator/manifests.js";
-import {
-  buildPrompt,
-  parseResponse,
-  enforceOutputLimits,
-} from "./generator/prompt-builder.js";
 import { loadPack, validatePack } from "./generator/pack-loader.js";
+import { callClaude, callGemini, callOllama } from "./api.js";
+import { state } from "./state.js";
+import {
+  narrate,
+  narrateAll,
+  stopNarration,
+  setTtsProvider,
+  setTtsVoiceOverride,
+  ttsProvider,
+  SVG_NARRATE_ICON,
+  GENRE_TTS_CONFIG,
+  buildTtsConfigEntry,
+} from "./narration.js";
 
 // ── Genre routing ─────────────────────────────────────────────────────────
 
@@ -27,158 +35,11 @@ import { loadPack, validatePack } from "./generator/pack-loader.js";
 // helpers (selectors, cast builder, name helpers) live in that module.
 // ═══════════════════════════════════════════════════════════════════════════
 
-// ── Prompt builder ────────────────────────────────────────────────────────
-// buildPrompt(sk, voice), parseResponse, and enforceOutputLimits are imported
-// from ./generator/prompt-builder.js — the single shared builder used by the
-// browser and the CLI/module path alike. Each genre's voice (identity/genre
-// labels, system prompt, and authored output rules) lives in GENRE_VOICE
-// (./generator/manifests.js). getSystemPrompt() below just reads it.
-
 // ── API call ──────────────────────────────────────────────────────────────
-function getSystemPrompt(genre) {
-  return (GENRE_VOICE[genre] ?? GENRE_VOICE["modern"]).systemPrompt;
-}
-
-async function callClaude(skeleton, apiKey, genre) {
-  const res = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-api-key": apiKey,
-      "anthropic-version": "2023-06-01",
-      "anthropic-dangerous-direct-browser-access": "true",
-    },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-5",
-      max_tokens: 16384,
-      system: getSystemPrompt(genre),
-      messages: [
-        {
-          role: "user",
-          content: buildPrompt(
-            skeleton,
-            GENRE_VOICE[genre] ?? GENRE_VOICE["modern"],
-          ),
-        },
-      ],
-    }),
-  });
-  if (!res.ok) {
-    const t = await res.text().catch(() => "");
-    throw new Error(`API error ${res.status}: ${t}`);
-  }
-  const data = await res.json();
-  const raw =
-    data.content
-      ?.filter((b) => b.type === "text")
-      .map((b) => b.text)
-      .join("") ?? "";
-  if (!raw) throw new Error("Empty response from API");
-  const parsed = parseResponse(raw);
-  if (!parsed) throw new Error("Failed to parse API response as JSON");
-  return {
-    output: enforceOutputLimits(parsed),
-    usage: {
-      inputTokens: data.usage?.input_tokens ?? 0,
-      outputTokens: data.usage?.output_tokens ?? 0,
-    },
-  };
-}
-
-async function callGemini(skeleton, apiKey, genre) {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`;
-  const res = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      systemInstruction: { parts: [{ text: getSystemPrompt(genre) }] },
-      contents: [
-        {
-          role: "user",
-          parts: [
-            {
-              text:
-                "Return raw JSON only — no markdown, no code fences, no commentary.\n\n" +
-                buildPrompt(
-                  skeleton,
-                  GENRE_VOICE[genre] ?? GENRE_VOICE["modern"],
-                ),
-            },
-          ],
-        },
-      ],
-      generationConfig: {
-        maxOutputTokens: 16384,
-        temperature: 0.9,
-        responseMimeType: "application/json",
-      },
-    }),
-  });
-  if (!res.ok) {
-    const t = await res.text().catch(() => "");
-    throw new Error(`Gemini API error ${res.status}: ${t}`);
-  }
-  const data = await res.json();
-  const raw =
-    data.candidates?.[0]?.content?.parts
-      ?.filter((p) => !p.thought)
-      .map((p) => p.text)
-      .join("") ?? "";
-  if (!raw) throw new Error("Empty response from Gemini API");
-  const parsed = parseResponse(raw);
-  if (!parsed)
-    throw new Error(
-      `Failed to parse Gemini response as JSON. Response started: ${raw.slice(0, 120)}`,
-    );
-  return {
-    output: enforceOutputLimits(parsed),
-    usage: {
-      inputTokens: data.usageMetadata?.promptTokenCount ?? 0,
-      outputTokens: data.usageMetadata?.candidatesTokenCount ?? 0,
-    },
-  };
-}
-
-async function callOllama(skeleton, baseUrl, modelName, genre) {
-  const url = baseUrl.replace(/\/$/, "") + "/api/chat";
-  const model = modelName || "llama3.2";
-  const res = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model,
-      stream: false,
-      messages: [
-        { role: "system", content: getSystemPrompt(genre) },
-        {
-          role: "user",
-          content:
-            "Return raw JSON only — no markdown, no code fences, no commentary.\n\n" +
-            buildPrompt(skeleton, GENRE_VOICE[genre] ?? GENRE_VOICE["modern"]),
-        },
-      ],
-    }),
-  });
-  if (!res.ok) {
-    const t = await res.text().catch(() => "");
-    throw new Error(`Ollama error ${res.status}: ${t}`);
-  }
-  const data = await res.json();
-  const raw = data.message?.content ?? "";
-  if (!raw) throw new Error("Empty response from Ollama");
-  const parsed = parseResponse(raw);
-  if (!parsed)
-    throw new Error(
-      `Failed to parse Ollama response as JSON. Response started: ${raw.slice(0, 120)}`,
-    );
-  return {
-    output: enforceOutputLimits(parsed),
-    usage: {
-      inputTokens: data.prompt_eval_count ?? 0,
-      outputTokens: data.eval_count ?? 0,
-    },
-  };
-}
+// The text-provider calls (callClaude/callGemini/callOllama) now live in
+// ./api.js (imported above); they build prompts via the shared
+// ./generator/prompt-builder.js. callAI() below dispatches to the right one
+// based on the selected provider.
 
 // ── Provider selector ─────────────────────────────────────────────────────
 
@@ -311,8 +172,6 @@ function updateNarrationProviderSelector() {
 // ═══════════════════════════════════════════════════════════════════════════
 // UI STATE
 // ═══════════════════════════════════════════════════════════════════════════
-let currentSkeleton = null;
-let currentOutput = null;
 let currentGeneratedAt = null;
 let currentStats = null;
 // Appended to appearancePrompt when NSFW is on for an adult character.
@@ -322,13 +181,6 @@ let currentStats = null;
 let nsfwSuffix = ", sexy";
 let npcPortraitData = {};
 let npcPortraitGenerating = false;
-let ttsProvider = "off";
-let ttsAudio = null;
-let ttsSpeaking = false;
-let ttsAllActive = false;
-let ttsNarrateBtn = null;
-
-const SVG_NARRATE_ICON = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>`;
 
 // Per-genre asset base override, keyed by genre id. Empty/null for built-ins
 // (they use the conventional ./generator/genres/<id>/ path); set to a blob:
@@ -377,26 +229,7 @@ const GENRE_PORTRAIT_STYLES = Object.fromEntries(
   Object.values(GENRE_MANIFESTS).map((m) => [m.id, m.portraitStyle]),
 );
 
-// Manifest stores tts.preprocess as a string key; map it to the real function.
-const TTS_PREPROCESSORS = {
-  default: preprocessTts,
-  manga: preprocessTtsManga,
-  nihongi: preprocessTtsNihongi,
-};
-const GENRE_TTS_CONFIG = Object.fromEntries(
-  Object.values(GENRE_MANIFESTS).map((m) => [
-    m.id,
-    {
-      preprocess: TTS_PREPROCESSORS[m.tts.preprocess] ?? preprocessTts,
-      browser: m.tts.browser,
-      kokoro: m.tts.kokoro,
-      openai: m.tts.openai,
-    },
-  ]),
-);
-
 let isGenerating = false;
-let currentGenre = "fantasy";
 let currentProvider = "gemini";
 let currentImageProvider = null;
 
@@ -499,7 +332,7 @@ function onToolbarGenreChange(value) {
 }
 
 function setGenre(genre) {
-  currentGenre = genre;
+  state.currentGenre = genre;
   const sel = document.getElementById("genre-select");
   if (sel && sel.value !== genre) sel.value = genre;
   preloadGenreIcons(genre);
@@ -590,7 +423,7 @@ function playErrorSound() {
   } catch (_) {}
 }
 
-function showError(msg) {
+export function showError(msg) {
   const el = document.getElementById("error-box");
   el.textContent = msg;
   el.classList.toggle("visible", !!msg);
@@ -929,13 +762,13 @@ const GENRE_MUSIC_TRACKS = Object.fromEntries(
 let _lastMusicTrack = null;
 let _playerTrackIndex = -1;
 function currentGenreTracks() {
-  const prefix = GENRE_MUSIC_PREFIX[currentGenre] || "fantasy";
+  const prefix = GENRE_MUSIC_PREFIX[state.currentGenre] || "fantasy";
   return GENRE_MUSIC_TRACKS[prefix] || GENRE_MUSIC_TRACKS.fantasy;
 }
 // Resolve a BGM filename to a pack blob: URL (uploaded pack) or the served path.
 function trackSrc(file) {
   return (
-    PACK_AUDIO_URLS[currentGenre]?.[file] ??
+    PACK_AUDIO_URLS[state.currentGenre]?.[file] ??
     `audio/music/${encodeURIComponent(file)}`
   );
 }
@@ -1536,13 +1369,13 @@ const STATIC_CARD_TYPE_MAP = {
 // Shared by copyAll() and downloadPackage() so the two never drift out of sync.
 function buildScenarioPayload() {
   const annotatedStats = Object.fromEntries(
-    Object.entries(currentSkeleton.stats).map(([k, v]) => [
+    Object.entries(state.currentSkeleton.stats).map(([k, v]) => [
       k,
       `${v} (${statAdjective(k, v)})`,
     ]),
   );
 
-  const genreCards = STATIC_CARDS_BY_GENRE[currentGenre];
+  const genreCards = STATIC_CARDS_BY_GENRE[state.currentGenre];
   const staticCards = genreCards
     ? Object.entries(STATIC_CARD_TYPE_MAP).flatMap(([exportName, type]) =>
         (genreCards[exportName] ?? []).map(({ name, triggers, entry }) => ({
@@ -1555,20 +1388,20 @@ function buildScenarioPayload() {
     : [];
 
   return {
-    skeleton: { ...currentSkeleton, stats: annotatedStats },
+    skeleton: { ...state.currentSkeleton, stats: annotatedStats },
     scenario: {
-      genre: currentGenre,
-      title: currentOutput.title,
-      description: currentOutput.description,
-      tags: currentOutput.tags,
-      opening: currentOutput.opening,
-      appearancePrompt: currentOutput.appearancePrompt,
-      plotEssentials: currentOutput.plotEssentials ?? "",
-      authorNote: currentOutput.authorNote ?? "",
+      genre: state.currentGenre,
+      title: state.currentOutput.title,
+      description: state.currentOutput.description,
+      tags: state.currentOutput.tags,
+      opening: state.currentOutput.opening,
+      appearancePrompt: state.currentOutput.appearancePrompt,
+      plotEssentials: state.currentOutput.plotEssentials ?? "",
+      authorNote: state.currentOutput.authorNote ?? "",
     },
     characters: {
-      [currentSkeleton.name]: currentOutput.characterEntry,
-      ...currentOutput.npcEntries,
+      [state.currentSkeleton.name]: state.currentOutput.characterEntry,
+      ...state.currentOutput.npcEntries,
     },
     staticCards,
   };
@@ -1594,12 +1427,7 @@ function registerGenrePack(pack, { assetBase } = {}) {
 
   // Keep the precomputed presentation maps (snapshots taken at load) in sync.
   GENRE_PORTRAIT_STYLES[id] = manifest.portraitStyle;
-  GENRE_TTS_CONFIG[id] = {
-    preprocess: TTS_PREPROCESSORS[manifest.tts.preprocess] ?? preprocessTts,
-    browser: manifest.tts.browser,
-    kokoro: manifest.tts.kokoro,
-    openai: manifest.tts.openai,
-  };
+  GENRE_TTS_CONFIG[id] = buildTtsConfigEntry(manifest);
   GENRE_MUSIC_PREFIX[id] = manifest.music.prefix;
   GENRE_MUSIC_TRACKS[manifest.music.prefix] = manifest.music.tracks;
 
@@ -1652,7 +1480,7 @@ function unregisterGenrePack(id) {
     .getElementById("genre-select")
     ?.querySelector(`option[value="${id}"]`)
     ?.remove();
-  if (currentGenre === id) {
+  if (state.currentGenre === id) {
     carouselIndex = 0;
     setGenre(GENRE_CAROUSEL_DATA[0].id);
   }
@@ -1852,12 +1680,12 @@ function renderGenrePackList() {
 }
 
 async function copyAll(btn) {
-  if (!currentOutput || !currentSkeleton) return;
+  if (!state.currentOutput || !state.currentSkeleton) return;
   await copyText(JSON.stringify(buildScenarioPayload(), null, 2), btn);
 }
 
 async function downloadPackage(btn) {
-  if (!currentOutput || !currentSkeleton) return;
+  if (!state.currentOutput || !state.currentSkeleton) return;
   if (typeof JSZip === "undefined") {
     alert("JSZip library not loaded — check your internet connection.");
     return;
@@ -1895,10 +1723,10 @@ async function downloadPackage(btn) {
       .toISOString()
       .replace(/:/g, "-")
       .replace(/\.\d{3}Z$/, "Z");
-    const safeName = currentSkeleton.name
+    const safeName = state.currentSkeleton.name
       .replace(/[^a-zA-Z0-9]+/g, "-")
       .replace(/^-|-$/g, "");
-    const safeTitle = currentOutput.title
+    const safeTitle = state.currentOutput.title
       .replace(/[^a-zA-Z0-9]+/g, "-")
       .replace(/^-|-$/g, "");
     const filename = `${safeName}-${safeTitle}-${dt}.zip`;
@@ -1940,7 +1768,7 @@ async function checkImportServer() {
 }
 
 async function importToAIDungeon(btn) {
-  if (!currentOutput || !currentSkeleton) return;
+  if (!state.currentOutput || !state.currentSkeleton) return;
   const origText = btn.textContent;
   btn.disabled = true;
   btn.textContent = "⚙ Importing… (this can take a minute)";
@@ -1952,18 +1780,18 @@ async function importToAIDungeon(btn) {
 
     const payload = {
       scenario: {
-        genre: currentGenre,
-        title: currentOutput.title,
-        description: currentOutput.description,
-        tags: currentOutput.tags,
-        opening: currentOutput.opening,
-        appearancePrompt: currentOutput.appearancePrompt,
-        plotEssentials: currentOutput.plotEssentials ?? "",
-        authorNote: currentOutput.authorNote ?? "",
+        genre: state.currentGenre,
+        title: state.currentOutput.title,
+        description: state.currentOutput.description,
+        tags: state.currentOutput.tags,
+        opening: state.currentOutput.opening,
+        appearancePrompt: state.currentOutput.appearancePrompt,
+        plotEssentials: state.currentOutput.plotEssentials ?? "",
+        authorNote: state.currentOutput.authorNote ?? "",
       },
       characters: {
-        [currentSkeleton.name]: currentOutput.characterEntry,
-        ...currentOutput.npcEntries,
+        [state.currentSkeleton.name]: state.currentOutput.characterEntry,
+        ...state.currentOutput.npcEntries,
       },
       portraitBase64,
     };
@@ -2000,8 +1828,8 @@ async function importToAIDungeon(btn) {
 }
 
 function copySkeletonText(btn) {
-  if (!currentSkeleton) return;
-  const sk = currentSkeleton;
+  if (!state.currentSkeleton) return;
+  const sk = state.currentSkeleton;
   const app = [
     sk.appearance.build,
     sk.appearance.hair,
@@ -2034,7 +1862,7 @@ function copySkeletonText(btn) {
 async function runGenerate() {
   if (isGenerating) return;
   isGenerating = true;
-  currentOutput = null;
+  state.currentOutput = null;
   showError("");
   closeSettings();
   activePhases = computeActivePhases();
@@ -2072,7 +1900,7 @@ async function runGenerate() {
     // Phase 3 — Skeleton
     setPhase("phase-skeleton");
     await sleep(300);
-    const tables = GENRE_TABLES[currentGenre] ?? GENRE_TABLES["modern"];
+    const tables = GENRE_TABLES[state.currentGenre] ?? GENRE_TABLES["modern"];
     const skeleton = buildSkeleton(stats, mbti, tables, {
       includeLGBQ: document.getElementById("include-lgbq")?.checked ?? true,
       includeNSFW: document.getElementById("include-nsfw")?.checked ?? false,
@@ -2080,14 +1908,14 @@ async function runGenerate() {
       prefOrientation:
         document.getElementById("pref-orientation")?.value || "any",
     });
-    currentSkeleton = skeleton;
+    state.currentSkeleton = skeleton;
 
     const outputArea = document.getElementById("output-area");
 
     // ── Slot machine phase ─────────────────────────────────────────────
     setStatus("The fates are deciding…");
-    outputArea.innerHTML = renderSlotMachine(currentGenre);
-    await animateSlots(skeleton, currentGenre);
+    outputArea.innerHTML = renderSlotMachine(state.currentGenre);
+    await animateSlots(skeleton, state.currentGenre);
     await sleep(1200);
 
     // Skeleton cards appear below the (now locked) slot machine
@@ -2127,7 +1955,7 @@ async function runGenerate() {
 }
 
 async function runAIPhase() {
-  if (isGenerating || !currentSkeleton) return;
+  if (isGenerating || !state.currentSkeleton) return;
   const anthropicKey = document.getElementById("api-key").value.trim();
   const geminiKey = document.getElementById("gemini-api-key").value.trim();
   const ollamaUrl = document.getElementById("ollama-url").value.trim();
@@ -2141,7 +1969,7 @@ async function runAIPhase() {
   isGenerating = true;
   showError("");
 
-  _musicSfx.src = pickGenreTrack(currentGenre);
+  _musicSfx.src = pickGenreTrack(state.currentGenre);
   _musicSfx.currentTime = 0;
   _musicSfx.play().catch(() => {});
   showPlayer(_lastMusicTrack);
@@ -2183,25 +2011,25 @@ async function runAIPhase() {
     );
 
     const { output, stats: textStats } = await callAI(
-      currentSkeleton,
-      currentGenre,
+      state.currentSkeleton,
+      state.currentGenre,
     );
     if (
       output.appearancePrompt &&
       document.getElementById("include-nsfw")?.checked &&
-      currentSkeleton.age >= 18 &&
-      currentSkeleton.syntheticType !== "industrial"
+      state.currentSkeleton.age >= 18 &&
+      state.currentSkeleton.syntheticType !== "industrial"
     ) {
       output.appearancePrompt =
         output.appearancePrompt.trimEnd().replace(/,?\s*$/, "") + nsfwSuffix;
     }
-    currentOutput = output;
+    state.currentOutput = output;
     currentGeneratedAt = new Date();
     currentStats = { text: textStats, image: null };
 
     document.getElementById("ai-placeholder")?.remove();
 
-    outputArea.innerHTML += renderOutput(currentSkeleton, output);
+    outputArea.innerHTML += renderOutput(state.currentSkeleton, output);
     checkImportServer();
     await sleep(50);
     document.querySelectorAll(".card:not(.revealed)").forEach((c, i) => {
@@ -2362,7 +2190,7 @@ async function generatePortrait(btn) {
       updateStatsDisplay();
     }
 
-    const filename = `${(currentSkeleton?.name ?? "portrait").replace(/\s+/g, "-")}.png`;
+    const filename = `${(state.currentSkeleton?.name ?? "portrait").replace(/\s+/g, "-")}.png`;
     wrapEl.innerHTML = `
       <img src="${src}" alt="Character portrait">
       <div class="portrait-actions">
@@ -2436,12 +2264,13 @@ async function generateNpcPortrait(npcName) {
   const text = textarea.value.trim();
   const sentences = text.match(/[^.!?]+[.!?]+/g) ?? [text];
   const snippet = sentences.slice(0, 2).join(" ").trim();
-  const npc = currentSkeleton?.cast?.find((c) => c.name === npcName);
+  const npc = state.currentSkeleton?.cast?.find((c) => c.name === npcName);
   const prefix = npc
     ? `portrait of ${npc.race} ${npc.gender.toLowerCase()}, `
     : "portrait of ";
   const portraitStyle =
-    GENRE_PORTRAIT_STYLES[currentGenre] ?? "photorealistic, cinematic lighting";
+    GENRE_PORTRAIT_STYLES[state.currentGenre] ??
+    "photorealistic, cinematic lighting";
   const prompt = prefix + snippet + ", " + portraitStyle;
 
   npcPortraitGenerating = true;
@@ -2610,7 +2439,7 @@ document.addEventListener("DOMContentLoaded", () => {
   updateImageProviderSelector();
 
   // Preload icons for the default genre so the slot animation has them cached
-  preloadGenreIcons(currentGenre);
+  preloadGenreIcons(state.currentGenre);
 
   // LGBQ checkbox persistence
   const lgbqEl = document.getElementById("include-lgbq");
@@ -2672,7 +2501,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Init genre carousel
   carouselIndex = Math.max(
     0,
-    GENRE_CAROUSEL_DATA.findIndex((g) => g.id === currentGenre),
+    GENRE_CAROUSEL_DATA.findIndex((g) => g.id === state.currentGenre),
   );
   renderCarouselCard();
   renderCarouselIndicator();
@@ -2752,541 +2581,6 @@ function updateStatsDisplay() {
       </div>
       ${imageRow}
     </div>`;
-}
-
-// ── TTS preprocessors ──────────────────────────────────────────────────────
-function preprocessTts(text) {
-  return text
-    .replace(/STR\s+\d+[^|]*(\|[^|]*)+/g, "")
-    .replace(/\(Append to end of Description\)/gi, "")
-    .replace(/\n{3,}/g, "\n\n")
-    .replace(/—/g, " — ")
-    .trim();
-}
-function preprocessTtsNihongi(text) {
-  return preprocessTts(text)
-    .replace(/\bkami\b/gi, "kami,")
-    .replace(/\bYomi\b/g, "Yoh-mee")
-    .replace(/\bkegare\b/gi, "keh-gah-reh")
-    .replace(/\bgory[oō]\b/gi, "gohr-yoh")
-    .replace(/\bmisogi\b/gi, "mee-soh-gee")
-    .replace(/\bkitsune\b/gi, "kit-sue-neh");
-}
-function preprocessTtsManga(text) {
-  return preprocessTts(text).replace(/!{2,}/g, "!");
-}
-
-// ── TTS provider / config ──────────────────────────────────────────────────
-const KOKORO_VOICES = [
-  "af_bella",
-  "af_sky",
-  "af_nicole",
-  "am_adam",
-  "am_michael",
-  "bf_emma",
-  "bf_isabella",
-  "bm_george",
-  "bm_lewis",
-  "jf_alpha",
-  "jf_gongitsune",
-  "jm_kumo",
-];
-
-const KOKORO_VOICE_PREFIX = {
-  af: "American Female",
-  am: "American Male",
-  bf: "British Female",
-  bm: "British Male",
-  ef: "Spanish Female",
-  em: "Spanish Male",
-  ff: "French Female",
-  fm: "French Male",
-  if: "Italian Female",
-  im: "Italian Male",
-  hf: "Hindi Female",
-  hm: "Hindi Male",
-  jf: "Japanese Female",
-  jm: "Japanese Male",
-  pf: "Portuguese Female",
-  pm: "Portuguese Male",
-  zf: "Chinese Female",
-  zm: "Chinese Male",
-};
-
-function kokoroVoiceLabel(id) {
-  const m = id.match(/^([a-z]+)_(.+)$/);
-  if (!m) return id;
-  const [, prefix, name] = m;
-  const category = KOKORO_VOICE_PREFIX[prefix];
-  const displayName = name.charAt(0).toUpperCase() + name.slice(1);
-  return category ? `${displayName} (${category})` : id;
-}
-
-const OPENAI_VOICES = [
-  { value: "alloy", label: "alloy — neutral" },
-  { value: "echo", label: "echo — male" },
-  { value: "fable", label: "fable — storyteller" },
-  { value: "nova", label: "nova — female" },
-  { value: "onyx", label: "onyx — deep male" },
-  { value: "shimmer", label: "shimmer — soft female" },
-];
-
-function setTtsProvider(val) {
-  ttsProvider = val;
-  localStorage.setItem("gof_tts_provider", val);
-  const provEl = document.getElementById("tts-provider");
-  if (provEl) provEl.value = val;
-
-  const narSel = document.getElementById("toolbar-narration");
-  if (narSel) narSel.value = val;
-
-  const voiceEl = document.getElementById("tts-voice-override");
-  const speedEl = document.getElementById("tts-speed-override");
-  const cfg = GENRE_TTS_CONFIG[currentGenre] ?? GENRE_TTS_CONFIG["modern"];
-
-  if (val === "kokoro") {
-    if (voiceEl) populateKokoroVoices(voiceEl);
-    if (speedEl) speedEl.value = cfg.kokoro.speed ?? 1.0;
-  } else if (val === "openai") {
-    if (voiceEl) {
-      voiceEl.innerHTML =
-        '<option value="">— Genre default —</option>' +
-        OPENAI_VOICES.map(
-          (v) => `<option value="${v.value}">${v.label}</option>`,
-        ).join("");
-      voiceEl.disabled = false;
-      voiceEl.value = localStorage.getItem("gof_tts_voice_override") || "";
-    }
-    if (speedEl) speedEl.value = cfg.openai.speed ?? 1.0;
-  } else if (val === "browser") {
-    if (voiceEl) populateBrowserVoices(voiceEl);
-    if (speedEl) speedEl.value = cfg.browser.rate ?? 1.0;
-  } else {
-    if (voiceEl) {
-      voiceEl.innerHTML =
-        '<option value="">— select a provider first —</option>';
-      voiceEl.disabled = true;
-    }
-    if (speedEl) speedEl.value = "";
-  }
-}
-
-function setTtsVoiceOverride(val) {
-  if (val) localStorage.setItem("gof_tts_voice_override", val);
-  else localStorage.removeItem("gof_tts_voice_override");
-}
-
-async function populateKokoroVoices(voiceEl) {
-  const defaultOption = '<option value="">— Genre default —</option>';
-  const kokoroUrl = document.getElementById("tts-kokoro-url")?.value.trim();
-  if (!kokoroUrl) {
-    voiceEl.innerHTML =
-      defaultOption +
-      KOKORO_VOICES.map(
-        (id) => `<option value="${id}">${kokoroVoiceLabel(id)}</option>`,
-      ).join("");
-    voiceEl.disabled = false;
-    voiceEl.value = localStorage.getItem("gof_tts_voice_override") || "";
-    return;
-  }
-  voiceEl.innerHTML = '<option value="">Loading voices…</option>';
-  voiceEl.disabled = true;
-  try {
-    const res = await fetch(`${kokoroUrl.replace(/\/$/, "")}/v1/audio/voices`);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    const voices = Array.isArray(data)
-      ? data
-      : (data.voices ?? data.data ?? []);
-    if (voices.length === 0) throw new Error("empty");
-    voiceEl.innerHTML =
-      defaultOption +
-      voices
-        .map((v) => {
-          const id =
-            typeof v === "string"
-              ? v
-              : (v.voice_id ?? v.id ?? v.name ?? String(v));
-          return `<option value="${id}">${kokoroVoiceLabel(id)}</option>`;
-        })
-        .join("");
-  } catch {
-    voiceEl.innerHTML =
-      defaultOption +
-      KOKORO_VOICES.map(
-        (id) => `<option value="${id}">${kokoroVoiceLabel(id)}</option>`,
-      ).join("");
-  }
-  voiceEl.disabled = false;
-  const target = localStorage.getItem("gof_tts_voice_override") || "";
-  voiceEl.value =
-    target && [...voiceEl.options].some((o) => o.value === target)
-      ? target
-      : "";
-}
-
-function populateBrowserVoices(voiceEl) {
-  function fill() {
-    const voices = speechSynthesis.getVoices();
-    const saved = localStorage.getItem("gof_tts_voice_override") || "";
-    if (voices.length === 0) {
-      voiceEl.innerHTML = '<option value="">System default</option>';
-      voiceEl.disabled = true;
-      return;
-    }
-    voiceEl.innerHTML =
-      '<option value="">System default</option>' +
-      voices
-        .map(
-          (v) =>
-            `<option value="${v.voiceURI}">${v.name}${v.default ? " ★" : ""}</option>`,
-        )
-        .join("");
-    voiceEl.disabled = false;
-    if (saved && [...voiceEl.options].some((o) => o.value === saved))
-      voiceEl.value = saved;
-  }
-  fill();
-  if (speechSynthesis.getVoices().length === 0) {
-    speechSynthesis.addEventListener("voiceschanged", fill, {
-      once: true,
-    });
-  }
-}
-
-function getEffectiveTtsConfig() {
-  const base = GENRE_TTS_CONFIG[currentGenre] ?? GENRE_TTS_CONFIG["modern"];
-  const voice = document.getElementById("tts-voice-override")?.value || null;
-  const speed =
-    parseFloat(document.getElementById("tts-speed-override")?.value) || null;
-  return {
-    preprocess: base.preprocess,
-    browser: {
-      ...base.browser,
-      ...(speed && { rate: speed }),
-      ...(voice && { voiceURI: voice }),
-    },
-    kokoro: {
-      voice: voice ?? base.kokoro.voice,
-      speed: speed ?? base.kokoro.speed,
-    },
-    openai: {
-      voice: voice ?? base.openai.voice,
-      speed: speed ?? base.openai.speed,
-    },
-  };
-}
-
-// ── Core narrate / stop ────────────────────────────────────────────────────
-function setNarrateButtonState(btn, state) {
-  if (!btn) return;
-  btn.classList.remove("loading", "speaking");
-  if (state === "loading") {
-    btn.textContent = "◌";
-    btn.classList.add("loading");
-  } else if (state === "speaking") {
-    btn.textContent = "⏸";
-    btn.classList.add("speaking");
-  } else {
-    btn.innerHTML = SVG_NARRATE_ICON;
-  }
-}
-
-function stopNarration() {
-  ttsAllActive = false;
-  ttsSpeaking = false;
-  setNarrateButtonState(ttsNarrateBtn, "idle");
-  ttsNarrateBtn = null;
-  if (ttsAudio) {
-    ttsAudio.pause();
-    ttsAudio = null;
-  }
-  if (typeof speechSynthesis !== "undefined") speechSynthesis.cancel();
-  const stopBtn = document.getElementById("btn-tts-stop");
-  if (stopBtn) stopBtn.hidden = true;
-}
-
-function narrate(text, btn = null) {
-  if (ttsProvider === "off") return;
-  if (btn && btn === ttsNarrateBtn && ttsSpeaking) {
-    stopNarration();
-    return;
-  }
-  stopNarration();
-  const cfg = getEffectiveTtsConfig();
-  const clean = (cfg.preprocess ?? preprocessTts)(text);
-  if (!clean) return;
-  ttsNarrateBtn = btn;
-  ttsSpeaking = true;
-  setNarrateButtonState(btn, "loading");
-  const stopBtn = document.getElementById("btn-tts-stop");
-  if (stopBtn) stopBtn.hidden = false;
-  if (ttsProvider === "browser") narrateBrowser(clean, cfg.browser);
-  else if (ttsProvider === "kokoro") narrateKokoro(clean, cfg.kokoro);
-  else if (ttsProvider === "openai") narrateOpenAI(clean, cfg.openai);
-}
-
-function narrateBrowser(text, cfg) {
-  setNarrateButtonState(ttsNarrateBtn, "speaking");
-  const utt = new SpeechSynthesisUtterance(text);
-  utt.rate = cfg.rate ?? 1.0;
-  utt.pitch = cfg.pitch ?? 1.0;
-  if (cfg.voiceURI) {
-    const voice = speechSynthesis
-      .getVoices()
-      .find((v) => v.voiceURI === cfg.voiceURI);
-    if (voice) utt.voice = voice;
-  }
-  utt.onend = utt.onerror = () => {
-    stopNarration();
-  };
-  speechSynthesis.speak(utt);
-}
-
-async function narrateKokoro(text, cfg) {
-  const url = document.getElementById("tts-kokoro-url")?.value.trim();
-  if (!url) {
-    showError("Kokoro URL not set — add it in Settings › Narration.");
-    stopNarration();
-    return;
-  }
-  try {
-    const res = await fetch(`${url.replace(/\/$/, "")}/v1/audio/speech`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "kokoro",
-        input: text,
-        voice: cfg.voice,
-        speed: cfg.speed ?? 1.0,
-      }),
-    });
-    if (!res.ok) throw new Error(`Kokoro ${res.status}`);
-    const blob = await res.blob();
-    if (!ttsSpeaking) return;
-    ttsAudio = new Audio(URL.createObjectURL(blob));
-    setNarrateButtonState(ttsNarrateBtn, "speaking");
-    ttsAudio.onended = ttsAudio.onerror = () => {
-      stopNarration();
-    };
-    ttsAudio.play();
-  } catch (err) {
-    stopNarration();
-    showError(`Kokoro TTS failed: ${err.message}`);
-  }
-}
-
-async function narrateOpenAI(text, cfg) {
-  const key = document.getElementById("tts-openai-key")?.value.trim();
-  if (!key) {
-    showError("OpenAI key not set — add it in Settings › Narration.");
-    stopNarration();
-    return;
-  }
-  try {
-    const res = await fetch("https://api.openai.com/v1/audio/speech", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${key}`,
-      },
-      body: JSON.stringify({
-        model: "tts-1",
-        input: text,
-        voice: cfg.voice,
-        speed: cfg.speed ?? 1.0,
-      }),
-    });
-    if (!res.ok) throw new Error(`OpenAI TTS ${res.status}`);
-    const blob = await res.blob();
-    if (!ttsSpeaking) return;
-    ttsAudio = new Audio(URL.createObjectURL(blob));
-    setNarrateButtonState(ttsNarrateBtn, "speaking");
-    ttsAudio.onended = ttsAudio.onerror = () => {
-      stopNarration();
-    };
-    ttsAudio.play();
-  } catch (err) {
-    stopNarration();
-    showError(`OpenAI TTS failed: ${err.message}`);
-  }
-}
-
-// Split text into sentence-boundary chunks for pipelined TTS
-function splitNarrationChunks(text, maxLen = 350) {
-  const sentences = text.match(/[^.!?]+[.!?]+\s*/g) ?? [text];
-  const chunks = [];
-  let cur = "";
-  for (const s of sentences) {
-    if (cur.length + s.length > maxLen && cur) {
-      chunks.push(cur.trim());
-      cur = s;
-    } else cur += s;
-  }
-  if (cur.trim()) chunks.push(cur.trim());
-  return chunks.filter(Boolean);
-}
-
-// Fetch a TTS audio blob from the configured cloud provider
-async function _fetchTtsBlob(text, cfg) {
-  if (ttsProvider === "kokoro") {
-    const url = document.getElementById("tts-kokoro-url")?.value.trim();
-    if (!url)
-      throw new Error("Kokoro URL not set — add it in Settings › Narration.");
-    const res = await fetch(`${url.replace(/\/$/, "")}/v1/audio/speech`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "kokoro",
-        input: text,
-        voice: cfg.kokoro.voice,
-        speed: cfg.kokoro.speed ?? 1.0,
-      }),
-    });
-    if (!res.ok) throw new Error(`Kokoro ${res.status}`);
-    return res.blob();
-  }
-  if (ttsProvider === "openai") {
-    const key = document.getElementById("tts-openai-key")?.value.trim();
-    if (!key)
-      throw new Error("OpenAI key not set — add it in Settings › Narration.");
-    const res = await fetch("https://api.openai.com/v1/audio/speech", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${key}`,
-      },
-      body: JSON.stringify({
-        model: "tts-1",
-        input: text,
-        voice: cfg.openai.voice,
-        speed: cfg.openai.speed ?? 1.0,
-      }),
-    });
-    if (!res.ok) throw new Error(`OpenAI TTS ${res.status}`);
-    return res.blob();
-  }
-}
-
-// Play a blob and resolve when playback ends
-function _playAudioBlob(blob) {
-  return new Promise((resolve, reject) => {
-    if (ttsAudio) {
-      ttsAudio.pause();
-      ttsAudio = null;
-    }
-    ttsAudio = new Audio(URL.createObjectURL(blob));
-    ttsAudio.onended = () => {
-      ttsAudio = null;
-      resolve();
-    };
-    ttsAudio.onerror = () => {
-      ttsAudio = null;
-      reject(new Error("Audio playback error"));
-    };
-    ttsAudio.play().catch(reject);
-  });
-}
-
-// Narrate one text block via browser TTS (chunked, sequential)
-async function _narrateAllBrowser(text, cfg) {
-  for (const chunk of splitNarrationChunks(text, 500)) {
-    if (!ttsAllActive) break;
-    await new Promise((resolve) => {
-      const utt = new SpeechSynthesisUtterance(chunk);
-      utt.rate = cfg.browser?.rate ?? 1.0;
-      utt.pitch = cfg.browser?.pitch ?? 1.0;
-      utt.onend = utt.onerror = resolve;
-      speechSynthesis.speak(utt);
-    });
-  }
-}
-
-// Narrate one text block via cloud TTS with prefetch pipeline
-async function _narrateAllCloud(text, cfg) {
-  const chunks = splitNarrationChunks(text, 350);
-  if (!chunks.length) return;
-  // Start fetching first chunk immediately so it's ready when we need it
-  let nextFetch = _fetchTtsBlob(chunks[0], cfg);
-  for (let i = 0; i < chunks.length; i++) {
-    if (!ttsAllActive) break;
-    const currentFetch = nextFetch;
-    // Kick off the next fetch in parallel while we await the current blob
-    nextFetch =
-      i + 1 < chunks.length ? _fetchTtsBlob(chunks[i + 1], cfg) : null;
-    try {
-      const blob = await currentFetch;
-      if (!ttsAllActive || !blob) break;
-      await _playAudioBlob(blob);
-    } catch (err) {
-      showError(`TTS failed: ${err.message}`);
-      break;
-    }
-  }
-}
-
-async function narrateAll() {
-  if (ttsProvider === "off") return;
-  stopNarration(); // kill any active individual narration first
-  ttsAllActive = true;
-  const stopBtn = document.getElementById("btn-tts-stop");
-  if (stopBtn) stopBtn.hidden = false;
-
-  // Build the reading sequence: label + content + source element for each section
-  const sequence = [];
-  if (currentOutput?.title) {
-    const titleEl = document.getElementById("field-title");
-    sequence.push({
-      text: currentOutput.title,
-      el: titleEl?.closest(".output-field") ?? titleEl,
-    });
-  }
-  const fieldDefs = [
-    { id: "field-desc", label: "Description" },
-    { id: "field-opening", label: "Opening" },
-    { id: "field-plot", label: "Plot Essentials" },
-    { id: "field-authornote", label: "Author's Note" },
-    {
-      id: "field-protagonist",
-      label: currentSkeleton?.name ?? "Protagonist",
-    },
-  ];
-  for (const { id, label } of fieldDefs) {
-    const el = document.getElementById(id);
-    if (el?.value?.trim()) {
-      const container =
-        el.closest(".output-field") ?? el.closest(".protagonist-section") ?? el;
-      sequence.push({
-        text: `${label}. ${el.value.trim()}`,
-        el: container,
-      });
-    }
-  }
-  document.querySelectorAll(".npc-section").forEach((section) => {
-    const name = section
-      .querySelector(".npc-section-name")
-      ?.textContent?.trim();
-    const text = section.querySelector("textarea")?.value?.trim();
-    if (name && text) sequence.push({ text: `${name}. ${text}`, el: section });
-  });
-
-  for (const item of sequence) {
-    if (!ttsAllActive) break;
-    item.el?.scrollIntoView({ behavior: "smooth", block: "center" });
-    const highlightEl =
-      item.el?.querySelector(".field-textarea, .field-input") ?? item.el;
-    highlightEl?.classList.add("narrating");
-    const cfg = getEffectiveTtsConfig();
-    const clean = (cfg.preprocess ?? preprocessTts)(item.text);
-    if (clean) {
-      if (ttsProvider === "browser") await _narrateAllBrowser(clean, cfg);
-      else await _narrateAllCloud(clean, cfg);
-    }
-    highlightEl?.classList.remove("narrating");
-  }
-
-  ttsAllActive = false;
-  if (stopBtn) stopBtn.hidden = true;
 }
 
 function switchSettingsTab(tab) {
