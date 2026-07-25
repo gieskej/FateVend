@@ -1,51 +1,53 @@
 # /test-ui
 
-Run a full end-to-end UI test of the FateVend generator at `http://localhost:8080/`. Tests the complete two-phase generation flow and verifies key UI features.
+Run the FateVend e2e test suite against `http://localhost:8080/`.
+
+The suite itself lives in `web/tests/e2e/` (plain Playwright scripts, no test-runner
+dependency beyond the `playwright` devDependency already in `package.json`) — this
+skill just invokes it, so there's one source of truth for selectors/assertions
+instead of a second copy drifting out of sync in this file.
 
 ## Steps
 
-### 1. Ensure the dev server is running
+### 1. Run the fast tier (default)
 
-Check if port 8080 is already listening:
 ```bash
-curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/
+npm test
 ```
 
-If it returns anything other than `200`, start the server:
+This first runs `web/tests/data/` — pure-Node checks with no browser or
+server involved (an exhaustive icon-file-existence sweep across every genre's
+data tables, plus a 50-roll-per-genre consistency check) — then starts
+`web/serve.sh` automatically if nothing is already listening on `:8080` (and
+leaves it running — same behavior as launching it by hand), then runs every
+free, DOM-only Playwright test file:
+
+- `smoke.mjs` — page load, provider selector, error box, no console errors
+- `genre-switching.mjs` — phase-1 roll for all 7 built-in genres via the
+  toolbar dropdown, plus a full carousel-step loop
+- `genre-pack-import.mjs` — imports both bundled sample packs (Neon Drift,
+  Pirate Cove) through the real Settings → Genre UI and rolls phase 1 for each
+- `narration-audio.mjs` — exercises narrate/narrateAll/stopNarration and the
+  BGM player controls
+- `settings-modal.mjs` — opens Settings, walks every tab, closes it
+
+Each file prints its own PASS/FAIL table; the runner prints a grand total and
+exits non-zero on any failure.
+
+### 2. Run the full tier (costs tokens)
+
 ```bash
-cd web && bash serve.sh &
-sleep 2
+npm run test:full
 ```
 
-### 2. Run the Playwright test
+Everything in the fast tier, plus `full-generation.mjs` — the complete two-phase
+flow (phase 1 roll → phase 2 real Anthropic/Gemini API call → verify output
+renders → Go to Top works). Only run this when you specifically need to verify
+the AI-generation path; it's not part of the default fast run because it makes
+a real, billed API call every time.
 
-Use Node.js with Playwright (headless Chromium). The API keys are injected server-side via `config.js` — no manual key entry needed.
+### 3. Report
 
-The test must cover **both phases**:
-- **Phase 1** — click `#btn-generate`, wait for `#btn-continue` to appear (up to 15s)
-- **Phase 2** — click `#btn-continue`, wait for `.copy-all-wrap` to appear (up to 90s — AI call)
-
-### 3. Assertions to verify
-
-| # | What | How |
-|---|------|-----|
-| 1 | Page loads | HTTP 200 on `/` |
-| 2 | Phase 1 completes | `#btn-continue` visible after clicking `#btn-generate` |
-| 3 | Phase 2 completes | `.copy-all-wrap` appears within 90s |
-| 4 | Bottom button present | `.btn-go-top` visible |
-| 5 | Go to Top works | click `.btn-go-top` → `window.scrollY < 50` |
-| 6 | No error box visible | `#error-box` does not have class `visible` |
-| 7 | Character sheet rendered | `.character-sheet` element exists and has non-empty text |
-| 8 | Provider selector visible | `#provider-selector` is displayed (both keys are configured) |
-
-### 4. Screenshots
-
-Save to `C:\Users\jeg00\AppData\Local\Temp\`:
-- `gof_test_phase1.png` — after skeleton cards appear
-- `gof_test_phase2.png` — after AI output renders (scrolled to bottom)
-
-### 5. Report
-
-Print a table: step number, PASS/FAIL, detail. End with total pass/fail count and any error messages captured from `#error-box` or the console.
-
-If generation fails due to an API error, report the exact error text and note which provider was active.
+Relay the runner's printed output verbatim — it already includes a per-suite
+PASS/FAIL table and a grand total. If something fails, note which suite/step
+and the captured error/console text from that step's `detail` field.

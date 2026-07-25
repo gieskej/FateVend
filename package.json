@@ -1,6 +1,12 @@
 {
   "name": "FateVend",
   "type": "module",
+  "scripts": {
+    "test": "node web/tests/data/run.mjs && node web/tests/e2e/run.mjs",
+    "test:full": "node web/tests/data/run.mjs && node web/tests/e2e/run.mjs --full",
+    "test:data": "node web/tests/data/run.mjs",
+    "test:e2e": "node web/tests/e2e/run.mjs"
+  },
   "devDependencies": {
     "playwright": "^1.61.0"
   }
