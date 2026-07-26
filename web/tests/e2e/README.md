@@ -36,7 +36,7 @@ generation flow), so it's opt-in via `--full`, not part of the default run.
 | `helpers.mjs` | Server lifecycle, console/network-error capture, report printing |
 | `smoke.mjs` | Page load, provider selector, error box, no console errors |
 | `genre-switching.mjs` | Phase-1 roll for all 7 built-in genres (toolbar dropdown + carousel step) |
-| `genre-pack-import.mjs` | Imports both bundled sample packs through the real Settings UI, rolls phase 1 for each |
+| `genre-pack-import.mjs` | Imports both bundled sample packs through the real Settings UI, rolls phase 1 for each, then removes one while it's the active genre (carousel removal-fallback path) |
 | `narration-audio.mjs` | narrate/narrateAll/stopNarration + BGM player controls |
 | `settings-modal.mjs` | Open/close, every tab |
 | `full-generation.mjs` | **Slow/paid.** Full phase 1 + phase 2 (real API call) + Go to Top |

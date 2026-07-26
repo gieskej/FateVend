@@ -52,6 +52,16 @@ import {
   GENRE_PORTRAIT_STYLES,
   genreIconBase,
 } from "./pack-assets.js";
+import {
+  setGenre,
+  carouselStep,
+  goToCarouselIndex,
+  onToolbarGenreChange,
+  renderCarouselCard,
+  renderCarouselIndicator,
+  resetCarouselIndex,
+  initCarousel,
+} from "./carousel.js";
 
 // ── Genre routing ─────────────────────────────────────────────────────────
 
@@ -211,111 +221,6 @@ let npcPortraitGenerating = false;
 let isGenerating = false;
 let currentProvider = "gemini";
 let currentImageProvider = null;
-
-// GENRE_CAROUSEL_DATA is imported from ./generator/manifests.js (derived from
-// the per-genre manifests in display order).
-let carouselIndex = 0;
-
-// Prev/next cards only get room to peek out on desktop widths.
-function carouselShowPeeks(width) {
-  return width >= 600;
-}
-
-function genreCardHTML(g, modifierClass, onclick) {
-  return `
-    <div class="genre-card ${modifierClass}" ${onclick ? `onclick="${onclick}"` : ""} title="${modifierClass === "genre-card-peek" ? g.label : ""}">
-      <div class="genre-card-image-wrap">
-        <img class="genre-card-image"
-          src="${PACK_ICON_URLS[g.id]?.["_genre.webp"] ?? `${genreIconBase(g.id)}_genre.webp`}"
-          onerror="this.parentNode.innerHTML='<div class=&quot;genre-card-image-placeholder&quot;>⚙</div>'"
-          alt="${g.label}" />
-      </div>
-      <div class="genre-card-info">
-        <div class="genre-card-title">${g.label}</div>
-        <div class="genre-card-desc">${g.desc}</div>
-      </div>
-    </div>`;
-}
-
-function renderCarouselCard() {
-  const n = GENRE_CAROUSEL_DATA.length;
-  const g = GENRE_CAROUSEL_DATA[carouselIndex];
-
-  let track = genreCardHTML(g, "genre-card-current", null);
-  if (carouselShowPeeks(window.innerWidth)) {
-    const prevIdx = (carouselIndex - 1 + n) % n;
-    const nextIdx = (carouselIndex + 1) % n;
-    track =
-      genreCardHTML(
-        GENRE_CAROUSEL_DATA[prevIdx],
-        "genre-card-peek",
-        `goToCarouselIndex(${prevIdx})`,
-      ) +
-      track +
-      genreCardHTML(
-        GENRE_CAROUSEL_DATA[nextIdx],
-        "genre-card-peek",
-        `goToCarouselIndex(${nextIdx})`,
-      );
-  }
-
-  document.getElementById("genre-carousel").innerHTML =
-    `<div class="genre-carousel-track">${track}</div>`;
-}
-
-function renderCarouselIndicator() {
-  document.getElementById("carousel-indicator").innerHTML =
-    GENRE_CAROUSEL_DATA.map(
-      (g, i) => `
-    <div class="carousel-dot${i === carouselIndex ? " active" : ""}"
-         onclick="goToCarouselIndex(${i})"
-         title="${g.label}"></div>
-  `,
-    ).join("");
-}
-
-function goToCarouselIndex(i, animate = true) {
-  if (i === carouselIndex) return;
-  carouselIndex =
-    ((i % GENRE_CAROUSEL_DATA.length) + GENRE_CAROUSEL_DATA.length) %
-    GENRE_CAROUSEL_DATA.length;
-  const card = document.querySelector(".genre-card-current");
-  if (animate && card) {
-    card.classList.add("fading");
-    setTimeout(() => {
-      renderCarouselCard();
-      renderCarouselIndicator();
-      setGenre(GENRE_CAROUSEL_DATA[carouselIndex].id);
-    }, 180);
-  } else {
-    renderCarouselCard();
-    renderCarouselIndicator();
-    setGenre(GENRE_CAROUSEL_DATA[carouselIndex].id);
-  }
-}
-
-function carouselStep(dir) {
-  goToCarouselIndex(carouselIndex + dir);
-}
-
-function onToolbarGenreChange(value) {
-  const i = GENRE_CAROUSEL_DATA.findIndex((g) => g.id === value);
-  if (i !== -1 && i !== carouselIndex) goToCarouselIndex(i);
-  setGenre(value);
-}
-
-function setGenre(genre) {
-  state.currentGenre = genre;
-  const sel = document.getElementById("genre-select");
-  if (sel && sel.value !== genre) sel.value = genre;
-  preloadGenreIcons(genre);
-  const idx = GENRE_CAROUSEL_DATA.findIndex((g) => g.id === genre);
-  if (idx !== -1 && idx !== carouselIndex) {
-    carouselIndex = idx;
-    renderCarouselCard();
-    renderCarouselIndicator();
-  }
-}
 
 // ═══════════════════════════════════════════════════════════════════════════
 // UI HELPERS
@@ -510,7 +415,7 @@ function iconBaseFor(entry, def, cfg) {
 
 // Preload all icon images for a genre into the browser cache so the slot
 // animation doesn't hammer the server with concurrent requests.
-function preloadGenreIcons(genre) {
+export function preloadGenreIcons(genre) {
   const cfg = getSlotConfig(genre);
   cfg.defs.forEach((def) => {
     if (def.cat === "SENTIMENTS") return; // rendered as emoji text, no image to preload
@@ -1347,7 +1252,7 @@ function unregisterGenrePack(id) {
     ?.querySelector(`option[value="${id}"]`)
     ?.remove();
   if (state.currentGenre === id) {
-    carouselIndex = 0;
+    resetCarouselIndex();
     setGenre(GENRE_CAROUSEL_DATA[0].id);
   }
   renderCarouselCard();
@@ -2364,27 +2269,8 @@ document.addEventListener("DOMContentLoaded", () => {
   loadStoredGenrePacks();
   renderDownloadablePacks();
 
-  // Init genre carousel
-  carouselIndex = Math.max(
-    0,
-    GENRE_CAROUSEL_DATA.findIndex((g) => g.id === state.currentGenre),
-  );
-  renderCarouselCard();
-  renderCarouselIndicator();
-
-  // Re-render the carousel track when crossing the mobile/desktop peek breakpoint
-  let _lastShowPeeks = carouselShowPeeks(window.innerWidth);
-  let _resizeTimer;
-  window.addEventListener("resize", () => {
-    clearTimeout(_resizeTimer);
-    _resizeTimer = setTimeout(() => {
-      const showPeeks = carouselShowPeeks(window.innerWidth);
-      if (showPeeks !== _lastShowPeeks) {
-        _lastShowPeeks = showPeeks;
-        renderCarouselCard();
-      }
-    }, 150);
-  });
+  // Init genre carousel (renders it + wires the resize handler)
+  initCarousel();
 
   // TTS provider persistence — setTtsProvider must run first to populate the voice select options
   const savedTtsProvider = localStorage.getItem("gof_tts_provider") || "off";

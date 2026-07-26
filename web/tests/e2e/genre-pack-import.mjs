@@ -73,7 +73,30 @@ export async function run(browser) {
     }
   }
 
-  assertNoErrors(diag, results, "no console errors / failed requests across both pack imports + rolls");
+  // Remove a pack while it's the *active* genre — exercises the carousel's
+  // removal fallback path (resetCarouselIndex + setGenre to the first genre),
+  // which the import/roll steps above never touch. The active genre must fall
+  // back to a valid built-in and the carousel must re-render a current card.
+  await page.selectOption("#genre-select", "sample-neon-drift");
+  await page.waitForTimeout(150);
+  await page.evaluate(() => window.openSettings());
+  await page.evaluate(() => window.switchSettingsTab("genre"));
+  await page.click('[data-remove-pack="sample-neon-drift"]');
+  await page.waitForTimeout(400);
+  const stillListed = await page.$eval("#genre-select", (el) =>
+    [...el.options].some((o) => o.value === "sample-neon-drift"),
+  );
+  results.push({ pass: !stillListed, detail: "removed pack is gone from #genre-select" });
+  const activeGenre = await page.$eval("#genre-select", (el) => el.value);
+  results.push({
+    pass: activeGenre !== "sample-neon-drift" && activeGenre.length > 0,
+    detail: `active genre fell back to a valid genre ("${activeGenre}") after removing the active pack`,
+  });
+  const hasCurrentCard = await page.locator(".genre-card-current").count();
+  results.push({ pass: hasCurrentCard === 1, detail: "carousel re-rendered a current card after removal" });
+  await page.evaluate(() => window.closeSettings());
+
+  assertNoErrors(diag, results, "no console errors / failed requests across imports, rolls, and removal");
 
   await diag.context.close();
   return printReport("genre-pack-import", results);
