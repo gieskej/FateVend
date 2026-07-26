@@ -769,6 +769,10 @@ body::before {
   justify-content: center;
   font-size: 4.5rem;
   line-height: 1;
+  /* The emoji is rendered as text, but the reel reads like the image reels
+     next to it — no I-beam cursor, and not selectable. */
+  cursor: default;
+  user-select: none;
 }
 .slot.rolling .slot-window {
   border-color: var(--brass-dark);
