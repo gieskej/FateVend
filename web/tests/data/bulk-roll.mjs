@@ -35,6 +35,59 @@ function checkShape(skeleton, label, results) {
   return true;
 }
 
+// A broad race is "ambiguous" if the genre defines at least one concrete
+// sub-race under it whose label differs from the broad itself (e.g. Android ->
+// "Combat Android", Alien -> "Slug alien"). Clone/Mutant/Human-in-some-genres
+// are NOT ambiguous — their single form's label equals the broad, so a cast
+// member carrying that value is already as concrete as the data gets.
+function ambiguousBroads(tables) {
+  const set = new Set();
+  for (const r of tables.RACES_OR_ETHNICITIES) {
+    const concrete = r.flavor.split(" — ")[0].trim();
+    if (concrete !== r.broad) set.add(r.broad);
+  }
+  return set;
+}
+
+// Cast members must carry a concrete race, never a bare ambiguous broad — a
+// broad "Android"/"Alien" leaves the LLM to invent sub-race details that then
+// contradict the rest of the story (the bug this checks for).
+function checkCastRaceConcreteness(skeleton, ambiguous, label, results) {
+  const offenders = (skeleton.cast ?? [])
+    .filter((npc) => ambiguous.has(npc.race))
+    .map((npc) => `${npc.role}="${npc.race}"`);
+  if (offenders.length) {
+    results.push({
+      pass: false,
+      detail: `${label}: cast member(s) got a bare ambiguous broad race: ${offenders.join(", ")}`,
+    });
+    return false;
+  }
+  return true;
+}
+
+// Every cast member needs the fields the prompt/UI read off them: an MBTI type
+// (a personality anchor for the LLM), a non-empty traits list, and role/race.
+const MBTI_RE = /^[EI][NS][TF][JP]$/;
+function checkCastMemberShape(skeleton, label, results) {
+  const bad = (skeleton.cast ?? []).filter(
+    (npc) =>
+      !MBTI_RE.test(npc.mbti ?? "") ||
+      !Array.isArray(npc.traits) ||
+      npc.traits.length === 0 ||
+      !npc.role ||
+      !npc.race,
+  );
+  if (bad.length) {
+    results.push({
+      pass: false,
+      detail: `${label}: ${bad.length} cast member(s) missing mbti/traits/role/race (e.g. ${bad[0].name}: mbti=${bad[0].mbti})`,
+    });
+    return false;
+  }
+  return true;
+}
+
 function checkProfessionRestrictions(skeleton, tables, label, results) {
   let ok = true;
   const tensionId = skeleton._slots?.tension;
@@ -67,15 +120,20 @@ export async function run() {
   let totalRolls = 0;
   let shapeFails = 0;
   let restrictionFails = 0;
+  let castRaceFails = 0;
+  let castShapeFails = 0;
 
   for (const genre of SUPPORTED_GENRES) {
     const tables = GENRE_TABLES[genre];
+    const ambiguous = ambiguousBroads(tables);
     for (let i = 0; i < ROLLS_PER_GENRE; i++) {
       const { skeleton } = await generateCharacter({ genre, skipAI: true });
       totalRolls++;
       const label = `${genre} #${i + 1}`;
       if (!checkShape(skeleton, label, results)) shapeFails++;
       if (!checkProfessionRestrictions(skeleton, tables, label, results)) restrictionFails++;
+      if (!checkCastRaceConcreteness(skeleton, ambiguous, label, results)) castRaceFails++;
+      if (!checkCastMemberShape(skeleton, label, results)) castShapeFails++;
     }
   }
 
@@ -86,6 +144,14 @@ export async function run() {
   results.push({
     pass: restrictionFails === 0,
     detail: `profession-restriction check: ${totalRolls - restrictionFails}/${totalRolls} rolls respected their tension/secret's requiredProfessions/excludedProfessions`,
+  });
+  results.push({
+    pass: castRaceFails === 0,
+    detail: `cast-race concreteness: ${totalRolls - castRaceFails}/${totalRolls} rolls gave every cast member a concrete (non-ambiguous-broad) race`,
+  });
+  results.push({
+    pass: castShapeFails === 0,
+    detail: `cast-member shape: ${totalRolls - castShapeFails}/${totalRolls} rolls gave every cast member a valid mbti + traits + role + race`,
   });
 
   return printReport(`bulk-roll (${ROLLS_PER_GENRE}/genre x ${SUPPORTED_GENRES.length} genres)`, results);

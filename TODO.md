@@ -3,7 +3,6 @@
 
 - Need some sort of a post-skeleton or pre-generation consistency check, at least at dev-time.
 
-- NPCs seem to get a broad race instead of a concrete one.
 
 ## Bugs
 - Plot essentials should be short bullet points, not wordy prose.  Ideally around 1000 characters, maximum 1500 characters.
@@ -12,8 +11,6 @@
 
 - Need consistent style for text.  I see text in 3-4 colors and the fonts tend to be tiny for some reason.  Other than the disclaimer, all text should be 1.0em.  Maybe even put this in the DESIGN.md because Claude seems to forget after a time.
 
-- If Dating, then there should be a lover NPC
-- NPC personalities need more entries to make it interesting.
 
 ## Bugs - Fantasy
 - The text-to-image prompt needs to handle special cases:
@@ -63,6 +60,10 @@
 ---
 
 ## Fixed Bugs
+- NPCs need MBTI property too so the AI can give them personality. Added a random MBTI type to every cast member (buildCast, via randomMbtiType() + a post-build loop); threaded into the prompt cast line and shown in the cast card + NPC meta.
+- NPC personalities (e.g. "would help hide a body, no questions asked") need more entries. Grew NPC_TRAITS from 32 to 56 with morally-grey / dark-funny entries.
+- If Dating, then there should be a lover NPC. Investigated — already works (34/34 dating chars get a partner NPC, added before siblings). No change needed.
+- NPCs seem to get a broad race instead of a concrete one.
 - e2e unit test
 - Randomness: seems like the reels pick the same thing repeatedly. - It was a weighting problem.  Some things were ridiculously overweighted.
 - User feedback after rolling 100 Joseon skeletons: "There are a lot of missing Sentiment icons." Root cause: sentiment words (the "how do you feel about your role" flavor on every profession) had been invented ad hoc for years — 100 unique words across the 7 genres' `professions.js` files (Joseon alone had 68), each needing its own entry in `common/sentiments.js` and its own AI-generated icon at `common/icons/SENTIMENTS#<id>.webp`. 21 of Joseon's words had never gotten an icon or even a `sentiments.js` entry at all, so the slot-machine reel had nothing to look up and silently fell back to the ⚙ placeholder. First attempted the direct fix (generate the missing icons via Gemini) but the user redirected twice: first to map sentiments onto an open-source SVG emoji set instead of continuing to pay for AI generation, then — after realizing that's just one vendor's rendering of Unicode codepoints — to render the actual Unicode emoji character directly via the browser's native emoji font, with **no image asset at all**, and to constrain the sentiment vocabulary itself to a fixed, curated set rather than letting it keep growing unchecked. Rewrote `common/sentiments.js` to a fixed 34-entry canonical list (`{id, label, emoji}` — a real Unicode "Smileys & Emotion" character per entry, no more `iconPrompt`/`iconPath`). Updated `index.html`'s slot-machine rendering at all 3 places that build a sentiment icon URL (initial frame, spin animation, landing) plus a `preloadGenreIcons()` preload routine that also iterates every category generically — all four now render/skip the emoji as plain text for the `SENTIMENTS` category instead of treating it as an image. Remapped all 7 genres' `sentiments` arrays onto the new canonical list (a genre-by-genre judgment pass, not a mechanical rename, since many near-synonyms — suspicious/wary/skeptical, tenacious/resolute/unyielding — deliberately collapse onto the same id), taking the total unique words in actual use from 100 down to 30. Documented the constraint in every genre's `professions.js` header: sentiment values must come from the fixed canonical list, don't invent new ones. Deleted all 80 now-orphaned `SENTIMENTS#*.webp` files. Also removed a dead, unused `import { SENTIMENTS }` from 3 genres' `professions.js` (fantasy/modern/sci-fi/paleolithic) found while touching those headers. Caught and fixed a real regression during my own testing: `preloadGenreIcons()` was still building a broken image URL for every sentiment (visible live in the dev server's request log as 404s like `GET /🤬SENTIMENTS%23furious.webp` — the emoji character itself getting used as the icon's base path, inherited from the same 4-tuple pattern `PLOT_ARCHETYPES` already used for a legitimate icon-base override) — added the same category guard there. Verified: every genre's `sentiments` values are members of the canonical list (scripted check, not manual reading); zero errors across a 1500-roll stress test in all 7 genres; user confirmed live in-browser that the emoji render correctly after the preload fix.

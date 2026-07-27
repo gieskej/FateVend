@@ -859,6 +859,7 @@ function renderSkeleton(sk) {
           <div class="cast-identity">
             <span class="cast-identity-badge">${npc.gender}</span>
             <span class="cast-identity-badge">${npc.race}</span>
+            <span class="cast-identity-badge">${npc.mbti}</span>
           </div>
           <div class="cast-traits">${npc.traits.join(" · ")}</div>
           <div class="cast-dynamic">${npc.dynamic}</div>
@@ -887,7 +888,7 @@ function renderOutput(sk, output) {
     .map(([name, entry]) => {
       const npc = castByName[name];
       const meta = npc
-        ? `<div class="npc-entry-meta">${npc.gender} · ${npc.role} · ${npc.race}</div>`
+        ? `<div class="npc-entry-meta">${npc.gender} · ${npc.role} · ${npc.race} · ${npc.mbti}</div>`
         : "";
       const safeName = name.replace(/\s+/g, "_");
       const nameJS = JSON.stringify(name);

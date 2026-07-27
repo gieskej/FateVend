@@ -72,7 +72,7 @@ function castLines(sk) {
   return (sk.cast ?? [])
     .map(
       (npc) =>
-        `  - ${npc.name} (${npc.role}, ${npc.status}, ${npc.gender}, ${npc.race}): ${npc.traits.join(", ")}. ${npc.dynamic}`,
+        `  - ${npc.name} (${npc.role}, ${npc.status}, ${npc.gender}, ${npc.race}, ${npc.mbti}): ${npc.traits.join(", ")}. ${npc.dynamic}`,
     )
     .join("\n");
 }

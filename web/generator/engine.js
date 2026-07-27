@@ -283,6 +283,7 @@ export function buildCast(
   protName,
   protLast,
   ethnicityBroad,
+  protRace,
   familyStructure,
   tables,
   protagonistGenderId,
@@ -290,6 +291,7 @@ export function buildCast(
   relStatusId,
   includeLGBQ = true,
 ) {
+  const RACES = tables.RACES_OR_ETHNICITIES;
   const namePools = tables.NAME_POOLS;
   const SIBLING_DYN = tables.SIBLING_DYNAMICS;
   const PARENT_STAT = tables.PARENT_STATUSES;
@@ -384,7 +386,7 @@ export function buildCast(
       role: isMother ? "mother" : "father",
       status: status.label,
       gender: isMother ? "Female" : "Male",
-      race: ethnicityBroad,
+      race: protRace,
       traits: pickTraits(2),
       dynamic,
     };
@@ -436,7 +438,7 @@ export function buildCast(
       role: PARTNER_ROLE[relStatusId] ?? "partner",
       status: PARTNER_STATUS[relStatusId] ?? "present",
       gender: GENDER_LABELS[pGid],
-      race: ethnicityBroad,
+      race: protRace,
       traits: pickTraits(3),
       dynamic: fillD(uniformPick(pDyns), protName),
     });
@@ -460,7 +462,7 @@ export function buildCast(
           : "sibling",
       status: dyn.id === "deceased" ? "deceased" : dyn.label,
       gender: GENDER_LABELS[genderId],
-      race: ethnicityBroad,
+      race: protRace,
       traits: pickTraits(2),
       dynamic: (
         SIBLING_MAP[dyn.id] ??
@@ -480,7 +482,7 @@ export function buildCast(
       role: "best friend",
       status: "present and close",
       gender: GENDER_LABELS[fGid],
-      race: fBroad,
+      race: concreteRaceForBroad(fBroad, RACES),
       traits: pickTraits(3),
       dynamic: fillD(uniformPick(FRIEND_DYNAMICS), protName),
     });
@@ -504,11 +506,15 @@ export function buildCast(
       role: foilType.role,
       status: "present",
       gender: GENDER_LABELS[foilGid],
-      race: foilBroad,
+      race: concreteRaceForBroad(foilBroad, RACES),
       traits: pickTraits(2),
       dynamic: fillD(uniformPick(foilType.dynamics), protName),
     });
   }
+
+  // Every NPC gets an MBTI type (see randomMbtiType) — a compact personality
+  // anchor the prompt hands the LLM alongside each cast member's traits.
+  for (const npc of cast) npc.mbti = randomMbtiType();
   return cast;
 }
 
@@ -542,6 +548,27 @@ const GENDER_LABELS = {
 function randomBroadFrom(namePools) {
   const keys = Object.keys(namePools).filter((k) => k !== "default");
   return uniformPick(keys.length ? keys : Object.keys(namePools));
+}
+
+// A cast member's race should be as concrete as the protagonist's own — a
+// specific sub-race ("Combat Android", "Slug alien"), not just the broad
+// category ("Android", "Alien"). The broad form is ambiguous in genres where
+// the sub-race carries real narrative weight, and leaves the LLM to invent
+// (often inconsistent) details for it. Picks a random concrete race within
+// `broad` and returns its concise label — the flavor's short form, the same
+// derivation used for the protagonist's own race — falling back to `broad`
+// itself if the genre defines no sub-races for it.
+function concreteRaceForBroad(broad, races) {
+  const matches = races.filter((r) => r.broad === broad);
+  if (!matches.length) return broad;
+  return uniformPick(matches).flavor.split(" — ")[0].trim();
+}
+
+// A cast member's MBTI type, so the LLM has a personality anchor for each NPC.
+// Uniform random, not stat-derived like the protagonist's — NPCs have no rolled
+// stats of their own.
+function randomMbtiType() {
+  return uniformPick(MBTI_TYPES).type;
 }
 
 function neutralGenderId(includeLGBQ = true) {
@@ -768,10 +795,14 @@ export function buildSkeleton(stats, mbti, tables, options = {}) {
   })();
   const secret = statWeightedPick(secretPool, stats);
   const city = statWeightedPick(CS, stats);
+  // The protagonist's concrete race (the flavor's short form, e.g. "Combat
+  // Android"); family shares it, and it's also the slot-machine race label.
+  const protRace = identity.flavor.split(" — ")[0].trim();
   const cast = buildCast(
     name,
     lastName,
     identity.broad,
+    protRace,
     famStruct,
     tables,
     gender.id,
@@ -854,7 +885,7 @@ export function buildSkeleton(stats, mbti, tables, options = {}) {
     cast,
     _slots: {
       species: identity.id,
-      race: identity.flavor.split(" — ")[0].trim(),
+      race: protRace,
       gender: gender.id,
       orient: orientation.id,
       relStatus: relStatus.id,
