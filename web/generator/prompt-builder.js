@@ -30,7 +30,7 @@ export const LIMITS = {
   description: 5000,
   opening: 4000,
   appearancePrompt: 500,
-  plotEssentials: 2000,
+  plotEssentials: 1200,
   authorNote: 500,
   npcEntry: 1000,
   tags: 10,
@@ -136,7 +136,7 @@ function GENERIC_OUTPUT_RULES(sk, voice) {
 
 "appearancePrompt": MAX 500 chars. ${appearanceNote}
 
-"plotEssentials": MAX 2000 chars. Using "${sk.plotArchetype}" as the primary story engine, write the plot overview for this scenario tailored to this specific character. Cover: what triggers the story (the inciting incident), the central objective, the main obstacle or antagonist, and what's at stake if the character fails. Ground it specifically in this character's skills, cast, and setting. The background tension ("${sk.tension}") is a secondary thread — weave it in but don't let it dominate. Write for a GM who needs to run this session tonight: concrete, specific, actionable.
+"plotEssentials": MAX 1200 chars. Using "${sk.plotArchetype}" as the primary story engine, write the plot overview for this scenario tailored to this specific character. Cover: what triggers the story (the inciting incident), the central objective, the main obstacle or antagonist, and what's at stake if the character fails. Ground it specifically in this character's skills, cast, and setting. The background tension ("${sk.tension}") is a secondary thread — weave it in but don't let it dominate. Write for a GM who needs to run this session tonight: concrete, specific, actionable.
 
 "authorNote": MAX 500 chars. Style directive for AI Dungeon's Author's Note field — injected into every AI turn to shape the game's prose. Terse imperatives tailored to this specific character and setting. Include prose style, 1–2 sensory anchors from their specific world, and the emotional/genre register. No character names, no plot details.`;
 }
