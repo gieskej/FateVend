@@ -1,6 +1,6 @@
 # FateVend — RPG Character Generator
 
-A personality-first RPG character generator for AI Dungeon scenarios. Rolls stats, seeds a full character skeleton from curated tables, then calls an AI API (Claude or Gemini) to generate terse behavioral prose — character entries, a scenario description, opening, plot components, text-to-image prompts, and tags — ready to export directly into AI Dungeon.
+A personality-first RPG character generator for AI Dungeon scenarios. Rolls stats, seeds a full character skeleton (protagonist + a supporting cast of NPCs) from curated tables, then calls an AI text provider (Claude, Gemini, or a local Ollama model) to generate terse behavioral prose — character entries, a scenario description, opening, plot components, text-to-image prompts, and tags — ready to export directly into AI Dungeon.
 
 Seven built-in genres:
 - **Modern**
@@ -20,63 +20,16 @@ or a `.zip` with its own icons and music) that you can add at runtime from
 
 <table>
 <tr>
-<td align="center" width="50%"><img src="docs/screenshots-desktop/1-genres-fantasy.webp" width="400"><br><sub>Pick a genre</sub></td>
-<td align="center" width="50%"><img src="docs/screenshots-desktop/2-reels-and-skeleton.webp" width="400"><br><sub>Spin the reels, roll a character + cast</sub></td>
+<td align="center" width="50%"><img src="docs/screenshots-desktop/1-genre-picker.webp" width="420"><br><sub>Pick a genre from the carousel</sub></td>
+<td align="center" width="50%"><img src="docs/screenshots-desktop/2-reels-skeleton.webp" width="420"><br><sub>Spin the reels — roll a character skeleton</sub></td>
 </tr>
 <tr>
-<td align="center"><img src="docs/screenshots-desktop/3-ai-generated-scenario.webp" width="400"><br><sub>Generate the full AI Dungeon scenario</sub></td>
-<td align="center"><img src="docs/screenshots-mobile/02-spin-reels.webp" width="200"><br><sub>Works on mobile too</sub></td>
+<td align="center"><img src="docs/screenshots-desktop/3-supporting-cast.webp" width="420"><br><sub>…and a full supporting cast (concrete races, MBTI, traits)</sub></td>
+<td align="center"><img src="docs/screenshots-desktop/4-ai-scenario.webp" width="420"><br><sub>Generate the full AI Dungeon scenario + portrait</sub></td>
 </tr>
 </table>
 
-<details>
-<summary>More screenshots (all genres, mobile flow, settings)</summary>
-
-**Desktop — other genres**
-
-<table>
-<tr>
-<td align="center"><img src="docs/screenshots-desktop/1-genres-modern.webp" width="200"><br><sub>Modern</sub></td>
-<td align="center"><img src="docs/screenshots-desktop/1-genres-scifi.webp" width="200"><br><sub>Sci-Fi</sub></td>
-<td align="center"><img src="docs/screenshots-desktop/1-genres-paleo.webp" width="200"><br><sub>Paleolithic</sub></td>
-</tr>
-<tr>
-<td align="center"><img src="docs/screenshots-desktop/1-genres-manga.webp" width="200"><br><sub>Manga</sub></td>
-<td align="center"><img src="docs/screenshots-desktop/1-genres-joseon.webp" width="200"><br><sub>Joseon Dynasty</sub></td>
-<td align="center"><img src="docs/screenshots-desktop/1-genres-nihongi.webp" width="200"><br><sub>Nihongi</sub></td>
-</tr>
-</table>
-
-**Mobile — full flow**
-
-<table>
-<tr>
-<td align="center"><img src="docs/screenshots-mobile/03-rolled-char-stats.webp" width="150"><br><sub>Rolled stats</sub></td>
-<td align="center"><img src="docs/screenshots-mobile/04-skeleton1.webp" width="150"><br><sub>Character skeleton</sub></td>
-<td align="center"><img src="docs/screenshots-mobile/04-skeleton2.webp" width="150"><br><sub>Character skeleton</sub></td>
-<td align="center"><img src="docs/screenshots-mobile/04-skeleton3.webp" width="150"><br><sub>Character skeleton</sub></td>
-</tr>
-<tr>
-<td align="center"><img src="docs/screenshots-mobile/05-rolled-npc1.webp" width="150"><br><sub>Supporting cast</sub></td>
-<td align="center"><img src="docs/screenshots-mobile/05-rolled-npc2.webp" width="150"><br><sub>Supporting cast</sub></td>
-<td align="center"><img src="docs/screenshots-mobile/06-ai-generation.webp" width="150"><br><sub>AI generation</sub></td>
-<td align="center"><img src="docs/screenshots-mobile/07-ai-scenario1.webp" width="150"><br><sub>Scenario</sub></td>
-</tr>
-<tr>
-<td align="center"><img src="docs/screenshots-mobile/07-ai-scenario2.webp" width="150"><br><sub>Scenario</sub></td>
-<td align="center"><img src="docs/screenshots-mobile/07-ai-scenario3.webp" width="150"><br><sub>Scenario</sub></td>
-<td align="center"><img src="docs/screenshots-mobile/07-ai-scenario4.webp" width="150"><br><sub>Scenario</sub></td>
-<td align="center"><img src="docs/screenshots-mobile/08-ai-storycards1.webp" width="150"><br><sub>Story cards</sub></td>
-</tr>
-<tr>
-<td align="center"><img src="docs/screenshots-mobile/08-ai-storycards2.webp" width="150"><br><sub>Story cards</sub></td>
-<td align="center"><img src="docs/screenshots-mobile/09-settings-options.webp" width="150"><br><sub>Settings</sub></td>
-<td align="center"><img src="docs/screenshots-mobile/09-settings-text.webp" width="150"><br><sub>Settings</sub></td>
-<td></td>
-</tr>
-</table>
-
-</details>
+<p align="center"><img src="docs/screenshots-desktop/5-settings.webp" width="520"><br><sub>Settings — bring your own text, image, and narration providers</sub></p>
 
 ## Prerequisites
 - A laptop, PC or server to serve the HTML/JS/images.  Should work on any OS.
@@ -114,7 +67,7 @@ bash serve.sh
 ```
 
 ### Start server
-`serve.sh` writes `generator/config.js` from your `.env`, starts a Python HTTP server on `:8080`, and (if Node is installed) starts the AI Dungeon import server on `:7432`.
+`serve.sh` writes `generator/config.js` from your `.env`, starts a Python HTTP server on `:8080`, and (if Node is installed) starts the AI Dungeon import server on `:7432`.  Note that if there is already something running on port 8080, it will move to the next available port, so watch the console output for the actual port used.
 
 #### Optional: run as a systemd service (Linux)
 To keep `serve.sh` running in the background and auto-restart on boot/failure:
@@ -151,7 +104,9 @@ There are a few ways to use the results:
   - This option is only available on localhost because of its dependence on Playwright and Chromium.
   - Requires your AI Dungeon credentials
 
-You can also open `web/index.html` directly in a browser and enter keys manually.
+The app must be served over HTTP (via `serve.sh` or any static server) — the ES
+modules won't load from a `file://` URL. Keys can still be entered manually in
+**Settings** instead of via `.env`.
 
 ## API keys
 
@@ -159,12 +114,15 @@ You can also open `web/index.html` directly in a browser and enter keys manually
 |-----|----------|----------|
 | `ANTHROPIC_API_KEY` | [console.anthropic.com](https://console.anthropic.com) | Text generation (Claude) |
 | `GEMINI_API_KEY` | [aistudio.google.com](https://aistudio.google.com/app/apikey) | Text generation (Gemini) |
+| `OLLAMA_URL` / `OLLAMA_MODEL` | Local/LAN [Ollama](https://ollama.com/) | Text generation (local, no key) |
 | `STABILITY_API_KEY` | [platform.stability.ai](https://platform.stability.ai) | Portrait generation (cloud) |
-| `SD_URL` | Local AUTOMATIC1111 instance | Portrait generation (local, takes priority) |
-| `AIDUNGEON_EMAIL` | AI Dungeon account | Playwright importer login |
-| `AIDUNGEON_PASSWORD` | AI Dungeon account | Playwright importer login |
+| `SD_URL` | Local Stable Diffusion WebUI (Forge/A1111) | Portrait generation (local, takes priority) |
+| `TTS_KOKORO_URL` | Local/LAN [Kokoro-FastAPI](https://github.com/remsky/Kokoro-FastAPI) | Narration (local TTS) |
+| `TTS_OPENAI_KEY` | [platform.openai.com](https://platform.openai.com) | Narration (OpenAI TTS) |
+| `AIDUNGEON_EMAIL` / `AIDUNGEON_PASSWORD` | AI Dungeon account | Playwright importer login |
+| `NSFW_IMAGE_PROMPT_SUFFIX` | — | Appended to portrait prompts when NSFW is enabled |
 
-Add keys to a `.env` file at the project root, or enter them in the **Settings** panel in the app. Click **? Getting API Keys** in Settings for step-by-step instructions.
+All keys are optional except **at least one text provider** (Anthropic, Gemini, or Ollama). Add them to a `.env` file at the project root (see `.env.example`), or enter them in the **Settings** panel in the app. `serve.sh` reads `.env` and writes `generator/config.js` (gitignored) so the browser can pick them up without the `.env` itself ever being served. Click **? Getting API Keys** in Settings for step-by-step instructions.
 
 ## AI Dungeon import
 
@@ -204,7 +162,7 @@ The package folder comes from **↓ Download Package (.zip)** in the web app. It
 | Story Summary | `scenario.opening` |
 | Plot Essentials | `scenario.plotEssentials` |
 | Author's Note | `scenario.authorNote` |
-| Story Cards | one per character (name, description, trigger words) |
+| Story Cards | one per character (name, description, trigger words), plus the genre's static lore cards (locations, factions, classes, races…) |
 | Portrait | `portrait.png` |
 
 ## TTS narration
@@ -217,7 +175,7 @@ A genre is entirely **data**, so a new playable genre can be shipped as a
 self-contained **pack** and imported at runtime — no source edits, no rebuild.
 A pack is either:
 
-- a single **`manifest.json`** (all data inline), or
+- a single **`manifest.json`** (all data inline, reusing icons from built-in genres), or
 - a **`.zip`** containing `manifest.json` plus optional `icons/` and `audio/`
   folders (so the pack brings its own slot-machine art, carousel cover, and BGM).
 
@@ -242,101 +200,12 @@ The full pack format, loader/registration internals, and authoring guide are in
 
 ## CLI usage
 
-```bash
-# Full generation (modern genre by default)
-ANTHROPIC_API_KEY=sk-ant-... node cli/index.js
-
-# Skeleton only — no API call
-node cli/index.js --skeleton-only
-
-# Machine-readable JSON
-node cli/index.js --json
-```
-
+FateVend has a command-line interface that shares the same generator engine as
+the web app (pick a genre and provider, or roll skeleton-only with no API call).
+See **[docs/CLI.md](docs/CLI.md)**.
 
 ## Contributing
 
-### Project structure
-
-```
-web/
-  index.html                      ← Single-page UI
-  styles.css
-  serve.sh                        ← Dev server + import server launcher
-
-  generator/                      ← Core library (no UI or Node dependencies)
-    index.js                      ← Public API: generateCharacter()
-    engine.js                     ← The single engine: stat/MBTI rolls, selectors, skeleton + cast (browser & CLI)
-    stat-adjectives.js            ← Numeric stat → adjective labels (statLabels)
-    registry.js                   ← GENRE_TABLES: single source of truth for genre data
-    manifests.js                  ← GENRE_MANIFESTS + GENRE_VOICE: presentation, slots, prompt voice
-    prompt-builder.js             ← Single shared buildPrompt(sk, voice) + parseResponse + output limits
-    pack-loader.js                ← Loads/validates a genre pack into the runtime shapes
-    api-client.js                 ← Claude + Gemini API calls (browser + CLI share prompt-builder.js)
-    ui-data.js                    ← Static story cards + shared UI constants
-
-    genres/                       ← Built-in genres (each a folder of pure-data modules)
-      modern/  fantasy/  sci-fi/  paleolithic/
-      manga-osaka-highschool1987/  historical-korea-joseon-dynasty/  nihongi/
-
-      Each genre contains data modules consumed by registry.js:
-        character-attributes.js   ← genders, orientations, identity, builds, hair, features, quirks
-        professions.js, life-events.js, family-structures.js, tensions.js,
-        secrets.js, settings.js, names.js, plot-archetypes.js, static-cards.js
-        voice.js                  ← SYSTEM_PROMPT + outputRules(sk) — fed to the shared prompt-builder
-        icons/                    ← Slot-machine + carousel art (+ generate_icons.py)
-
-  genre-packs/                    ← Importable genre packs (data-only, no source edits)
-    sample-neon-drift.json        ← JSON-only example pack
-    example-pirate-cove.zip       ← Self-contained .zip example (bundled icons + audio)
-    build-example-pack.py         ← Builds the .zip; worked authoring template
-
-  tools/
-    aidungeon-importer.mjs        ← Playwright CLI importer
-    aidungeon-server.mjs          ← Local HTTP server for one-click import from the UI
-
-cli/
-  index.js                        ← Thin CLI wrapper around the generator library
-
-deploy/
-  fatevend.service                ← Optional systemd unit for running serve.sh as a service
-  install.sh                      ← Installs/updates the unit above (fills in user + repo path)
-```
-
-
-### Generator API
-
-```js
-import { generateCharacter } from './generator/index.js';
-
-// Claude
-const { skeleton, output } = await generateCharacter({ genre: 'modern', apiKey: 'sk-ant-...' });
-
-// Gemini
-const { skeleton, output } = await generateCharacter({ genre: 'nihongi', geminiKey: 'AIza...' });
-
-// Skeleton only (no AI call)
-const { skeleton } = await generateCharacter({ genre: 'fantasy', skipAI: true });
-```
-
-### Adding a new genre
-
-There are two ways, depending on whether the genre should ship in the repo:
-
-**As a genre pack (no source edits, recommended).** Author a `manifest.json` /
-`.zip` and import it at runtime — see [Genre packs](#genre-packs) and start from
-`web/genre-packs/build-example-pack.py`.
-
-**As a built-in genre (ships in the repo, and usable from the CLI).** Add a
-folder of pure-data modules under `generator/genres/<id>/` and wire it into the
-registration sites:
-
-1. Create `generator/genres/<id>/` mirroring an existing genre's data modules.
-2. Import those tables and add a `GENRE_TABLES['<id>']` entry in `generator/registry.js`.
-3. Add `GENRE_MANIFESTS['<id>']`, the id in `CAROUSEL_ORDER`, and `GENRE_VOICE['<id>']` in `generator/manifests.js`.
-4. Register static story cards in `generator/ui-data.js` (`STATIC_CARDS_BY_GENRE`).
-5. Add `generator/genres/<id>/voice.js` (`SYSTEM_PROMPT` + `outputRules(sk)`) and reference it from `GENRE_VOICE` in `manifests.js`; add an `icons/generate_icons.py` wrapper. The browser and CLI share one `buildPrompt` — there's no separate CLI prompt template.
-
-The engine, carousel, slot machine, TTS, and music are all data-driven, so a new
-genre needs **no `index.html` edits**. The Claude Code **`/add-genre`** skill
-walks through both paths step by step.
+Project structure, the test suite (`npm test`), the generator API, and a
+step-by-step guide to adding a new genre are in
+**[CONTRIBUTING.md](CONTRIBUTING.md)**.
