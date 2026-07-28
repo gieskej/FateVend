@@ -24,7 +24,7 @@ const NON_HUMANOID_BROAD = new Set([
 export function outputRules(sk) {
   const faceOf = NON_HUMANOID_BROAD.has(sk.ethnicityBroad)
     ? ""
-    : ' Include "face of [a historical figure, classical warrior, or well-known portrait subject whose gender, racial appearance, and approximate age match this character]".';
+    : ' Include "face of [a historical figure whose gender, racial appearance, and approximate age match this character]".';
   return `"characterEntry": MAX 1000 chars. Open with one sentence: "[Full name] is a [age]-year-old [orientation] [gender] [race] with [hair length] [hair color] [hair style], [eye color] eyes, [skin tone] skin[, and any jewelry/piercings/tattoos/scars if notable], wearing [outfit suited to their occupation and economic station]." Then describe personality, quirks, habits, occupation, and relationships with family and key cast members by name. Do not repeat the situation, conflict, or plot already covered in the description, opening, or plot essentials.
 
 "npcEntries": An object where every key is an NPC name and every value is a PLAIN STRING (not a nested object). Each string MAX 1000 chars. Open with one sentence: "[Full name] is a [age]-year-old [orientation] [gender] [race] with [hair length] [hair color] [hair style], [eye color] eyes, [skin tone] skin[, and any jewelry/piercings/tattoos/scars if notable], wearing [outfit suited to their occupation and station]." Then describe personality, quirks, habits, occupation, and their relationship with the protagonist and others by name. Do not repeat the situation or plot.

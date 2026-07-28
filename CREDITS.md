@@ -1,13 +1,17 @@
 # Credits
 
+FateVend's own code is MIT-licensed (see [LICENSE](LICENSE)). The third-party
+audio and image assets below remain under their original sources' own terms —
+the project's MIT license does not relicense them.
+
 - John Gieske, original concept, requirements, design, prompt-engineering, Claude wrangling
 
 
 ## Audio
 - Sound Effect by <a href="https://pixabay.com/users/u_omspjqprot-44810303/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=222490">u_omspjqprot</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=222490">Pixabay</a>
-- Slot machine FX by https://www.soundsnap.com/
-- Fantasy Overtures arranged by Claude.ai/Fable and converted from MIDI by Aiva.ai.
-- All other BGM lyrics and music arranged, composed and performed by tad.ai
+- Slot machine pull/reel-stop FX self-recorded by John Gieske
+- Fantasy Overtures arranged by Claude.ai/Fable and converted from MIDI by <a href="http://aiva.ai">Avia.ai</a>.
+- All other BGM lyrics and music arranged, composed and performed by <a href="http://tad.ai">tad.ai</a>.
 
 ## Images
 - Gender and Orientation icons adapted from <a href="https://www.flaticon.com/free-icons/lgbtq" title="lgbtq icons">LGBTQ icons created by PictoMate - Flaticon</a>

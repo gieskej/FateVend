@@ -209,3 +209,9 @@ See **[docs/CLI.md](docs/CLI.md)**.
 Project structure, the test suite (`npm test`), the generator API, and a
 step-by-step guide to adding a new genre are in
 **[CONTRIBUTING.md](CONTRIBUTING.md)**.
+
+## License
+
+MIT — see [LICENSE](LICENSE). Some bundled audio/image assets are used under
+their own separate licenses (Flaticon icons, AI-generated art, Pixabay audio) —
+see [CREDITS.md](CREDITS.md) for attribution and sourcing.
