@@ -111,3 +111,18 @@ export const RACES = [
       "generator/genres/manga-osaka-highschool1987/icons/TRIBES#ordinary_kid.webp",
   },
 ];
+
+// FAMILY_RACE — a single, non-rollable display string, NOT part of the RACES
+// array above and NOT a member of RACES_OR_ETHNICITIES. In this genre "race"
+// means school clique, a peer-group identity the protagonist's parents and
+// siblings never plausibly share (a family of five "Sports Ace"s makes no
+// sense the way a family of one ethnicity does in other genres). engine.js's
+// buildCast() uses this string — when a genre's table bundle defines it —
+// as the race field for PARENTS and SIBLINGS only; the partner (always a
+// fellow student in this genre) and friends/foils keep drawing from the
+// rollable RACES array as normal. Bare string, not an object: never
+// weighted-picked (no weight), never rendered as a reel icon (no
+// iconPrompt/iconPath) — a cast member's race is only ever interpolated as
+// plain text in the AI prompt (see prompt-builder.js's castLines), so no
+// richer shape is needed.
+export const FAMILY_RACE = "Shomin";

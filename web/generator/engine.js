@@ -295,6 +295,18 @@ export function buildCast(
   const namePools = tables.NAME_POOLS;
   const SIBLING_DYN = tables.SIBLING_DYNAMICS;
   const PARENT_STAT = tables.PARENT_STATUSES;
+  // Parents/siblings share a family race; most genres do not distinguish it
+  // from the protagonist's own concrete race (ethnicity/species is a family
+  // trait there). A genre can opt out — e.g. manga-osaka-highschool1987, where
+  // "race" means school clique, a peer-group identity a family does not
+  // plausibly share — by defining tables.FAMILY_RACE; when present, parents
+  // (always adults) get that fixed label instead of inheriting protRace.
+  // Siblings get it too, but only when their SIBLING_DYNAMICS entry is flagged
+  // impliesNonTeenSibling (see family-structures.js) — a sibling who's still
+  // plausibly a fellow student keeps sharing the protagonist's own clique.
+  // Partner keeps using protRace unconditionally (a separate person's own
+  // concrete race, and this genre's partner is always a fellow student anyway).
+  const familyRace = tables.FAMILY_RACE ?? protRace;
   const cast = [];
   const MAX = 6;
   const pc = familyStructure.parentCount ?? 0;
@@ -386,7 +398,7 @@ export function buildCast(
       role: isMother ? "mother" : "father",
       status: status.label,
       gender: isMother ? "Female" : "Male",
-      race: protRace,
+      race: familyRace,
       traits: pickTraits(2),
       dynamic,
     };
@@ -462,7 +474,7 @@ export function buildCast(
           : "sibling",
       status: dyn.id === "deceased" ? "deceased" : dyn.label,
       gender: GENDER_LABELS[genderId],
-      race: protRace,
+      race: dyn.impliesNonTeenSibling ? familyRace : protRace,
       traits: pickTraits(2),
       dynamic: (
         SIBLING_MAP[dyn.id] ??

@@ -1,13 +1,15 @@
 // genres/manga-osaka-highschool1987/character-attributes.js
 // Identity and appearance attributes for 1987 Osaka high school characters.
 // Re-exports GENDERS/ORIENTATIONS/BUILDS from common/ and RACES (school
-// archetypes) from races.js; defines this genre's own HAIR,
+// archetypes) plus FAMILY_RACE (non-rollable parent/sibling race override)
+// from races.js; defines this genre's own HAIR,
 // DISTINGUISHING_FEATURES, and QUIRKS.
 
 export { GENDERS } from "../../common/genders.js";
 export { ORIENTATIONS } from "../../common/orientations.js";
 export { BUILDS } from "../../common/build.js";
 export { RACES } from "./races.js";
+export { FAMILY_RACE } from "./races.js";
 
 // ── HAIR ──────────────────────────────────────────────────────────────────
 // 1987 Osaka — perms, pompadours, chapatsu, scrunchies, the whole era
