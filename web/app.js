@@ -2273,6 +2273,16 @@ document.addEventListener("DOMContentLoaded", () => {
   // Init genre carousel (renders it + wires the resize handler)
   initCarousel();
 
+  // Keep the settings tab-strip chevrons in sync as it's swiped or the
+  // viewport changes width.
+  const tabStrip = document.querySelector(".settings-tabs");
+  if (tabStrip) {
+    tabStrip.addEventListener("scroll", updateSettingsTabAffordance, {
+      passive: true,
+    });
+    window.addEventListener("resize", updateSettingsTabAffordance);
+  }
+
   // TTS provider persistence — setTtsProvider must run first to populate the voice select options
   const savedTtsProvider = localStorage.getItem("gof_tts_provider") || "off";
   setTtsProvider(savedTtsProvider);
@@ -2287,8 +2297,23 @@ document.addEventListener("DOMContentLoaded", () => {
   if (savedSpeed && ttsSpeedEl) ttsSpeedEl.value = savedSpeed;
 });
 
+// The five settings tabs are wider than the modal on a phone, so the strip
+// scrolls (see .settings-tabs in styles.css). Its scrollbar is hidden, so
+// flag which directions still have tabs in them — the wrapper's ::before /
+// ::after chevrons key off these classes. Must run while the modal is
+// visible: a display:none element reports every scroll metric as 0.
+function updateSettingsTabAffordance() {
+  const strip = document.querySelector(".settings-tabs");
+  const wrap = document.querySelector(".settings-tabs-wrap");
+  if (!strip || !wrap) return;
+  const max = strip.scrollWidth - strip.clientWidth;
+  wrap.classList.toggle("can-scroll-left", strip.scrollLeft > 1);
+  wrap.classList.toggle("can-scroll-right", strip.scrollLeft < max - 1);
+}
+
 function openSettings() {
   document.getElementById("settings-overlay").classList.add("open");
+  updateSettingsTabAffordance();
 }
 function closeSettings() {
   document.getElementById("settings-overlay").classList.remove("open");

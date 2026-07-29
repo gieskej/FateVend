@@ -4,11 +4,10 @@
 - Need some sort of a post-skeleton or pre-generation consistency check, at least at dev-time.
 
 ## Bugs
-- Plot essentials should be short bullet points, not wordy prose.  Ideally around 1000 characters, maximum 1500 characters.  AID generates a warning that the scenario may not be playable by users on lower tier plans due to the size of the P.E.
-
-- The Settings modal recently got a new Genre tab, but it makes the modal too wide on mobile browsers.  Either make tabs smaller, use icons, scroll the tab bar, or wrap it.
 
 - Need consistent style for text.  I see text in 3-4 colors and the fonts tend to be tiny for some reason.  Other than the disclaimer, all text should be 1.0em.  Maybe even put this in the DESIGN.md because Claude seems to forget after a time.
+
+- The status bar shows phases as it rolls/generates.  On mobile, this phases overflow the width of the screen.  The phase display should auto scroll as needed.
 
 ## Bugs - Fantasy
 - The text-to-image prompt needs to handle special cases:

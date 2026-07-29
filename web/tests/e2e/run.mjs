@@ -16,9 +16,17 @@ import * as genreSwitching from "./genre-switching.mjs";
 import * as genrePackImport from "./genre-pack-import.mjs";
 import * as narrationAudio from "./narration-audio.mjs";
 import * as settingsModal from "./settings-modal.mjs";
+import * as mobile from "./mobile.mjs";
 import * as fullGeneration from "./full-generation.mjs";
 
-const FAST_SUITES = [smoke, genreSwitching, genrePackImport, narrationAudio, settingsModal];
+const FAST_SUITES = [
+  smoke,
+  genreSwitching,
+  genrePackImport,
+  narrationAudio,
+  settingsModal,
+  mobile,
+];
 const runFull = process.argv.includes("--full");
 
 async function main() {

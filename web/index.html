@@ -218,42 +218,46 @@
           </div>
 
           <div class="settings-modal-body">
-            <div class="settings-tabs" role="tablist">
-              <button
-                class="settings-tab active"
-                onclick="switchSettingsTab('text')"
-                data-tab="text"
-              >
-                Text
-              </button>
-              <button
-                class="settings-tab"
-                onclick="switchSettingsTab('image')"
-                data-tab="image"
-              >
-                Image
-              </button>
-              <button
-                class="settings-tab"
-                onclick="switchSettingsTab('narration')"
-                data-tab="narration"
-              >
-                Narration
-              </button>
-              <button
-                class="settings-tab"
-                onclick="switchSettingsTab('options')"
-                data-tab="options"
-              >
-                Options
-              </button>
-              <button
-                class="settings-tab"
-                onclick="switchSettingsTab('genre')"
-                data-tab="genre"
-              >
-                Genre
-              </button>
+            <!-- Wrapper is the positioning context for the scroll-affordance
+                 chevrons; the strip itself scrolls, so they'd scroll away. -->
+            <div class="settings-tabs-wrap">
+              <div class="settings-tabs" role="tablist">
+                <button
+                  class="settings-tab active"
+                  onclick="switchSettingsTab('text')"
+                  data-tab="text"
+                >
+                  Text
+                </button>
+                <button
+                  class="settings-tab"
+                  onclick="switchSettingsTab('image')"
+                  data-tab="image"
+                >
+                  Image
+                </button>
+                <button
+                  class="settings-tab"
+                  onclick="switchSettingsTab('narration')"
+                  data-tab="narration"
+                >
+                  Narration
+                </button>
+                <button
+                  class="settings-tab"
+                  onclick="switchSettingsTab('options')"
+                  data-tab="options"
+                >
+                  Options
+                </button>
+                <button
+                  class="settings-tab"
+                  onclick="switchSettingsTab('genre')"
+                  data-tab="genre"
+                >
+                  Genre
+                </button>
+              </div>
             </div>
 
             <!-- TEXT GENERATION -->

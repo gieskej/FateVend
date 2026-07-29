@@ -39,6 +39,7 @@ generation flow), so it's opt-in via `--full`, not part of the default run.
 | `genre-pack-import.mjs` | Imports both bundled sample packs through the real Settings UI, rolls phase 1 for each, then removes one while it's the active genre (carousel removal-fallback path) |
 | `narration-audio.mjs` | narrate/narrateAll/stopNarration + BGM player controls |
 | `settings-modal.mjs` | Open/close, every tab |
+| `mobile.mjs` | Phone viewport (390×844, touch): no horizontal page overflow anywhere, carousel peeks hidden below the 600px breakpoint, tap-target floor, settings modal + tab strip containment and reachability, slot machine fits |
 | `full-generation.mjs` | **Slow/paid.** Full phase 1 + phase 2 (real API call) + Go to Top |
 
 ## Why these particular tests

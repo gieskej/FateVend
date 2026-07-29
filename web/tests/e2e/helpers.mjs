@@ -50,11 +50,23 @@ export async function ensureServer() {
   throw new Error("Timed out waiting for web/serve.sh to come up on :8080");
 }
 
+// A phone-sized context (iPhone 12/13/14 logical viewport). Passed to
+// newDiagnosticPage by mobile.mjs; sits below the app's 600px carousel-peek
+// breakpoint (see carousel.js's carouselShowPeeks).
+export const MOBILE_CONTEXT = {
+  viewport: { width: 390, height: 844 },
+  deviceScaleFactor: 3,
+  isMobile: true,
+  hasTouch: true,
+};
+
 // Attaches console/pageerror/requestfailed listeners to a fresh page and
 // returns { page, errors, failed } — call assertNoErrors(diag) at the end of a
 // test to fold "did anything go wrong we didn't expect" into the report.
-export async function newDiagnosticPage(browser) {
-  const context = await browser.newContext();
+// `contextOptions` is forwarded to browser.newContext() so a suite can emulate
+// a device (see MOBILE_CONTEXT); omit it for the default desktop context.
+export async function newDiagnosticPage(browser, contextOptions = {}) {
+  const context = await browser.newContext(contextOptions);
   const page = await context.newPage();
   const errors = [];
   const failed = [];
