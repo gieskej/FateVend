@@ -1,5 +1,12 @@
 // generator/common/plot-archetypes.js
-// Core plot archetypes shared across all genres.
+// Core plot archetypes shared across ALL genres — only archetypes that make
+// sense in every single setting live here. Anything that assumes combat,
+// wilderness, criminality, or a body count (The Siege, Monster Hunt, Frontier
+// Expedition, Quest for Artifact, Murder Mystery, The Heist, The Escape) was
+// relocated into the individual genre files that want it, because it does not
+// fit manga-osaka-highschool1987 (a grounded 1987 high school drama with no
+// monsters, no frontier, and no sieges). Add a new archetype here ONLY if it
+// works in all seven genres; otherwise put it in the genre files that suit it.
 // Genre files add their own entries on top of these. Each entry:
 //   id, label            — identity + display label
 //   weight               — relative rarity for weighted-random selection
@@ -20,26 +27,6 @@ export const COMMON_PLOT_ARCHETYPES = [
     iconPath: "generator/common/icons/PLOT_ARCHETYPES#heros_journey.webp",
   },
   {
-    id: "quest_for_artifact",
-    label: "Quest for Artifact",
-    weight: 7,
-    description:
-      "A powerful, dangerous, or priceless object must be found, secured, or destroyed before someone worse gets to it first.",
-    iconPrompt:
-      "glowing magical artifact on ancient stone pedestal, adventurer reaching toward it with both hands outstretched, ancient cavern chamber, dramatic golden spotlight from above",
-    iconPath: "generator/common/icons/PLOT_ARCHETYPES#quest_for_artifact.webp",
-  },
-  {
-    id: "monster_hunt",
-    label: "Monster Bounty / Hunt",
-    weight: 7,
-    description:
-      "Something deadly is out there. Track it, trap it, kill it — and try not to become the thing you're hunting.",
-    iconPrompt:
-      "hunter crouching in dark forest over enormous claw-marks in muddy earth, torch raised high, massive shadowy silhouette of creature visible between trees behind them",
-    iconPath: "generator/common/icons/PLOT_ARCHETYPES#monster_hunt.webp",
-  },
-  {
     id: "rescue_mission",
     label: "Rescue Mission",
     weight: 8,
@@ -50,26 +37,6 @@ export const COMMON_PLOT_ARCHETYPES = [
     iconPath: "generator/common/icons/PLOT_ARCHETYPES#rescue_mission.webp",
   },
   {
-    id: "murder_mystery",
-    label: "Murder Mystery",
-    weight: 7,
-    description:
-      "Someone is dead who shouldn't be. The truth is buried under lies, and the killer may be closer than anyone suspects.",
-    iconPrompt:
-      "detective holding large magnifying glass over cryptic handwritten note, silhouette of shadowy figure reflected in the lens, candlelit study room with scattered clues",
-    iconPath: "generator/common/icons/PLOT_ARCHETYPES#murder_mystery.webp",
-  },
-  {
-    id: "the_heist",
-    label: "The Heist",
-    weight: 7,
-    description:
-      "A high-stakes theft requiring planning, the right crew, and the nerve to pull it off when everything goes sideways.",
-    iconPrompt:
-      "thief in sleek black outfit lowering on rope through glass skylight toward glowing vault below, city lights visible through glass, dramatic downward perspective",
-    iconPath: "generator/common/icons/PLOT_ARCHETYPES#the_heist.webp",
-  },
-  {
     id: "political_web",
     label: "The Political Web",
     weight: 6,
@@ -78,36 +45,6 @@ export const COMMON_PLOT_ARCHETYPES = [
     iconPrompt:
       "two opposing figures moving chess pieces at opposite ends of long ornate table, chess pieces shaped like people, grand throne room in background, dramatic split lighting",
     iconPath: "generator/common/icons/PLOT_ARCHETYPES#political_web.webp",
-  },
-  {
-    id: "frontier_expedition",
-    label: "Frontier Expedition",
-    weight: 6,
-    description:
-      "Into unmapped territory. The danger is the unknown itself — what waits at the edge of the map, and whether you can survive long enough to find out.",
-    iconPrompt:
-      "lone explorer at rocky cliff edge looking out over vast unmapped wilderness with torn map in hand, exotic alien landscape stretching to horizon",
-    iconPath: "generator/common/icons/PLOT_ARCHETYPES#frontier_expedition.webp",
-  },
-  {
-    id: "the_siege",
-    label: "The Siege",
-    weight: 5,
-    description:
-      "Hold the line. Surrounded, outnumbered, and running low — the only options are survive or find a way out.",
-    iconPrompt:
-      "defenders on castle battlements looking down at wave of enemy torches approaching through night, archers with bows ready, arrows in flight, dramatic back-lit scene",
-    iconPath: "generator/common/icons/PLOT_ARCHETYPES#the_siege.webp",
-  },
-  {
-    id: "the_escape",
-    label: "The Escape",
-    weight: 7,
-    description:
-      "Someone — or everyone — needs to get out. Prison, compound, city, or a situation with no clean exit. The walls are closing in.",
-    iconPrompt:
-      "figure leaping across rooftop gap between burning building and safety, arms spread wide, city skyline below, bright fire light behind them",
-    iconPath: "generator/common/icons/PLOT_ARCHETYPES#the_escape.webp",
   },
   {
     id: "race_against_time",

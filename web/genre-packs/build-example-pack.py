@@ -483,6 +483,69 @@ PLOTS = [
         "iconPrompt": "pirate rpg icon, a wax-sealed royal commission laid over a black flag, a quill and a pistol, close shot, painterly",
         "iconPath": "PLOT_ARCHETYPES#letters_of_marque.webp",
     },
+    # ── Cross-genre archetypes, tailored to this setting ──────────────────
+    # These seven used to live in COMMON_PLOT_ARCHETYPES (which every pack
+    # inherits automatically). They were relocated into the individual genres
+    # that want them, because they don't fit every setting — so a pack that
+    # wants them now authors its own copy, which is also the chance to write a
+    # setting-specific description instead of a generic one. Ids, labels, and
+    # weights match the originals; only the prose is pirate-flavored.
+    {
+        "id": "quest_for_artifact",
+        "label": "Quest for Artifact",
+        "weight": 7,
+        "description": "A cursed idol, a saint's relic, a chart to something older than the Spanish — it is out there, and every other crew in these waters wants it too.",
+        "iconPrompt": "pirate rpg icon, a tarnished idol on a stone altar in a jungle ruin, shafts of light through vines, wide shot, painterly",
+        "iconPath": "PLOT_ARCHETYPES#quest_for_artifact.webp",
+    },
+    {
+        "id": "monster_hunt",
+        "label": "Monster Bounty / Hunt",
+        "weight": 7,
+        "description": "There is a bounty posted on something in the shallows — a pale reef-beast that has taken three boats and left no one to say how. The purse is good. The odds are not.",
+        "iconPrompt": "pirate rpg icon, harpooners in a longboat over dark water, an enormous pale shape passing beneath the hull, tense, wide shot, painterly",
+        "iconPath": "PLOT_ARCHETYPES#monster_hunt.webp",
+    },
+    {
+        "id": "murder_mystery",
+        "label": "Murder Mystery",
+        "weight": 7,
+        "description": "A body in the hold and forty souls aboard who all had reason. There is no constable this far out — the crew will settle guilt themselves, and soon.",
+        "iconPrompt": "pirate rpg icon, a lantern held over a still form below decks, ring of hard suspicious faces in the dark, close shot, painterly",
+        "iconPath": "PLOT_ARCHETYPES#murder_mystery.webp",
+    },
+    {
+        "id": "the_heist",
+        "label": "The Heist",
+        "weight": 7,
+        "description": "A treasure galleon riding low, a governor's strongroom, a rival's prize cargo. Plan it, crew it, and be gone before the guns come about.",
+        "iconPrompt": "pirate rpg icon, boarders swinging on lines onto a heavy laden galleon at night, chests below, dramatic, wide shot, painterly",
+        "iconPath": "PLOT_ARCHETYPES#the_heist.webp",
+    },
+    {
+        "id": "frontier_expedition",
+        "label": "Frontier Expedition",
+        "weight": 6,
+        "description": "Off the edge of every chart anyone trusts. Uncharted water, unnamed islands, and whatever has been keeping those maps blank this long.",
+        "iconPrompt": "pirate rpg icon, a ship at the edge of a blank uncharted sea chart, strange island on the horizon, dawn mist, wide shot, painterly",
+        "iconPath": "PLOT_ARCHETYPES#frontier_expedition.webp",
+    },
+    {
+        "id": "the_siege",
+        "label": "The Siege",
+        "weight": 5,
+        "description": "Cornered — pinned in a harbour, walled up in a shore fort, or hove-to with a man-of-war standing off the bar. Hold, or find a way through.",
+        "iconPrompt": "pirate rpg icon, defenders behind a battered shore fort wall, warship broadside firing from the bay, smoke, wide shot, painterly",
+        "iconPath": "PLOT_ARCHETYPES#the_siege.webp",
+    },
+    {
+        "id": "the_escape",
+        "label": "The Escape",
+        "weight": 7,
+        "description": "The brig, the blockade, the gallows at dawn. Out is the only direction that matters now, and every hour makes it harder.",
+        "iconPrompt": "pirate rpg icon, a figure slipping from a barred cell window down a rope toward dark water, torchlight sweeping behind, wide shot, painterly",
+        "iconPath": "PLOT_ARCHETYPES#the_escape.webp",
+    },
 ]
 
 # DISTINGUISHING — feeds MANIFEST["data"]["distinguishingFeatures"]. No slot
