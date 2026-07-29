@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-07-29
+
+### content: 10 relationship-drama plot archetypes for Manga-Osaka 1987
+**What changed:** The genre had 5 plot archetypes of its own, all school-life (Koshien, rooftop confession, bunkasai, school war, exams) — none covering the emotional whiplash that actually defines teen manga. Added 10 romance/relationship archetypes at weights 4–6: `crush_rumor` ("Someone Likes You"), `lovers_quarrel` ("The Fight"), `dumped_no_reason` ("Dumped Without a Reason"), `friend_took_them` ("Your Best Friend, Your Person"), `transfer_notice` ("The Transfer Notice" — dad's job is moving the family), `rumor_mill` ("The Rumor Mill"), `parents_disapprove` ("Not Good Enough for Their Kid"), `rival_school_romance` ("Across Enemy Lines"), `same_person` ("You Like the Same Person" — your best friend's crush is your secret crush, the *before* to `friend_took_them`'s *after*), and `assumed_couple` ("Everyone Already Thinks So" — a shoe-locker misunderstanding became established fact). Descriptions match the file's existing punchy-fragment voice. One deliberate reframing: the requested "rumor you had sex with your partner" beat is written as `rumor_mill` — the school has a version of what supposedly happened, nobody's asking if it's true, conversations stop when you walk in. That preserves the actual drama (reputation, gossip, isolation) without steering an AI toward sexual content about characters the genre pins at ages 15–18, especially with the app's NSFW image toggle in play.
+**Impact:** Osaka goes from 10 archetypes to 20, and its genre-specific share of roll weight rises from ~50% to 68% — the reel now lands on relationship drama about as often as school life, which is the point of the genre. No other genre is touched.
+**Test cases:** Generated 3 Gemini variants per archetype and had the user pick one each (per the icon-approval rule); promoted the 10 chosen icons and deleted the variant folder. `rumor_mill` needed its iconPrompt softened after two Gemini safety blocks on the original "humiliated student being whispered about" framing. Data tier confirms all 15 Osaka plot icons resolve; a live browser check rolled Osaka six times (hitting two of the new archetypes) with zero failed or 404 `PLOT_ARCHETYPES` image requests. Full `npm test` green (data 5/5, e2e 47/47).
+
 ## 2026-07-28
 
 ### content: relocate 7 plot archetypes out of the shared pool so they stop landing in Manga-Osaka
