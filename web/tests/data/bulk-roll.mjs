@@ -27,9 +27,14 @@ const ROLLS_PER_GENRE = 50;
 
 function checkShape(skeleton, label, results) {
   const required = ["name", "age", "gender", "profession", "stats", "mbti"];
-  const missing = required.filter((k) => skeleton[k] == null || skeleton[k] === "");
+  const missing = required.filter(
+    (k) => skeleton[k] == null || skeleton[k] === "",
+  );
   if (missing.length) {
-    results.push({ pass: false, detail: `${label}: missing/empty field(s): ${missing.join(", ")}` });
+    results.push({
+      pass: false,
+      detail: `${label}: missing/empty field(s): ${missing.join(", ")}`,
+    });
     return false;
   }
   return true;
@@ -88,12 +93,74 @@ function checkCastMemberShape(skeleton, label, results) {
   return true;
 }
 
+// Several genres write parent statuses in gendered terms ("salaryman father,
+// home late every night", "Mother runs the inner household"), tagged with
+// forRole. A status must only ever land on the parent it describes — otherwise
+// a father ends up "mother working long hours, supportive but stretched thin".
+function checkParentStatusGender(skeleton, tables, label, results) {
+  const roleByLabel = new Map(
+    (tables.PARENT_STATUSES ?? [])
+      .filter((s) => s.forRole)
+      .map((s) => [s.label, s.forRole]),
+  );
+  if (!roleByLabel.size) return true;
+  const bad = (skeleton.cast ?? [])
+    .filter((c) => c.role === "mother" || c.role === "father")
+    .filter((c) => {
+      const want = roleByLabel.get(c.status);
+      return want && want !== c.role;
+    });
+  if (bad.length) {
+    results.push({
+      pass: false,
+      detail: `${label}: ${bad[0].role} got a ${roleByLabel.get(bad[0].status)}-only status — "${bad[0].status}"`,
+    });
+    return false;
+  }
+  return true;
+}
+
+// A "one parent deceased/absent" family structure must actually produce that
+// parent. This silently did nothing for a long time: buildCast passed the
+// singled-out parent as structure._r but compared it against `role` (always
+// "mother"/"father"), so the branch never fired and both parents came back
+// alive and present.
+const DECEASED_TEXT = /died|deceased|killed|fallen|lost in/i;
+const ABSENT_TEXT =
+  /absent|estranged|never knew|no contact|has not been in contact/i;
+function checkSingledOutParent(skeleton, label, results) {
+  const fam = skeleton._slots?.family;
+  if (fam !== "two_parent_one_deceased" && fam !== "two_parent_one_absent")
+    return true;
+  const parents = (skeleton.cast ?? []).filter(
+    (c) => c.role === "mother" || c.role === "father",
+  );
+  if (parents.length < 2) return true;
+  const wantDeceased = fam === "two_parent_one_deceased";
+  const hit = parents.some((p) =>
+    wantDeceased
+      ? DECEASED_TEXT.test(p.status) && !/not deceased/i.test(p.status)
+      : ABSENT_TEXT.test(p.status),
+  );
+  if (!hit) {
+    results.push({
+      pass: false,
+      detail: `${label}: family is "${fam}" but neither parent is ${wantDeceased ? "deceased" : "absent"} — got ${parents.map((p) => `${p.role}: "${p.status}"`).join(", ")}`,
+    });
+    return false;
+  }
+  return true;
+}
+
 function checkProfessionRestrictions(skeleton, tables, label, results) {
   let ok = true;
   const tensionId = skeleton._slots?.tension;
   if (tensionId) {
     const entry = tables.TENSIONS.find((t) => t.id === tensionId);
-    if (entry?.requiredProfessions && !entry.requiredProfessions.includes(skeleton.profession)) {
+    if (
+      entry?.requiredProfessions &&
+      !entry.requiredProfessions.includes(skeleton.profession)
+    ) {
       results.push({
         pass: false,
         detail: `${label}: tension "${entry.id}" requires profession in [${entry.requiredProfessions}], but rolled "${skeleton.profession}"`,
@@ -122,6 +189,8 @@ export async function run() {
   let restrictionFails = 0;
   let castRaceFails = 0;
   let castShapeFails = 0;
+  let parentGenderFails = 0;
+  let singledParentFails = 0;
 
   for (const genre of SUPPORTED_GENRES) {
     const tables = GENRE_TABLES[genre];
@@ -131,9 +200,15 @@ export async function run() {
       totalRolls++;
       const label = `${genre} #${i + 1}`;
       if (!checkShape(skeleton, label, results)) shapeFails++;
-      if (!checkProfessionRestrictions(skeleton, tables, label, results)) restrictionFails++;
-      if (!checkCastRaceConcreteness(skeleton, ambiguous, label, results)) castRaceFails++;
+      if (!checkProfessionRestrictions(skeleton, tables, label, results))
+        restrictionFails++;
+      if (!checkCastRaceConcreteness(skeleton, ambiguous, label, results))
+        castRaceFails++;
       if (!checkCastMemberShape(skeleton, label, results)) castShapeFails++;
+      if (!checkParentStatusGender(skeleton, tables, label, results))
+        parentGenderFails++;
+      if (!checkSingledOutParent(skeleton, label, results))
+        singledParentFails++;
     }
   }
 
@@ -153,6 +228,17 @@ export async function run() {
     pass: castShapeFails === 0,
     detail: `cast-member shape: ${totalRolls - castShapeFails}/${totalRolls} rolls gave every cast member a valid mbti + traits + role + race`,
   });
+  results.push({
+    pass: parentGenderFails === 0,
+    detail: `parent-status gender: ${totalRolls - parentGenderFails}/${totalRolls} rolls kept forRole-tagged statuses on the parent they describe`,
+  });
+  results.push({
+    pass: singledParentFails === 0,
+    detail: `singled-out parent: ${totalRolls - singledParentFails}/${totalRolls} rolls honored "one parent deceased/absent" family structures`,
+  });
 
-  return printReport(`bulk-roll (${ROLLS_PER_GENRE}/genre x ${SUPPORTED_GENRES.length} genres)`, results);
+  return printReport(
+    `bulk-roll (${ROLLS_PER_GENRE}/genre x ${SUPPORTED_GENRES.length} genres)`,
+    results,
+  );
 }

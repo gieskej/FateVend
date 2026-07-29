@@ -3,7 +3,13 @@
 // per character; the generator picks one FAMILY_STRUCTURES entry, then
 // resolves each parent's status independently.
 //
-// PARENT_STATUSES / SIBLING_DYNAMICS entries: id, label, toneTag, iconPrompt, iconPath.
+// PARENT_STATUSES / SIBLING_DYNAMICS entries: id, label, toneTag, iconPrompt,
+// iconPath. PARENT_STATUSES entries may also carry:
+//   forRole — optional; "mother" or "father". Several statuses here are written
+//     in gendered terms, so they only make sense on the parent they describe —
+//     engine.js's buildCast() will only ever assign such a status to that
+//     parent. Omit it for statuses that read fine for either parent (illness,
+//     estrangement, death), which keeps them available to both.
 //
 // FAMILY_STRUCTURES entries:
 //   id, label            — identity + display label
@@ -28,6 +34,7 @@
 export const PARENT_STATUSES = [
   {
     id: "father_official_present",
+    forRole: "father",
     label: "Father is a present official (demanding, invested)",
     toneTag: "pressure",
     iconPrompt:
@@ -37,6 +44,7 @@ export const PARENT_STATUSES = [
   },
   {
     id: "father_official_distant",
+    forRole: "father",
     label: "Father is a posted official in another province (absent)",
     toneTag: "absent",
     iconPrompt:
@@ -46,6 +54,7 @@ export const PARENT_STATUSES = [
   },
   {
     id: "father_deceased_early",
+    forRole: "father",
     label: "Father died early (pressure fell on them)",
     toneTag: "burden",
     iconPrompt:
@@ -55,6 +64,7 @@ export const PARENT_STATUSES = [
   },
   {
     id: "mother_inner_court",
+    forRole: "mother",
     label: "Mother runs the inner household with iron competence",
     toneTag: "matriarchal",
     iconPrompt:
@@ -64,6 +74,7 @@ export const PARENT_STATUSES = [
   },
   {
     id: "mother_concubine",
+    forRole: "mother",
     label: "Mother is the father's concubine (lower-status household)",
     toneTag: "class_limbo",
     iconPrompt:
@@ -73,6 +84,7 @@ export const PARENT_STATUSES = [
   },
   {
     id: "father_in_exile",
+    forRole: "father",
     label: "Father exiled by factional purge",
     toneTag: "disgrace",
     iconPrompt:
@@ -82,6 +94,7 @@ export const PARENT_STATUSES = [
   },
   {
     id: "father_gwageo_failure",
+    forRole: "father",
     label: "Father failed the gwageo repeatedly — bitterness and expectation",
     toneTag: "legacy_pressure",
     iconPrompt:

@@ -3,7 +3,13 @@
 // randomized per character; the generator picks one FAMILY_STRUCTURES entry,
 // then resolves each parent's status independently.
 //
-// PARENT_STATUSES / SIBLING_DYNAMICS entries: id, label, toneTag, iconPrompt, iconPath.
+// PARENT_STATUSES / SIBLING_DYNAMICS entries: id, label, toneTag, iconPrompt,
+// iconPath. PARENT_STATUSES entries may also carry:
+//   forRole — optional; "mother" or "father". Several statuses here are written
+//     in gendered terms, so they only make sense on the parent they describe —
+//     engine.js's buildCast() will only ever assign such a status to that
+//     parent. Omit it for statuses that read fine for either parent (illness,
+//     estrangement, death), which keeps them available to both.
 //
 // FAMILY_STRUCTURES entries:
 //   id, label            — identity + display label
@@ -19,6 +25,7 @@
 export const PARENT_STATUSES = [
   {
     id: "father_court_lord",
+    forRole: "father",
     label:
       "Father is a present court official — demanding, invested, watching every step",
     toneTag: "pressure",
@@ -29,6 +36,7 @@ export const PARENT_STATUSES = [
   },
   {
     id: "father_posted_away",
+    forRole: "father",
     label:
       "Father is posted to a distant province on imperial business — absent, an idea more than a person",
     toneTag: "absent",
@@ -39,6 +47,7 @@ export const PARENT_STATUSES = [
   },
   {
     id: "father_purge_killed",
+    forRole: "father",
     label:
       "Father was killed in a political purge — the circumstances are not discussed openly",
     toneTag: "burden",
@@ -49,6 +58,7 @@ export const PARENT_STATUSES = [
   },
   {
     id: "mother_shrine_priestess",
+    forRole: "mother",
     label:
       "Mother serves at an important shrine — rarely home, presence more ritual than domestic",
     toneTag: "distant_sacred",
@@ -59,6 +69,7 @@ export const PARENT_STATUSES = [
   },
   {
     id: "mother_continental",
+    forRole: "mother",
     label:
       "Mother is from the continent — different customs, different expectations, a permanently foreign presence in the compound",
     toneTag: "cultural_gap",
@@ -69,6 +80,7 @@ export const PARENT_STATUSES = [
   },
   {
     id: "father_in_exile",
+    forRole: "father",
     label:
       "Father was exiled after a factional defeat — household speaks of it only in code",
     toneTag: "disgrace",
@@ -79,6 +91,7 @@ export const PARENT_STATUSES = [
   },
   {
     id: "father_war_fallen",
+    forRole: "father",
     label:
       "Father died in an inter-clan military conflict — his reputation oscillates between honour and cautionary tale depending on who won",
     toneTag: "grief",

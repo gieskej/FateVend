@@ -4,7 +4,13 @@
 // each parent's status independently.
 //
 // PARENT_STATUSES / SIBLING_DYNAMICS entries: id, label, toneTag, iconPrompt,
-// iconPath. SIBLING_DYNAMICS entries may also carry:
+// iconPath. PARENT_STATUSES entries may also carry:
+//   forRole — optional; "mother" or "father". The salaryman/homemaker statuses
+//     are written in gendered terms, so they only make sense on the parent they
+//     describe — engine.js's buildCast() will only ever assign such a status to
+//     that parent. Omit it for statuses that read fine for either parent
+//     (illness, estrangement, death), which keeps them available to both.
+// SIBLING_DYNAMICS entries may also carry:
 //   impliesNonTeenSibling — optional; when true, signals this dynamic
 //     describes a sibling who isn't a same-generation, currently-in-school
 //     teen (e.g. already moved out for university/work, or too young to be
@@ -29,6 +35,7 @@
 export const PARENT_STATUSES = [
   {
     id: "salaryman_present_close",
+    forRole: "father",
     label: "salaryman father, present and close — rare",
     toneTag: "cozy",
     iconPrompt:
@@ -38,6 +45,7 @@ export const PARENT_STATUSES = [
   },
   {
     id: "salaryman_present_distant",
+    forRole: "father",
     label: "salaryman father, home late every night — present but absent",
     toneTag: "neutral",
     iconPrompt:
@@ -47,6 +55,7 @@ export const PARENT_STATUSES = [
   },
   {
     id: "mother_homemaker_close",
+    forRole: "mother",
     label: "mother at home, close and supportive",
     toneTag: "cozy",
     iconPrompt:
@@ -56,6 +65,7 @@ export const PARENT_STATUSES = [
   },
   {
     id: "mother_working",
+    forRole: "mother",
     label: "mother working long hours — supportive but stretched thin",
     toneTag: "neutral",
     iconPrompt:

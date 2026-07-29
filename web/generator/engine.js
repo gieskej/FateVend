@@ -269,6 +269,15 @@ const PARTNER_DYNAMICS = {
     "They have history. The history has opinions about the present.",
   ],
 };
+// Does a PARENT_STATUSES entry mean the parent is dead? Genres name these very
+// differently — deceased_recent (modern), parent_deceased (Osaka), killed_hunt
+// and died_winter (paleolithic), father_war_fallen (nihongi) — so match on the
+// shared vocabulary rather than one genre's prefix convention. Used both to
+// pick a deceased parent for the "one parent deceased" family structures and to
+// decide whether a parent gets living-parent dialogue.
+const DECEASED_STATUS_RE = /deceased|died|killed|fallen/;
+const isDeceasedStatus = (s) => DECEASED_STATUS_RE.test(s.id);
+
 const PARTNER_HAS_NPC = new Set([
   "dating",
   "engaged",
@@ -332,30 +341,35 @@ export function buildCast(
   function _buildParent(role, structure) {
     let status;
     const id = structure.id;
+    // Some genres write parent statuses in gendered terms ("salaryman father,
+    // home late every night", "Mother runs the inner household with iron
+    // competence"). Those carry forRole so they only ever land on the parent
+    // they actually describe; a status without forRole suits either parent.
+    const rolePool = PARENT_STAT.filter(
+      (s) => !s.forRole || s.forRole === role,
+    );
+    // The id predicates below only match the naming some genres happen to use
+    // (deceased_*, absent_unknown, …). Fall back to the full role pool rather
+    // than picking from an empty array when a genre names its statuses
+    // differently.
+    const pick = (pred) => {
+      const subset = rolePool.filter(pred);
+      return uniformPick(subset.length ? subset : rolePool);
+    };
+    // Which of the two parents this structure singles out. The caller passes it
+    // as structure._r ("deceased"/"surviving", "absent"/"present") — NOT as
+    // `role`, which is always "mother"/"father".
+    const singled = structure._r;
     if (id === "two_parent_one_deceased") {
       status =
-        role === "deceased"
-          ? uniformPick(PARENT_STAT.filter((s) => s.id.startsWith("deceased")))
-          : uniformPick(
-              PARENT_STAT.filter(
-                (s) =>
-                  !s.id.startsWith("deceased") && s.id !== "absent_unknown",
-              ),
-            );
+        singled === "deceased"
+          ? pick(isDeceasedStatus)
+          : pick((s) => !isDeceasedStatus(s) && s.id !== "absent_unknown");
     } else if (id === "two_parent_one_absent") {
       status =
-        role === "absent"
-          ? uniformPick(
-              PARENT_STAT.filter(
-                (s) => s.id === "absent_unknown" || s.id === "estranged",
-              ),
-            )
-          : uniformPick(
-              PARENT_STAT.filter(
-                (s) =>
-                  !s.id.startsWith("deceased") && s.id !== "absent_unknown",
-              ),
-            );
+        singled === "absent"
+          ? pick((s) => s.id === "absent_unknown" || s.id === "estranged")
+          : pick((s) => !isDeceasedStatus(s) && s.id !== "absent_unknown");
     } else if (
       [
         "foster_care",
@@ -367,20 +381,17 @@ export function buildCast(
         "war_orphan",
       ].includes(id)
     ) {
-      status = uniformPick(
-        PARENT_STAT.filter(
-          (s) =>
-            s.id.startsWith("deceased") ||
-            s.id === "absent_unknown" ||
-            s.id === "estranged" ||
-            s.id === "missing",
-        ),
+      status = pick(
+        (s) =>
+          isDeceasedStatus(s) ||
+          s.id === "absent_unknown" ||
+          s.id === "estranged" ||
+          s.id === "missing",
       );
     } else {
-      status = uniformPick(PARENT_STAT);
+      status = uniformPick(rolePool);
     }
-    const isDeceased =
-      status.id.startsWith("deceased") || status.id === "missing";
+    const isDeceased = isDeceasedStatus(status) || status.id === "missing";
     const isAbsent = status.id === "absent_unknown";
     const isDivorced = id === "two_parent_divorced";
     const isMother = role === "mother";
