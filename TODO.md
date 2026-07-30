@@ -5,13 +5,15 @@
 
 ## Bugs
 
-- Need consistent style for text.  I see text in 3-4 colors and the fonts tend to be tiny for some reason.  Other than the disclaimer, all text should be 1.0em.  Maybe even put this in the DESIGN.md because Claude seems to forget after a time.
 
 - The status bar shows phases as it rolls/generates.  On mobile, this phases overflow the width of the screen.  The phase display should auto scroll as needed.
+
+- Tag all MP3s
 
 ## Bugs - Fantasy
 - The text-to-image prompt needs to handle special cases:
   - Dragonborn: Illustration of a person with golden dragon scale skin, muscular body, fiery golden eyes, sharp filed teeth, prominent facial scales, subtle horns protruding from hair, scaly tail
+- Add new BGM music
 
 ## Bugs - Modern
 - The Modern genre is crap.  It is too general and open ended to be any fun.  Let's recast it to something else.
@@ -19,7 +21,6 @@
 
 ## Bugs - Joseon
 - I redid the icons using Gemini, and they are a lot better, but they require manual editing to fix some minor issues:
-  - Some have rounded corners.
   - Some have borders.
   - Some have people wearing the wrong hat for their position (several have everyone wearing the king's wing hat)
   - Many are dark and have yellow sky

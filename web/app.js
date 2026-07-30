@@ -759,13 +759,13 @@ function renderSkeleton(sk) {
 
       <!-- Name + Identity -->
       <div style="margin-bottom:1rem;">
-        <div style="font-family:var(--font-display);font-size:1.5rem;font-weight:700;color:var(--brass-dark);margin-bottom:0.1rem;">${sk.name}</div>
-        <div style="font-style:italic;color:var(--ink-faint);font-size:0.95rem;">${sk.age} · ${sk.gender} (${sk.pronouns}) · ${sk.ethnicityBroad} — ${sk.ethnicityFlavor.split(" — ")[0].trim()}</div>
+        <div style="font-family:var(--font-display);font-size:var(--text-xl);font-weight:700;color:var(--text-title);margin-bottom:0.1rem;">${sk.name}</div>
+        <div style="font-style:italic;color:var(--text-dim);font-size:var(--text-base);">${sk.age} · ${sk.gender} (${sk.pronouns}) · ${sk.ethnicityBroad} — ${sk.ethnicityFlavor.split(" — ")[0].trim()}</div>
       </div>
 
       <!-- Stats -->
       <div style="margin-bottom:1.25rem;">
-        <div style="font-family:var(--font-display);font-size: 0.8rem;letter-spacing:0.16em;color:var(--brass-dark);text-transform:uppercase;margin-bottom:0.5rem;">Stats</div>
+        <div style="font-family:var(--font-display);font-size:var(--text-sm);letter-spacing:0.16em;color:var(--text-title);text-transform:uppercase;margin-bottom:0.5rem;">Stats</div>
         <div class="stat-grid" id="stat-grid">
           ${[
             "strength",
@@ -802,7 +802,7 @@ function renderSkeleton(sk) {
       <!-- Identity rows -->
       <div class="skeleton-row">
         <span class="skeleton-key">Profession</span>
-        <span class="skeleton-val">${sk.profession} <span style="color:var(--ink-faint);font-style:italic">(${sk.industry}) — ${sk.sentiment}</span></span>
+        <span class="skeleton-val">${sk.profession} <span style="color:var(--text-dim);font-style:italic">(${sk.industry}) — ${sk.sentiment}</span></span>
       </div>
       <div class="skeleton-row">
         <span class="skeleton-key">Appearance</span>
@@ -818,7 +818,7 @@ function renderSkeleton(sk) {
       </div>
       <div class="skeleton-row">
         <span class="skeleton-key">City</span>
-        <span class="skeleton-val">${sk.cityLabel} <span style="color:var(--ink-faint);font-style:italic">— ${sk.cityFlavor}</span></span>
+        <span class="skeleton-val">${sk.cityLabel} <span style="color:var(--text-dim);font-style:italic">— ${sk.cityFlavor}</span></span>
       </div>
       <div class="skeleton-row">
         <span class="skeleton-key">Life Event</span>
@@ -826,7 +826,7 @@ function renderSkeleton(sk) {
       </div>
       <div class="skeleton-row">
         <span class="skeleton-key">Plot Archetype</span>
-        <span class="skeleton-val"><strong>${sk.plotArchetype}</strong> <span style="color:var(--ink-faint);font-style:italic">— ${sk.plotArchetypeDesc}</span></span>
+        <span class="skeleton-val"><strong>${sk.plotArchetype}</strong> <span style="color:var(--text-dim);font-style:italic">— ${sk.plotArchetypeDesc}</span></span>
       </div>
       <div class="skeleton-row">
         <span class="skeleton-key">Background Tension</span>
@@ -970,7 +970,7 @@ function renderOutput(sk, output) {
           ? `
       <div class="output-field">
         <div class="field-header">
-          <span class="field-label">Portrait Prompt <span style="font-size: 0.8rem;color:var(--ink-faint);font-style:italic;font-family:var(--font-body)">(text-to-image)</span></span>
+          <span class="field-label">Portrait Prompt <span style="font-size:var(--text-sm);color:var(--text-dim);font-style:italic;font-family:var(--font-body)">(text-to-image)</span></span>
           <div class="field-meta">
             <span class="char-count" id="cc-appearance">${output.appearancePrompt.length} / 500</span>
             <button class="btn-copy" onclick="copyField('field-appearance',this)">Copy</button>
@@ -1059,7 +1059,7 @@ function renderOutput(sk, output) {
       <div class="protagonist-section" style="margin-bottom:1.5rem;">
         <div class="field-header">
           <div>
-            <span class="npc-section-name" style="font-size:0.85rem;">${sk.name} — Protagonist</span>
+            <span class="npc-section-name">${sk.name} — Protagonist</span>
             <div class="npc-entry-meta">${sk.gender} · ${sk.ethnicityBroad}</div>
           </div>
           <div class="field-meta">
@@ -1900,7 +1900,7 @@ async function generatePortrait(btn) {
     portraitBtn.disabled = true;
     portraitBtn.innerHTML = '<span class="loading-gear">⚙</span> Rendering…';
   }
-  wrapEl.innerHTML = `<div style="color:var(--brass-light);font-style:italic;font-size:0.9rem;margin-top:0.4rem;">Painting the portrait…</div>`;
+  wrapEl.innerHTML = `<div style="color:var(--text-dim);font-style:italic;font-size:var(--text-base);margin-top:0.4rem;">Painting the portrait…</div>`;
 
   try {
     let src;
