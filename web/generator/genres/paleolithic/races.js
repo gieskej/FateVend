@@ -108,4 +108,35 @@ export const RACES = [
       "paleolithic rpg icon, arid rocky desert, lean figure crouching at a crack in rock where water seeps, bone tools on belt, harsh noon light, medium shot, digital concept art",
     iconPath: "generator/genres/paleolithic/icons/RACES#desert_survivors.webp",
   },
+
+  // ── TROPICAL ISLANDERS ────────────────────────────────────────────────────
+  // Distinct from Coastal Foragers: those work a cold temperate shoreline and
+  // fear the sea. These live surrounded by warm water — the reef is the larder
+  // and the horizon is the wall.
+  {
+    id: "tropical_islanders",
+    broad: "Tropical Islanders",
+    flavor:
+      "Warm-water reef divers — hold a breath past what seems possible, read the lagoon by its color and the sky by its smell, and live where the sea is both the larder and the wall; on an island everyone is kin, nothing stays secret, and no one leaves without the whole band knowing",
+    weight: 6,
+    iconPrompt:
+      "paleolithic rpg icon, turquoise lagoon ringed by a coral reef and palms, lean diver surfacing with a speared fish, bamboo raft moored behind, bright tropical sun, medium shot, digital concept art",
+    iconPath:
+      "generator/genres/paleolithic/icons/RACES#tropical_islanders.webp",
+  },
+
+  // ── JUNGLE DWELLERS ───────────────────────────────────────────────────────
+  // Distinct from Forest Wanderers: those hunt temperate old-growth with long
+  // sightlines and cold nights. Here the canopy never opens, sight ends at ten
+  // paces, and the danger is as much rot and venom as it is teeth.
+  {
+    id: "jungle_dwellers",
+    broad: "Jungle Dwellers",
+    flavor:
+      "Rainforest kin — live in a green gloom under a canopy that never opens, navigate by sound because sight ends at ten paces, and carry the names of a hundred plants that heal, feed, or kill; everything here rots, bites, or both, and the ones who last are the ones who never stop listening",
+    weight: 8,
+    iconPrompt:
+      "paleolithic rpg icon, dense rainforest interior, figure crouched on a huge buttress tree root holding a long reed blowpipe, dripping broad leaves and hanging vines, shafts of green filtered light, humid haze, medium shot, digital concept art",
+    iconPath: "generator/genres/paleolithic/icons/RACES#jungle_dwellers.webp",
+  },
 ];
