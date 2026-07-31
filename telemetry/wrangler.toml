@@ -1,0 +1,15 @@
+name = "vend-of-fate-telemetry"
+main = "worker.js"
+
+# A compatibility date is a floor for runtime behavior, not a "keep it current"
+# field — it pins the semantics your code was written against. It must not be in
+# the future: the installed Workers runtime falls back to the newest date it
+# knows and warns, so a future date buys nothing and hides which semantics you
+# actually get. This worker only uses fetch, JSON and D1, so any recent date is
+# equivalent for it.
+compatibility_date = "2025-07-18"
+
+[[d1_databases]]
+binding = "DB"                        # accessed as env.DB in worker.js
+database_name = "vend-of-fate"
+database_id = "9de8f7e1-abb4-4fc2-8fec-852e669cf485"

@@ -49,7 +49,7 @@
 - Add settings option to disable BGM.
 - Kokoro'e english voices don't pronounce Japanese or Korean words properly, but the Japanese voices produce incomprehensible English.  So either we preprocess English -> Katakana so the Japanese voice works?  Or even better, extend the Kokoro service to do this heavy lifting.  Consider using CMU Pronouncing Dictionary (CMUdict)
 - Add more AI providers
-- Add anonymous telemetry.  I am curious what genres are popular, and what country users are from.
+- Anonymous telemetry: the Cloudflare Worker + D1 server is written, deployed and verified (see telemetry/README.md), but nothing in the app posts to it yet.  Remaining work is the client call in app.js after a successful generation — README has the exact snippet, including the BUILTIN_GENRE_IDS guard that keeps author-supplied genre-pack ids out of the database.
 
 ## Open Questions
 - Should Plot Essentials be considers as spoilers, and therefore not automatically read by the narrator?
