@@ -4,10 +4,10 @@ Collects exactly five data points per generation event: country, genre, and the
 text / image / narration provider. No IPs, no user IDs, no user agents, no
 precise timestamps.
 
-> **Status: deployed, but not wired up yet.** The Worker is live at
-> `https://vend-of-fate-telemetry.jgieske.workers.dev` with the D1 database
-> attached — nothing in the app posts to it yet. See
-> [Client usage](#client-usage) for the snippet that turns it on.
+> **Status: live and wired up.** The Worker runs at
+> `https://vend-of-fate-telemetry.jgieske.workers.dev` with D1 attached, and
+> `web/telemetry.js` posts one event per completed scenario generation.
+> Users can turn it off under **Settings → Options → Privacy**.
 
 ## Deploy (one-time, ~5 minutes)
 
@@ -48,12 +48,24 @@ Imported genre packs report the literal string `"pack"`, never their own id —
 pack ids are author-supplied free text, so they can't be allowlisted and
 shouldn't land in the database. You still learn how often packs get used.
 
-## Client usage
+## Client
 
-Fire-and-forget after a character is generated. The three provider values live
-in `currentProvider` and `currentImageProvider` (which starts as `null`, hence
-the `??`) in `web/app.js`, and `ttsProvider`, which `app.js` already imports
-from `narration.js`:
+Implemented in **`web/telemetry.js`** and called from `runAIPhase()` in
+`web/app.js`, right after the scenario renders — so a reel spin costs nothing
+and only a *completed* generation reports. It is fire-and-forget and can never
+break a generation that already succeeded.
+
+Three behaviors worth knowing:
+
+- **Opt-out, default on.** The toggle lives in Settings → Options → Privacy and
+  persists in `localStorage` under `gof_telemetry`.
+- **Automated browsers are skipped** via `navigator.webdriver`. Without this,
+  `npm run test:full` — which performs a real generation — would post a real
+  event on every run and quietly skew the stats.
+- **localhost is *not* skipped.** `serve.sh` means nearly every real user runs
+  from localhost, so excluding it would discard almost all data.
+
+The call site looks like this:
 
 ```js
 const TELEMETRY_URL = "https://vend-of-fate-telemetry.jgieske.workers.dev/event";

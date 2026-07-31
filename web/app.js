@@ -53,6 +53,11 @@ import {
   genreIconBase,
 } from "./pack-assets.js";
 import {
+  reportGeneration,
+  isTelemetryEnabled,
+  setTelemetryEnabled,
+} from "./telemetry.js";
+import {
   setGenre,
   carouselStep,
   goToCarouselIndex,
@@ -1810,6 +1815,21 @@ async function runAIPhase() {
 
     updateStatsDisplay();
 
+    // The scenario is rendered, so the generation genuinely succeeded — report
+    // it before the optional portrait/narration work below, which can take a
+    // while and fail on its own without invalidating this event.
+    // BUILTIN_GENRE_IDS is snapshotted at module load, before any pack is
+    // registered, so an installed pack can never be mistaken for a built-in:
+    // packs report the generic "pack" and their author-supplied id stays local.
+    reportGeneration({
+      genre: BUILTIN_GENRE_IDS.has(state.currentGenre)
+        ? state.currentGenre
+        : "pack",
+      textProvider: currentProvider,
+      imageProvider: currentImageProvider,
+      ttsProvider,
+    });
+
     // Auto-generate portrait(s) if a backend is configured, then fade the music
     // once all art — including auto NPC portraits, if enabled — is done.
     const hasPortraitBackend =
@@ -2254,6 +2274,15 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.getItem("gof_auto_narrate_all") === "true";
   autoNarrateEl.addEventListener("change", (e) =>
     localStorage.setItem("gof_auto_narrate_all", e.target.checked),
+  );
+
+  // Anonymous telemetry opt-out. Reads/writes through telemetry.js rather than
+  // localStorage directly, so the storage key and the default-on rule live in
+  // one place with the code that sends the events.
+  const telemetryEl = document.getElementById("telemetry-enabled");
+  telemetryEl.checked = isTelemetryEnabled();
+  telemetryEl.addEventListener("change", (e) =>
+    setTelemetryEnabled(e.target.checked),
   );
 
   // Genre-pack import: wire the file input and register any previously-installed
