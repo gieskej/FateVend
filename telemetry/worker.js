@@ -8,6 +8,11 @@
  *
  * GET  /stats   Aggregated counts by country, genre, and each provider slot.
  *               Protect or remove this in production if you want stats private.
+ *
+ * GET  /series  The same facts with the day kept, already grouped.
+ *               ?since=YYYY-MM-DD limits how far back to read.
+ *               Feeds dashboard.html, which does its own daily/weekly/monthly
+ *               bucketing. Protect it alongside /stats if you make stats private.
  */
 
 // ---- Allowlists: reject anything else so the DB can't be polluted ----
@@ -70,6 +75,10 @@ export default {
       return handleStats(env);
     }
 
+    if (request.method === "GET" && url.pathname === "/series") {
+      return handleSeries(url, env);
+    }
+
     return json({ error: "not found" }, 404);
   },
 };
@@ -108,7 +117,8 @@ async function handleEvent(request, env) {
   );
   const ttsProvider = readProvider(body.ttsProvider, TTS_PROVIDERS, "off");
 
-  if (textProvider === null) return json({ error: "unknown textProvider" }, 400);
+  if (textProvider === null)
+    return json({ error: "unknown textProvider" }, 400);
   if (imageProvider === null)
     return json({ error: "unknown imageProvider" }, 400);
   if (ttsProvider === null) return json({ error: "unknown ttsProvider" }, 400);
@@ -136,14 +146,16 @@ async function handleStats(env) {
       `SELECT ${col} AS value, COUNT(*) AS n FROM events GROUP BY ${col} ORDER BY n DESC`,
     ).all();
 
-  const [total, byCountry, byGenre, byText, byImage, byTts] = await Promise.all([
-    env.DB.prepare("SELECT COUNT(*) AS n FROM events").first(),
-    groupBy("country"),
-    groupBy("genre"),
-    groupBy("text_provider"),
-    groupBy("image_provider"),
-    groupBy("tts_provider"),
-  ]);
+  const [total, byCountry, byGenre, byText, byImage, byTts] = await Promise.all(
+    [
+      env.DB.prepare("SELECT COUNT(*) AS n FROM events").first(),
+      groupBy("country"),
+      groupBy("genre"),
+      groupBy("text_provider"),
+      groupBy("image_provider"),
+      groupBy("tts_provider"),
+    ],
+  );
 
   return json({
     totalEvents: total?.n ?? 0,
@@ -153,4 +165,34 @@ async function handleStats(env) {
     imageProviders: byImage.results,
     ttsProviders: byTts.results,
   });
+}
+
+const DAY_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+// Returns the whole fact table grouped on every column, day included, rather
+// than one pre-rolled series per question. That's deliberate: the caller can
+// then derive any slice — daily/weekly/monthly totals, a breakdown by any
+// field, or a provider *combination* within a single period — from one
+// request, which a set of per-dimension rollups cannot do (they've already
+// thrown the correlation away). Row count is bounded by the number of
+// distinct field combinations present, so it can never exceed the event count
+// and in practice is far below it. If this ever gets big, `since` is the lever:
+// the dashboard sends it for every range except "all time".
+async function handleSeries(url, env) {
+  const since = url.searchParams.get("since");
+  if (since !== null && !DAY_RE.test(since)) {
+    return json({ error: "since must be YYYY-MM-DD" }, 400);
+  }
+
+  const stmt = env.DB.prepare(
+    `SELECT day, country, genre, text_provider, image_provider, tts_provider,
+            COUNT(*) AS n
+       FROM events
+       ${since ? "WHERE day >= ?" : ""}
+      GROUP BY day, country, genre, text_provider, image_provider, tts_provider
+      ORDER BY day`,
+  );
+
+  const { results } = await (since ? stmt.bind(since) : stmt).all();
+  return json({ since, rows: results });
 }

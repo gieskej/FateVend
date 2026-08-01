@@ -1,0 +1,466 @@
+/* Telemetry dashboard — standalone ops page, not part of the app bundle.
+ *
+ * It reuses the app's token names and values from DESIGN.md (see the repo root)
+ * so the two don't drift apart visually, but deliberately does NOT import
+ * web/styles.css: that file is built around the app's two-surface chrome /
+ * parchment system and a slot-machine layout none of which applies here. This
+ * page is chrome-only, so the four text roles are defined once and never
+ * redefined. The one addition is --series-*, a categorical chart palette the
+ * app has no need for.
+ */
+
+:root {
+  /* Palette (pigment names — matches web/styles.css) */
+  --ink: #2b1f14;
+  --brass: #a8853d;
+  --brass-light: #d8c08a;
+  --brass-dark: #7a6234;
+  --gold: #d4af37;
+  --gold-light: #f0d878;
+  --rust: #a8452b;
+  --verdigris: #4a7c6f;
+
+  --bg: #14100b;
+  --panel: #1f1811;
+  --panel-raised: #2a2117;
+  --border: #3d3020;
+
+  /* Text roles */
+  --text-title: var(--gold);
+  --text-standard: var(--brass-light);
+  --text-highlight: var(--gold-light);
+  --text-dim: var(--brass-dark);
+  --text-on-bright: var(--ink);
+
+  /* Sizes */
+  --text-xs: 0.75rem;
+  --text-sm: 0.85rem;
+  --text-base: 1rem;
+  --text-lg: 1.15rem;
+  --text-xl: 1.4rem;
+  --text-2xl: 1.9rem;
+
+  --font-display: "Cinzel", Georgia, serif;
+  --font-body: "Crimson Pro", Georgia, serif;
+
+  /* Categorical palette for stacked series. Ordered so the first few stay
+     distinguishable at a glance — most breakdowns have under six values. */
+  --series-0: #d4af37;
+  --series-1: #6fa8a0;
+  --series-2: #c96f4a;
+  --series-3: #8ba3c4;
+  --series-4: #a98cc4;
+  --series-5: #9fb04a;
+  --series-6: #d19bb0;
+  --series-7: #c8a06a;
+  --series-8: #6f8fb0;
+  --series-9: #b0764a;
+}
+
+html {
+  font-size: 17px;
+}
+
+body {
+  margin: 0;
+  padding: 1.5rem 1.25rem 4rem;
+  background: var(--bg);
+  color: var(--text-standard);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.5;
+}
+
+/* ── Header ──────────────────────────────────────────────────────────────── */
+
+.page-header {
+  max-width: 76rem;
+  margin: 0 auto 1.5rem;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--text-title);
+}
+
+.tagline {
+  margin: 0.25rem 0 0;
+  font-size: var(--text-sm);
+  color: var(--text-dim);
+}
+
+/* ── Controls ────────────────────────────────────────────────────────────── */
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: flex-end;
+  max-width: 76rem;
+  margin: 0 auto 1rem;
+  padding: 1rem;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.control {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  flex: 1 1 10rem;
+  min-width: 0;
+}
+
+.control-wide {
+  flex: 3 1 20rem;
+}
+
+.control > span {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+input,
+select,
+button {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--text-standard);
+  background: var(--panel-raised);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.45rem 0.6rem;
+  min-height: 2.6rem;
+}
+
+input:focus,
+select:focus,
+button:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 1px;
+}
+
+button {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-on-bright);
+  background: linear-gradient(180deg, var(--gold-light), var(--brass));
+  border-color: var(--brass-dark);
+  cursor: pointer;
+  padding-inline: 1.2rem;
+}
+
+button:hover {
+  background: linear-gradient(180deg, #fbe9a8, var(--gold));
+}
+
+/* ── Status line ─────────────────────────────────────────────────────────── */
+
+.status {
+  max-width: 76rem;
+  margin: 0 auto 1rem;
+  font-size: var(--text-sm);
+  color: var(--text-dim);
+  min-height: 1.4rem;
+}
+
+.status.error {
+  color: var(--rust);
+}
+
+/* ── Layout ──────────────────────────────────────────────────────────────── */
+
+/* Any author `display` beats the UA stylesheet's `[hidden] { display: none }`,
+   so without this the report stays on screen while hidden is set — showing a
+   stale or blank panel over an error. Every display rule below needs it. */
+[hidden] {
+  display: none !important;
+}
+
+main {
+  max-width: 76rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.panel {
+  padding: 1.25rem;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.panel h2 {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--text-title);
+}
+
+.panel-note {
+  margin: -0.4rem 0 1rem;
+  font-size: var(--text-base);
+  color: var(--text-dim);
+}
+
+/* ── Summary cards ───────────────────────────────────────────────────────── */
+
+.summary-cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 0.75rem;
+}
+
+.summary-cards li {
+  padding: 0.9rem 1rem;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.card-label {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.card-value {
+  display: block;
+  margin-top: 0.15rem;
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--text-title);
+}
+
+.card-note {
+  display: block;
+  font-size: var(--text-sm);
+  color: var(--text-dim);
+}
+
+.card-note.up {
+  color: var(--verdigris);
+}
+
+.card-note.down {
+  color: var(--rust);
+}
+
+/* ── Chart ───────────────────────────────────────────────────────────────── */
+
+.chart-scroll {
+  overflow-x: auto;
+}
+
+/* Centers a chart narrower than the panel — a 2-bar monthly view left-aligned
+   in a wide panel reads as a rendering failure. When the chart is wider the
+   auto margins resolve to 0 and it simply overflows into .chart-scroll, so
+   this never clips the leading bars. */
+.chart svg {
+  display: block;
+  margin-inline: auto;
+}
+
+.chart .axis-line {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.chart .grid-line {
+  stroke: var(--border);
+  stroke-width: 1;
+  stroke-dasharray: 2 4;
+}
+
+.chart .axis-label {
+  font-family: var(--font-body);
+  font-size: 11px;
+  fill: var(--text-dim);
+}
+
+.chart .bar-total {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 600;
+  fill: var(--text-dim);
+}
+
+.legend {
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  font-size: var(--text-sm);
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.swatch {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 2px;
+  flex: none;
+}
+
+/* ── Tables ──────────────────────────────────────────────────────────────── */
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-base);
+}
+
+th,
+td {
+  padding: 0.4rem 0.6rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+thead th {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+td.num,
+th.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+tbody tr:hover {
+  background: var(--panel-raised);
+}
+
+.matrix td.total-cell,
+.matrix tr.total-row td,
+.matrix th.total-col {
+  color: var(--text-highlight);
+  font-weight: 600;
+}
+
+.matrix td.zero {
+  color: var(--text-dim);
+}
+
+/* ── Breakdown groups ────────────────────────────────────────────────────── */
+
+.breakdowns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  gap: 1.25rem;
+}
+
+.breakdown h3 {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--text-title);
+}
+
+.breakdown ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.breakdown li {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 0.5rem;
+  align-items: baseline;
+}
+
+.breakdown .bar-track {
+  grid-column: 1 / -1;
+  height: 4px;
+  background: var(--panel-raised);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.breakdown .bar-fill {
+  display: block;
+  height: 100%;
+  background: var(--brass);
+}
+
+.breakdown .row-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.breakdown .row-count {
+  font-variant-numeric: tabular-nums;
+  color: var(--text-highlight);
+}
+
+.breakdown .row-pct {
+  font-variant-numeric: tabular-nums;
+  font-size: var(--text-sm);
+  color: var(--text-dim);
+  min-width: 3.2rem;
+  text-align: right;
+}
+
+.empty {
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+@media (max-width: 40rem) {
+  body {
+    padding: 1rem 0.75rem 3rem;
+  }
+
+  .control,
+  .control-wide {
+    flex-basis: 100%;
+  }
+
+  button {
+    width: 100%;
+  }
+}

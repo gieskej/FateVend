@@ -8,6 +8,7 @@ precise timestamps.
 > `https://vend-of-fate-telemetry.jgieske.workers.dev` with D1 attached, and
 > `web/telemetry.js` posts one event per completed scenario generation.
 > Users can turn it off under **Settings → Options → Privacy**.
+> Open `dashboard.html` to read the numbers — see [Viewing stats](#viewing-stats).
 
 ## Deploy (one-time, ~5 minutes)
 
@@ -95,14 +96,49 @@ anonymous.
 
 ## Viewing stats
 
+### The dashboard
+
+Open **`dashboard.html`** — literally double-click it, no server needed. It
+reads `/series` and renders daily / weekly / monthly views: headline numbers
+with a period-over-period delta, a stacked bar chart, breakdowns for all five
+fields, a text × image provider matrix, and a per-period table.
+
+Everything is driven by four controls (range, bucket, breakdown dimension, and
+the Worker URL, all remembered in `localStorage`). Only **range** costs a round
+trip — it changes the `since` sent to the Worker. Switching bucket or dimension
+re-renders from rows already in hand.
+
+Two constraints worth knowing before editing it:
+
+- **It's a classic `<script defer>`, not `type="module"`.** Chrome treats module
+  loads over `file://` as cross-origin and blocks them, which would force this
+  page to be served. `dashboard.js` has no imports, so it loses nothing.
+- **Country codes are resolved with `Intl.DisplayNames`, not flag emoji.**
+  Windows ships no flag glyphs, so regional-indicator pairs degrade to the bare
+  letters and every row renders as `DE DE`.
+
+Point it at a local `wrangler dev` by changing the Worker URL field.
+
+### The raw endpoints
+
 ```bash
+# All-time aggregates
 curl https://vend-of-fate-telemetry.jgieske.workers.dev/stats
+
+# Day-granularity fact table, optionally windowed
+curl "https://vend-of-fate-telemetry.jgieske.workers.dev/series?since=2026-07-01"
 ```
 
-Returns a total plus counts grouped by country, genre, and each provider slot.
+`/stats` returns a total plus counts grouped by country, genre, and each
+provider slot. `/series` returns the same facts with `day` retained, grouped on
+every column at once — one row per distinct combination, which is what lets the
+dashboard bucket by any period *and* keep provider combinations answerable
+inside a single period. Rolling it up per-dimension server-side would throw that
+correlation away.
 
 If you want stats private, add a check for a secret query param or bearer token
-in `handleStats`, or delete the route and query D1 directly:
+in `handleStats` **and `handleSeries`**, or delete both routes and query D1
+directly:
 
 ```bash
 # Most popular genres

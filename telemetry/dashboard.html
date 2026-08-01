@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Vend of Fate — Telemetry</title>
+    <link rel="stylesheet" href="dashboard.css" />
+  </head>
+  <body>
+    <header class="page-header">
+      <h1>Vend of Fate — Telemetry</h1>
+      <p class="tagline">
+        Anonymous generation events. No IPs, no user IDs, day-granularity only.
+      </p>
+    </header>
+
+    <section class="controls" aria-label="Query controls">
+      <label class="control control-wide">
+        <span>Worker URL</span>
+        <input
+          id="endpoint"
+          type="url"
+          spellcheck="false"
+          placeholder="https://vend-of-fate-telemetry.jgieske.workers.dev"
+        />
+      </label>
+
+      <label class="control">
+        <span>Range</span>
+        <select id="range">
+          <option value="7">Last 7 days</option>
+          <option value="30" selected>Last 30 days</option>
+          <option value="90">Last 90 days</option>
+          <option value="365">Last 365 days</option>
+          <option value="all">All time</option>
+        </select>
+      </label>
+
+      <label class="control">
+        <span>Bucket</span>
+        <select id="bucket">
+          <option value="day" selected>Daily</option>
+          <option value="week">Weekly</option>
+          <option value="month">Monthly</option>
+        </select>
+      </label>
+
+      <label class="control">
+        <span>Break down by</span>
+        <select id="dimension">
+          <option value="none" selected>Total only</option>
+          <option value="genre">Genre</option>
+          <option value="text_provider">Text provider</option>
+          <option value="image_provider">Image provider</option>
+          <option value="tts_provider">Narration</option>
+          <option value="country">Country</option>
+        </select>
+      </label>
+
+      <button id="refresh" type="button">Refresh</button>
+    </section>
+
+    <p id="status" class="status" role="status"></p>
+
+    <main id="report" hidden>
+      <section class="summary" aria-label="Headline numbers">
+        <ul id="summary-cards" class="summary-cards"></ul>
+      </section>
+
+      <section class="panel">
+        <h2 id="chart-heading">Events over time</h2>
+        <div class="chart-scroll">
+          <div id="chart" class="chart" role="img"></div>
+        </div>
+        <ul id="legend" class="legend"></ul>
+      </section>
+
+      <section class="panel">
+        <h2>Breakdowns</h2>
+        <div id="breakdowns" class="breakdowns"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Text provider &times; image provider</h2>
+        <p class="panel-note">
+          The question the one-row-per-event schema exists to answer: do people
+          running a local text model also run local image generation?
+        </p>
+        <div class="table-scroll">
+          <table id="combos" class="matrix"></table>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2 id="periods-heading">Per period</h2>
+        <div class="table-scroll">
+          <table id="periods" class="periods"></table>
+        </div>
+      </section>
+    </main>
+
+    <!-- Classic deferred script, not type="module": Chrome blocks module
+         loading over file:// as a cross-origin request, and this page is
+         meant to open by double-clicking it. dashboard.js has no imports, so
+         it needs nothing a module would give it. -->
+    <script src="dashboard.js" defer></script>
+  </body>
+</html>
