@@ -98,7 +98,14 @@ export const GENRE_MANIFESTS = {
     },
     music: {
       prefix: "fantasy",
-      tracks: ["fantasy-overture1.mp3", "fantasy-overture_dark.mid.mp3"],
+      tracks: [
+        "fantasy-Listen Wind.mp3",
+        "fantasy-Stone Remembers-v1.mp3",
+        "fantasy-Stone Remembers-v2.mp3",
+        "fantasy-Stone Remembers-v3.mp3",
+        "fantasy-overture1.mp3",
+        "fantasy-overture_dark.mid.mp3",
+      ],
     },
     slots: {
       identityCat: "RACE",
@@ -189,9 +196,15 @@ export const GENRE_MANIFESTS = {
     music: {
       prefix: "manga",
       tracks: [
+        "manga-Neon Heart-v3.mp3",
+        "manga-Neon Heart-v4.mp3",
+        "manga-Neon Heart-v5.mp3",
         "manga-Neon Heart_en.mp3",
         "manga-Neon Heart_en_jp.mp3",
         "manga-Neon Kiss.mp3",
+        "manga-Neon Waves-v1.mp3",
+        "manga-Neon Waves-v2.mp3",
+        "manga-Neon Waves-v3.mp3",
       ],
     },
     slots: {

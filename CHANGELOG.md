@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-08-03
+
+### content: ten new BGM tracks for Fantasy and Osaka HS '87
+**What changed:** Wired ten music files that were sitting in `web/audio/music/` unreferenced into their genres' `music.tracks` lists in `generator/manifests.js`. Fantasy goes from 2 tracks to 6 (`Listen Wind`, `Stone Remembers` v1–v3); Osaka HS '87 goes from 3 to 9 (`Neon Heart` v3–v5, `Neon Waves` v1–v3). The `Neon Heart_en` and `Neon Heart_en_jp` files were replaced with new renders — already listed, so no code change, but both were re-verified as playable. Every variant ships as its own rotation entry, matching how Joseon, Nihongi, Paleolithic and Sci-Fi already treat their `-vN` files: for music these are alternate arrangements rather than candidates to choose between.
+**Impact:** Fantasy tripled its BGM pool — it was the thinnest of the seven genres at two tracks, so the same overture repeated constantly. Clears "Add new BGM music" from TODO.md's Fantasy section.
+**Test cases:** New `web/tests/data/music-files.mjs` in the data tier reconciles the manifests against the folder in both directions and fails on either: a listed track with no file (invisible at runtime — `audio.js` hands the name to an `<audio>` element, so a typo is a silent 404 and a dead BGM slot only hit when that track is randomly picked), and an `.mp3` on disk that no manifest lists (how these ten tracks went unwired in the first place). Also checks each track carries its genre's `music.prefix`. Fault-injected all three modes to confirm they fail; currently reports 41 tracks across 7 genres against 41 files, fully reconciled. Separately drove all 15 fantasy/manga tracks through a real `<audio>` element over the dev server — all 15 decode with plausible durations (3:06–4:52). `npm test` green: data 8/8, e2e 64/64.
+**Still open:** `web/audio/prompts.md` documents the generation prompt and lyrics per track; the ten new ones have no entries, and whether the two re-rendered `Neon Heart` files used revised prompts is only knowable from the source. Left for the author rather than fabricated.
+
 ## 2026-07-31
 
 ### feat: telemetry dashboard with daily / weekly / monthly views

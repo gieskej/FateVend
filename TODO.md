@@ -4,16 +4,14 @@
 - Need some sort of a post-skeleton or pre-generation consistency check, at least at dev-time.
 
 ## Bugs
-
-
 - The status bar shows phases as it rolls/generates.  On mobile, this phases overflow the width of the screen.  The phase display should auto scroll as needed.
-
 - Tag all MP3s
+- Update web/audio/prompts.md with the generation prompt and lyrics per track, and the ten new ones have no entries.
+- It is annoying to have to wait for all NPC portraits to finish before I am allowed to click Spin again.
 
 ## Bugs - Fantasy
 - The text-to-image prompt needs to handle special cases:
   - Dragonborn: Illustration of a person with golden dragon scale skin, muscular body, fiery golden eyes, sharp filed teeth, prominent facial scales, subtle horns protruding from hair, scaly tail
-- Add new BGM music
 
 ## Bugs - Modern
 - The Modern genre is crap.  It is too general and open ended to be any fun.  Let's recast it to something else.
@@ -40,6 +38,21 @@
 ### Low Priority Bugs
 - Sometimes generate_icons hangs and you have to restart the whole shell to recover.
 - Think of a better project name.
+
+## New Genre Ideas
+- Waifu - Virtual girlfriend.  A little boring, but seems popular.  Could have some fun with unusual race/species twist.
+- Anime/Manga
+  - Classic Space Opera
+  - Mecha
+  - Kaiju
+  - Or get really specific, like a genre that generates short stories about a fixed set of characters in a particular city.  The game engine is really about putting this cast of characters into unusual plots/situations, or playing known plots but as different characters.
+- Sci-Fi mashups
+- Historical
+  - WWII - World War 2, play as Axis or Allies
+  - Roman Empire
+  - Sparta
+  - Oregon Trail ;)
+- Superheros - Distill every plot archetype without mentioning copyrighted characters.  Might be more trouble than its worth.
 
 ## New Features
 - Enable AID scripting and automatically inject the latest auto-cards (https://github.com/LewdLeah/Auto-Cards)
