@@ -8,6 +8,7 @@
 - Tag all MP3s
 - Update web/audio/prompts.md with the generation prompt and lyrics per track, and the ten new ones have no entries.
 - It is annoying to have to wait for all NPC portraits to finish before I am allowed to click Spin again.
+- Reel label consistency.  Some reels take "xxx - yyy" and parse the "yyy" out to a second line with italics.  Others just wrap long text (some have very long text).  I prefer the second line with italics with a reasonable text length for the UI width.
 
 ## Bugs - Fantasy
 - The text-to-image prompt needs to handle special cases:

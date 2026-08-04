@@ -146,7 +146,7 @@ export const RACES = [
     weight: 1,
     nonHumanoidBody: true,
     iconPrompt:
-      "sci-fi rpg icon, uplifted primate bipedal figure in lab coveralls, fine motor work with tools, sapient focused expression, corp lab environment, overhead lab lighting, medium shot, digital concept art",
+      "tall chimpanzee with fair skin wearing clothes holding a smartphone, sapient focused expression, walking down city sidewalk amongst people, medium shot, digital concept art, sci-fi rpg icon, ",
     iconPath: "generator/genres/sci-fi/icons/SPECIES#uplift_primate.webp",
   },
   {
@@ -157,7 +157,7 @@ export const RACES = [
     weight: 1,
     nonHumanoidBody: true,
     iconPrompt:
-      "sci-fi rpg icon, transit concourse, bipedal uplifted feline in tactical clothing, cat ears, paws, tail visible, yellow cat eyes with vertical slit pupils, neon transit lighting, medium shot, digital concept art",
+      "tall cat standing on its hind legs wearing outfit, cat ears, paws, tail visible, yellow cat eyes with vertical slit pupils, standing in transit concourse,  neon transit lighting, medium shot, digital concept art, sci-fi rpg icon,",
     iconPath: "generator/genres/sci-fi/icons/SPECIES#uplift_feline.webp",
   },
   // ── HYBRID ─────────────────────────────────────────────────────────────
