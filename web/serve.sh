@@ -132,7 +132,17 @@ fi
 
 # Plain http.server sends no Cache-Control headers, so browsers fall back to
 # heuristic caching and can keep showing stale assets (e.g. edited genre icons)
-# after a file changes on disk. Force no-store so every request is fresh.
+# after a file changes on disk.
+#
+# This uses no-cache, NOT no-store. Both guarantee you never see a stale file,
+# but they differ enormously in cost:
+#   no-store  the browser may not keep a copy at all, so every reload re-sent
+#             the entire ~3.8MB of genre icons over ~220 requests.
+#   no-cache  the browser caches, but must revalidate before each use. Python's
+#             SimpleHTTPRequestHandler sends Last-Modified and honours
+#             If-Modified-Since, so an unchanged icon costs an empty 304 instead
+#             of its full body — and an edited one still updates immediately,
+#             because the revalidation is mandatory rather than heuristic.
 # -u: unbuffered stdout, so the port/URL message (and journalctl -f) show up
 # immediately instead of sitting in a buffer that's lost if the process is killed.
 python3 -u - <<'PY'
@@ -197,7 +207,7 @@ class NoCacheHandler(http.server.SimpleHTTPRequestHandler):
         super().do_GET()
 
     def end_headers(self):
-        self.send_header('Cache-Control', 'no-store')
+        self.send_header('Cache-Control', 'no-cache')
         super().end_headers()
 
 class QuietThreadingHTTPServer(http.server.ThreadingHTTPServer):

@@ -418,6 +418,33 @@ function iconBaseFor(entry, def, cfg) {
   return entry[3] ?? (def.common ? COMMON_ICON_BASE : cfg.iconBase);
 }
 
+// Runs work once the page has finished loading and the browser is otherwise
+// idle. Used to keep bulk, non-urgent fetching off the critical path.
+// If `load` has already fired (e.g. a late caller), it runs on the next idle
+// slot rather than waiting for an event that will never come again.
+function whenIdleAfterLoad(fn) {
+  let started = false;
+  const schedule = () => {
+    if (started) return;
+    started = true;
+    window.requestIdleCallback
+      ? requestIdleCallback(fn, { timeout: 2000 })
+      : setTimeout(fn, 200);
+  };
+
+  if (document.readyState === "complete") {
+    schedule();
+    return;
+  }
+  window.addEventListener("load", schedule, { once: true });
+  // `load` waits on every subresource, including third-party ones we don't
+  // control — a hung font CDN can hold it off indefinitely, which would
+  // otherwise mean the preload silently never happens. Cap the wait so a stuck
+  // external request degrades this to "preloaded a bit later" instead of
+  // "never preloaded".
+  setTimeout(schedule, 5000);
+}
+
 // Preload all icon images for a genre into the browser cache so the slot
 // animation doesn't hammer the server with concurrent requests.
 export function preloadGenreIcons(genre) {
@@ -1295,11 +1322,47 @@ const packDbGetAll = () => packDbTx("readonly", (s) => s.getAll());
 const packDbPut = (rec) => packDbTx("readwrite", (s) => s.put(rec));
 const packDbDelete = (id) => packDbTx("readwrite", (s) => s.delete(id));
 
+// JSZip, fetched on first use rather than from a <script> in index.html's head.
+// It is only needed to read or write a genre-pack .zip, so loading it up front
+// put a third-party CDN in the render-blocking path of every page load — when
+// that CDN was slow or unreachable, nothing painted at all until it resolved.
+//
+// The promise is cached, so concurrent callers share one <script> insertion and
+// a later retry can still succeed after a failed attempt (a transient network
+// error shouldn't permanently disable zip support for the session).
+const JSZIP_URL = "https://cdn.jsdelivr.net/npm/jszip@3/dist/jszip.min.js";
+let jsZipPromise = null;
+
+function ensureJSZip() {
+  if (window.JSZip) return Promise.resolve(window.JSZip);
+  if (jsZipPromise) return jsZipPromise;
+
+  jsZipPromise = new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = JSZIP_URL;
+    script.onload = () =>
+      window.JSZip
+        ? resolve(window.JSZip)
+        : reject(new Error("JSZip loaded but did not register itself."));
+    script.onerror = () =>
+      reject(
+        new Error(
+          "Could not load JSZip — check your internet connection, then try again.",
+        ),
+      );
+    document.head.append(script);
+  }).catch((err) => {
+    jsZipPromise = null; // let the next attempt re-try the download
+    throw err;
+  });
+
+  return jsZipPromise;
+}
+
 // Parse a user-selected file (.json or .zip) into a pack object + its asset blobs.
 async function parseGenrePackFile(file) {
   if (/\.zip$/i.test(file.name) || file.type === "application/zip") {
-    if (typeof JSZip === "undefined")
-      throw new Error("JSZip not loaded — cannot read .zip packs.");
+    const JSZip = await ensureJSZip();
     const zip = await JSZip.loadAsync(file);
     const manifestEntry =
       zip.file("manifest.json") || zip.file(/(^|\/)manifest\.json$/i)[0];
@@ -1463,14 +1526,23 @@ async function copyAll(btn) {
 
 async function downloadPackage(btn) {
   if (!state.currentOutput || !state.currentSkeleton) return;
-  if (typeof JSZip === "undefined") {
-    alert("JSZip library not loaded — check your internet connection.");
-    return;
-  }
 
   const origText = btn.textContent;
   btn.disabled = true;
   btn.textContent = "⚙ Building…";
+
+  // Separate from the build below so a download failure and a "couldn't fetch
+  // the library" failure don't collapse into the same opaque "Error" button.
+  let JSZip;
+  try {
+    JSZip = await ensureJSZip();
+  } catch (err) {
+    console.error(err);
+    alert(err.message);
+    btn.textContent = origText;
+    btn.disabled = false;
+    return;
+  }
 
   try {
     const payload = buildScenarioPayload();
@@ -2230,8 +2302,15 @@ document.addEventListener("DOMContentLoaded", () => {
   updateProviderSelector();
   updateImageProviderSelector();
 
-  // Preload icons for the default genre so the slot animation has them cached
-  preloadGenreIcons(state.currentGenre);
+  // Preload icons for the default genre so the slot animation has them cached.
+  // Deferred until after the load event: this fires ~220 image requests (~3.8MB
+  // for Fantasy), and running it during startup made it compete with the app's
+  // own scripts and styles for connections — measured at ~4.2s of a 6.6s load
+  // on an 8 Mbps connection. Nothing on screen needs these until the reels
+  // actually spin, so the bytes are the same but they no longer delay first
+  // interaction. requestIdleCallback yields further to any startup work still
+  // finishing; Safari lacks it, hence the setTimeout fallback.
+  whenIdleAfterLoad(() => preloadGenreIcons(state.currentGenre));
 
   // LGBQ checkbox persistence
   const lgbqEl = document.getElementById("include-lgbq");
