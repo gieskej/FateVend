@@ -2,6 +2,17 @@
 
 ## 2026-08-08
 
+### docs+fix: document the utility scripts, and unhardcode the SD endpoint
+**What changed:** The repo ships ~20 maintenance scripts and none of the user-facing docs explained how to *run* any of them — several were named in passing, most weren't mentioned at all. Added a **Utility scripts** section to CONTRIBUTING.md: a table of every script and what it's for, the shared icon-generator flag reference, and the pick-and-squash workflow that until now existed only in script comments and the maintainer's head (generate → variants land in a timestamped subfolder → copy the keepers up → `squash.sh` strips the `#1`/`#2` suffixes → delete the folder; `resize.sh` converts art made elsewhere). CREATING-A-GENRE.md's art section grew the equivalent for pack authors and links to the full reference.
+
+**Two cost warnings are documented because both were paid for during development:** the skip-set only sees icons already *chosen* in `icons/`, not variants still sitting in a timestamp subfolder, so re-running before the pick-and-squash step regenerates what you already have; and every genre wrapper passes `exclude_filenames={"plot-archetypes.js"}` because those icons live in `common/icons/` — a one-off script that omits it pays to generate orphans. `--limit 2` before a full run is now the stated default habit.
+
+**The fix:** both icon generators hardcoded `http://bonobo.local:7860` — the maintainer's own machine — so `--backend sd` could only ever work on one computer. `generate_icons_core.py` now resolves the base URL as `--url` flag → `SD_URL` from `.env` → `http://localhost:7860`, and `genre-packs/generate-icons.py` (the one an outside pack author would actually run) uses the same resolver instead of its own copy. Confirmed a no-op for this repo, since `.env` already holds that exact value.
+
+**Impact:** Someone cloning the repo can now generate art for a genre or a pack without reading Python. The `sd` backend works on any machine rather than exactly one.
+
+**Test cases:** Both scripts byte-compile and `--help` shows the new `--url`; `_resolve_sd_url` verified across all three precedence paths (`.env` → `bonobo.local`, explicit `--url` override, bare fallback). Verified every relative path written into the docs resolves from a genre `icons/` directory, that `--limit`/`--missing`/`--backend`/positional `PACK.json` all match the scripts' real argparse, and — correcting my own first draft — that `exclude_filenames` is in **all seven** genre wrappers, not just Paleolithic. `black` clean, `npm test` green (data 8/8, e2e 64/64). One `bonobo.local` reference remains in `tools/aidungeon-kokoro-tts.user.js`, a personal browser userscript left alone deliberately; the one in `generator/config.js` is generated from `.env` and gitignored.
+
 ### docs: bring the in-app help panel back in line with the app
 **What changed:** Audited every claim in the Settings help panel ("⚙ Getting API Keys & Setup") against the running app. Most of it held up — the Anthropic/Ollama/Stable Diffusion/TTS walkthroughs, the `.env` key list, the note that AI Dungeon credentials are read Node-side and never reach `config.js`, and the `↑ Import to AI Dungeon (Beta)` button label all matched. Eight things did not.
 

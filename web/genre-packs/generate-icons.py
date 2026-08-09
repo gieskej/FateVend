@@ -31,13 +31,13 @@ WEB_ROOT = PACKS_DIR.parent  # web/
 sys.path.insert(0, str(WEB_ROOT / "generator" / "common" / "icons"))
 from generate_icons_core import (
     DEFAULT_GEMINI_MODEL,
+    DEFAULT_SD_URL,
     _generate_sd,
     _generate_gemini,
     _init_gemini_client,
+    _resolve_sd_url,
     _save_webp,
 )
-
-SD_BASE = "http://bonobo.local:7860"
 
 PARAMS = dict(
     negative_prompt="",
@@ -117,7 +117,16 @@ def main():
         metavar="N",
         help="Only attempt the first N not-already-skipped items (for smoke-testing before a full run).",
     )
+    parser.add_argument(
+        "--url",
+        default=None,
+        metavar="URL",
+        help=f"SD WebUI base URL, only used with --backend sd. Defaults to SD_URL from .env, else {DEFAULT_SD_URL}.",
+    )
     args = parser.parse_args()
+    # Resolved rather than hardcoded: a pack author is by definition on a
+    # different machine from whoever wrote this script.
+    sd_base = _resolve_sd_url(args.url)
 
     if args.packs:
         pack_paths = []
@@ -207,7 +216,7 @@ def main():
             sys.stdout.flush()
             try:
                 if args.backend == "sd":
-                    raw_images = _generate_sd(SD_BASE, prompt, PARAMS)
+                    raw_images = _generate_sd(sd_base, prompt, PARAMS)
                     target_size = None
                 else:
                     raw_images = _generate_gemini(

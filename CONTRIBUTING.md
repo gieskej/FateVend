@@ -191,6 +191,87 @@ Two layers, both under `web/tests/`:
   two-phase generation flow against a live text provider. `npm test` starts
   `serve.sh` automatically if nothing is already listening on `:8080`.
 
+## Utility scripts
+
+Nothing here is needed to run the app — these are the maintenance tools for
+generating art, reshaping assets, and driving the generator headlessly.
+
+| Script | What it does |
+|---|---|
+| `generator/genres/<genre>/icons/generate_icons.py` | Generate that genre's icons |
+| `generator/generate_icons.py` | Run every genre's generator in turn, passing your flags through |
+| `generator/common/icons/generate_icons.py` | The shared icons (MBTI, sentiments) |
+| `genre-packs/generate-icons.py` | Icons for a genre **pack** (`.json`), styled by its `portraitStyle` |
+| `tools/regenerate-icons-gemini.py` | Replace specific broken/blank icons, one path at a time |
+| `generator/resize.sh` | Convert/shrink outside images to the 256×256 `.webp` the app expects |
+| `generator/squash.sh` | Strip `#2`/`#3` variant suffixes after you've picked winners |
+| `cli/run.sh` | Wrapper around `node cli/index.js` — see [CLI.md](docs/CLI.md) |
+| `deploy/install.sh` | Install `serve.sh` as a systemd service (Linux) |
+
+### Generating icons
+
+All the icon scripts share one core (`generator/common/icons/generate_icons_core.py`),
+which scrapes `iconPrompt`/`iconPath` pairs out of the data files, so they take
+the same flags:
+
+```bash
+cd web/generator/genres/fantasy/icons
+
+python3 generate_icons.py                       # SD backend (default)
+python3 generate_icons.py --backend gemini      # Gemini instead
+python3 generate_icons.py --limit 2             # smoke-test 2 icons first
+python3 generate_icons.py --missing ../../../common/icons/none.webp
+```
+
+| Flag | Purpose |
+|---|---|
+| `--backend sd\|gemini` | Which generator to use. `sd` is the default. |
+| `--url URL` | SD WebUI base URL. Defaults to `SD_URL` from `.env`, else `http://localhost:7860`. |
+| `--model NAME` | Gemini model (`--backend gemini` only). |
+| `--limit N` | Only attempt the first N pending icons. |
+| `--missing PATH` | Only regenerate icons whose current file is byte-identical to this placeholder. |
+
+**`--backend sd`** needs Stable Diffusion WebUI Forge running with `--api`, at
+whatever `SD_URL` points to. **`--backend gemini`** needs `GEMINI_API_KEY` in
+`.env` plus `pip install google-genai python-dotenv`.
+
+> **Use `--limit 2` before any full run.** Gemini image generation is billed per
+> image, and each icon is generated in several variants — a whole genre is real
+> money. Two costly mistakes worth avoiding, both hit during development:
+>
+> - **The skip-set doesn't look inside timestamp subfolders.** Icons already
+>   *chosen* (sitting in `icons/`) are skipped; variants still sitting in a
+>   `2026-07-31_120754/` subfolder are not. Finish the pick-and-squash step
+>   below before re-running, or you'll pay to regenerate what you already have.
+> - **Every genre wrapper excludes `plot-archetypes.js`**, because those
+>   archetypes' icons live in `common/icons/`. All seven pass
+>   `exclude_filenames={"plot-archetypes.js"}`. Write a one-off script without
+>   it and you'll pay to generate orphans nothing references.
+
+### The pick-and-squash workflow
+
+Generation produces **several variants per icon** in a timestamped subfolder,
+because the first result is rarely the best:
+
+```
+icons/
+  2026-07-31_120754/
+    RACES#hill_folk#1.webp     ← pick your favourite…
+    RACES#hill_folk#2.webp
+    RACES#hill_folk#3.webp
+```
+
+1. Look through the variants and copy the ones you want up into `icons/`.
+2. Run `bash ../../../squash.sh .` to strip the `#1`/`#2` suffixes, leaving
+   `RACES#hill_folk.webp`.
+3. Delete the timestamp folder.
+
+Generated something in a different tool instead? Drop it in and run
+`bash ../../../resize.sh .` to convert it to a 256×256 `.webp`.
+
+Icons are **never overwritten** — anything already resolving to a file on disk
+is skipped, so re-running only fills gaps.
+
 ## Generator API
 
 ```js

@@ -744,10 +744,32 @@ that genre's **category names and slugs** — which is exactly what a reskin is.
 
 ### Generating art
 
-`web/genre-packs/generate-icons.py` reads `iconPrompt`/`iconPath` pairs and
-generates images via Stable Diffusion or Gemini. It never overwrites an existing
-icon, so it's safe to re-run for just the missing ones. Write good `iconPrompt`
-values as you author — that's what makes the art reproducible later.
+`web/genre-packs/generate-icons.py` reads the `iconPrompt`/`iconPath` pairs out
+of your pack's `data` section and generates images via Stable Diffusion or
+Gemini, using your `portraitStyle` as the shared style suffix. It never
+overwrites an existing icon, so re-running only fills gaps.
+
+```bash
+cd web/genre-packs
+python3 generate-icons.py                       # every *.json pack here
+python3 generate-icons.py my-genre.json         # just one
+python3 generate-icons.py --backend gemini --limit 2
+```
+
+**Run `--limit 2` first.** Generation is billed per image and produces several
+variants of each icon, so a full pack is real money — check that two come out
+the way you want before committing to the rest.
+
+Variants land in a timestamped subfolder next to the target: pick your
+favourites, copy them up, and run `web/generator/squash.sh` to strip the
+`#1`/`#2` suffixes. Made art in some other tool? `web/generator/resize.sh`
+converts it to the 256×256 `.webp` the app expects.
+
+Write good `iconPrompt` values as you author — that's what makes the art
+reproducible later. Full flag reference and the shared-core details are in
+[CONTRIBUTING.md → Utility scripts](CONTRIBUTING.md#utility-scripts).
+
+Note a good iconPrompt should not get specific about gender, specific outfits or background locations.  You also have to take into consideration if the text-to-image model you are using understands the concept (e.g. flux1d is pretty inconsistent about what a "dark elf" looks like).  This is why I named my aliens descriptive names, like amoeba-alien instead of making up a race name.  It helps the downstream AI too.
 
 ---
 

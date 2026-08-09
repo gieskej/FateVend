@@ -42,6 +42,25 @@ def _generate_sd(base, prompt, params, timeout=360):
     return [base64.b64decode(img_b64) for img_b64 in r.json()["images"]]
 
 
+DEFAULT_SD_URL = "http://localhost:7860"
+
+
+def _resolve_sd_url(cli_url=None):
+    """Base URL for the SD WebUI Forge API.
+
+    Precedence: --url flag, then SD_URL in the repo-root .env (the same key the
+    web app reads, so a working app is a working generator), then localhost.
+    This used to be a hardcoded hostname, which meant the sd backend only ever
+    worked on one machine.
+    """
+    if cli_url:
+        return cli_url.rstrip("/")
+    from dotenv import load_dotenv
+
+    load_dotenv(dotenv_path=Path(__file__).resolve().parents[4] / ".env")
+    return os.environ.get("SD_URL", DEFAULT_SD_URL).rstrip("/")
+
+
 def _init_gemini_client():
     """Loads GEMINI_API_KEY from the repo-root .env and returns an authenticated genai.Client."""
     from dotenv import load_dotenv
@@ -168,6 +187,12 @@ def run(
         metavar="N",
         help="Only attempt the first N not-already-skipped items (for smoke-testing before a full run).",
     )
+    parser.add_argument(
+        "--url",
+        default=None,
+        metavar="URL",
+        help=f"SD WebUI base URL, only used with --backend sd. Defaults to SD_URL from .env, else {DEFAULT_SD_URL}.",
+    )
     args = parser.parse_args()
 
     gemini_client = _init_gemini_client() if args.backend == "gemini" else None
@@ -221,7 +246,9 @@ def run(
             parts[0] if len(parts) == 2 and parts[1].isdigit() else p.stem
         )
 
-    base = "http://bonobo.local:7860"
+    base = _resolve_sd_url(args.url)
+    if args.backend == "sd":
+        sys.stdout.write(f"SD backend: {base}\n")
     variants = params.get("batch_size", 3)
     total = len(items)
     skipped = 0
