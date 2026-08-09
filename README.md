@@ -32,8 +32,13 @@ or a `.zip` with its own icons and music) that you can add at runtime from
 <p align="center"><img src="docs/screenshots-desktop/5-settings.webp" width="520"><br><sub>Settings — bring your own text, image, and narration providers</sub></p>
 
 ## Prerequisites
+
+Step-by-step version, assuming no prior knowledge: **[INSTALL.md](INSTALL.md)**.
+
 - A laptop, PC or server to serve the HTML/JS/images.  Should work on any OS.
-- An AI text provider
+  - Windows: nothing to install — `Start-FateVend.cmd` uses only what ships with Windows.
+  - macOS/Linux: Python 3 for `serve.sh` (already present on both).
+- An AI text provider — **optional**; rolling a character works without one, only the written prose needs it.
   - Ollama (local or on LAN)
     - https://ollama.com/
   - Claude.ai cloud API key
@@ -59,15 +64,33 @@ or a `.zip` with its own icons and music) that you can add at runtime from
 
 ## Quick start
 
-### Install
+> **New to this, or on Windows? → [INSTALL.md](INSTALL.md)** walks through it
+> step by step, assuming nothing. **You do not need WSL, Git, GitHub CLI or
+> Python** — FateVend is a plain web page that talks to AI providers straight
+> from your browser. On Windows, download the ZIP and double-click
+> `Start-FateVend.cmd`.
+
+**Windows** — no dependencies at all; everything needed ships with Windows:
+```
+Download ZIP → Extract → double-click Start-FateVend.cmd
+```
+
+**macOS / Linux** — needs Python 3, which both already have:
 ```bash
-git clone fatevend.git
-cd web
+git clone https://github.com/gieskej/FateVend.git
+cd FateVend/web
 bash serve.sh
 ```
 
+Then open the printed address and click **Spin the Reels**. Rolling a character
+needs no API key and no internet — only the AI-written prose does, and you can
+add a free Gemini key later in **Settings**.
+
 ### Start server
-`serve.sh` writes `generator/config.js` from your `.env`, starts a Python HTTP server on `:8080`, and (if Node is installed) starts the AI Dungeon import server on `:7432`.  Note that if there is already something running on port 8080, it will move to the next available port, so watch the console output for the actual port used.
+`serve.sh` (or `web/serve.ps1` on Windows) writes `generator/config.js` from your `.env`, serves `web/` on `:8080`, and (if Node is installed) starts the AI Dungeon import server on `:7432`.  Note that if there is already something running on port 8080, it will move to the next available port, so watch the console output for the actual port used.
+
+The two servers are interchangeable and mutually aware — either will shut down a
+stale instance of the other before starting.
 
 #### Optional: run as a systemd service (Linux)
 To keep `serve.sh` running in the background and auto-restart on boot/failure:
@@ -187,7 +210,12 @@ file, and the new genre appears in the carousel immediately. Installed packs are
 stored in the browser (IndexedDB) and reload automatically; each has a **Remove**
 button.
 
-**To author one:** the fastest start is an existing example in `web/genre-packs/`:
+**To author one:** → **[CREATING-A-GENRE.md](CREATING-A-GENRE.md)** — a complete
+walkthrough: a minimal working pack you can copy, every field in `manifest.json`
+explained, icon/audio conventions, the mistakes that fail silently, and a tour of
+both shipped examples.
+
+The two worked examples live in `web/genre-packs/`:
 
 - `sample-neon-drift.json` — a JSON-only pack (reuses Sci-Fi's art via the
   optional `iconBase` field).
@@ -195,7 +223,8 @@ button.
   with bundled icons and audio; the Python script builds it and doubles as a
   worked template.
 
-The full pack format, loader/registration internals, and authoring guide are in
+Loader and registration internals (how a pack becomes a live genre, persistence,
+blob assets) are in
 [`.claude/docs/features/genre-packs/DESIGN.md`](.claude/docs/features/genre-packs/DESIGN.md).
 
 ## CLI usage

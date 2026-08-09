@@ -5,10 +5,14 @@ source edits, no rebuild. Import one via Settings → Genre → Import a genre
 pack. Packs carry no executable code (JSON + image/audio assets only), so
 importing one is safe even from an untrusted source.
 
-**Full format spec:** [`.claude/docs/features/genre-packs/DESIGN.md`](../../.claude/docs/features/genre-packs/DESIGN.md) —
-the `manifest.json` shape, every `data.*` table's entry shape (races,
-professions, tensions, etc.), the asset-loading paths, and how a pack gets
-registered into the running app. Start there before authoring a pack.
+**Authoring guide:** [`CREATING-A-GENRE.md`](../../CREATING-A-GENRE.md) — start
+here. A minimal working pack to copy, every `manifest.json` field explained,
+every `data.*` entry shape, icon/audio conventions, and the mistakes that pass
+validation and then misbehave.
+
+**Implementation internals:** [`.claude/docs/features/genre-packs/DESIGN.md`](../../.claude/docs/features/genre-packs/DESIGN.md) —
+the asset-loading paths and how a pack gets registered into the running app.
+Read this when changing the loader, not when authoring a pack.
 
 ## What's in this folder
 
