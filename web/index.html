@@ -662,10 +662,16 @@
               <div class="help-section-title">Download Package (.zip)</div>
               <p>
                 Click <strong>↓ Download Package (.zip)</strong> to save the
-                whole scenario — <code>scenario.json</code> plus the generated
-                portrait — as a timestamped archive. Import it into AI Dungeon
-                whenever you're ready, or keep it as a backup of a scenario you
-                liked.
+                whole scenario as a timestamped archive:
+                <code>scenario.json</code>, the protagonist's
+                <code>portrait.png</code>, and an <code>npc-portraits/</code>
+                folder holding one image per NPC you generated. Import it into
+                AI Dungeon whenever you're ready, or keep it as a backup of a
+                scenario you liked.
+              </p>
+              <p>
+                Only portraits that were actually generated are included — the
+                archive is never blocked on missing images.
               </p>
             </div>
 
@@ -673,9 +679,16 @@
               <div class="help-section-title">Auto Import (Beta)</div>
               <p>
                 One-click import via a local Playwright-driven script — no
-                copy/paste required. Only available when running the app locally
-                via <code>serve.sh</code>, since it depends on Node.js,
-                Playwright, and a local Chromium install.
+                copy/paste required. Only available when you run the app
+                yourself (<code>serve.sh</code>, or
+                <code>Start-FateVend.cmd</code> on Windows), since it depends on
+                Node.js, Playwright, and a local Chromium install.
+              </p>
+              <p>
+                It is <strong>not</strong> available on the hosted demo — a page
+                served over HTTPS can't reach a server on your own machine. Use
+                Copy &amp; Paste or Download Package there instead; both work
+                everywhere.
               </p>
               <ol class="help-steps">
                 <li>
@@ -690,9 +703,10 @@
                   haven't already.
                 </li>
                 <li>
-                  Start (or restart) <code>serve.sh</code> — it launches the
-                  import server on port <code>7432</code> alongside the web app
-                  automatically.
+                  Start (or restart) <code>serve.sh</code> — or
+                  <code>Start-FateVend.cmd</code> on Windows. Either launches
+                  the import server on port <code>7432</code> alongside the web
+                  app automatically.
                 </li>
                 <li>
                   After generating a scenario, an
@@ -704,8 +718,8 @@
               </ol>
               <p>
                 The button only appears once the local import server is detected
-                running — if you don't see it, double-check
-                <code>serve.sh</code> is running and Playwright is installed.
+                running — if you don't see it, double-check the server is
+                running and Playwright is installed.
               </p>
             </div>
 
@@ -757,17 +771,18 @@
               <div class="help-section-title">Google Gemini</div>
               <p>
                 Gemini writes the same content as Claude. Select it in the Text
-                Provider selector after entering a key. Has a free tier with
-                generous daily limits.
+                Provider selector after entering a key.
+                <strong>It has a free tier</strong>, which makes it the easiest
+                place to start.
               </p>
               <ol class="help-steps">
                 <li>
                   Go to
                   <a
-                    href="https://aistudio.google.com/app/apikey"
+                    href="https://aistudio.google.com/api-keys"
                     target="_blank"
                     rel="noopener"
-                    >aistudio.google.com/app/apikey</a
+                    >aistudio.google.com/api-keys</a
                   >
                   and sign in with your Google account.
                 </li>
@@ -777,11 +792,16 @@
                 </li>
                 <li>
                   Copy the key and paste it into the
-                  <strong>Google Gemini Key</strong> field above. Keys start
-                  with <code>AIza</code>.
+                  <strong>Gemini API Key</strong> field above. Keys start with
+                  <code>AIza</code>.
                 </li>
               </ol>
-              <p>Paid tiers are available for higher usage.</p>
+              <p>
+                Free-tier limits are per Google Cloud <em>project</em>, not per
+                key — extra keys in the same project share one quota. Limits are
+                capped per minute and per day and change over time; check AI
+                Studio for current numbers. Paid tiers lift them.
+              </p>
             </div>
 
             <div class="help-section">
@@ -811,8 +831,8 @@
                   it.
                 </li>
                 <li>
-                  Enter the URL in <strong>Local Ollama URL</strong> and the
-                  model name in <strong>Ollama Model</strong> above.
+                  Enter the URL in <strong>Ollama URL</strong> and the model
+                  name in <strong>Ollama Model</strong> above.
                 </li>
               </ol>
               <p>
@@ -857,9 +877,9 @@
                   <code>http://192.168.1.50:7860</code>.
                 </li>
                 <li>
-                  Paste the URL into the <strong>Local SD URL</strong> field
-                  above. The app calls the
-                  <code>/sdapi/v1/txt2img</code> endpoint
+                  Paste the URL into the
+                  <strong>Stable Diffusion URL</strong> field above. The app
+                  calls the <code>/sdapi/v1/txt2img</code> endpoint
                   (AUTOMATIC1111-compatible format, which Forge implements).
                 </li>
               </ol>
@@ -1043,23 +1063,114 @@
               </p>
             </div>
 
+            <div class="help-group-heading">Genre Packs</div>
+            <p class="help-group-intro">
+              A <strong>genre pack</strong> adds a whole new playable genre —
+              its own species or clans, professions, tensions, secrets, names,
+              art and music — without changing any code. Packs are pure data, so
+              importing one can't run any program on your machine.
+            </p>
+
+            <div class="help-section">
+              <div class="help-section-title">Installing a pack</div>
+              <ol class="help-steps">
+                <li>
+                  Open <strong>Settings → Genre</strong> and choose a
+                  <code>.json</code> or <code>.zip</code> file under
+                  <strong>Genre Packs</strong>.
+                </li>
+                <li>
+                  The new genre appears in the carousel straight away — no
+                  reload, no restart.
+                </li>
+                <li>
+                  Installed packs are stored in your browser and come back
+                  automatically next visit. Each has a
+                  <strong>Remove</strong> button.
+                </li>
+              </ol>
+              <p>
+                A malformed pack is rejected with a list of exactly what's
+                wrong, and nothing half-installs. Two ready-made examples ship
+                in <code>web/genre-packs/</code>.
+              </p>
+            </div>
+
+            <div class="help-section">
+              <div class="help-section-title">Making your own</div>
+              <p>
+                No coding required — a pack is one text file. The full guide is
+                <code>CREATING-A-GENRE.md</code> in the project repository: a
+                minimal working pack you can copy, every field explained, and
+                the mistakes that pass validation and then behave oddly.
+              </p>
+              <p>
+                One thing worth knowing before you import someone else's pack: a
+                pack supplies the writing instructions its genre sends to the
+                AI. That text is yours to read — treat an untrusted pack the way
+                you'd treat any untrusted document.
+              </p>
+            </div>
+
+            <div class="help-group-heading">Privacy</div>
+
+            <div class="help-section">
+              <div class="help-section-title">Your API keys</div>
+              <p>
+                Keys you enter in Settings are stored
+                <strong>only in your own browser</strong> and are sent
+                <strong>only to the provider you select</strong>. This app has
+                no server of its own, so there is nowhere else for them to go —
+                and nobody else using the same page can see them.
+              </p>
+              <p>
+                On a shared or public computer, clear the key fields when you're
+                done: the next person using that browser profile would otherwise
+                find them filled in.
+              </p>
+            </div>
+
+            <div class="help-section">
+              <div class="help-section-title">Anonymous usage stats</div>
+              <p>
+                The app reports one anonymous event per completed scenario:
+                which genre, and which text / image / narration providers were
+                used. Nothing else — no keys, no characters, no scenario text,
+                no accounts, no cookies, and no way to link two events to the
+                same person. Uploaded genre packs report only the word
+                <code>pack</code>, never the pack's own name.
+              </p>
+              <p>
+                Turn it off any time under
+                <strong>Settings → Options → Privacy</strong>. The choice is
+                remembered in your browser.
+              </p>
+            </div>
+
             <div class="help-group-heading">Local .env Setup (Optional)</div>
             <p class="help-group-intro">
-              If you run the app locally via <code>serve.sh</code>, you can
-              pre-fill your cloud API keys from a <code>.env</code> file at the
-              project root instead of typing them into Settings every time.
-              Purely a convenience — entering keys directly in Settings always
-              works too.
+              If you run the app yourself, you can pre-fill your cloud API keys
+              from a <code>.env</code> file at the project root instead of
+              typing them into Settings every time. Purely a convenience —
+              entering keys directly in Settings always works too, and is the
+              only option on the hosted demo.
+            </p>
+            <p class="help-group-intro">
+              <strong>Only do this on a computer only you use.</strong> A
+              <code>.env</code> file stores keys in plain text, and every
+              browser profile on that machine gets them pre-filled.
             </p>
 
             <div class="help-section">
               <div class="help-section-title">.env File</div>
               <p>
-                <code>serve.sh</code> reads <code>.env</code> at the project
-                root and writes the keys into
+                <code>serve.sh</code> (or <code>serve.ps1</code> on Windows,
+                which <code>Start-FateVend.cmd</code> runs for you) reads
+                <code>.env</code> at the project root and writes the keys into
                 <code>generator/config.js</code> on startup, so the browser can
                 use them without the <code>.env</code> file itself ever being
-                served.
+                served. <code>config.js</code> is gitignored and never
+                published.
               </p>
               <ol class="help-steps">
                 <li>
@@ -1075,7 +1186,7 @@
                   <code>TTS_OPENAI_KEY</code>.
                 </li>
                 <li>
-                  Run <code>./serve.sh</code> — it regenerates
+                  Restart the server — it regenerates
                   <code>generator/config.js</code> from <code>.env</code> every
                   time it starts.
                 </li>

@@ -2,6 +2,23 @@
 
 ## 2026-08-08
 
+### docs: bring the in-app help panel back in line with the app
+**What changed:** Audited every claim in the Settings help panel ("⚙ Getting API Keys & Setup") against the running app. Most of it held up — the Anthropic/Ollama/Stable Diffusion/TTS walkthroughs, the `.env` key list, the note that AI Dungeon credentials are read Node-side and never reach `config.js`, and the `↑ Import to AI Dungeon (Beta)` button label all matched. Eight things did not.
+
+**Wrong field names.** The help told users to paste into "Google Gemini Key", "Local Ollama URL" and "Local SD URL"; the actual labels are **Gemini API Key**, **Ollama URL** and **Stable Diffusion URL**. Instructions that name a control that isn't on screen are worse than none.
+
+**Download Package understated.** It described the zip as "`scenario.json` plus the generated portrait", but `downloadPackage()` also writes an `npc-portraits/` folder with one image per generated NPC. Now documented, including that only portraits actually generated are included.
+
+**Windows didn't exist.** Every instruction assumed `serve.sh` — "only available when running via `serve.sh`", "run `./serve.sh`". `serve.ps1` and `Start-FateVend.cmd` shipped earlier the same day. Rewritten to name both, and the auto-import section now states outright that it can't work on the hosted demo, since an HTTPS page can't reach a server on the visitor's own machine.
+
+**Gemini claims corrected.** The link pointed at the older `aistudio.google.com/app/apikey`; now `/api-keys`, matching the README. "Generous daily limits" oversold a tier that is capped per minute and per day, so that's replaced with the fact that actually matters when planning usage: **limits are per Google Cloud project, not per key** — extra keys in one project share a single quota. Deliberately no specific numbers, since they change.
+
+**Two shipped features had no help at all.** Added a **Genre Packs** section (installing, persistence, that a malformed pack is rejected with a list and nothing half-installs, where to find the authoring guide, and the one caveat worth stating — a pack supplies writing instructions that reach the AI) and a **Privacy** section (keys live only in the visitor's browser and go only to the chosen provider; the shared-computer caveat; exactly what the anonymous usage ping contains and how to switch it off). Verified the navigation paths cited: the Settings tab is labelled **Genre** with a "Genre Packs" group inside it, and the telemetry toggle really is under **Options → Privacy**.
+
+**Impact:** The help panel is the only documentation a hosted-demo visitor can reach — they have no repository, no README. It now covers every feature the app ships, names controls that exist, and answers the key-safety question in the place it gets asked.
+
+**Test cases:** Rendered the panel in Chromium: opens cleanly, no page errors, eight section headings in order, and all seven corrected or new strings present. `npm test` green — data 8/8, e2e 64/64.
+
 ### feat: publish a public demo to GitHub Pages, and harden the page for it
 **What changed:** Hosting the app publicly changes its threat model — visitors would be pasting their own paid API keys into a page someone else runs — so the security work came first and the deployment second.
 
