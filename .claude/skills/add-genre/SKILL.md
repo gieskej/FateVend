@@ -14,43 +14,37 @@ If the user just wants to try/share a genre, do **Path A**. Do **Path B** only
 when the genre should be a permanent built-in (appears with zero import step,
 usable from the CLI).
 
-The full architecture and pack-format spec live in
-`.claude/docs/features/genre-packs/DESIGN.md` — read it before either path.
+**Read `CREATING-A-GENRE.md` (repo root) first — it is the authoritative
+authoring guide for both paths.** It carries the complete field reference, a
+minimal working pack, the icon/audio conventions, and the failure modes that
+pass validation and then misbehave. `.claude/docs/features/genre-packs/DESIGN.md`
+covers loader/registration internals — read that only when changing the loader
+itself.
 
 ---
 
 ## Path A — Genre Pack (no source edits)
 
-A pack is one JSON document (`manifest.json`) carrying all of a genre's data,
-optionally zipped with `icons/` and `audio/`. The loader
-(`web/generator/pack-loader.js`) normalizes it into the exact runtime shapes the
-app uses; `registerGenrePack()` in `index.html` merges it into every live
-registry at runtime.
+**Follow `CREATING-A-GENRE.md` §§1–11.** Don't restate the manifest schema here
+or in chat — that guide is the single source of truth for it, and it is verified
+against `pack-loader.js`.
 
-**Do this:**
+The short version: a pack is one JSON document (`manifest.json`) carrying all of
+a genre's data, optionally zipped with `icons/` and `audio/`.
+`web/generator/pack-loader.js` normalizes it into the runtime shapes the app
+uses, and `registerGenrePack()` — in **`web/app.js`** — merges it into every live
+registry. Import via **Settings → Genre Packs**; `validatePack()` returns a
+human-readable error list for a malformed pack.
 
-1. **Start from a worked example** in `web/genre-packs/`:
-   - `sample-neon-drift.json` — JSON-only pack (reuses Sci-Fi's served art via
-     the optional `iconBase` field; the lightweight "reskin" case).
-   - `example-pirate-cove.zip` + its generator `build-example-pack.py` — a
-     self-contained `.zip` with **bundled** `icons/`+`audio/` (blob-URL path).
-     `build-example-pack.py` is the best template: it holds all genre data as
-     plain Python, shows the exact field shapes, and even generates placeholder
-     icons + a WAV. Copy it, rename the genre, swap the data.
-2. **Fill in the manifest** per the schema in `DESIGN.md` (§ "manifest.json
-   shape"): `id` (lowercase/digits/hyphens, must not collide with a built-in),
-   `label`, `description`, `portraitStyle`, `tts`, `music`, `slots`, `voice`,
-   `data.*`, optional `gameplay`, optional `staticCards`, optional `iconBase`.
-   The individual table entry shapes match the built-in `.js` data files.
-3. **Assets (optional):** a `.zip` may ship `icons/CATEGORY#slug.webp` (categories
-   come from `slots.*`, plus `_genre.webp` for the carousel cover) and
-   `audio/*.mp3` (filenames must match `manifest.music.tracks`). A JSON-only pack
-   with no assets shows the gear placeholder unless it sets `iconBase` to a
-   served folder to borrow from.
-4. **Validate + test:** import it via **Settings → Genre Packs** (or fetch +
-   `registerGenrePack()`), confirm it appears in the carousel + toolbar dropdown,
-   rolls a character, and — for a `.zip` — that icons/BGM resolve. `validatePack()`
-   returns a human-readable error list for a malformed pack.
+Useful specifics when helping with Path A:
+
+- The fastest start is a **reskin**: set `iconBase` to a built-in genre's icon
+  folder and ship no art at all (`sample-neon-drift.json` does this with Sci-Fi).
+- `example-pirate-cove.zip` + `build-example-pack.py` is the self-contained case
+  — the Python script holds all genre data as plain data, shows the field shapes,
+  and generates placeholder icons plus a WAV.
+- Verify by rolling ~30 characters, not one. Authoring bugs are usually boredom
+  bugs (thin name pools, repeated housing) that only appear in volume.
 
 That's it — no files under `web/generator/` change.
 
@@ -61,8 +55,7 @@ That's it — no files under `web/generator/` change.
 A built-in genre is a folder of pure-data `.js` modules under
 `web/generator/genres/<id>/`, wired into **four** registration sites. The engine,
 carousel, slot machine, portraits, TTS, and music are all data-driven, so there
-are **no** `index.html` per-genre edits and **no** inline-engine work (that's all
-gone — see the retired `sync-inline` note below).
+are **no** markup or UI-controller edits per genre — see the note at the end.
 
 Use an existing genre (e.g. `sci-fi`) as the structural reference throughout.
 
@@ -121,7 +114,7 @@ In `web/generator/manifests.js` add three things:
    `outputRules`.
 
 `GENRE_CAROUSEL_DATA`, portrait styles, TTS config, music maps, and the slot
-config all derive from these — no `index.html` edits.
+config all derive from these — no markup or controller edits.
 
 ### Step 4 — Register static cards in `ui-data.js`
 
@@ -192,19 +185,26 @@ Do not duplicate the core's logic — all wrappers share the same `run()` signat
   confirm the tables load, then `cli/run.sh --genre <id>` to confirm the prompt
   template works. The CLI shares `registry.js`, so it's a second independent
   check that Step 2 is correct.
-- Grep `index.html` for `genre === '<id>'` / `currentGenre === '<id>'` — there
-  should be **none**; a built-in genre needs zero index.html edits.
+- Grep `web/app.js` for `genre === '<id>'` / `currentGenre === '<id>'` — there
+  should be **none**. A built-in genre is entirely data-driven, so it needs no
+  per-genre branches in the UI controller (and none in `index.html`, which holds
+  no JavaScript at all).
 
 ---
 
-## Note: no inline-engine work for a new genre
+## Note: no per-genre engine or UI work
 
-`index.html` used to re-implement the entire generation engine inline; that
-engine was deleted in the Stage A refactor — `index.html` now imports
-`generator/engine.js` and the single `registry.js`. So **adding a genre requires
-zero engine or inline-generator edits**. Prompt building and response parsing are
-also shared now (`generator/prompt-builder.js`, imported by both `index.html` and
-`api-client.js`), so there's nothing per-genre to author there beyond the
-`voice.js` in Step 5. (The `/sync-inline` skill still exists, but now only covers
-the API-call layer that remains duplicated inline — `callClaude`/`callGemini`/
-`callOllama` vs `api-client.js` — which is unaffected by adding a genre.)
+Everything a genre touches is data-driven, so adding one requires **zero** engine,
+controller or markup edits:
+
+- The generation engine is one shared module (`generator/engine.js`) reading one
+  registry (`generator/registry.js`).
+- Prompt building, response parsing and output truncation are shared
+  (`generator/prompt-builder.js`), used by the browser and the CLI alike. The
+  only per-genre prompt work is the `voice.js` in Step 5.
+- `index.html` holds markup only — no JavaScript — and `web/app.js` is generic
+  over the manifests.
+
+The `/sync-api` skill audits the one layer that *is* still hand-duplicated (the
+HTTP calls in `web/api.js` vs `generator/api-client.js` vs the CLI's local
+Ollama copy). Adding a genre never touches it.

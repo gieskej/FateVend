@@ -27,6 +27,7 @@ one from a stranger cannot run JavaScript on your machine.
 9. [Five mistakes that fail silently](#9-five-mistakes-that-fail-silently)
 10. [The two shipped examples](#10-the-two-shipped-examples)
 11. [Testing your pack](#11-testing-your-pack)
+12. [Shipping a genre in the repo instead](#12-shipping-a-genre-in-the-repo-instead)
 
 ---
 
@@ -53,6 +54,11 @@ You inherit a known-good structure and only change words.
 
 **C. From scratch** — start from [the minimal pack below](#2-the-smallest-pack-that-works)
 and grow it. Most control, most work.
+
+Whichever you pick, author it as a **pack** first — it reloads without a
+restart and needs no source edits, so iteration is fast. If the genre should ship
+in the repo rather than be imported, convert it afterwards:
+[§12](#12-shipping-a-genre-in-the-repo-instead) covers that, and what it buys.
 
 ---
 
@@ -817,6 +823,55 @@ the system prompt isn't specific enough about what to avoid.
 load. If your pack vanishes, it didn't install.
 
 Packs are hot-swappable — edit the file, remove the pack, re-import. No restart.
+
+---
+
+## 12. Shipping a genre in the repo instead
+
+Everything above describes a **pack** — data-only, imported at runtime, no
+source edits. That's the recommended path and what most genres should be.
+
+A **built-in** genre lives in the repo as JavaScript modules under
+`web/generator/genres/<id>/`. It's more work and requires a pull request, but it
+buys two things a pack cannot have:
+
+- **`outputRules(sk)` — a real function.** Every built-in authors its own
+  "OUTPUT RULES" prompt body as code, so it can branch on the rolled character
+  (Sci-Fi suppresses body description for an industrial-chassis android, for
+  instance). A pack is pure data, so it supplies `openingNote` +
+  `appearanceNote` strings and the builder falls back to a generic body
+  (`GENERIC_OUTPUT_RULES` in `prompt-builder.js`). All seven built-ins use the
+  function form.
+- **CLI availability.** The CLI reads the compiled-in registry, so only
+  built-ins are reachable from it. Packs live in browser storage.
+
+The data tables are the *same shapes* documented above — the built-ins just
+write them as `.js` modules with header comments instead of JSON. So the fastest
+route is still to author and iterate as a pack, then convert once you're happy.
+
+### Wiring it in
+
+Create `web/generator/genres/<id>/` mirroring an existing genre's modules
+(`character-attributes.js`, `professions.js`, `life-events.js`,
+`family-structures.js`, `tensions.js`, `secrets.js`, `settings.js`, `names.js`,
+`plot-archetypes.js`, `static-cards.js`, `voice.js`, `icons/`), then register it
+at four sites:
+
+| File | What to add |
+|---|---|
+| `generator/registry.js` | Import the tables, add a `GENRE_TABLES['<id>']` entry. `SUPPORTED_GENRES` derives from its keys automatically. |
+| `generator/manifests.js` | `GENRE_MANIFESTS['<id>']`, `GENRE_VOICE['<id>']` (importing `SYSTEM_PROMPT` + `outputRules` from your `voice.js`), and the id in `CAROUSEL_ORDER` |
+| `generator/ui-data.js` | `STATIC_CARDS_BY_GENRE['<id>']` — AI Dungeon story cards |
+| `genres/<id>/icons/` | A `generate_icons.py` wrapper, matching the other genres' |
+
+Per `CLAUDE.md`, every data module needs a header comment documenting **every**
+property it uses — that rule is not optional for these files, because the
+properties are consumed generically several layers away and the header is the
+only place the shape is written down.
+
+The engine, carousel, slot machine, TTS and music are all data-driven, so a new
+genre needs **no `index.html` edits**. The Claude Code **`/add-genre`** skill
+walks the whole path step by step.
 
 ---
 
