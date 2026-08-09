@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-08-09
+
+### fix: wrap multi-word sheet labels on mobile
+**What changed:** In the Rolled Character Sheet at a 390px viewport, a label like "BACKGROUND TENSION" held its column open at its full single-line width — **210px of a 390px screen, leaving the value 67px**, roughly two words per line. `.skeleton-key` now takes a fixed `flex: 0 0 128px` basis inside the existing `max-width: 600px` block, with `.skeleton-row` set to `flex-wrap: nowrap`.
+**Impact:** Every value column is a consistent **150px instead of 67px** at the worst row, and "PLOT ARCHETYPE" / "BACKGROUND TENSION" wrap to two lines. Desktop is untouched.
+**Why not the obvious fixes:** `flex-shrink: 1` alone doesn't work — shrinkage is distributed in proportion to base size, and the value's base (its whole unwrapped paragraph) dwarfs the label's, so the value collapsed to its longest word while the label barely moved (210 → 196px). Without `nowrap` the row wraps the *value* onto its own line instead: more room, but it abandons the two-column alignment every other row keeps.
+**Test cases:** Measured every row in a real mobile context before and after. The 128px basis is the widest single *word* any label contains — measured at 126px for "BACKGROUND", plus slack — because a one-word label has nowhere to wrap and anything narrower spills out of its box; an earlier 100px attempt overflowed on PERSONALITY / PROFESSION / APPEARANCE / BACKGROUND. (A `min-content` probe suggested 82px would do; it silently failed to copy letter-spacing, so the rendered measurement was used instead.) Final state: all ten rows 128/150px, zero label overflow, zero horizontal page overflow. `npm test` green — data 8/8, e2e 64/64 including mobile 17/17.
+
 ## 2026-08-08
 
 ### docs+fix: document the utility scripts, and unhardcode the SD endpoint

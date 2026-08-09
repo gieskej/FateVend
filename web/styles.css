@@ -1991,6 +1991,27 @@ body::before {
   .phase-step span {
     display: none;
   }
+
+  /* Let a multi-word sheet label wrap onto a second line instead of holding
+     the column open at its full single-line width — on a 390px screen
+     "BACKGROUND TENSION" claimed 210px and squeezed its value into 67px.
+     A fixed basis, not flex-shrink: shrinkage is distributed in proportion to
+     base size, and the value's base (its full unwrapped text) dwarfs the
+     label's, so the value collapses to its longest word while the label barely
+     moves. Pinning the label to the column width it already declares makes it
+     wrap and hands every remaining pixel to the text.
+     nowrap is required too, or the value breaks onto its own line instead.
+     The basis is the widest single *word* any label contains — measured at
+     126px for "BACKGROUND", with a little slack. A one-word label has nowhere
+     to wrap, so anything narrower spills out of its box. These labels are
+     hardcoded in app.js rather than genre-supplied, so that maximum is fixed;
+     re-measure if one is ever renamed to something longer. */
+  .skeleton-row {
+    flex-wrap: nowrap;
+  }
+  .skeleton-key {
+    flex: 0 0 128px;
+  }
   /* .site-header::before/::after mobile hiding lives further down this file,
      next to the (later, overriding) rule that actually defines the icon. */
 }
