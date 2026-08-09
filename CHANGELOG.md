@@ -2,6 +2,21 @@
 
 ## 2026-08-08
 
+### feat: publish a public demo to GitHub Pages, and harden the page for it
+**What changed:** Hosting the app publicly changes its threat model — visitors would be pasting their own paid API keys into a page someone else runs — so the security work came first and the deployment second.
+
+**Where keys actually go (audited, unchanged).** Keys live in `localStorage` under `gof_*` and reach only the provider (`x-api-key` for Anthropic, `?key=` for Gemini). Enumerated every external host the app can contact: the four providers, two asset CDNs, the telemetry worker, and a set of `href`s in help text. Telemetry sends `{genre, textProvider, imageProvider, ttsProvider}` — provider *names*, never keys. So there is no cross-visitor leak: `localStorage` is per-origin and per-browser-profile, and the app has no server to pool anything in.
+
+**JSZip vendored instead of CDN-loaded.** `web/vendor/jszip.min.js` (v3.10.1, MIT/GPLv3, credited in CREDITS.md) replaces `cdn.jsdelivr.net`. A third-party script runs with full access to the page, including that `localStorage` — so on a public deployment a CDN compromise would be a key compromise. Same-origin removes the exposure entirely and works offline; the cost is manual updates, which is fine for a zip library. Confirmed the page now makes **zero** requests to jsdelivr, and the e2e suite still imports `example-pirate-cove.zip` (10/10), which exercises the loader end to end.
+
+**A key-privacy notice above the Settings key fields** (`.settings-key-privacy`) states plainly that keys stay in the browser, go only to the chosen provider, and that the app has no server — plus the two things a newcomer should know: spinning the reels needs no key at all, and Gemini has a free tier. Written for the hosted demo but shown everywhere, because "is my key safe here?" deserves an answer in the UI rather than in a README. Two remaining honest caveats are stated rather than hidden: a shared browser profile *will* show the previous person's key, and the notice tells them to clear it.
+
+**Deployment.** `.github/workflows/deploy-pages.yml` publishes `web/` as the site root via `upload-pages-artifact`. A workflow rather than the simpler deploy-from-branch setting because that can only publish the repo root or `/docs`, and the app lives in `web/`. Verified the app runs correctly from a project subpath (`/FateVend/`) — it rolled a full character with no errors, since nothing uses absolute `/`-rooted paths. Added `web/.nojekyll`: all seven carousel covers are `icons/_genre.webp`, and Jekyll excludes files beginning with `_`, which would have silently blanked the genre picker. The workflow also fails the build if `generator/config.js` or a `.env` ever appears in the checkout — both are gitignored today, so this turns an accidental force-add into a failed build instead of a public key leak. A `paths:` filter keeps doc-only pushes from re-uploading 249 MB.
+
+**Impact:** Anyone can try the generator from a link with no install, no sign-up and no API key — the reels, the full character sheet and all seven genres work unconfigured, which is the part that actually demonstrates the app. Local providers (Ollama, Stable Diffusion, Kokoro) and one-click AI Dungeon import remain localhost-only and are called out as such in the README, pointing at INSTALL.md.
+
+**Test cases:** `npm test` green — data 8/8, e2e 64/64, with the pack-import suite proving the vendored JSZip path. Verified separately: no jsdelivr request on load; the notice renders and is legible (screenshot-checked, and its link needed an explicit color since anchors are unstyled globally and it rendered browser-blue against the brass chrome); the workflow YAML parses and its key-guard logic is correct against this checkout; and the app loads and rolls from a simulated `/FateVend/` subpath. **Manual step remaining:** Pages must be enabled in repo Settings → Pages with source "GitHub Actions" before the first deploy.
+
 ### docs: contributor conventions, and a skills audit
 **What changed:** Three related cleanups after reviewing whether the Claude Code skills had survived the `app.js` refactor.
 

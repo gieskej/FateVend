@@ -36,10 +36,12 @@
     ></script>
     <!--
       JSZip is NOT loaded here. It is only needed for genre-pack import/export —
-      a rare, user-initiated action — but as a synchronous <script> on a
-      third-party CDN it blocked first paint on every single load, including the
-      overwhelming majority that never touch a zip. app.js now fetches it on
-      first use via ensureJSZip(); see the loader there.
+      a rare, user-initiated action — but as a synchronous <script> it blocked
+      first paint on every single load, including the overwhelming majority that
+      never touch a zip. app.js loads it on first use via ensureJSZip(), from
+      our own vendor/ folder rather than a CDN: this page holds the visitor's
+      API keys in localStorage, and a third-party script would run with full
+      access to them.
     -->
   </head>
   <body>
@@ -288,6 +290,31 @@
             <!-- TEXT GENERATION -->
             <div class="settings-tab-panel active" id="tab-text">
               <div class="settings-group-heading">Cloud Providers</div>
+              <!--
+                Shown on every deployment, but written for the hosted demo,
+                where visitors are being asked to paste a paid API key into a
+                page a stranger runs. Says plainly where the key goes, because
+                "is my key safe here?" is the reasonable first question and the
+                answer is genuinely good: there is no server to send it to.
+              -->
+              <p class="settings-hint settings-key-privacy">
+                Keys are stored <strong>only in this browser</strong> and sent
+                <strong>only to the provider you choose</strong>. This app has
+                no server of its own — nothing is uploaded, and no one else
+                using this page can see them. On a shared computer, clear them
+                when you're done.
+                <br />
+                New here?
+                <strong>Spinning the reels needs no key at all</strong>
+                — one is only required for AI-written prose, and
+                <a
+                  target="_blank"
+                  rel="noopener"
+                  href="https://aistudio.google.com/api-keys"
+                  >Google Gemini</a
+                >
+                has a free tier.
+              </p>
               <div class="settings-field">
                 <label for="api-key">Anthropic API Key</label>
                 <input

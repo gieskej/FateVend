@@ -6,6 +6,15 @@ the project's MIT license does not relicense them.
 
 - John Gieske, original concept, requirements, design, prompt-engineering, Claude wrangling
 
+## Bundled libraries
+
+- **[JSZip](https://stuk.github.io/jszip/) v3.10.1** — © 2009-2016 Stuart Knightley,
+  dual-licensed MIT / GPLv3. Vendored at `web/vendor/jszip.min.js` (includes
+  [pako](https://github.com/nodeca/pako), MIT). Used to read and write genre-pack
+  `.zip` files; loaded on demand, only when a pack is imported or a scenario
+  package downloaded. Served from our own origin rather than a CDN because the
+  page holds the visitor's API keys in `localStorage`, where any third-party
+  script would have full access to them.
 
 ## Audio
 - Sound Effect by <a href="https://pixabay.com/users/u_omspjqprot-44810303/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=222490">u_omspjqprot</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=222490">Pixabay</a>

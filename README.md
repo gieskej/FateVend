@@ -1,5 +1,20 @@
 # FateVend — RPG Character Generator
 
+### ▶ [Try it now — no install, no sign-up](https://gieskej.github.io/FateVend/)
+
+**Spinning the reels needs no API key at all.** Roll a complete character —
+stats, family, profession, secrets, a plot hook — straight in the browser. A key
+is only needed for the AI-written prose, and [Google
+Gemini](https://aistudio.google.com/api-keys) has a free tier. Keys you enter
+are stored only in your own browser and sent only to the provider you pick; the
+demo has no server.
+
+*Local providers (Ollama, Stable Diffusion, Kokoro) and one-click AI Dungeon
+import only work when you run it yourself — see [INSTALL.md](INSTALL.md), which
+takes about five minutes and needs nothing but Windows.*
+
+---
+
 A personality-first RPG character generator for AI Dungeon scenarios. Rolls stats, seeds a full character skeleton (protagonist + a supporting cast of NPCs) from curated tables, then calls an AI text provider (Claude, Gemini, or a local Ollama model) to generate terse behavioral prose — character entries, a scenario description, opening, plot components, text-to-image prompts, and tags — ready to export directly into AI Dungeon.
 
 Seven built-in genres:
@@ -126,10 +141,6 @@ There are a few ways to use the results:
 - ↑ Import to AI Dungeon
   - This option is only available on localhost because of its dependence on Playwright and Chromium.
   - Requires your AI Dungeon credentials
-
-The app must be served over HTTP (via `serve.sh` or any static server) — the ES
-modules won't load from a `file://` URL. Keys can still be entered manually in
-**Settings** instead of via `.env`.
 
 ## API keys
 

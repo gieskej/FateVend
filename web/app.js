@@ -1324,13 +1324,20 @@ const packDbDelete = (id) => packDbTx("readwrite", (s) => s.delete(id));
 
 // JSZip, fetched on first use rather than from a <script> in index.html's head.
 // It is only needed to read or write a genre-pack .zip, so loading it up front
-// put a third-party CDN in the render-blocking path of every page load — when
-// that CDN was slow or unreachable, nothing painted at all until it resolved.
+// put it in the render-blocking path of every page load — when the source was
+// slow or unreachable, nothing painted at all until it resolved.
+//
+// Served from our own origin rather than a CDN. On a public deployment this
+// page holds the visitor's API keys in localStorage, and any third-party script
+// runs with full access to them — so a CDN compromise would be a key
+// compromise. A same-origin copy removes that entirely (and works offline);
+// the cost is updating it by hand, which is fine for a zip library.
+// Vendored: JSZip v3.10.1, MIT/GPLv3 dual-licensed. See CREDITS.md.
 //
 // The promise is cached, so concurrent callers share one <script> insertion and
-// a later retry can still succeed after a failed attempt (a transient network
-// error shouldn't permanently disable zip support for the session).
-const JSZIP_URL = "https://cdn.jsdelivr.net/npm/jszip@3/dist/jszip.min.js";
+// a later retry can still succeed after a failed attempt (a transient error
+// shouldn't permanently disable zip support for the session).
+const JSZIP_URL = "vendor/jszip.min.js";
 let jsZipPromise = null;
 
 function ensureJSZip() {
@@ -1347,7 +1354,7 @@ function ensureJSZip() {
     script.onerror = () =>
       reject(
         new Error(
-          "Could not load JSZip — check your internet connection, then try again.",
+          "Could not load the zip library (vendor/jszip.min.js). Reload the page and try again.",
         ),
       );
     document.head.append(script);

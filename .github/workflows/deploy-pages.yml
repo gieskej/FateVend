@@ -1,0 +1,78 @@
+# Publishes the web app to GitHub Pages.
+#
+# FateVend is entirely static — every AI call goes browser-direct, and
+# generator/config.js is an optional convenience with an onerror fallback — so
+# the app needs nothing but a file server. See CREATING-A-GENRE.md / INSTALL.md.
+#
+# Why a workflow rather than the simpler "deploy from a branch" setting: that
+# setting can only publish the repo root or /docs, and the app lives in web/.
+# Uploading web/ as the artifact makes it the site root, so the app is served at
+# <user>.github.io/<repo>/ with every path resolving relative to it. Nothing in
+# the app uses absolute '/'-rooted paths, so the subpath needs no rewriting.
+#
+# Secrets: generator/config.js is gitignored and never committed, so the
+# checkout below cannot contain API keys. Do not add a step that writes it —
+# it exists to inject a developer's own .env locally, and on a public site it
+# would publish those keys to the world. Visitors enter their own key in
+# Settings, where it stays in their browser's localStorage.
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    # Skip the (large) upload for commits that can't change the site — most
+    # pushes here are docs. Remove this filter if that ever stops being true.
+    paths:
+      - "web/**"
+      - ".github/workflows/deploy-pages.yml"
+  workflow_dispatch: # manual "Run workflow" button
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never let two deploys race; queue instead of cancelling, so a queued deploy
+# can't be dropped and leave the site on an older commit.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Fail if API keys would be published
+        # Cheap insurance against someone committing config.js (which holds real
+        # keys locally) or a .env. Both are gitignored today; this makes an
+        # accidental force-add a failed build instead of a public key leak.
+        run: |
+          if [ -f web/generator/config.js ]; then
+            echo "::error::web/generator/config.js is present in the checkout."
+            echo "It contains API keys and must never be deployed. It should stay gitignored."
+            exit 1
+          fi
+          if compgen -G "web/**/.env" > /dev/null || [ -f .env ]; then
+            echo "::error::a .env file is present in the checkout and must not be deployed."
+            exit 1
+          fi
+          echo "No key-bearing files found."
+
+      - name: Upload web/ as the site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: web
+
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

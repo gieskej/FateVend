@@ -468,6 +468,36 @@ body::before {
   text-transform: none;
   letter-spacing: 0;
 }
+
+/* The "where does my key go" note above the key fields. Set apart from the
+   ordinary italic hints — a visitor deciding whether to trust the page with a
+   paid API key should not have to notice small print. */
+.settings-key-privacy {
+  font-style: normal;
+  margin: 0 0 1rem;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--brass-dark);
+  border-left: 3px solid var(--verdigris);
+  border-radius: var(--radius);
+  background: rgba(74, 124, 111, 0.08);
+  line-height: 1.5;
+}
+
+.settings-key-privacy strong {
+  color: var(--text-standard);
+  font-weight: 600;
+}
+
+/* Links are unstyled globally, so an anchor here renders default browser blue
+   against the brass chrome. */
+.settings-key-privacy a {
+  color: var(--text-highlight);
+  text-decoration: underline;
+}
+
+.settings-key-privacy a:hover {
+  color: var(--gold-light);
+}
 .settings-pack-name {
   color: var(--text-on-accent);
   font-size: var(--text-base);

@@ -146,7 +146,8 @@ Now spin the reels, then click **Generate Scenario**. It takes a minute or two.
 <details>
 <summary><b>Saving keys in a file instead of typing them</b></summary>
 
-If you restart often, put the keys in a file so you don't retype them.
+If you restart often, put the keys in a file so you don't retype them.  
+ONLY DO THIS ON YOUR PERSONAL COMPUTER, NOT A SHARED COMPUTER.
 
 In the **main FateVend folder** (the one with `Start-FateVend.cmd`), create a
 file named exactly `.env` — note the leading dot, and **no `.txt` on the end**.
