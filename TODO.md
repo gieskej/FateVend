@@ -56,6 +56,7 @@
 - Superheros - Distill every plot archetype without mentioning copyrighted characters.  Might be more trouble than its worth.
 
 ## New Features
+- Integrate with the new Voyage
 - Enable AID scripting and automatically inject the latest auto-cards (https://github.com/LewdLeah/Auto-Cards)
 - Update the skeleton with a new "metadata" section with name and version of the text and image provider, generation datetime, commit hash
 - Add a button that creates a promo video for the scenario using the character portraits, overture, name overlays, "Starring YOU as xxx".
