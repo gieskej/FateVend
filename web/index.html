@@ -685,10 +685,21 @@
                 Node.js, Playwright, and a local Chromium install.
               </p>
               <p>
-                It is <strong>not</strong> available on the hosted demo — a page
-                served over HTTPS can't reach a server on your own machine. Use
-                Copy &amp; Paste or Download Package there instead; both work
-                everywhere.
+                On the hosted demo the button stays hidden, and the import
+                server refuses requests from it. Browsers <em>do</em> let an
+                HTTPS page reach <code>localhost</code>, so this is enforced
+                deliberately rather than being a technical impossibility: the
+                importer can act on your AI Dungeon account, so only pages you
+                run yourself are trusted with it. Use Copy &amp; Paste or
+                Download Package on the demo — both work everywhere.
+              </p>
+              <p>
+                Need to allow another origin — a copy of the app you host
+                yourself, say? Start the server with it listed explicitly:
+                <code
+                  >AIDUNGEON_ALLOWED_ORIGINS="https://example.com" node
+                  tools/aidungeon-server.mjs</code
+                >. Only add origins you control.
               </p>
               <ol class="help-steps">
                 <li>
