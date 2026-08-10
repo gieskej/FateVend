@@ -256,7 +256,7 @@ because the first result is rarely the best:
 ```
 icons/
   2026-07-31_120754/
-    RACES#hill_folk#1.webp     ← pick your favourite…
+    RACES#hill_folk#1.webp     ← pick your favorite…
     RACES#hill_folk#2.webp
     RACES#hill_folk#3.webp
 ```

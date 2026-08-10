@@ -9,6 +9,28 @@ AI Dungeon export.
 Packs are **pure data**. There is no executable code in a pack, so importing
 one from a stranger cannot run JavaScript on your machine.
 
+> ### 💡 Feeling overwhelmed? Let an AI do the first draft
+>
+> This guide is long because it's a complete reference — but you don't have to
+> read it front to back to get something playable. **Claude Code can do most of
+> the heavy lifting.** Something as simple as *"Analyze this code and generate a
+> new genre for &lt;your idea&gt;"* gets you a working pack, and this repo ships an
+> **`/add-genre`** skill that walks it through both routes step by step.
+>
+> Art is the part people assume will block them, and it doesn't:
+>
+> - **Ship no icons at all.** Every reel just shows a ⚙ gear. Perfectly valid —
+>   do the writing first and add art later.
+> - **Borrow a built-in genre's art** with `iconBase`, if your categories and
+>   slugs match. Zero assets, finished-looking result.
+> - **Generate stand-ins.** `web/genre-packs/build-example-pack.py` makes themed
+>   color-block placeholders locally (`make_icon()` / `collect_icons()`) — no
+>   API key, no cost, no image model.
+>
+> **A rough first genre is realistically about half an hour.** Then use the rest
+> of this guide to sharpen the parts that matter — the writing in `voice`, the
+> name pools, and the tables that make rolls feel varied.
+
 > Already know the format and just want the field list? Jump to
 > [The complete field reference](#the-complete-field-reference).
 
@@ -761,7 +783,7 @@ variants of each icon, so a full pack is real money — check that two come out
 the way you want before committing to the rest.
 
 Variants land in a timestamped subfolder next to the target: pick your
-favourites, copy them up, and run `web/generator/squash.sh` to strip the
+favorites, copy them up, and run `web/generator/squash.sh` to strip the
 `#1`/`#2` suffixes. Made art in some other tool? `web/generator/resize.sh`
 converts it to the 256×256 `.webp` the app expects.
 

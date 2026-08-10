@@ -42,6 +42,7 @@
 - Housekeeping
   - Move Ollama into api-client.js, deleting the CLI's duplicate copy
   - Optionally: exclude non-served files from the Pages artifact so script-only commits don't trigger a 249 MB upload
+  - Desktop horizontal overflow, 80px at 1280px — pre-existing, confirmed by stashing and re-measuring. The e2e mobile suite asserts no horizontal overflow; nothing asserts it for desktop, which is why it went unseen. Adding that assertion would both catch it and stop it regressing.
 
 
 ## New Genre Ideas

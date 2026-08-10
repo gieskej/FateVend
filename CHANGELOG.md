@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-08-10
+
+### docs: tell first-time genre authors they can hand the first draft to an AI
+**What changed:** Added a tip near the top of `CREATING-A-GENRE.md`. The guide is deliberately a complete reference, which makes it long, which makes it look like a bigger commitment than it is — so the tip says up front that Claude Code can do the heavy lifting (and that this repo ships an `/add-genre` skill for exactly that), and lists the three ways to get past the art step, which is what people assume will block them: ship no icons and take the ⚙ gear placeholders, borrow a built-in genre's art via `iconBase`, or generate local color-block stand-ins. Verified that last one before writing it — `build-example-pack.py` really does have `make_icon()` / `collect_icons()` producing themed placeholders with the slug on them, locally, with no API key or image model involved.
+**Impact:** Sets a realistic expectation (a rough first genre in about half an hour) and points at the guide's detail as sharpening rather than prerequisite.
+**Test cases:** All 14 Contents anchors still resolve; the new heading lives inside a blockquote and collides with none of them. The guide's minimal pack still validates verbatim against `pack-loader.js`. Also normalized two en-GB spellings that had crept into the docs I wrote this session (`colour`, `favourite`) — the project dictionary is en-US, and `cspell` flagged the first.
+
 ## 2026-08-09
 
 ### security: restrict the AI Dungeon import server to trusted origins
