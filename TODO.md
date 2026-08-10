@@ -4,9 +4,9 @@
 - Need some sort of a post-skeleton or pre-generation consistency check, at least at dev-time.
 
 ## Bugs
-- The status bar shows phases as it rolls/generates.  On mobile, this phases overflow the width of the screen.  The phase display should auto scroll as needed.
 - Tag all MP3s
 - Update web/audio/prompts.md with the generation prompt and lyrics per track, and the ten new ones have no entries.
+- Prune some of the MP3 variants (200MB of music).  Some I really like (like manga's '80's funk), but some (like sci-fi's or joseon series are a bit too similar) need to get pruned.  Ideally, there should be style variation in genre's BGM to keep it interesting and broaden the appeal.
 - It is annoying to have to wait for all NPC portraits to finish before I am allowed to click Spin again.
 - Reel label consistency.  Some reels take "xxx - yyy" and parse the "yyy" out to a second line with italics.  Others just wrap long text (some have very long text).  I prefer the second line with italics with a reasonable text length for the UI width.
 
@@ -39,6 +39,10 @@
 ### Low Priority Bugs
 - Sometimes generate_icons hangs and you have to restart the whole shell to recover.
 - Think of a better project name.
+- Housekeeping
+  - Move Ollama into api-client.js, deleting the CLI's duplicate copy
+  - Optionally: exclude non-served files from the Pages artifact so script-only commits don't trigger a 249 MB upload
+
 
 ## New Genre Ideas
 - Waifu - Virtual girlfriend.  A little boring, but seems popular.  Could have some fun with unusual race/species twist.
@@ -71,3 +75,5 @@
 ## Rejected ideas
 - Auto-load web/genre-packs (N/A - Uploaded genre-packs are stored in the browser's index DB )
 - Modern's races.js has 14 entries with no em-dash in `flavor` (same truncation mechanism as the Manga-Osaka fix in Fixed Bugs below), but those are already short ethnicity labels (e.g. "Ashkenazi Jewish"), so there's no actual truncation problem — just inconsistent style vs. the rest of the file. Low priority; not a functional bug.
+- Gemini demo-key proxy (tabled)
+- Bounded icon preloading — shrink the 3.8 MB rather than defer it

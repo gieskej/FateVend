@@ -271,11 +271,27 @@ function setPhase(id) {
       if (i < activeIdx)
         return `<span style="color:var(--brass);opacity:0.7">✓ ${p.label}</span>`;
       if (i === activeIdx)
-        return `<span style="color:var(--gold)">⚙ ${p.label}</span>`;
+        return `<span data-phase-active style="color:var(--gold)">⚙ ${p.label}</span>`;
       return `<span style="opacity:0.3">${p.label}</span>`;
     })
     .join('<span style="opacity:0.2;margin:0 0.5em">·</span>');
   el.classList.add("visible");
+
+  // Keep the phase actually happening fully readable. The strip is one nowrap
+  // line that grows left to right, so on a narrow screen the active phase —
+  // which moves rightward as generation proceeds — is the first thing to get
+  // clipped. Scrolling the *completed* phases off the left keeps the useful end
+  // on screen. getBoundingClientRect rather than offsetLeft because the spans'
+  // offsetParent isn't necessarily this container. No-op on wide screens, where
+  // nothing overflows, so this needs no media query.
+  const active = el.querySelector("[data-phase-active]");
+  if (active) {
+    const overshoot =
+      active.getBoundingClientRect().right - el.getBoundingClientRect().right;
+    if (overshoot > 0) {
+      el.scrollTo({ left: el.scrollLeft + overshoot + 12, behavior: "smooth" });
+    }
+  }
 }
 
 function clearPhases() {
