@@ -52,7 +52,10 @@ Step-by-step version, assuming no prior knowledge: **[INSTALL.md](INSTALL.md)**.
 
 - A laptop, PC or server to serve the HTML/JS/images.  Should work on any OS.
   - Windows: nothing to install — `Start-FateVend.cmd` uses only what ships with Windows.
-  - macOS/Linux: Python 3 for `serve.sh` (already present on both).
+  - macOS: nothing to install if you already have Apple's Command Line Tools —
+    double-click `FateVend.app`, or `Start-FateVend.command`. If you don't,
+    `serve.sh` says so and prints the one command that installs them.
+  - Linux: Python 3 for `serve.sh` (already present).
 - An AI text provider — **optional**; rolling a character works without one, only the written prose needs it.
   - Ollama (local or on LAN)
     - https://ollama.com/
@@ -83,14 +86,24 @@ Step-by-step version, assuming no prior knowledge: **[INSTALL.md](INSTALL.md)**.
 > step by step, assuming nothing. **You do not need WSL, Git, GitHub CLI or
 > Python** — FateVend is a plain web page that talks to AI providers straight
 > from your browser. On Windows, download the ZIP and double-click
-> `Start-FateVend.cmd`.
+> `Start-FateVend.cmd`; on a Mac, double-click `FateVend.app`.
 
 **Windows** — no dependencies at all; everything needed ships with Windows:
 ```
 Download ZIP → Extract → double-click Start-FateVend.cmd
 ```
 
-**macOS / Linux** — needs Python 3, which both already have:
+**macOS** — double-click, same as Windows:
+```
+Download ZIP → Extract → double-click FateVend.app
+```
+The first launch is refused until you right-click → **Open**, because macOS
+quarantines anything unzipped from a download. Needs Python 3, which arrives
+with Apple's Command Line Tools rather than the base system — if they're
+missing, the app says so and prints the `xcode-select --install` command that
+fixes it.
+
+**Linux** — needs Python 3, which every distribution already has:
 ```bash
 git clone https://github.com/gieskej/FateVend.git
 cd FateVend/web
@@ -102,7 +115,7 @@ needs no API key and no internet — only the AI-written prose does, and you can
 add a free Gemini key later in **Settings**.
 
 ### Start server
-`serve.sh` (or `web/serve.ps1` on Windows) writes `generator/config.js` from your `.env`, serves `web/` on `:8080`, and (if Node is installed) starts the AI Dungeon import server on `:7432`.  Note that if there is already something running on port 8080, it will move to the next available port, so watch the console output for the actual port used.
+`serve.sh` (or `web/serve.ps1` on Windows) writes `generator/config.js` from your `.env`, serves `web/` on `:8080`, and (if Node is installed) starts the AI Dungeon import server on `:7432`.  It opens a browser when it's run from a terminal, which `--open` and `--no-browser` override — `deploy/fatevend.service` relies on the latter behavior, since a headless server has no browser to open.  Note that if there is already something running on port 8080, it will move to the next available port, so watch the console output for the actual port used.
 
 The two servers are interchangeable and mutually aware — either will shut down a
 stale instance of the other before starting.

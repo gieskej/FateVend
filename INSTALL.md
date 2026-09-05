@@ -1,14 +1,18 @@
 # Installing FateVend
 
-**You do not need WSL, Git, GitHub CLI, or Python.** FateVend is a plain web
-page — HTML, JavaScript and images. It talks to AI providers directly from your
+**You do not need WSL, Git, or GitHub CLI.** FateVend is a plain web page —
+HTML, JavaScript and images. It talks to AI providers directly from your
 browser, so there is no backend to install and nothing to compile.
+
+**Windows needs nothing at all.** A Mac needs Python 3, which comes with Apple's
+Command Line Tools rather than the base system; the launcher checks for it and
+prints the one command that installs it.
 
 Pick the section that matches what you want:
 
 | I want to… | What it takes | Section |
 |---|---|---|
-| Just try it | Nothing but Windows | [Level 1](#level-1--run-it-5-minutes) |
+| Just try it | Nothing but Windows or a Mac | [Level 1](#level-1--run-it-5-minutes) |
 | Use my own AI keys | A free API key | [Level 2](#level-2--add-an-ai-provider) |
 | One-click import into AI Dungeon | Node.js + a download | [Level 3](#level-3--one-click-ai-dungeon-import) |
 | Portraits and narration | Optional extras | [Level 4](#level-4--portraits-and-narration) |
@@ -27,26 +31,33 @@ working character generator.**
 2. Click the green **Code** button.
 3. Click **Download ZIP**.
 4. When it finishes, find `FateVend-main.zip` in your Downloads folder.
-5. **Right-click it → Extract All… → Extract.**
+5. Unpack it:
+   - **Windows:** right-click it → **Extract All…** → **Extract**.
+   - **macOS:** double-click it. Finder unpacks it beside the ZIP.
 
-> **Do not skip the extract step.** Windows lets you open a ZIP as if it were a
-> folder, but files inside are not really on disk yet and the app will not run.
-> After extracting you should have a normal folder named `FateVend-main`.
+> **Windows: do not skip the extract step.** Windows lets you open a ZIP as if
+> it were a folder, but files inside are not really on disk yet and the app will
+> not run. After extracting you should have a normal folder named
+> `FateVend-main`.
 
 You do **not** need Git for this. `git clone` does the same job, and if you
 already use Git you're welcome to — but it is not required.
 
 ### Step 2: Start it
 
-Open the extracted folder and **double-click `Start-FateVend.cmd`**.
+Open the extracted folder and double-click the launcher for your system:
 
-A black console window appears, and your browser opens automatically at
-`http://localhost:8080/`.
+- **Windows:** `Start-FateVend.cmd`
+- **macOS:** `FateVend.app` (or `Start-FateVend.command`, which is the same
+  thing without the icon)
 
-That's it. **Leave the black window open** — it is the app. Closing it stops
-the server, and the page stops working.
+A console window appears — black on Windows, a Terminal window on a Mac — and
+your browser opens automatically at `http://localhost:8080/`.
 
-To stop it later: click the black window and press **Ctrl+C**, or just close it.
+That's it. **Leave that window open** — it is the app. Closing it stops the
+server, and the page stops working.
+
+To stop it later: click the window and press **Ctrl+C**, or just close it.
 
 <details>
 <summary><b>"Windows protected your PC" blue popup</b></summary>
@@ -83,8 +94,8 @@ and changes no system setting.
 <details>
 <summary><b>Nothing opens, or the page says it can't connect</b></summary>
 
-Read the black window. If port 8080 was busy it will have moved to 8081, 8082,
-and so on, and prints the real address:
+Read the console window. If port 8080 was busy it will have moved to 8081,
+8082, and so on, and prints the real address:
 
 ```
 App is at http://localhost:8081/
@@ -94,15 +105,64 @@ Type that address into your browser.
 </details>
 
 <details>
-<summary><b>macOS or Linux</b></summary>
+<summary><b>macOS: "cannot be opened because it is from an unidentified developer"</b></summary>
 
-Use `serve.sh` instead — it does the same thing and needs Python 3, which both
-systems already have:
+macOS quarantines anything unpacked from a downloaded ZIP, and shows this for
+any app that isn't signed by a paying Apple developer.
+
+**Right-click `FateVend.app` → Open**, then click **Open** in the dialog. That
+button only appears on the right-click route, not on a plain double-click. You
+have to do it once; afterwards it opens normally.
+
+Newer macOS versions send you to **System Settings → Privacy & Security**
+instead, where an **Open Anyway** button waits near the bottom.
+
+If you'd rather read it first: the app is a short shell script. Right-click →
+**Show Package Contents** → `Contents/MacOS/FateVend`. All it does is open
+Terminal on `Start-FateVend.command`.
+</details>
+
+<details>
+<summary><b>macOS: it asks to install the "command line developer tools"</b></summary>
+
+The server is written in Python, and `/usr/bin/python3` on a Mac is only a
+placeholder until Apple's Command Line Tools are installed.
+
+Accept the prompt, or run this in Terminal:
+
+```bash
+xcode-select --install
+```
+
+It takes a couple of minutes, needs no Apple ID, and does not install the
+full Xcode. Then start FateVend again.
+
+Homebrew users can run `brew install python3` instead — that works just as well.
+</details>
+
+<details>
+<summary><b>macOS: the Terminal window closes the moment it opens</b></summary>
+
+Run it by hand so the error stays on screen:
+
+```bash
+cd FateVend-main
+bash web/serve.sh
+```
+</details>
+
+<details>
+<summary><b>Linux</b></summary>
+
+Use `serve.sh` — it does the same thing and needs Python 3, which every
+distribution already has:
 
 ```bash
 cd FateVend-main/web
 bash serve.sh
 ```
+
+To run it as a always-on service instead, see `deploy/install.sh`.
 </details>
 
 ### Step 3: Try it
@@ -149,7 +209,7 @@ Now spin the reels, then click **Generate Scenario**. It takes a minute or two.
 If you restart often, put the keys in a file so you don't retype them.  
 ONLY DO THIS ON YOUR PERSONAL COMPUTER, NOT A SHARED COMPUTER.
 
-In the **main FateVend folder** (the one with `Start-FateVend.cmd`), create a
+In the **main FateVend folder** (the one holding the launcher), create a
 file named exactly `.env` — note the leading dot, and **no `.txt` on the end**.
 Easiest way: copy the included `.env.example` and rename the copy to `.env`.
 
@@ -159,11 +219,16 @@ Put your key in it:
 GEMINI_API_KEY=your-key-here
 ```
 
-Restart `Start-FateVend.cmd`. The keys load automatically.
+Restart the launcher. The keys load automatically.
 
 > Windows hides file extensions by default, so a file you named `.env` may
 > really be `.env.txt`. In File Explorer: **View → Show → File name
 > extensions**, then check.
+>
+> Finder hides dotfiles rather than extensions: press **Cmd-Shift-.** in the
+> FateVend folder to see `.env` at all. It also refuses to save a name starting
+> with a dot from some editors — `cp .env.example .env` in Terminal sidesteps
+> that.
 
 Never commit `.env` or share it — it holds your keys. It is gitignored.
 </details>
@@ -195,16 +260,20 @@ because it drives a real browser.
 1. Go to <https://nodejs.org>
 2. Download the **LTS** version.
 3. Run the installer and accept the defaults.
-4. **Restart `Start-FateVend.cmd`** so it picks up Node.
+4. **Restart the launcher** so it picks up Node.
 
 ### Step 2: Install the browser automation
 
-Open **PowerShell in the FateVend folder** — in File Explorer, hold **Shift**,
-right-click empty space in the folder, choose **Open PowerShell window here**.
+Open a terminal in the FateVend folder:
+
+- **Windows:** in File Explorer, hold **Shift**, right-click empty space in the
+  folder, choose **Open PowerShell window here**.
+- **macOS:** right-click the folder in Finder and choose **Services → New
+  Terminal at Folder**, or run `cd` to it in Terminal.
 
 Run these two commands, one at a time:
 
-```powershell
+```bash
 npm install
 npx playwright install chromium
 ```
@@ -229,7 +298,7 @@ AIDUNGEON_PASSWORD=your-password
 
 ### Step 4: Use it
 
-Restart `Start-FateVend.cmd`. You should now see:
+Restart the launcher. You should now see:
 
 ```
 AI Dungeon import server started on http://localhost:7432
@@ -240,7 +309,7 @@ browser window opens and drives itself — let it work.
 
 > The button only appears when the import server is running, and only on
 > `localhost`. If you don't see it, Node isn't installed or the server didn't
-> start; check the black window.
+> start; check the console window.
 
 ---
 
@@ -278,7 +347,8 @@ Browser voice needs no setup at all — pick it from the narration dropdown.
 |---|---|---|
 | A web browser | **Yes** | Everything |
 | `Start-FateVend.cmd` | **Yes** (Windows) | Serving the page |
-| Python 3 | No (macOS/Linux only) | `serve.sh`, the non-Windows equivalent |
+| `FateVend.app` | **Yes** (macOS) | Serving the page |
+| Python 3 | **Yes** on macOS/Linux | `serve.sh`, the non-Windows equivalent |
 | An AI text key | Only for prose | Written scenarios |
 | Node.js | No | One-click AI Dungeon import |
 | Playwright + Chromium | No | One-click AI Dungeon import |
@@ -292,6 +362,6 @@ Open an issue at <https://github.com/gieskej/FateVend/issues> with:
 - what you clicked,
 - what you expected,
 - what happened instead,
-- anything printed in the black console window.
+- anything printed in the console window.
 
 The console output is the single most useful thing you can include.

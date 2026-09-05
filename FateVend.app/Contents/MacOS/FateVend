@@ -1,0 +1,26 @@
+#!/bin/bash
+# The executable inside FateVend.app — what Finder runs when the icon is
+# double-clicked or launched from the Dock.
+#
+# This is a launcher, not a second copy of the app: it opens Terminal on
+# Start-FateVend.command and exits. Handing the work to a visible terminal is
+# deliberate rather than lazy. The server prints the address it actually bound,
+# which is not always :8080 (it steps forward when the port is taken), and
+# Ctrl+C in that window is how the app gets stopped — both of which vanish if a
+# bundle runs the server silently with its output going to the system log.
+#
+# The bundle carries no copy of the game, so it has to find the checkout it
+# came from. $0 is <repo>/FateVend.app/Contents/MacOS/FateVend, putting the
+# repo three levels above the bundle.
+BUNDLE="$(cd "$(dirname "$0")/../../.." && pwd)"
+LAUNCHER="$BUNDLE/Start-FateVend.command"
+
+if [ ! -f "$LAUNCHER" ]; then
+  # Almost always means the bundle was dragged to /Applications on its own.
+  # An alert is the only channel a Finder-launched app has to say so — there is
+  # no terminal attached to print to.
+  osascript -e 'display alert "FateVend is not in its folder" message "FateVend.app has to stay inside the FateVend folder it came with, next to Start-FateVend.command — it holds no copy of the game itself.\n\nMove the whole folder wherever you like, or drag it back and launch it again. To keep FateVend in the Dock, drag this icon there rather than moving it." as critical' >/dev/null 2>&1
+  exit 1
+fi
+
+open -a Terminal "$LAUNCHER"

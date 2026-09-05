@@ -4,6 +4,57 @@
 # watch the "Serving HTTP on ..." line below for the actual port used).
 cd "$(dirname "$0")"
 
+# Opening a browser is the right default for a human who just double-clicked
+# something, and the wrong one for deploy/fatevend.service, which runs this
+# same script headless under systemd. A terminal on stdout is what separates
+# the two cases, so use that rather than asking the caller to remember a flag.
+OPEN_BROWSER=auto
+for arg in "$@"; do
+  case "$arg" in
+    --open) OPEN_BROWSER=yes ;;
+    --no-browser) OPEN_BROWSER=no ;;
+    *)
+      echo "Unknown option: $arg" >&2
+      echo "Usage: serve.sh [--open | --no-browser]" >&2
+      exit 2
+      ;;
+  esac
+done
+if [ "$OPEN_BROWSER" = auto ]; then
+  if [ -t 1 ]; then OPEN_BROWSER=yes; else OPEN_BROWSER=no; fi
+fi
+export FATEVEND_OPEN_BROWSER="$OPEN_BROWSER"
+
+# macOS ships /usr/bin/python3 as a placeholder that runs nothing until Apple's
+# Command Line Tools are installed — invoking it just raises a system install
+# dialog with no explanation of what wanted Python or why. Ask xcode-select
+# instead, which reports the tools' absence without triggering that dialog, so
+# a first run that can't work says so in a sentence the reader can act on.
+PYTHON="$(command -v python3 2>/dev/null || true)"
+if [ -n "$PYTHON" ] && [ "$(uname -s)" = Darwin ] && [ "$PYTHON" = /usr/bin/python3 ] &&
+  ! xcode-select -p >/dev/null 2>&1; then
+  PYTHON=""
+fi
+if [ -z "$PYTHON" ]; then
+  echo "FateVend's server needs Python 3, and no working one was found." >&2
+  echo >&2
+  if [ "$(uname -s)" = Darwin ]; then
+    echo "  On macOS, /usr/bin/python3 is only a placeholder until Apple's Command" >&2
+    echo "  Line Tools are installed. Installing them takes a couple of minutes and" >&2
+    echo "  needs no Apple ID and no full Xcode — run:" >&2
+    echo >&2
+    echo "      xcode-select --install" >&2
+    echo >&2
+    echo "  then start FateVend again. Homebrew users can run 'brew install python3'" >&2
+    echo "  instead, which works just as well." >&2
+  else
+    echo "  Install it with your package manager — on Debian or Ubuntu that is:" >&2
+    echo >&2
+    echo "      sudo apt install python3" >&2
+  fi
+  exit 1
+fi
+
 # Stop stale instances from a previous run before starting new ones — a
 # closed terminal or a killed shell doesn't always take its background
 # children with it, so a stale process can otherwise keep running (and
@@ -22,7 +73,7 @@ cd "$(dirname "$0")"
 # HTTP works identically no matter which shell launched the other process,
 # so there's no PID-namespace mismatch to worry about. See the Python and
 # aidungeon-server.mjs code below for the actual marker/shutdown routes.
-python3 - <<'PY'
+"$PYTHON" - <<'PY'
 import http.client, time
 
 def ping(port, path, ok):
@@ -70,7 +121,7 @@ PY
 # Write config.js from the root .env so the browser can read the API key
 # without the .env file itself ever being served. Also stamps the current git
 # commit so the Settings modal can show which version is actually running.
-python3 - <<'PY'
+"$PYTHON" - <<'PY'
 import os, re, json, pathlib, subprocess
 
 env_path = pathlib.Path('../.env')   # CWD is web/, set by the cd above
@@ -145,7 +196,7 @@ fi
 #             because the revalidation is mandatory rather than heuristic.
 # -u: unbuffered stdout, so the port/URL message (and journalctl -f) show up
 # immediately instead of sitting in a buffer that's lost if the process is killed.
-python3 -u - <<'PY'
+"$PYTHON" -u - <<'PY'
 import http.server, socket, os, platform, subprocess
 
 def describe_port_owner(port):
@@ -241,6 +292,13 @@ if PORT != 8080:
     else:
         print(f'Port 8080 is already in use — using {PORT} instead.')
 print(f'App is at http://localhost:{PORT}/')
+
+if os.environ.get('FATEVEND_OPEN_BROWSER') == 'yes':
+    import threading, webbrowser
+    # Fire shortly after test() below starts listening rather than now: a
+    # browser launched before the bind lands on a connection-refused error
+    # page and stays there, since nothing prompts it to retry.
+    threading.Timer(0.5, webbrowser.open, [f'http://localhost:{PORT}/']).start()
 
 http.server.test(HandlerClass=NoCacheHandler, ServerClass=QuietThreadingHTTPServer, port=PORT, bind=BIND)
 PY

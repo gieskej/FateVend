@@ -11,5 +11,9 @@ web/generator/config.js
 images.txt
 tools/regenerate-icons-gemini.py
 
+# Finder litter — it appears in any directory browsed on a Mac, and the repo
+# root is now one of them (FateVend.app ships there).
+.DS_Store
+
 # Cloudflare Worker local dev state (telemetry/)
 .wrangler
