@@ -47,10 +47,10 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Configure Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: Fail if API keys would be published
         # Cheap insurance against someone committing config.js (which holds real
@@ -69,10 +69,15 @@ jobs:
           echo "No key-bearing files found."
 
       - name: Upload web/ as the site
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: web
+          # web/.nojekyll must reach the artifact, and v4 of this action started
+          # excluding dotfiles by default. Without it Jekyll processes the site
+          # and drops every path beginning with an underscore — which is all
+          # seven genres' _genre.webp carousel icons.
+          include-hidden-files: true
 
       - name: Deploy
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
