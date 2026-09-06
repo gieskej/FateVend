@@ -36,6 +36,19 @@ The default lives in the button's `data-default`, not read back from the placeho
 
 **Test cases:** All four fill, persist, and (for the URL) flip Ollama from disabled to enabled in the toolbar. Two revisions came out of looking at it rather than reasoning about it: a text `USE DEFAULT` button was 125px and dominated the field, so it became a 2rem icon; and the first version wrapped to its own line at 390px, where it lost the row's stretch and rendered 22px tall — under the 24px WCAG 2.2 target minimum — so the height is now floored. Keyboard activation could not be confirmed through automation, which cannot activate *any* button via synthetic Enter or Space; a throwaway control button established that as a tool limitation rather than a defect, and the control is a native `<button>` with nothing in the page intercepting keys.
 
+### fix: give iOS a home-screen icon instead of a screenshot
+**What changed:** Added `web/apple-touch-icon.png` (180×180) and the `<link rel="apple-touch-icon">` that points at it. Noticed while tracing a 404 on the live site: the app ships a `site.webmanifest` with `display: standalone`, so it is meant to be added to a home screen, but had no icon for iOS to use — which falls back to a screenshot of the page.
+
+**The link tag is required, not decorative.** iOS probes for `/apple-touch-icon.png` at the **origin root**, and the app is served from a subpath on GitHub Pages (`/FateVend/`). Shipping the file alone would have changed nothing there; the tag is what makes it resolvable, and it is written relative so it works at both a subpath and a bare root.
+
+The PNG is deliberately opaque and full-bleed, unlike the transparent source art. iOS flattens any transparency onto black and applies its own rounded-corner mask, so the gear is composited onto the app's own ground (`#1a1208`) rather than whatever the platform would pick, and it is left square rather than pre-rounded.
+
+**Impact:** Cosmetic, and only on iOS home-screen installs. Nothing in the page references the icon at runtime.
+
+**Test cases:** Served locally and confirmed the link resolves to a real 200 — 25717 bytes, `image/png`, decoded through `createImageBitmap` as genuinely 180×180 rather than trusted from the filename. Relative resolution checked to be right for the subpath case. `npm test` green — data 8/8 including `icon-files`, e2e 64/64.
+
+**Not done:** `index.html` still has no `<link rel="icon">` or `<link rel="manifest">` at all. `favicon.ico` is only found today because browsers probe the origin root, which is not where this app lives — so the tab icon is likely missing on the hosted demo, and the manifest is never read. Same class of problem, left alone as out of scope here.
+
 ### docs: correct what Stable Diffusion actually needs, after testing the flags
 **What changed:** `INSTALL.md`'s Stable Diffusion section said to start it with `--api` and nothing more. That is right about `--api` — the `/sdapi/v1/*` routes FateVend calls are off by default — but silent about the cross-origin question, which is the part people lose time to. The section now explains what governs it, and the explanation is not the obvious one.
 
