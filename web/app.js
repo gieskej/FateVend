@@ -2272,7 +2272,15 @@ async function autoGenerateAllNpcPortraits(npcNames) {
 // so red is the honest answer.
 const URL_PROBES = {
   "ollama-url": { path: "/api/tags", label: "Ollama" },
-  "sd-url": { path: "/sdapi/v1/sd-models", label: "Stable Diffusion" },
+  // /options rather than /sd-models: it proves --api is on just as well, and it
+  // is the endpoint that names the checkpoint currently loaded. Which matters
+  // because FateVend never pins a model — it renders with whatever the server
+  // happens to have loaded, and its sampling parameters assume a distilled one.
+  "sd-url": {
+    path: "/sdapi/v1/options",
+    label: "Stable Diffusion",
+    describe: (d) => checkpointName(d.sd_model_checkpoint),
+  },
   "tts-kokoro-url": { path: "/v1/models", label: "Kokoro" },
 };
 const PROBE_TIMEOUT_MS = 4000;
@@ -2314,7 +2322,14 @@ async function probeUrlField(inputId) {
     // Ollama.app's own UI answers /api/tags with 200 and an HTML page, so a
     // successful status is not evidence this is the API. Parsing decides it.
     const data = await res.json();
-    setUrlStatus(inputId, "ok", `${cfg.label} responded at ${url}`);
+    const detail = cfg.describe?.(data);
+    setUrlStatus(
+      inputId,
+      "ok",
+      detail
+        ? `${cfg.label} responded at ${url} — ${detail}`
+        : `${cfg.label} responded at ${url}`,
+    );
     return data;
   } catch {
     // A superseded probe has already been replaced by a newer one; letting it
@@ -2378,6 +2393,26 @@ function showOllamaModelInput() {
   select.hidden = true;
   document.getElementById("ollama-model").hidden = false;
   if (resetBtn) resetBtn.hidden = false;
+}
+
+// Forge reports the checkpoint as a filename, sometimes with a hash suffix —
+// "flux1-dev-bnb-nf4-v2.safetensors [abc123]". Neither part helps identify it
+// at a glance, so show the bare name.
+function checkpointName(raw) {
+  if (!raw) return "";
+  return String(raw)
+    .replace(/\s*\[[0-9a-f]+\]\s*$/i, "")
+    .replace(/\.(safetensors|ckpt|gguf|sft)$/i, "");
+}
+
+async function refreshSdCheckpoint() {
+  const data = await probeUrlField("sd-url");
+  const el = document.getElementById("sd-model-status");
+  if (!el) return;
+  const name = data && checkpointName(data.sd_model_checkpoint);
+  // Named rather than merely counted: FateVend pins no model, so this is the
+  // only place the user can see what a portrait will actually be rendered with.
+  el.textContent = name ? `Loaded: ${name}` : "";
 }
 
 async function refreshOllamaModels() {
@@ -2527,8 +2562,11 @@ document.addEventListener("DOMContentLoaded", () => {
   Object.keys(URL_PROBES).forEach((id) => {
     // Ollama's probe also rebuilds the model picker, so it goes through
     // refreshOllamaModels rather than calling probeUrlField twice.
-    const run =
-      id === "ollama-url" ? refreshOllamaModels : () => probeUrlField(id);
+    const RUNNERS = {
+      "ollama-url": refreshOllamaModels,
+      "sd-url": refreshSdCheckpoint,
+    };
+    const run = RUNNERS[id] ?? (() => probeUrlField(id));
     document.getElementById(id).addEventListener("input", () => {
       clearTimeout(probeTimers[id]);
       probeTimers[id] = setTimeout(run, 500);

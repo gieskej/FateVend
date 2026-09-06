@@ -36,6 +36,21 @@ The default lives in the button's `data-default`, not read back from the placeho
 
 **Test cases:** All four fill, persist, and (for the URL) flip Ollama from disabled to enabled in the toolbar. Two revisions came out of looking at it rather than reasoning about it: a text `USE DEFAULT` button was 125px and dominated the field, so it became a 2rem icon; and the first version wrapped to its own line at 390px, where it lost the row's stretch and rendered 22px tall — under the 24px WCAG 2.2 target minimum — so the height is now floored. Keyboard activation could not be confirmed through automation, which cannot activate *any* button via synthetic Enter or Space; a throwaway control button established that as a tool limitation rather than a defect, and the control is a native `<button>` with nothing in the page intercepting keys.
 
+### feat: name the loaded checkpoint on the Stable Diffusion lamp
+**What changed:** The Stable Diffusion lamp now reports which checkpoint the server actually has loaded — `Loaded: flux-2-klein-4b` beneath the field, and in the lamp's tooltip and accessible name. Its probe moved from `/sdapi/v1/sd-models` to `/sdapi/v1/options`, which proves `--api` is on just as well while also naming the loaded model, so this costs no extra request.
+
+**Why this is worth surfacing at all:** FateVend **never pins a model**. Neither `txt2img` call site sends `override_settings` or `sd_model_checkpoint` — the payload is prompt, negative prompt, steps, dimensions and four sampling parameters — so a portrait renders with whatever the server happens to have loaded, which can change out from under the app whenever someone touches the Forge UI.
+
+That would be unremarkable except the sampling parameters quietly assume a **distilled** model: `cfg_scale: 1` with `distilled_cfg_scale: 6`, where Forge's own default `cfg_scale` is `7.0`. The two behave very differently against a non-Flux checkpoint. `distilled_cfg_scale` is guarded — `processing.py` only applies it `if p.sd_model.use_distilled_cfg_scale` — but `cfg_scale: 1` is not guarded at all, so an SD1.5 or SDXL checkpoint yields washed-out, prompt-ignoring images with no error and nothing in the UI to suggest why. Naming the checkpoint does not fix that, but it puts the one fact needed to diagnose it in front of the user.
+
+`checkpointName()` strips the extension and any `[hash]` suffix, since neither helps identify a model at a glance.
+
+**Impact:** No change to what is generated. The lamp answers "what will this actually render with", which previously could only be discovered by opening Forge's own UI.
+
+**Test cases:** Exercised against **two servers with different checkpoints**, which is the case that would catch a value being cached or read from the wrong place: pointing at the local Forge Neo reports `flux-2-klein-4b`, and repointing the same field at a Forge on the LAN reports `flux1-dev-bnb-nf4-v2`. All four states verified in one pass — reachable, unreachable (line cleared, lamp red), emptied (line cleared, lamp idle), and restored. 390px viewport: 0 horizontal overflow.
+
+**One thing that had to move with it:** the e2e harness exempts these probes by path, and the list still named `/sdapi/v1/sd-models`. Left alone, a contributor without Stable Diffusion running would have started failing the suite. Verified by pointing all three providers at a dead port and re-running: 64/64, matching 64/64 with them reachable.
+
 ### fix: declare the favicon and manifest, and make the manifest correct
 **What changed:** `index.html` declared no icons and no manifest at all. A browser only auto-probes `/favicon.ico` at the **origin root**, and this app is served from `/FateVend/` on GitHub Pages, so the tab icon was silently missing on the hosted demo and `site.webmanifest` was never read despite existing. Added relative `<link rel="icon">` (ico plus the 32px and 16px PNGs) and `<link rel="manifest">`, so they resolve under a subpath and a bare root alike.
 

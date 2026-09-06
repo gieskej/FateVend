@@ -74,7 +74,7 @@ export const MOBILE_CONTEXT = {
 // a red lamp is a correct outcome there, not a regression.
 const OPTIONAL_PROBE_PATHS = [
   "/api/tags", // Ollama
-  "/sdapi/v1/sd-models", // Stable Diffusion
+  "/sdapi/v1/options", // Stable Diffusion
   "/v1/models", // Kokoro
 ];
 function isOptionalProbe(url) {
