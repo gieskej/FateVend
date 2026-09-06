@@ -4,6 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vend of Fate — RPG Character Generator</title>
+    <!--
+      Needed as an explicit link, not just a file: iOS only probes for
+      /apple-touch-icon.png at the ORIGIN root, and the app is served from a
+      subpath on GitHub Pages (/FateVend/). Without this tag, adding the page
+      to a home screen falls back to a screenshot of the page.
+
+      The PNG is deliberately opaque and full-bleed — iOS flattens any
+      transparency onto black and applies its own rounded-corner mask, so the
+      gear is composited onto the app's own ground rather than the platform's.
+      Regenerate from web/android-chrome-512x512.png at 180x180.
+    -->
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!--
