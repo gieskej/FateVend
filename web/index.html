@@ -16,6 +16,17 @@
       Regenerate from web/android-chrome-512x512.png at 180x180.
     -->
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <!--
+      Same subpath problem as the touch icon: a browser only auto-probes
+      /favicon.ico at the origin root, which is not where this app lives on
+      GitHub Pages, so the tab icon was silently missing on the hosted demo.
+      These paths are relative so they resolve under /FateVend/ and under a
+      bare root alike.
+    -->
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="manifest" href="site.webmanifest" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!--

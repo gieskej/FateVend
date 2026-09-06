@@ -36,6 +36,23 @@ The default lives in the button's `data-default`, not read back from the placeho
 
 **Test cases:** All four fill, persist, and (for the URL) flip Ollama from disabled to enabled in the toolbar. Two revisions came out of looking at it rather than reasoning about it: a text `USE DEFAULT` button was 125px and dominated the field, so it became a 2rem icon; and the first version wrapped to its own line at 390px, where it lost the row's stretch and rendered 22px tall — under the 24px WCAG 2.2 target minimum — so the height is now floored. Keyboard activation could not be confirmed through automation, which cannot activate *any* button via synthetic Enter or Space; a throwaway control button established that as a tool limitation rather than a defect, and the control is a native `<button>` with nothing in the page intercepting keys.
 
+### fix: declare the favicon and manifest, and make the manifest correct
+**What changed:** `index.html` declared no icons and no manifest at all. A browser only auto-probes `/favicon.ico` at the **origin root**, and this app is served from `/FateVend/` on GitHub Pages, so the tab icon was silently missing on the hosted demo and `site.webmanifest` was never read despite existing. Added relative `<link rel="icon">` (ico plus the 32px and 16px PNGs) and `<link rel="manifest">`, so they resolve under a subpath and a bare root alike.
+
+**Wiring up the manifest exposed three faults in it**, all harmless only for as long as nothing loaded it:
+
+- Its icon `src` values were absolute (`/android-chrome-192x192.png`). Under `/FateVend/` those resolve to the origin root, so simply adding the link would have introduced two **new** 404s. They are now relative, and resolve against the manifest's own URL.
+- `name` and `short_name` were empty strings, so an installed copy would have had no name.
+- `theme_color` and `background_color` were `#ffffff` on an app whose ground is `#1a1208` — a white flash on launch. Both now match the app.
+
+Also added `start_url` and `scope` of `"."`, so an install launches the app rather than the origin root.
+
+**Impact:** The tab icon should now appear on the hosted demo, where it previously did not. Everything else is install-time cosmetics. No runtime behavior changes.
+
+**Test cases:** Every newly-referenced resource fetched from a served page and confirmed 200 with the right content type — `favicon.ico` (`image/x-icon`), both favicon PNGs, `apple-touch-icon.png`, and `site.webmanifest` (`application/manifest+json`). The manifest was then parsed in the browser and each of its icon `src` values resolved **against the manifest URL** and fetched, which is the check that would have caught the absolute-path bug: both 200. No console errors. `npm test` green — data 8/8, e2e 64/64.
+
+**Still unverified until deployed:** relative resolution under a real subpath. Locally the app is served at the root, so `/FateVend/` behavior is reasoning rather than measurement, and is worth re-checking on the live site after this ships.
+
 ### fix: give iOS a home-screen icon instead of a screenshot
 **What changed:** Added `web/apple-touch-icon.png` (180×180) and the `<link rel="apple-touch-icon">` that points at it. Noticed while tracing a 404 on the live site: the app ships a `site.webmanifest` with `display: standalone`, so it is meant to be added to a home screen, but had no icon for iOS to use — which falls back to a screenshot of the page.
 
@@ -47,7 +64,7 @@ The PNG is deliberately opaque and full-bleed, unlike the transparent source art
 
 **Test cases:** Served locally and confirmed the link resolves to a real 200 — 25717 bytes, `image/png`, decoded through `createImageBitmap` as genuinely 180×180 rather than trusted from the filename. Relative resolution checked to be right for the subpath case. `npm test` green — data 8/8 including `icon-files`, e2e 64/64.
 
-**Not done:** `index.html` still has no `<link rel="icon">` or `<link rel="manifest">` at all. `favicon.ico` is only found today because browsers probe the origin root, which is not where this app lives — so the tab icon is likely missing on the hosted demo, and the manifest is never read. Same class of problem, left alone as out of scope here.
+**Follow-up, now done:** `index.html` had no `<link rel="icon">` or `<link rel="manifest">` either, the same root cause. See the entry below.
 
 ### docs: correct what Stable Diffusion actually needs, after testing the flags
 **What changed:** `INSTALL.md`'s Stable Diffusion section said to start it with `--api` and nothing more. That is right about `--api` — the `/sdapi/v1/*` routes FateVend calls are off by default — but silent about the cross-origin question, which is the part people lose time to. The section now explains what governs it, and the explanation is not the obvious one.
