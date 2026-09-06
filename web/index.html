@@ -339,26 +339,64 @@
               </div>
               <div class="settings-group-heading">LAN Providers</div>
               <div class="settings-field">
-                <label for="ollama-url">Ollama URL</label>
-                <input
-                  id="ollama-url"
-                  class="api-input"
-                  type="text"
-                  placeholder="http://localhost:11434"
-                  autocomplete="off"
-                  spellcheck="false"
-                />
+                <label for="ollama-url"
+                  >Ollama URL
+                  <span
+                    class="url-status"
+                    id="url-status-ollama-url"
+                    data-state="idle"
+                    role="img"
+                    aria-label="Not checked yet"
+                  ></span
+                ></label>
+                <div class="settings-input-row">
+                  <input
+                    id="ollama-url"
+                    class="api-input"
+                    type="text"
+                    placeholder="http://localhost:11434"
+                    autocomplete="off"
+                    spellcheck="false"
+                  />
+                  <button
+                    type="button"
+                    class="btn-use-default"
+                    data-target="ollama-url"
+                    data-default="http://localhost:11434"
+                    aria-label="Use default value"
+                  >
+                    ↺
+                  </button>
+                </div>
               </div>
               <div class="settings-field">
                 <label for="ollama-model">Ollama Model</label>
-                <input
-                  id="ollama-model"
-                  class="api-input"
-                  type="text"
-                  placeholder="llama3.2"
-                  autocomplete="off"
-                  spellcheck="false"
-                />
+                <div class="settings-input-row">
+                  <input
+                    id="ollama-model"
+                    class="api-input"
+                    type="text"
+                    placeholder="llama3.2"
+                    autocomplete="off"
+                    spellcheck="false"
+                  />
+                  <select
+                    id="ollama-model-select"
+                    class="api-input"
+                    aria-label="Ollama model"
+                    hidden
+                  ></select>
+                  <button
+                    type="button"
+                    class="btn-use-default"
+                    data-target="ollama-model"
+                    data-default="llama3.2"
+                    aria-label="Use default value"
+                  >
+                    ↺
+                  </button>
+                </div>
+                <div class="settings-hint" id="ollama-model-status"></div>
               </div>
             </div>
 
@@ -378,15 +416,35 @@
               </div>
               <div class="settings-group-heading">LAN Providers</div>
               <div class="settings-field">
-                <label for="sd-url">Stable Diffusion URL</label>
-                <input
-                  id="sd-url"
-                  class="api-input"
-                  type="text"
-                  placeholder="http://localhost:7860"
-                  autocomplete="off"
-                  spellcheck="false"
-                />
+                <label for="sd-url"
+                  >Stable Diffusion URL
+                  <span
+                    class="url-status"
+                    id="url-status-sd-url"
+                    data-state="idle"
+                    role="img"
+                    aria-label="Not checked yet"
+                  ></span
+                ></label>
+                <div class="settings-input-row">
+                  <input
+                    id="sd-url"
+                    class="api-input"
+                    type="text"
+                    placeholder="http://localhost:7860"
+                    autocomplete="off"
+                    spellcheck="false"
+                  />
+                  <button
+                    type="button"
+                    class="btn-use-default"
+                    data-target="sd-url"
+                    data-default="http://localhost:7860"
+                    aria-label="Use default value"
+                  >
+                    ↺
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -407,15 +465,35 @@
               </div>
               <div class="settings-group-heading">LAN Providers</div>
               <div class="settings-field">
-                <label for="tts-kokoro-url">Kokoro URL</label>
-                <input
-                  id="tts-kokoro-url"
-                  class="api-input"
-                  type="text"
-                  placeholder="http://192.168.x.x:8880"
-                  autocomplete="off"
-                  spellcheck="false"
-                />
+                <label for="tts-kokoro-url"
+                  >Kokoro URL
+                  <span
+                    class="url-status"
+                    id="url-status-tts-kokoro-url"
+                    data-state="idle"
+                    role="img"
+                    aria-label="Not checked yet"
+                  ></span
+                ></label>
+                <div class="settings-input-row">
+                  <input
+                    id="tts-kokoro-url"
+                    class="api-input"
+                    type="text"
+                    placeholder="http://localhost:8880"
+                    autocomplete="off"
+                    spellcheck="false"
+                  />
+                  <button
+                    type="button"
+                    class="btn-use-default"
+                    data-target="tts-kokoro-url"
+                    data-default="http://localhost:8880"
+                    aria-label="Use default value"
+                  >
+                    ↺
+                  </button>
+                </div>
                 <div class="settings-hint" style="margin-top: 0.25rem">
                   Uses the OpenAI-compatible
                   <code>/v1/audio/speech</code> endpoint. Default port 8880.

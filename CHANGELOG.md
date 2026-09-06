@@ -1,5 +1,71 @@
 # Changelog
 
+## 2026-09-05
+
+### feat: pick the Ollama model from a list, and show whether each provider URL answers
+**What changed:** Two related additions to Settings, both aimed at the same failure: a provider that is misconfigured in a way nothing tells you about until a generation fails minutes later.
+
+**The model field is now a pick list.** Entering an Ollama URL probes `/api/tags` and rebuilds the Model field as a `<select>` of what that server actually has installed. The text input remains the canonical value — everything else (`callOllama`, `localStorage` persistence, seeding from `config.js`) reads `#ollama-model.value`, so the select is a control that writes into that input rather than a replacement for it, and the generation path needed no changes at all.
+
+It degrades to the plain input rather than trapping anyone. A hard select would be a dead end whenever the server is unreachable — a LAN box that is off, a typo, a blocked origin — leaving no way to type a name and no way to reach an already-saved one. Two edge cases are deliberate: a saved model the server no longer reports is kept and listed as `name (not installed)` rather than silently discarded, and an empty field gets a disabled `— choose a model —` placeholder, so typing a URL never auto-adopts whichever model happens to sort first.
+
+**Each URL field gained a reachability lamp** next to its label — Ollama, Stable Diffusion, Kokoro. Each is checked with a cheap GET against the same server the app would really use (`/api/tags`, `/sdapi/v1/sd-models`, `/v1/models`), which makes green mean *this page can talk to it* rather than *something is listening*. That distinction is the whole point: if a server is up but refuses this origin, the app's real calls would fail too, so red is the honest answer and the tooltip says all three possibilities — down, wrong URL, or refusing this page. Probes are debounced 500ms (the field fires per keystroke, and a half-typed host is a request that can only fail) and supersede each other, so a slow unreachable host cannot let a stale verdict land last.
+
+The colors are `--verdigris` and `--rust`, which DESIGN.md already sanctions by name as its two status colors. The glyph inside each lamp (✓ ✕ ·) is not decoration: red-versus-green is precisely the distinction a large share of colorblind readers cannot make, so the state has to survive the color being lost.
+
+**A bug this surfaced, found by testing rather than review:** clearing the URL field left the lamp showing a stale green tick claiming the old server had responded, because `refreshOllamaModels()` returned early on an empty value before reaching the code that resets the lamp. The probe now runs first and owns the reset.
+
+**Impact:** No gameplay change. The specific confusion this removes is real and recent: Ollama's desktop app serves its own UI on a high ephemeral port and answers `/api/tags` with **HTTP 200 and an HTML page**, so a wrong port cannot be diagnosed by status code — only by parsing. Pointed at that port the lamp now goes red immediately and says so, instead of the misconfiguration surfacing later as a JSON parse error during generation.
+
+**Test cases:** All three lamps checked against ground truth established with `curl` first, and they matched: Ollama up (green), Stable Diffusion and Kokoro down (red). Then the reverse, after starting Forge and Kokoro locally — all three green. The state machine was observed with a `MutationObserver` across a real edit: `checking → fail → checking → ok`. The picker was exercised for choosing (writes through to the input and `localStorage`), for a saved-but-uninstalled model (preserved and labelled), and for an empty field (placeholder, no auto-pick). At a 390px viewport horizontal page overflow stays 0.
+
+**The e2e harness needed a fix, and the first attempt at it was wrong.** These probes are optional and environment-dependent, so a contributor without Ollama running would otherwise fail the suite. Exempting them from the `requestfailed` listener was not enough: running with the providers pointed at a dead port gave **58/64**, because Chromium reports a refused fetch *twice* — once through `requestfailed`, and once as a console error whose text carries no URL at all. The exemption is now a shared `isOptionalProbe()` applied to both listeners, matching on the console message's own `location()`. Re-run with every provider unreachable: 64/64. With all three reachable: 64/64.
+
+**Follow-up:** this initially looked like an `INSTALL.md` gap — that `--api` was necessary but not sufficient, and a browser-served page also needed `--cors-allow-origins`. Testing the flag rather than assuming it disproved that; see the CORS entry below for what actually governs this.
+
+### feat: a restore-default control on the LAN provider fields
+**What changed:** `Ollama URL`, `Ollama Model`, `Stable Diffusion URL` and `Kokoro URL` each state a default in their placeholder, and there was no way to accept it — the value had to be typed out by hand. Each now carries a small `↺` button that fills it in.
+
+**On the obvious idea, which does not work:** there is no convention by which Enter accepts placeholder text. Enter in a text input means submit; a placeholder is a hint rather than a value, and both MDN and WCAG discourage relying on one to carry information, since it disappears the moment you type. The genuine "accept the suggestion" convention is ghost-text inline completion taken with Tab or →, as in fish, zsh-autosuggestions and browser URL bars — but Tab is already focus navigation inside a form, so binding it would be an accessibility regression. An explicit control avoids all of that and needs no keyboard knowledge to discover.
+
+The default lives in the button's `data-default`, not read back from the placeholder, because Kokoro's placeholder was the template `http://192.168.x.x:8880` — an illustration of a shape, not a value anyone could use. That placeholder is now `http://localhost:8880` so the hint and the button agree, and the tooltip is generated from `data-default` so what a reader is promised cannot drift from what is filled in.
+
+**The load-bearing detail** is that the click dispatches an `input` event. Setting `.value` directly fires nothing, so the existing `KEY_FIELDS` listener would never run: the URL would sit visibly in the box while `localStorage` stayed empty and Ollama stayed disabled in the provider dropdown — indistinguishable from the field being ignored.
+
+**Impact:** Configuration is one click instead of a remembered string, and the wrong-by-default Kokoro hint is gone. No gameplay change.
+
+**Test cases:** All four fill, persist, and (for the URL) flip Ollama from disabled to enabled in the toolbar. Two revisions came out of looking at it rather than reasoning about it: a text `USE DEFAULT` button was 125px and dominated the field, so it became a 2rem icon; and the first version wrapped to its own line at 390px, where it lost the row's stretch and rendered 22px tall — under the 24px WCAG 2.2 target minimum — so the height is now floored. Keyboard activation could not be confirmed through automation, which cannot activate *any* button via synthetic Enter or Space; a throwaway control button established that as a tool limitation rather than a defect, and the control is a native `<button>` with nothing in the page intercepting keys.
+
+### docs: correct what Stable Diffusion actually needs, after testing the flags
+**What changed:** `INSTALL.md`'s Stable Diffusion section said to start it with `--api` and nothing more. That is right about `--api` — the `/sdapi/v1/*` routes FateVend calls are off by default — but silent about the cross-origin question, which is the part people lose time to. The section now explains what governs it, and the explanation is not the obvious one.
+
+**`--cors-allow-origins` and `--cors-allow-origins-regex` do nothing.** Both are parsed and then ignored. This was not inferred from reading code: the flag was passed with a literal origin, `sys.argv` was confirmed to contain it, and that exact origin was still refused. The middleware is installed and answering — the preflight comes back 200 with `allow-methods`, `max-age` and `allow-credentials` — it simply never emits `allow-origin`.
+
+What decides it is Gradio's own `CustomCORSMiddleware`, and it keys on **the address you reached the server at**, not on any setting:
+
+```
+host_name not in localhost_aliases or origin_name in localhost_aliases
+```
+
+Reach Stable Diffusion on a localhost Host and only localhost pages may call it. Reach it on a LAN address and *every* origin may, flag or no flag. So the counterintuitive result is that **a GPU box on another machine is the easier case, not the harder one** — which is why pointing FateVend at a remote server has always just worked with no CORS configuration, while the same-machine setup is the one with a restriction.
+
+**Impact:** The documented failure mode is now the real one. Anyone whose local Stable Diffusion is unreachable should look at `--api`, not at CORS. Also documents the one case no flag can fix: the **hosted demo cannot reach a LAN Stable Diffusion box**, because the demo is HTTPS and browsers block plain-`http://` requests from an HTTPS page. `http://localhost` is exempt as a potentially-trustworthy origin; `http://192.168.1.50` is not. Serving FateVend over `http://` yourself — what `serve.sh` does — avoids it entirely.
+
+**Test cases:** Verified against **two different codebases**, since assuming one explains the other would have been the easy mistake — `stable-diffusion-webui-forge` (classic) on a LAN box, and Forge Neo locally. The rule was isolated by spoofing the `Host` header so the same server could be asked both ways: classic Forge allowed `https://evil.example.com` under `Host: bonobo.local` and refused it under `Host: localhost`; Forge Neo refused a LAN origin under `Host: 127.0.0.1` and allowed it under `Host: 192.168.1.19`. Identical rule in both, so it belongs to Gradio rather than to either Forge generation, and a LAN-reachable instance accepting any origin is its default rather than a local misconfiguration.
+
+**A methodology note worth keeping:** an earlier round of this investigation concluded the opposite, because a CORS flag *appeared* to work — a localhost origin was allowed after passing it. That was the Gradio localhost rule all along; the flag had never reached the process, because `webui.sh` sources `webui.settings.sh`, which hard-sets `COMMANDLINE_ARGS` and discards anything exported from outside. A passing observation that is consistent with the hypothesis is not evidence for it when a second mechanism produces the same result.
+
+### ci: bump the Pages actions off the deprecated Node 20 runtime
+**What changed:** The deploy warned that `actions/checkout@v4`, `configure-pages@v5`, `deploy-pages@v4` and `upload-artifact@v4` target Node 20 and were being forced onto Node 24. All four moved to majors that declare `node24` natively — checkout v7, configure-pages v6, upload-pages-artifact v5, deploy-pages v5. The `upload-artifact` in the warning is transitive; `upload-pages-artifact` pulls it in and v5 pins v7.0.0 by SHA.
+
+**One of them was not a drop-in.** `upload-pages-artifact` v4 began excluding dotfiles from the artifact tarball — its v5 source tars with `--exclude=.[^/]*` unless `include-hidden-files` is set, and that input defaults to `"false"`. `web/.nojekyll` is load-bearing here: seven genres ship their carousel icon as `_genre.webp`, and an underscore prefix is exactly what Jekyll strips. A plain version bump would have dropped `.nojekyll` and broken every genre icon on the live site **while the build stayed green**, so the step now passes `include-hidden-files: true`.
+
+The other jumps were checked against this workflow rather than assumed: checkout v6 persists credentials to a separate file, which matters only to workflows that push, and v7 blocks fork-PR checkout for `pull_request_target` and `workflow_run`, while this triggers on `push` and `workflow_dispatch`. configure-pages v6 and deploy-pages v5 are Node 24 bumps with no input changes.
+
+**Impact:** No site change; the deprecation annotation is gone.
+
+**Test cases:** A green check would not have caught a dropped `.nojekyll`, so the deployed site was checked directly rather than the workflow's status. After merge, `.nojekyll` returns 200 and all seven `_genre.webp` icons return 200, with the fantasy and nihongi byte counts (346208 and 35488) identical to the pre-merge baseline — the artifact is equivalent to what v3 produced. The page loads with ~495 requests, all 200; the single 404 is `generator/config.js`, which is gitignored, never committed, guarded by a workflow step that fails the build if it ever appears, and handled by an `onerror` fallback in `index.html`.
+
 ## 2026-09-04
 
 ### macOS: double-click launcher and app bundle
