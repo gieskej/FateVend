@@ -14,7 +14,7 @@
 import { state } from "./state.js";
 import { GENRE_CAROUSEL_DATA } from "./generator/manifests.js";
 import { PACK_ICON_URLS, genreIconBase } from "./pack-assets.js";
-import { preloadGenreIcons } from "./app.js";
+import { preloadGenreIcons, clearRolledCharacter } from "./app.js";
 
 // GENRE_CAROUSEL_DATA is imported from ./generator/manifests.js (derived from
 // the per-genre manifests in display order).
@@ -109,7 +109,14 @@ export function onToolbarGenreChange(value) {
 }
 
 export function setGenre(genre) {
+  // Only on an actual change: setGenre() is also called to re-assert the
+  // current genre (toolbar/carousel syncing, initial load), and clearing there
+  // would wipe a character the user just rolled.
+  const changed = state.currentGenre !== genre;
   state.currentGenre = genre;
+  // A skeleton is rolled from one genre's tables, so it stops being meaningful
+  // the moment the genre changes.
+  if (changed) clearRolledCharacter();
   const sel = document.getElementById("genre-select");
   if (sel && sel.value !== genre) sel.value = genre;
   preloadGenreIcons(genre);

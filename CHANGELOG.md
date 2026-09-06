@@ -1,5 +1,22 @@
 # Changelog
 
+## 2026-09-06
+
+### fix: a genre change now discards the character rolled from the old genre
+**What changed:** Spinning the reels as Fantasy, then choosing Sci-Fi, left the fantasy character on screen with a live **Generate Scenario** button — and clicking it sent that character to the AI as a space-station story. An orc on a space station, as reported. `setGenre()` updated `state.currentGenre` and re-rendered the carousel but never touched `currentSkeleton`, `currentOutput`, or the rendered output, so a skeleton rolled from one genre's tables outlived the genre that produced it.
+
+`setGenre()` is documented as the single entry point for switching genres, and grepping confirms nothing else assigns `state.currentGenre`, so the fix belongs there: it now calls a new `clearRolledCharacter()` — but **only when the genre actually changes**. That guard matters, because `setGenre()` is also called to re-assert the current genre when the toolbar `<select>` and the carousel sync to each other; clearing unconditionally would have thrown away a character the moment the user touched the carousel.
+
+The empty state is restored from markup captured out of the DOM on load rather than duplicated in JS, so it cannot drift from `index.html`. Clearing also stops narration and the background music, which belong to the output being discarded and are genre-specific anyway.
+
+**A second route to the same bug, found while fixing the first:** nothing disables the genre picker while the reels are animating, so the genre can change *mid-roll*. The in-flight run would then re-render the old genre's character into the screen that had just been cleared. `runGenerate()` now captures the genre it is rolling for and abandons the run if that changes — including from the `catch`, because a genre switch pulls the slot machine out of the DOM underneath the animation and the resulting throw is the abandonment rather than a fault. Without that, the user would have seen "Generation failed: …" for doing something legitimate.
+
+**Impact:** A generated scenario can no longer mix genres. The screen and the selected genre always agree.
+
+**Test cases:** Four e2e assertions added to the `genre-switching` suite, which is the natural home since it already exercises every genre through both the dropdown and the carousel. The important one is verified to actually catch the bug: with the fix stashed and the test kept, it fails with precisely the reported symptom — `continue button: true, cards: 2, empty state restored: false`. The inverse is asserted too, since the obvious over-fix is to clear on every `setGenre()` call: re-selecting the *current* genre must keep the rolled character, and that case passes with or without the fix, so it is guarding the guard. Driven through the real UI as well: reproduced the exact report, confirmed **Generate Scenario** is a no-op afterwards with no error, and confirmed a mid-roll switch ends on the empty state with **0 console errors** and the spin button re-enabled. `npm test` 68/68, up from 64.
+
+**A defect caught in the fix itself, worth recording:** the first version declared `rolledGenre` inside the `try` block while the `catch` referenced it. `node --check` passes that happily — it is valid syntax — but block scoping would have made it a `ReferenceError` at the exact moment the error path ran, i.e. only ever in the failure case it was written to handle. It is now declared above the `try`.
+
 ## 2026-09-05
 
 ### feat: pick the Ollama model from a list, and show whether each provider URL answers

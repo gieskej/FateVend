@@ -1731,6 +1731,39 @@ function copySkeletonText(btn) {
 // MAIN GENERATE FLOW
 // ═══════════════════════════════════════════════════════════════════════════
 
+// The pristine #output-area markup, captured on load rather than duplicated
+// here, so restoring the empty state cannot drift from index.html.
+let _emptyStateHtml = "";
+
+// Discards a rolled character and everything derived from it. A skeleton is
+// rolled from one genre's tables, so it stops being meaningful the moment the
+// genre changes — without this, spinning as Fantasy and then switching to
+// Sci-Fi left an orc on screen and let "Generate Scenario" send it to the AI as
+// a space-station story.
+export function clearRolledCharacter() {
+  state.currentSkeleton = null;
+  state.currentOutput = null;
+
+  const outputArea = document.getElementById("output-area");
+  if (outputArea) outputArea.innerHTML = _emptyStateHtml;
+
+  // The narration and the background music belong to the output just discarded,
+  // and the music is genre-specific besides.
+  stopNarration();
+  for (const sfx of [
+    _bellSfx,
+    _musicSfx,
+    _slotMachinePullSfx,
+    _slotMachineReelStopSfx,
+  ]) {
+    sfx.pause();
+    sfx.currentTime = 0;
+  }
+  hidePlayer();
+  clearPhases();
+  showError("");
+}
+
 async function runGenerate() {
   if (isGenerating) return;
   isGenerating = true;
@@ -1758,6 +1791,11 @@ async function runGenerate() {
   // Clear old output and any lingering continue bar
   document.getElementById("output-area").innerHTML = "";
 
+  // Declared outside the try because the catch reads it as well: the reels
+  // animate for several seconds and nothing disables the genre picker
+  // meanwhile, so the genre can change mid-roll.
+  const rolledGenre = state.currentGenre;
+
   try {
     // Phase 1 — Roll stats
     setPhase("phase-roll");
@@ -1772,7 +1810,7 @@ async function runGenerate() {
     // Phase 3 — Skeleton
     setPhase("phase-skeleton");
     await sleep(300);
-    const tables = GENRE_TABLES[state.currentGenre] ?? GENRE_TABLES["modern"];
+    const tables = GENRE_TABLES[rolledGenre] ?? GENRE_TABLES["modern"];
     const skeleton = buildSkeleton(stats, mbti, tables, {
       includeLGBQ: document.getElementById("include-lgbq")?.checked ?? true,
       includeNSFW: document.getElementById("include-nsfw")?.checked ?? false,
@@ -1786,9 +1824,17 @@ async function runGenerate() {
 
     // ── Slot machine phase ─────────────────────────────────────────────
     setStatus("The fates are deciding…");
-    outputArea.innerHTML = renderSlotMachine(state.currentGenre);
-    await animateSlots(skeleton, state.currentGenre);
+    outputArea.innerHTML = renderSlotMachine(rolledGenre);
+    await animateSlots(skeleton, rolledGenre);
     await sleep(1200);
+
+    // The genre changed while the reels were spinning, so setGenre() has
+    // already cleared the screen; this character belongs to the genre the user
+    // just navigated away from. Abandon it rather than rendering it back in.
+    if (state.currentGenre !== rolledGenre) {
+      clearRolledCharacter();
+      return;
+    }
 
     // Skeleton cards appear below the (now locked) slot machine
     outputArea.insertAdjacentHTML("beforeend", renderSkeleton(skeleton));
@@ -1816,6 +1862,12 @@ async function runGenerate() {
       "Review the character sheet, then generate the scenario when ready.",
     );
   } catch (err) {
+    // A genre switch mid-roll pulls the slot machine out of the DOM underneath
+    // the animation, so the throw is the abandonment rather than a fault.
+    if (state.currentGenre !== rolledGenre) {
+      clearRolledCharacter();
+      return;
+    }
     showError(`Generation failed: ${err.message}`);
     setStatus("");
     clearPhases();
@@ -2471,6 +2523,10 @@ document.addEventListener("click", (e) => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Captured first: runGenerate() overwrites #output-area, so anything later
+  // would record a rolled character as the "empty" state.
+  _emptyStateHtml = document.getElementById("output-area")?.innerHTML ?? "";
+
   // Version stamp from serve.sh (git commit of the running checkout), shown
   // in the Settings footer. Falls back to a static default when opened
   // directly as a file:// URL (no serve.sh, so config.js never loaded).
