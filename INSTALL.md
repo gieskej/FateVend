@@ -10,13 +10,13 @@ prints the one command that installs it.
 
 Pick the section that matches what you want:
 
-| I want to… | What it takes | Section |
-|---|---|---|
-| Just try it | Nothing but Windows or a Mac | [Level 1](#level-1--run-it-5-minutes) |
-| Use my own AI keys | A free API key | [Level 2](#level-2--add-an-ai-provider) |
-| One-click import into AI Dungeon | Node.js + a download | [Level 3](#level-3--one-click-ai-dungeon-import) |
-| Portraits and narration | Optional extras | [Level 4](#level-4--portraits-and-narration) |
-| Change the code | Git + Node.js | [CONTRIBUTING.md](CONTRIBUTING.md) |
+| I want to…                       | What it takes                | Section                                          |
+| -------------------------------- | ---------------------------- | ------------------------------------------------ |
+| Just try it                      | Nothing but Windows or a Mac | [Level 1](#level-1--run-it-5-minutes)            |
+| Use my own AI keys               | A free API key               | [Level 2](#level-2--add-an-ai-provider)          |
+| One-click import into AI Dungeon | Node.js + a download         | [Level 3](#level-3--one-click-ai-dungeon-import) |
+| Portraits and narration          | Optional extras              | [Level 4](#level-4--portraits-and-narration)     |
+| Change the code                  | Git + Node.js                | [CONTRIBUTING.md](CONTRIBUTING.md)               |
 
 Each level is optional and builds on the one before. **Level 1 alone gives you a
 working character generator.**
@@ -81,12 +81,13 @@ error stays on screen:
 ```powershell
 powershell -ExecutionPolicy Bypass -File web\serve.ps1
 ```
+
 </details>
 
 <details>
 <summary><b>"running scripts is disabled on this system"</b></summary>
 
-Use `Start-FateVend.cmd` rather than right-click → *Run with PowerShell*. The
+Use `Start-FateVend.cmd` rather than right-click → _Run with PowerShell_. The
 `.cmd` passes `-ExecutionPolicy Bypass`, which applies to that one window only
 and changes no system setting.
 </details>
@@ -149,6 +150,7 @@ Run it by hand so the error stays on screen:
 cd FateVend-main
 bash web/serve.sh
 ```
+
 </details>
 
 <details>
@@ -180,7 +182,7 @@ your own games, you're done.
 
 ## Level 2 — Add an AI provider
 
-Level 1 rolls the character. An AI provider writes the *prose* — the backstory,
+Level 1 rolls the character. An AI provider writes the _prose_ — the backstory,
 the scenario, the character voice — when you click **Generate Scenario**.
 
 **Google Gemini has a free tier and is the recommended starting point.**
@@ -235,11 +237,11 @@ Never commit `.env` or share it — it holds your keys. It is gitignored.
 
 ### Other text providers
 
-| Provider | Cost | Get a key |
-|---|---|---|
-| **Google Gemini** | Free tier | <https://aistudio.google.com/api-keys> |
-| **Anthropic Claude** | Paid | <https://console.anthropic.com> |
-| **Ollama** | Free, runs on your PC | <https://ollama.com/> — no key, needs a decent GPU |
+| Provider             | Cost                  | Get a key                                          |
+| -------------------- | --------------------- | -------------------------------------------------- |
+| **Google Gemini**    | Free tier             | <https://aistudio.google.com/api-keys>             |
+| **Anthropic Claude** | Paid                  | <https://console.anthropic.com>                    |
+| **Ollama**           | Free, runs on your PC | <https://ollama.com/> — no key, needs a decent GPU |
 
 ---
 
@@ -319,21 +321,53 @@ All optional, all configured the same way — in **Settings**, or in `.env`.
 
 ### Character portraits
 
-| Option | Cost | Notes |
-|---|---|---|
-| **Stability AI** | Paid | Key from <https://platform.stability.ai> |
+| Option                           | Cost | Notes                                                                                                          |
+| -------------------------------- | ---- | -------------------------------------------------------------------------------------------------------------- |
+| **Stability AI**                 | Paid | Key from <https://platform.stability.ai>                                                                       |
 | **Stable Diffusion WebUI Forge** | Free | Runs on your PC, needs a good GPU. [Install guide](https://github.com/lllyasviel/stable-diffusion-webui-forge) |
 
-For local Stable Diffusion, start it with the `--api` flag and put its address
-(usually `http://localhost:7860`) in Settings.
+For local Stable Diffusion, put its address (usually `http://localhost:7860`)
+in Settings and start it with the **`--api`** flag. The `/sdapi/v1/*` routes
+FateVend calls are off by default, and `--api` is what turns them on.
+
+You will probably need nothing else. FateVend runs in your browser, so the call
+to Stable Diffusion is cross-origin — a different port alone makes it one — and
+a browser discards the reply unless the server allows the calling page. In
+practice Gradio (which both Forge generations are built on) already decides this
+for you, by the address you reached it at:
+
+| You reach Stable Diffusion at…             | Which pages may call it               |
+| ------------------------------------------ | ------------------------------------- |
+| `localhost` / `127.0.0.1`                  | only pages also served from localhost |
+| a LAN address (`192.168.x.x`, `box.local`) | any page                              |
+
+So a local setup works as-is, and so does a GPU box elsewhere on your network —
+the remote case is the _easier_ one, which is why pointing FateVend at a GPU
+server has always just worked without any CORS setup. (Checked against both
+`stable-diffusion-webui-forge` and Forge Neo; the rule is Gradio's, not
+Forge's.)
+
+> **`--cors-allow-origins` may do nothing.** On Forge Neo the flag is accepted
+> and then ignored — passing an explicit origin still leaves that origin
+> refused, because the rule above is applied by Gradio before the setting is
+> consulted. Don't spend time tuning it; if a local page cannot reach a local
+> Stable Diffusion, the cause is almost always `--api` being absent, not CORS.
+
+> **Running Stable Diffusion on another machine?** That works, with one
+> exception that no flag can fix: the **hosted demo cannot reach a Stable
+> Diffusion box on your LAN**. The demo is served over HTTPS, and browsers
+> block plain-`http://` requests from an HTTPS page. `http://localhost` is
+> exempt because browsers treat it as trustworthy; `http://192.168.1.50` is
+> not. Serve FateVend yourself over `http://` — which is what `serve.sh` does
+> — and a remote GPU is fine.
 
 ### Narration
 
-| Option | Cost | Notes |
-|---|---|---|
-| **Browser voice** | Free | Already built into your browser — just select it |
-| **Kokoro TTS** | Free | Runs on your PC. [Install guide](https://github.com/remsky/Kokoro-FastAPI) |
-| **OpenAI TTS** | Paid | Key from <https://platform.openai.com> |
+| Option            | Cost | Notes                                                                      |
+| ----------------- | ---- | -------------------------------------------------------------------------- |
+| **Browser voice** | Free | Already built into your browser — just select it                           |
+| **Kokoro TTS**    | Free | Runs on your PC. [Install guide](https://github.com/remsky/Kokoro-FastAPI) |
+| **OpenAI TTS**    | Paid | Key from <https://platform.openai.com>                                     |
 
 Browser voice needs no setup at all — pick it from the narration dropdown.
 
@@ -343,17 +377,17 @@ Browser voice needs no setup at all — pick it from the narration dropdown.
 
 **Everything FateVend can use, and whether you need it:**
 
-| Thing | Required? | For what |
-|---|---|---|
-| A web browser | **Yes** | Everything |
-| `Start-FateVend.cmd` | **Yes** (Windows) | Serving the page |
-| `FateVend.app` | **Yes** (macOS) | Serving the page |
-| Python 3 | **Yes** on macOS/Linux | `serve.sh`, the non-Windows equivalent |
-| An AI text key | Only for prose | Written scenarios |
-| Node.js | No | One-click AI Dungeon import |
-| Playwright + Chromium | No | One-click AI Dungeon import |
-| Git | No | Only if you want to modify the code |
-| WSL | No | Only if you want to modify the code on Windows, WSL + git + BASH make it easy. |
+| Thing                 | Required?              | For what                                                                       |
+| --------------------- | ---------------------- | ------------------------------------------------------------------------------ |
+| A web browser         | **Yes**                | Everything                                                                     |
+| `Start-FateVend.cmd`  | **Yes** (Windows)      | Serving the page                                                               |
+| `FateVend.app`        | **Yes** (macOS)        | Serving the page                                                               |
+| Python 3              | **Yes** on macOS/Linux | `serve.sh`, the non-Windows equivalent                                         |
+| An AI text key        | Only for prose         | Written scenarios                                                              |
+| Node.js               | No                     | One-click AI Dungeon import                                                    |
+| Playwright + Chromium | No                     | One-click AI Dungeon import                                                    |
+| Git                   | No                     | Only if you want to modify the code                                            |
+| WSL                   | No                     | Only if you want to modify the code on Windows, WSL + git + BASH make it easy. |
 
 ## Still stuck?
 

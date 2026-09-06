@@ -16,11 +16,17 @@ import { fileURLToPath } from "node:url";
 // this platform, but serve.sh binds 0.0.0.0 (IPv4-only) — the IPv6 attempt
 // fails silently and pingServer() would never see the already-running server.
 export const BASE_URL = "http://127.0.0.1:8080";
-const WEB_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
+const WEB_DIR = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "..",
+  "..",
+);
 
 async function pingServer() {
   try {
-    const res = await fetch(BASE_URL + "/", { signal: AbortSignal.timeout(1000) });
+    const res = await fetch(BASE_URL + "/", {
+      signal: AbortSignal.timeout(1000),
+    });
     return res.ok;
   } catch {
     return false;
@@ -60,6 +66,25 @@ export const MOBILE_CONTEXT = {
   hasTouch: true,
 };
 
+// Endpoints the app probes or loads defensively, whose absence says nothing
+// about the code under test: the AI Dungeon import server, the dev-only
+// config.js, and the three provider reachability probes behind the settings
+// lamps. Those ask whatever URL is configured whether it answers, so the result
+// depends on what happens to be running on the machine executing the suite —
+// a red lamp is a correct outcome there, not a regression.
+const OPTIONAL_PROBE_PATHS = [
+  "/api/tags", // Ollama
+  "/sdapi/v1/sd-models", // Stable Diffusion
+  "/v1/models", // Kokoro
+];
+function isOptionalProbe(url) {
+  return (
+    url.includes(":7432") ||
+    url.includes("config.js") ||
+    OPTIONAL_PROBE_PATHS.some((path) => url.endsWith(path))
+  );
+}
+
 // Attaches console/pageerror/requestfailed listeners to a fresh page and
 // returns { page, errors, failed } — call assertNoErrors(diag) at the end of a
 // test to fold "did anything go wrong we didn't expect" into the report.
@@ -71,15 +96,19 @@ export async function newDiagnosticPage(browser, contextOptions = {}) {
   const errors = [];
   const failed = [];
   page.on("console", (m) => {
-    if (m.type() === "error") errors.push(m.text());
+    if (m.type() !== "error") return;
+    // A refused fetch is reported twice by Chromium — once through
+    // requestfailed, and once as a console error whose text carries no URL.
+    // The optional-probe exemptions below therefore have to be applied by the
+    // message's own location, or an absent Ollama would fail the suite on the
+    // console side after passing on the request side.
+    if (isOptionalProbe(m.location()?.url ?? "")) return;
+    errors.push(m.text());
   });
   page.on("pageerror", (e) => errors.push("PAGEERROR: " + e.message));
   page.on("requestfailed", (r) => {
     const url = r.url();
-    // The AI Dungeon import server (127.0.0.1:7432) and config.js are optional
-    // dev-only endpoints the app probes/loads defensively; their absence is not
-    // a real failure.
-    if (url.includes(":7432") || url.includes("config.js")) return;
+    if (isOptionalProbe(url)) return;
     // preloadGenreIcons() fires a batch of `new Image()` preload requests per
     // genre, and the audio player/SFX calls fire overlapping <audio> fetches;
     // moving on quickly (switching genres again, calling playerNext() right
@@ -94,7 +123,11 @@ export async function newDiagnosticPage(browser, contextOptions = {}) {
   return { context, page, errors, failed };
 }
 
-export function assertNoErrors(diag, results, label = "no console errors / failed requests") {
+export function assertNoErrors(
+  diag,
+  results,
+  label = "no console errors / failed requests",
+) {
   const ok = diag.errors.length === 0 && diag.failed.length === 0;
   results.push({
     pass: ok,

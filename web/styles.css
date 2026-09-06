@@ -557,6 +557,107 @@ body::before {
   width: 100%;
 }
 
+/* Reachability lamp beside a URL label. --verdigris and --rust are the two
+   status colors DESIGN.md sanctions by name; they mean state, not hierarchy.
+   
+   The glyph inside is not decoration. Red-versus-green is the one distinction a
+   large share of colorblind readers cannot make, so the state has to survive
+   the color being lost — hence a tick, a cross, and a dot rather than three
+   identical circles. */
+.url-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  margin-left: 0.35rem;
+  border-radius: 50%;
+  vertical-align: -0.15em;
+  font-family: system-ui, sans-serif;
+  font-size: var(--text-xs);
+  line-height: 1;
+  /* Pigment, not a text role, and deliberately so: this is the contrast layer
+     drawn on top of a --verdigris or --rust fill, so it has to track the fill
+     rather than the page ground. DESIGN.md allows pigment names for glyphs. */
+  color: var(--ink);
+  transition:
+    background 0.2s,
+    opacity 0.2s;
+}
+.url-status[data-state="idle"] {
+  opacity: 0;
+}
+.url-status[data-state="checking"] {
+  background: var(--text-dim);
+}
+.url-status[data-state="checking"]::after {
+  content: "·";
+}
+.url-status[data-state="ok"] {
+  background: var(--verdigris);
+}
+.url-status[data-state="ok"]::after {
+  content: "✓";
+}
+.url-status[data-state="fail"] {
+  background: var(--rust);
+}
+.url-status[data-state="fail"]::after {
+  content: "✕";
+}
+
+/* Puts the restore-default control beside the field it fills, on one line.
+   Staying inline is what keeps it reading as an adornment of the input rather
+   than a second control competing with it. It fits at a 390px viewport because
+   the icon button is only ~2rem wide; the input gives up min-width rather than
+   letting the row overflow, which the e2e mobile suite asserts against. */
+.settings-input-row {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 0.35rem;
+}
+.settings-input-row .api-input {
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
+}
+
+/* Deliberately quiet: a convenience attached to the field, not a control
+   competing with Save. Square and icon-only so it reads as an affordance on
+   the input rather than a button in its own right. 2rem square clears the 24px
+   WCAG 2.2 target minimum while staying visually subordinate to the field. */
+.btn-use-default {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  min-height: 2rem;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--brass-dark);
+  border-radius: var(--radius);
+  color: var(--text-dim);
+  /* The glyph, not the display face: ↺ is missing from the display font and
+     would otherwise render as a fallback box at a mismatched size. */
+  font-family: system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
+}
+.btn-use-default:hover {
+  color: var(--text-on-accent);
+  border-color: var(--brass-light);
+}
+.btn-use-default:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
+}
+
 .api-input {
   flex: 1;
   min-width: 160px;

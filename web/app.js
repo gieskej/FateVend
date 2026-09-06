@@ -2251,6 +2251,170 @@ async function autoGenerateAllNpcPortraits(npcNames) {
   }
 }
 
+// ── Ollama model discovery ────────────────────────────────────────────────
+// Asks the server at the entered URL what it actually has, so the model field
+// becomes a pick list instead of a name the user has to remember and spell.
+//
+// The text input stays the canonical value: everything else — the generation
+// call, localStorage persistence, seeding from config.js — reads
+// #ollama-model.value, so the select is a control that writes into it rather
+// than a replacement for it. That keeps this feature out of the paths that
+// matter if it breaks.
+//
+// It also degrades to the plain input rather than trapping anyone. A hard
+// select would be a dead end whenever the server is unreachable — a LAN box
+// that is off, a typo, a blocked origin — leaving no way to type a name and no
+// way to reach an already-saved one.
+// Each URL field is checked against a cheap GET on the same server the app
+// would really use. A green lamp therefore means "this page can talk to it",
+// which is the question that matters — not "something is listening". If the
+// server is up but refuses this origin, the app's real calls would fail too,
+// so red is the honest answer.
+const URL_PROBES = {
+  "ollama-url": { path: "/api/tags", label: "Ollama" },
+  "sd-url": { path: "/sdapi/v1/sd-models", label: "Stable Diffusion" },
+  "tts-kokoro-url": { path: "/v1/models", label: "Kokoro" },
+};
+const PROBE_TIMEOUT_MS = 4000;
+const probeControllers = {};
+
+function setUrlStatus(inputId, state, detail) {
+  const lamp = document.getElementById(`url-status-${inputId}`);
+  if (!lamp) return;
+  lamp.dataset.state = state;
+  // The lamp is the only thing on screen for two of the three fields, so the
+  // reason lives in its accessible name rather than in colour alone.
+  lamp.setAttribute("aria-label", detail);
+  lamp.title = detail;
+}
+
+// Returns the parsed body on success and null otherwise, so a caller that wants
+// the payload (the Ollama model list) shares one request with the lamp.
+async function probeUrlField(inputId) {
+  const cfg = URL_PROBES[inputId];
+  const url = document.getElementById(inputId).value.trim();
+  if (!url) {
+    setUrlStatus(inputId, "idle", "Not checked yet");
+    return null;
+  }
+
+  // Supersede an in-flight probe: these fields fire per keystroke, and a slow
+  // unreachable host would otherwise let a stale verdict land last.
+  probeControllers[inputId]?.abort();
+  const controller = new AbortController();
+  probeControllers[inputId] = controller;
+  const timer = setTimeout(() => controller.abort(), PROBE_TIMEOUT_MS);
+
+  setUrlStatus(inputId, "checking", `Checking ${cfg.label}…`);
+  try {
+    const res = await fetch(`${url.replace(/\/$/, "")}${cfg.path}`, {
+      signal: controller.signal,
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    // Ollama.app's own UI answers /api/tags with 200 and an HTML page, so a
+    // successful status is not evidence this is the API. Parsing decides it.
+    const data = await res.json();
+    setUrlStatus(inputId, "ok", `${cfg.label} responded at ${url}`);
+    return data;
+  } catch {
+    // A superseded probe has already been replaced by a newer one; letting it
+    // paint would overwrite a fresher verdict with a stale one.
+    if (probeControllers[inputId] !== controller) return null;
+    setUrlStatus(
+      inputId,
+      "fail",
+      `No usable response from ${url} — it may be down, the URL may be wrong, ` +
+        `or it may be refusing requests from this page.`,
+    );
+    return null;
+  } finally {
+    clearTimeout(timer);
+    if (probeControllers[inputId] === controller)
+      delete probeControllers[inputId];
+  }
+}
+
+function setOllamaModelStatus(text) {
+  const el = document.getElementById("ollama-model-status");
+  if (el) el.textContent = text ?? "";
+}
+
+function showOllamaModelPicker(models) {
+  const input = document.getElementById("ollama-model");
+  const select = document.getElementById("ollama-model-select");
+  const resetBtn = document.querySelector(
+    '.btn-use-default[data-target="ollama-model"]',
+  );
+  const current = input.value.trim();
+
+  select.replaceChildren();
+  if (!current) {
+    // A blank field must not silently acquire whichever model happens to sort
+    // first — picking the model is the user's call, not a side effect of typing
+    // a URL.
+    const ph = new Option("— choose a model —", "");
+    ph.disabled = true;
+    ph.selected = true;
+    select.append(ph);
+  }
+  // A saved model the server no longer reports still belongs in the list, or
+  // switching to the picker would quietly discard a working configuration.
+  if (current && !models.includes(current)) {
+    select.append(new Option(`${current} (not installed)`, current));
+  }
+  models.forEach((m) => select.append(new Option(m, m)));
+  if (current) select.value = current;
+
+  select.hidden = false;
+  input.hidden = true;
+  if (resetBtn) resetBtn.hidden = true;
+}
+
+function showOllamaModelInput() {
+  const select = document.getElementById("ollama-model-select");
+  const resetBtn = document.querySelector(
+    '.btn-use-default[data-target="ollama-model"]',
+  );
+  select.hidden = true;
+  document.getElementById("ollama-model").hidden = false;
+  if (resetBtn) resetBtn.hidden = false;
+}
+
+async function refreshOllamaModels() {
+  const url = document.getElementById("ollama-url").value.trim();
+
+  // Probe first even when the field is empty: probeUrlField owns resetting the
+  // lamp to idle, and returning before it left a cleared field still showing
+  // the green tick from the URL that used to be there.
+  const data = await probeUrlField("ollama-url");
+  if (!url) {
+    showOllamaModelInput();
+    setOllamaModelStatus("");
+    return;
+  }
+  if (!data) {
+    showOllamaModelInput();
+    setOllamaModelStatus(
+      "Couldn't read a model list from that URL — type the name instead.",
+    );
+    return;
+  }
+
+  const models = (data.models ?? [])
+    .map((m) => m.name)
+    .filter(Boolean)
+    .sort();
+  if (!models.length) {
+    showOllamaModelInput();
+    setOllamaModelStatus("Reachable, but no models are installed there.");
+    return;
+  }
+  showOllamaModelPicker(models);
+  setOllamaModelStatus(
+    `${models.length} model${models.length === 1 ? "" : "s"} available.`,
+  );
+}
+
 // ── Key persistence (localStorage) ────────────────────────────────────────
 const KEY_FIELDS = [
   { id: "api-key", store: "gof_api_key" },
@@ -2319,6 +2483,57 @@ document.addEventListener("DOMContentLoaded", () => {
       if (id === "tts-kokoro-url" || id === "tts-openai-key")
         updateNarrationProviderSelector();
     });
+  });
+
+  // "use default" buttons beside the LAN provider fields. The default lives in
+  // the button's data-default rather than being read back from the input's
+  // placeholder: Kokoro's placeholder used to be the template
+  // http://192.168.x.x:8880, and a placeholder is free to illustrate a shape
+  // that is not itself a usable value.
+  //
+  // Dispatching 'input' is the load-bearing part. Setting .value directly fires
+  // nothing, so the KEY_FIELDS listener above would never run — the URL would
+  // sit visibly in the box while localStorage stayed empty and Ollama stayed
+  // disabled in the provider dropdown, which looks exactly like the field being
+  // ignored.
+  document.querySelectorAll(".btn-use-default").forEach((btn) => {
+    // Named from data-default rather than hardcoded in the markup, so the
+    // value a reader is promised cannot drift from the one actually filled in.
+    // The static aria-label in the HTML stays as the fallback name.
+    btn.title = `Use default: ${btn.dataset.default}`;
+    btn.addEventListener("click", () => {
+      const input = document.getElementById(btn.dataset.target);
+      if (!input) return;
+      input.value = btn.dataset.default;
+      input.dispatchEvent(new Event("input", { bubbles: true }));
+      input.focus();
+    });
+  });
+
+  // The picker writes through to the text input rather than being read
+  // directly, so persistence and the generation call need no knowledge of it.
+  document
+    .getElementById("ollama-model-select")
+    .addEventListener("change", (e) => {
+      const input = document.getElementById("ollama-model");
+      input.value = e.target.value;
+      input.dispatchEvent(new Event("input", { bubbles: true }));
+    });
+
+  // Debounced: these fields fire on every keystroke, and a half-typed host is a
+  // request that can only fail — an undebounced probe would paint the lamp red
+  // for every character on the way to a correct URL.
+  const probeTimers = {};
+  Object.keys(URL_PROBES).forEach((id) => {
+    // Ollama's probe also rebuilds the model picker, so it goes through
+    // refreshOllamaModels rather than calling probeUrlField twice.
+    const run =
+      id === "ollama-url" ? refreshOllamaModels : () => probeUrlField(id);
+    document.getElementById(id).addEventListener("input", () => {
+      clearTimeout(probeTimers[id]);
+      probeTimers[id] = setTimeout(run, 500);
+    });
+    run();
   });
 
   // Init provider selector state now that keys are loaded
