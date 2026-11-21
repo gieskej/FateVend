@@ -20,7 +20,8 @@ npm run test:full # fast tier + the real-API generation test
 
 `run.mjs` starts `web/serve.sh` automatically if nothing answers on `:8080` yet
 (and leaves it running, same as launching it by hand — see `ensureServer()` in
-`helpers.mjs`).
+`helpers.mjs`). On Windows it starts `web/serve.ps1` instead, so the suite needs
+neither bash nor a `python3` on PATH there.
 
 ## Fast tier vs. slow tier
 

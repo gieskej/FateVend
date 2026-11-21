@@ -12,10 +12,21 @@ import { spawn } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-// 127.0.0.1, not localhost: Node's fetch resolves "localhost" to ::1 first on
-// this platform, but serve.sh binds 0.0.0.0 (IPv4-only) — the IPv6 attempt
-// fails silently and pingServer() would never see the already-running server.
-export const BASE_URL = "http://127.0.0.1:8080";
+// Windows has no reliable `bash` or `python3` on PATH (both are usually
+// WindowsApps stubs for WSL and the Microsoft Store), so there the suite starts
+// serve.ps1 — the repo's own Windows equivalent of serve.sh — instead.
+const IS_WINDOWS = process.platform === "win32";
+
+// Elsewhere: 127.0.0.1, not localhost: Node's fetch resolves "localhost" to ::1
+// first on this platform, but serve.sh binds 0.0.0.0 (IPv4-only) — the IPv6
+// attempt fails silently and pingServer() would never see the running server.
+// On Windows: localhost, not 127.0.0.1: serve.ps1's HttpListener is registered
+// for the "localhost" host name only and answers any other Host header with
+// 400. http.sys listens on both ::1 and 127.0.0.1 for it, so the IPv6-first
+// lookup that rules out "localhost" for serve.sh is not a problem here.
+export const BASE_URL = IS_WINDOWS
+  ? "http://localhost:8080"
+  : "http://127.0.0.1:8080";
 const WEB_DIR = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "..",
@@ -33,19 +44,48 @@ async function pingServer() {
   }
 }
 
-// Starts web/serve.sh if nothing is already answering on port 8080, and waits
-// for it to come up. Never stops a server it didn't start — serve.sh's own
-// stale-instance sweep (see its header comment) handles cleanup on next launch,
-// and a server we DID start is left running detached, exactly like a developer
-// running `bash serve.sh` by hand would expect.
+export const SERVER_SCRIPT = IS_WINDOWS ? "serve.ps1" : "serve.sh";
+
+// On Windows, spawn()'s `detached: true` starts the child with no console at
+// all (DETACHED_PROCESS), and powershell.exe silently exits 0 without running
+// the script. Without `detached`, libuv puts the child in a kill-on-close job
+// object, so the server would die with this runner. Handing the launch to
+// Start-Process gives serve.ps1 its own hidden console outside that job — the
+// same as starting it by hand.
+function serverLaunch() {
+  if (!IS_WINDOWS) {
+    return { command: "bash", args: ["serve.sh"], detached: true };
+  }
+
+  const scriptPath = path.join(WEB_DIR, "serve.ps1").replaceAll("'", "''");
+  const startServer =
+    "Start-Process powershell.exe -WindowStyle Hidden -ArgumentList " +
+    `'-NoProfile -ExecutionPolicy Bypass -File "${scriptPath}" -NoBrowser'`;
+  return {
+    command: "powershell.exe",
+    args: ["-NoProfile", "-NonInteractive", "-Command", startServer],
+    detached: false,
+  };
+}
+
+// Starts web/serve.sh (serve.ps1 on Windows) if nothing is already answering
+// on port 8080, and waits for it to come up. Never stops a server it didn't
+// start — both scripts' own stale-instance sweep (see serve.sh's header
+// comment) handles cleanup on next launch, and a server we DID start is left
+// running detached, exactly like a developer launching it by hand would expect.
 export async function ensureServer() {
   if (await pingServer()) return { started: false };
 
-  const child = spawn("bash", ["serve.sh"], {
+  const { command, args, detached } = serverLaunch();
+  const child = spawn(command, args, {
     cwd: WEB_DIR,
-    detached: true,
+    detached,
     stdio: "ignore",
+    windowsHide: true,
   });
+  // A missing interpreter surfaces as an async 'error' event; without a
+  // listener it would crash the runner instead of reaching the timeout below.
+  child.on("error", () => {});
   child.unref();
 
   const deadline = Date.now() + 20000;
@@ -53,7 +93,9 @@ export async function ensureServer() {
     if (await pingServer()) return { started: true };
     await new Promise((r) => setTimeout(r, 500));
   }
-  throw new Error("Timed out waiting for web/serve.sh to come up on :8080");
+  throw new Error(
+    `Timed out waiting for web/${SERVER_SCRIPT} to come up on :8080`,
+  );
 }
 
 // A phone-sized context (iPhone 12/13/14 logical viewport). Passed to

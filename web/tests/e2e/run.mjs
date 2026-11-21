@@ -10,7 +10,7 @@
 // `--full` (`npm run test:full`): additionally runs full-generation.mjs, which
 // makes one real Anthropic/Gemini API call. Not part of the default run.
 
-import { chromium, ensureServer } from "./helpers.mjs";
+import { chromium, ensureServer, SERVER_SCRIPT } from "./helpers.mjs";
 import * as smoke from "./smoke.mjs";
 import * as genreSwitching from "./genre-switching.mjs";
 import * as genrePackImport from "./genre-pack-import.mjs";
@@ -31,7 +31,10 @@ const runFull = process.argv.includes("--full");
 
 async function main() {
   const { started } = await ensureServer();
-  if (started) console.log("Started web/serve.sh for this test run (left running).");
+  if (started)
+    console.log(
+      `Started web/${SERVER_SCRIPT} for this test run (left running).`,
+    );
 
   const browser = await chromium.launch();
   const suites = runFull ? [...FAST_SUITES, fullGeneration] : FAST_SUITES;
